@@ -238,7 +238,6 @@ export function HomePage() {
             <div className="lg:col-span-2">
               <ChatInterface 
                 currentUser={currentUser}
-                onRequireAuth={() => setShowAuthModal(true)}
               />
             </div>
             
