@@ -1,21 +1,22 @@
 import { 
-  getGreeting, 
   getEmpathyOpener, 
   getTransition, 
   getCloser,
-  getSupportivePhrase,
   FATHER_CUSTODY_GUIDANCE,
   TOPIC_GUIDANCE,
   getRelevantCaseLaw 
 } from './personality';
 
-const KIMI_API_KEY = 'sk-or-v1-40cb50618a28ee0c3c1d2f67b6e4ff6db6d2b6e1c7b3f8e9a0d1c2b3a4f5e6d';
-const KIMI_API_URL = 'https://api.kimi.com/v1/chat/completions';
+// Kimi (Moonshot AI) API Configuration
+// Get your API key from: https://platform.moonshot.cn/
+const KIMI_API_KEY = import.meta.env.VITE_KIMI_API_KEY || 'sk-your-api-key-here';
+const KIMI_API_URL = 'https://api.moonshot.cn/v1/chat/completions';
 
 export interface AIResponse {
   content: string;
   citations?: string[];
   topic?: string;
+  error?: boolean;
 }
 
 // Detect what the user is asking about
@@ -107,7 +108,8 @@ function isFatherCustodyQuestion(message: string): boolean {
 // Generate a personable, helpful response
 export async function generateAIResponse(
   userMessage: string,
-  conversationHistory: { role: string; content: string }[] = []
+  conversationHistory: { role: string; content: string }[] = [],
+  userName?: string
 ): Promise<AIResponse> {
   const topic = detectTopic(userMessage);
   
@@ -138,7 +140,7 @@ export async function generateAIResponse(
   }
   
   // For other topics, use the AI API with enhanced personality
-  return generateAIWithPersonality(userMessage, conversationHistory, topic);
+  return generateAIWithPersonality(userMessage, conversationHistory, topic, userName);
 }
 
 function generateFatherCustodyResponse(): AIResponse {
@@ -304,31 +306,48 @@ function generateDomesticViolenceResponse(): AIResponse {
 async function generateAIWithPersonality(
   userMessage: string,
   conversationHistory: { role: string; content: string }[],
-  topic: string
+  topic: string,
+  userName?: string
 ): Promise<AIResponse> {
-  const systemPrompt = `You are Alex, a knowledgeable and empathetic California divorce law specialist. You help people navigate divorce with clarity and compassion.
+  
+  // Check if API key is configured
+  if (KIMI_API_KEY === 'sk-your-api-key-here' || !KIMI_API_KEY) {
+    console.warn('Kimi API key not configured. Using fallback response.');
+    return generateFallbackResponse(userMessage, topic, userName, true);
+  }
+  
+  const nameGreeting = userName && userName !== 'Guest' ? `The user's name is ${userName}. Use their name occasionally to be personable.` : '';
+  
+  const systemPrompt = `You are Alex, a knowledgeable, empathetic, and SOCIAL California divorce law specialist. You talk like a real person - warm, friendly, and conversational.
 
-HOW TO RESPOND:
-1. Start with genuine empathy - acknowledge their situation
-2. Provide specific, actionable guidance based on California Family Code
-3. Explain the law in plain English, not legal jargon
-4. Give practical steps they can actually take
-5. Be conversational - like a trusted friend who's a lawyer
-6. Always cite relevant Family Code sections
-7. End by inviting more questions
+${nameGreeting}
+
+HOW TO RESPOND (BE SOCIAL!):
+1. ALWAYS acknowledge the person by name if you know it
+2. Start with warmth - "Hey there!", "Hi!", "Hello!" 
+3. Show genuine empathy for their situation
+4. Be conversational - use contractions, casual language, like texting a friend
+5. Ask follow-up questions to keep the conversation going
+6. Use their name naturally in responses
+7. Be encouraging and supportive
+8. Give specific, actionable advice based on California Family Code
+9. Cite the actual law sections (§ 2320, § 760, etc.)
+10. End by inviting them to ask more
+
+YOUR PERSONALITY:
+- Warm and friendly (like a supportive friend who's a lawyer)
+- Use phrases like "Hey!", "I hear you", "That sounds tough"
+- Don't be stiff or robotic
+- Show personality - be someone they'd want to talk to
+- Remember details they share and reference them
 
 IMPORTANT RULES:
-- NEVER just send people to websites - give them the actual information
+- ALWAYS use their name if provided
+- NEVER just say "go to a website" - give them the actual information
 - Be specific about what they need to do
 - Mix legal knowledge with practical advice
-- If you don't know something specific, be honest
+- If you don't know something, be honest about it
 - Always remind them to consult an attorney for their specific situation
-
-YOUR TONE:
-- Warm and supportive
-- Knowledgeable but not condescending
-- Practical and action-oriented
-- Like you're having a real conversation
 
 CALIFORNIA FAMILY CODE KNOWLEDGE:
 - Residency: 6 months in CA, 3 months in county (§ 2320)
@@ -353,12 +372,14 @@ CALIFORNIA FAMILY CODE KNOWLEDGE:
           ...conversationHistory.slice(-5),
           { role: 'user', content: userMessage },
         ],
-        temperature: 0.7,
-        max_tokens: 1500,
+        temperature: 0.8,
+        max_tokens: 2000,
       }),
     });
 
     if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Kimi API error:', response.status, errorText);
       throw new Error(`API error: ${response.status}`);
     }
 
@@ -372,33 +393,72 @@ CALIFORNIA FAMILY CODE KNOWLEDGE:
   } catch (error) {
     console.error('AI API error:', error);
     
-    // Fallback response
-    return generateFallbackResponse(userMessage, topic);
+    // Fallback response with error flag
+    return generateFallbackResponse(userMessage, topic, userName, true);
   }
 }
 
-function generateFallbackResponse(_userMessage: string, topic: string): AIResponse {
-  const empathy = getEmpathyOpener();
-  const closer = getCloser();
-  const supportive = getSupportivePhrase();
+function generateFallbackResponse(
+  userMessage: string, 
+  topic: string, 
+  userName?: string,
+  apiError: boolean = false
+): AIResponse {
+  const namePrefix = userName && userName !== 'Guest' ? `${userName}, ` : '';
   
-  let content = `${empathy}\n\n`;
-  content += `${supportive}\n\n`;
-  content += `I'd like to give you more specific guidance on this, but I'm having trouble accessing my full knowledge base right now.\n\n`;
-  content += `Here's what I can tell you generally about California divorce:\n\n`;
-  content += `• California is a no-fault divorce state - you don't need to prove anyone did anything wrong\n`;
-  content += `• Property acquired during marriage is generally split 50/50\n`;
-  content += `• Child custody is based on what's best for the child\n`;
-  content += `• There's a 6-month waiting period from when papers are served until the divorce can be final\n\n`;
-  content += `For your specific question about ${topic}, I'd recommend:\n`;
-  content += `1. Checking the California Courts Self-Help website for detailed guides\n`;
-  content += `2. Talking to a family law attorney who can give you advice for your situation\n\n`;
-  content += `**Important:** I'm an AI assistant, not a lawyer. Please consult with a qualified California family law attorney for advice about your specific situation.\n\n`;
-  content += `${closer}`;
+  let content = `Hey ${namePrefix}I'm Alex! 👋\n\n`;
   
-  return { content, topic };
+  if (apiError) {
+    content += `I apologize, but I'm having trouble connecting to my knowledge base right now. `;
+    content += `Let me give you what I can from my California divorce expertise:\n\n`;
+  } else {
+    content += `I hear you - divorce can be really overwhelming. Let me help you with that.\n\n`;
+  }
+  
+  // Provide specific guidance based on topic
+  if (topic === 'custody' || userMessage.toLowerCase().includes('custody')) {
+    content += `**About Child Custody in California:**\n\n`;
+    content += `California courts focus on the "best interests of the child" (Family Code § 3011). Here's what matters:\n\n`;
+    content += `• **Legal Custody** - Who makes decisions about school, doctors, religion\n`;
+    content += `• **Physical Custody** - Where the child actually lives\n`;
+    content += `• Courts prefer frequent contact with BOTH parents\n`;
+    content += `• Your relationship with your child, stability, and ability to co-parent are key\n\n`;
+    content += `What specifically would you like to know about custody? I'm here to help!\n`;
+  } else if (topic === 'starting' || userMessage.toLowerCase().includes('file')) {
+    content += `**Starting a Divorce in California:**\n\n`;
+    content += `Here's what you need to know:\n\n`;
+    content += `• **Residency**: You or your spouse must have lived in CA for 6 months and in your county for 3 months (§ 2320)\n`;
+    content += `• **Grounds**: California is a "no-fault" state - you just need "irreconcilable differences" (§ 2310)\n`;
+    content += `• **Forms**: You'll need Form FL-100 (Petition) and FL-110 (Summons)\n`;
+    content += `• **Waiting Period**: Minimum 6 months from when your spouse is served\n\n`;
+    content += `Want me to walk you through the filing process step by step?\n`;
+  } else {
+    content += `**Here's what I can tell you about California divorce:**\n\n`;
+    content += `• It's a no-fault state - no need to prove anyone did anything wrong\n`;
+    content += `• Community property (earned during marriage) is split 50/50\n`;
+    content += `• Child custody is based on what's best for the child\n`;
+    content += `• There's a 6-month waiting period\n\n`;
+    content += `What would you like to dive deeper into? I'm all ears! 👂\n`;
+  }
+  
+  content += `\n**Important:** I'm an AI assistant, not a lawyer. For advice about your specific situation, please consult with a California family law attorney.\n\n`;
+  content += `What else is on your mind?`;
+  
+  return { 
+    content, 
+    topic,
+    error: apiError
+  };
 }
 
-export function generateWelcomeMessage(): string {
-  return getGreeting();
+export function generateWelcomeMessage(userName?: string): string {
+  const nameGreeting = userName && userName !== 'Guest' ? ` ${userName}` : '';
+  
+  const greetings = [
+    `Hey${nameGreeting}! 👋 I'm Alex, your California divorce law specialist. I know this stuff can feel overwhelming, but I'm here to help you figure it out. What's on your mind?`,
+    `Hi${nameGreeting}! I'm Alex. I've helped a lot of people navigate California divorces, and I'm here for you too. What can I help with today?`,
+    `Hello${nameGreeting}! I'm Alex - I specialize in California divorce law. I get that this is a tough time, so let's talk through whatever you're dealing with. What's going on?`,
+  ];
+  
+  return greetings[Math.floor(Math.random() * greetings.length)];
 }
