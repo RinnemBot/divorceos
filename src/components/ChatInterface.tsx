@@ -62,10 +62,11 @@ export function ChatInterface({ currentUser }: ChatInterfaceProps) {
   }, [messages]);
 
   const startNewChat = () => {
+    const userName = currentUser?.name || currentUser?.email?.split('@')[0] || 'Guest';
     const welcomeMessage: ChatMessage = {
       id: uuidv4(),
       role: 'assistant',
-      content: generateWelcomeMessage(),
+      content: generateWelcomeMessage(userName),
       timestamp: new Date().toISOString(),
     };
     
@@ -160,8 +161,9 @@ export function ChatInterface({ currentUser }: ChatInterfaceProps) {
         content: m.content,
       }));
       
-      // Generate AI response
-      const aiResponse = await generateAIResponse(userMessage.content, conversationHistory);
+      // Generate AI response with user's name for personalization
+      const userName = currentUser?.name || currentUser?.email?.split('@')[0] || 'Guest';
+      const aiResponse = await generateAIResponse(userMessage.content, conversationHistory, userName);
       
       const assistantMessage: ChatMessage = {
         id: uuidv4(),
