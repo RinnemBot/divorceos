@@ -1,4 +1,4 @@
-const TAVILY_API_KEY = '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';
+const TAVILY_API_KEY = import.meta.env.VITE_TAVILY_API_KEY || '';
 const TAVILY_API_URL = 'https://api.tavily.com/search';
 
 export interface TavilySearchResult {

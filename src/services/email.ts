@@ -106,7 +106,7 @@ export async function sendConfirmationEmail(
       <div class="info-box">
         <strong>What's included with your free account:</strong>
         <ul style="margin: 10px 0; padding-left: 20px;">
-          <li>3 AI chats per day with Alex, your divorce specialist</li>
+          <li>3 AI chats per day with Maria, your divorce specialist</li>
           <li>Access to 50+ California court forms</li>
           <li>California Family Code information</li>
           <li>Private, secure conversation history</li>

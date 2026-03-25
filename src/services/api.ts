@@ -1,16 +1,5 @@
-import { 
-  getEmpathyOpener, 
-  getTransition, 
-  getCloser,
-  FATHER_CUSTODY_GUIDANCE,
-  TOPIC_GUIDANCE,
-  getRelevantCaseLaw 
-} from './personality';
-
-// Kimi (Moonshot AI) API Configuration
-// Get your API key from: https://platform.moonshot.cn/
-const KIMI_API_KEY = import.meta.env.VITE_KIMI_API_KEY || 'sk-your-api-key-here';
-const KIMI_API_URL = 'https://api.moonshot.cn/v1/chat/completions';
+// API Configuration - calls local server-side route (API key is hidden)
+const API_URL = '/api/chat';
 
 export interface AIResponse {
   content: string;
@@ -90,6 +79,10 @@ function detectTopic(message: string): string {
   return 'general';
 }
 
+// NOTE: These template functions are kept for reference but now we use Kimi AI for all responses
+// for more natural, personable conversations.
+
+/*
 // Check if question is about father/dad custody specifically
 function isFatherCustodyQuestion(message: string): boolean {
   const lower = message.toLowerCase();
@@ -104,8 +97,9 @@ function isFatherCustodyQuestion(message: string): boolean {
           lower.includes('my kids') ||
           lower.includes('my child'));
 }
+*/
 
-// Generate a personable, helpful response
+// Generate a personable, helpful response using Kimi K2.5 AI
 export async function generateAIResponse(
   userMessage: string,
   conversationHistory: { role: string; content: string }[] = [],
@@ -113,36 +107,12 @@ export async function generateAIResponse(
 ): Promise<AIResponse> {
   const topic = detectTopic(userMessage);
   
-  // Special handling for father custody questions
-  if (isFatherCustodyQuestion(userMessage)) {
-    return generateFatherCustodyResponse();
-  }
-  
-  // Use detailed guidance for known topics
-  if (topic === 'custody') {
-    return generateCustodyResponse();
-  }
-  
-  if (topic === 'spousalSupport' && TOPIC_GUIDANCE.spousalSupport) {
-    return generateGuidanceResponse('spousalSupport');
-  }
-  
-  if (topic === 'childSupport' && TOPIC_GUIDANCE.childSupport) {
-    return generateGuidanceResponse('childSupport');
-  }
-  
-  if (topic === 'property' && TOPIC_GUIDANCE.propertyDivision) {
-    return generateGuidanceResponse('propertyDivision');
-  }
-  
-  if (topic === 'domesticViolence' && TOPIC_GUIDANCE.domesticViolence) {
-    return generateDomesticViolenceResponse();
-  }
-  
-  // For other topics, use the AI API with enhanced personality
+  // Always use AI for natural, personable responses
+  // Pass topic info so AI can include relevant legal knowledge
   return generateAIWithPersonality(userMessage, conversationHistory, topic, userName);
 }
 
+/*
 function generateFatherCustodyResponse(): AIResponse {
   const empathy = getEmpathyOpener();
   const closer = getCloser();
@@ -302,6 +272,7 @@ function generateDomesticViolenceResponse(): AIResponse {
     topic: 'domesticViolence'
   };
 }
+*/
 
 async function generateAIWithPersonality(
   userMessage: string,
@@ -309,64 +280,156 @@ async function generateAIWithPersonality(
   topic: string,
   userName?: string
 ): Promise<AIResponse> {
-  
-  // Check if API key is configured
-  if (KIMI_API_KEY === 'sk-your-api-key-here' || !KIMI_API_KEY) {
-    console.warn('Kimi API key not configured. Using fallback response.');
-    return generateFallbackResponse(userMessage, topic, userName, true);
+
+  const nameGreeting = userName && userName !== 'Guest' ? `The user's name is ${userName}. Use their name naturally at least once in your response.` : '';
+
+  // Build topic-specific legal knowledge
+  let topicKnowledge = '';
+  if (topic === 'custody') {
+    topicKnowledge = `
+TOPIC: CHILD CUSTODY - Key Legal Points to Include:
+- Best interests of the child is the ONLY standard (Family Code § 3011)
+- NO gender preference - dads and moms have equal rights (§ 3020(b))
+- Courts prefer frequent and continuing contact with BOTH parents
+- At 17, the child's wishes carry significant weight (usually 14+ is considered)
+- Legal custody = decision making (school, medical, religion)
+- Physical custody = where child lives
+- Document everything, stay involved in child's life, don't badmouth other parent
+- History of domestic violence creates presumption against custody (§ 3044)`;
+  } else if (topic === 'childSupport') {
+    topicKnowledge = `
+TOPIC: CHILD SUPPORT - Key Legal Points to Include:
+- Guideline formula based on § 4055 (both parents' income + timeshare)
+- Continues until age 18 (or 19 if still in high school)
+- Add-ons: uninsured medical, childcare, extracurriculars (split 50/50)
+- Can be modified if circumstances change significantly`;
+  } else if (topic === 'spousalSupport') {
+    topicKnowledge = `
+TOPIC: SPOUSAL SUPPORT (ALIMONY) - Key Legal Points to Include:
+- Based on Family Code § 4320 factors
+- Short marriage (<10 yrs): usually half the marriage length
+- Long marriage (10+ yrs): can be indefinite
+- NOT tax deductible (changed in 2019)`;
+  } else if (topic === 'property') {
+    topicKnowledge = `
+TOPIC: PROPERTY DIVISION - Key Legal Points to Include:
+- Community property = 50/50 split (§ 760)
+- Separate property = kept by owner (premarital, gifts, inheritance)
+- Date of separation matters for classification
+- Retirement accounts use time-rule formula`;
+  } else if (topic === 'domesticViolence') {
+    topicKnowledge = `
+TOPIC: DOMESTIC VIOLENCE - Key Legal Points to Include:
+- Includes physical, emotional, threats, harassment, coercive control
+- Emergency Protective Order (EPO) - police can get immediately, lasts 5-7 days
+- Temporary Restraining Order (TRO) - file at court, lasts until hearing
+- Permanent restraining order - up to 5 years after hearing
+- Can include stay-away orders, move-out orders, custody orders`;
+  } else if (topic === 'starting') {
+    topicKnowledge = `
+TOPIC: STARTING DIVORCE - Key Legal Points to Include:
+- Residency: 6 months in CA, 3 months in county (§ 2320)
+- No-fault state - only "irreconcilable differences" needed
+- Waiting period: minimum 6 months from service
+- Need Form FL-100 (Petition) and FL-110 (Summons)`;
   }
-  
-  const nameGreeting = userName && userName !== 'Guest' ? `The user's name is ${userName}. Use their name occasionally to be personable.` : '';
-  
-  const systemPrompt = `You are Alex, a knowledgeable, empathetic, and SOCIAL California divorce law specialist. You talk like a real person - warm, friendly, and conversational.
+
+  const systemPrompt = `You are Maria, a knowledgeable, empathetic, and SOCIAL California divorce law specialist. You talk like a real person - warm, friendly, and conversational. Think of yourself as a really smart friend who happens to know divorce law inside and out.
 
 ${nameGreeting}
+${topicKnowledge}
 
-HOW TO RESPOND (BE SOCIAL!):
-1. ALWAYS acknowledge the person by name if you know it
-2. Start with warmth - "Hey there!", "Hi!", "Hello!" 
-3. Show genuine empathy for their situation
-4. Be conversational - use contractions, casual language, like texting a friend
-5. Ask follow-up questions to keep the conversation going
-6. Use their name naturally in responses
-7. Be encouraging and supportive
+HOW TO RESPOND (BE SOCIAL AND PERSONABLE!):
+1. ALWAYS acknowledge the person by name if you know it - sprinkle it naturally in your response
+2. Start with genuine warmth - "Hey there!", "Hi!", "Hey!" - use emojis occasionally 😊
+3. Show real empathy for their situation - validate their feelings
+4. Be conversational - use contractions, casual language, like texting a friend who needs support
+5. Ask follow-up questions to keep the conversation going and show you care
+6. Use their name naturally in responses - "That's a great question, Sarah!" or "I hear you, Mike"
+7. Be encouraging and supportive but also real - don't just say "everything will be fine"
 8. Give specific, actionable advice based on California Family Code
-9. Cite the actual law sections (§ 2320, § 760, etc.)
-10. End by inviting them to ask more
+9. Cite the actual law sections (§ 2320, § 760, etc.) but explain them simply
+10. End by inviting them to ask more - make them feel welcome to keep talking
 
-YOUR PERSONALITY:
+YOUR PERSONALITY TRAITS:
 - Warm and friendly (like a supportive friend who's a lawyer)
-- Use phrases like "Hey!", "I hear you", "That sounds tough"
-- Don't be stiff or robotic
-- Show personality - be someone they'd want to talk to
-- Remember details they share and reference them
+- Use casual phrases like "Hey!", "I hear you", "That sounds tough", "Ugh, that's frustrating"
+- Never stiff or robotic - you're a real person
+- Show personality - be someone they'd want to grab coffee with
+- Remember details they share and reference them later
+- Use humor occasionally (where appropriate) to lighten the mood
+- Be patient - explain things as many times as needed
+
+CONVERSATION STYLE:
+- Mix short sentences with longer explanations
+- Use "you" and "your" a lot - make it personal
+- When explaining complex legal stuff, use analogies or examples
+- Acknowledge the emotional side, not just the legal side
+- If they're venting, let them vent before jumping to solutions
 
 IMPORTANT RULES:
-- ALWAYS use their name if provided
-- NEVER just say "go to a website" - give them the actual information
-- Be specific about what they need to do
+- ALWAYS use their name if provided - at least once in every response
+- NEVER just say "go to a website" - give them the actual information they need
+- Be specific about what they need to do - step by step
 - Mix legal knowledge with practical advice
-- If you don't know something, be honest about it
-- Always remind them to consult an attorney for their specific situation
+- If you don't know something, be honest: "I'm not sure about that specific situation - you'd want to ask a lawyer"
+- Always remind them to consult an attorney for their specific situation (but don't be pushy about it)
+- Never judge - divorce is messy and everyone's situation is different
 
-CALIFORNIA FAMILY CODE KNOWLEDGE:
-- Residency: 6 months in CA, 3 months in county (§ 2320)
-- Grounds: Only "irreconcilable differences" needed - no-fault state (§ 2310)
-- Property: Community property divided 50/50 (§ 760)
-- Spousal Support: Based on § 4320 factors
-- Child Support: Guideline formula (§ 4055)
-- Custody: Best interests of child (§ 3020, § 3011)
-- Domestic Violence: DV Prevention Act (§ 6200+)`;
+UPDATED CALIFORNIA FAMILY CODE KNOWLEDGE (2024-2025):
+
+RESIDENCY & FILING:
+- Residency: 6 months in CA, 3 months in county (§ 2320) - NO EXCEPTIONS
+- Grounds: Only "irreconcilable differences" needed - pure no-fault state (§ 2310)
+- Waiting period: Minimum 6 months from service (§ 2339)
+
+PROPERTY DIVISION:
+- Community property divided 50/50 (§ 760) - this is the default
+- Date of separation: Living apart + intent to end marriage (In re Marriage of Davis 2015)
+- Mixed/community property tracing can be complex - good records matter
+- Retirement accounts: Time-rule formula for dividing pensions/401ks
+
+SPOUSAL SUPPORT (ALIMONY):
+- Based on Family Code § 4320 factors - judge has wide discretion
+- Short-term marriage (under 10 years): Support typically lasts half the marriage length
+- Long-term marriage (10+ years): Support can be indefinite ("permanent") but modifiable
+- 2024-2025: Tax treatment - support is NOT deductible by payer or taxable to recipient (changed in 2019)
+
+CHILD SUPPORT:
+- Guideline formula based on § 4055 - both parents' income and timeshare
+- Add-ons: Uninsured medical, childcare, sometimes extracurriculars - split 50/50
+- Child support continues until child turns 18 (or 19 if still in high school)
+
+CHILD CUSTODY:
+- Best interests of the child is the ONLY standard (§ 3020, § 3011)
+- NO gender preference - dads have equal rights to moms (Family Code § 3020(b))
+- Frequent and continuing contact with BOTH parents is preferred
+- History of domestic violence creates rebuttable presumption against custody (§ 3044)
+
+DOMESTIC VIOLENCE:
+- DV Prevention Act (§ 6200+) - abuse includes physical, emotional, coercive control
+- Restraining orders can include stay-away, move-out, custody orders, financial support
+- Violating an order is a crime - can result in arrest
+
+MEDIATION:
+- Mandatory custody mediation in most CA counties
+- If DV involved, may have separate sessions or skip mediation
+
+PRACTICAL UPDATES:
+- Many CA courts still have backlogs from COVID - expect delays
+- Electronic filing (e-filing) now standard in most counties
+- Self-help centers at courthouses provide free assistance`;
+
 
   try {
-    const response = await fetch(KIMI_API_URL, {
+    console.log('[Maria] Calling API with topic:', topic, 'user:', userName);
+    
+    const response = await fetch(API_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${KIMI_API_KEY}`,
       },
       body: JSON.stringify({
-        model: 'kimi-k2.5',
         messages: [
           { role: 'system', content: systemPrompt },
           ...conversationHistory.slice(-5),
@@ -377,9 +440,11 @@ CALIFORNIA FAMILY CODE KNOWLEDGE:
       }),
     });
 
+    console.log('[Maria] API response status:', response.status);
+
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('Kimi API error:', response.status, errorText);
+      console.error('[Maria] API error:', response.status, errorText);
       throw new Error(`API error: ${response.status}`);
     }
 
@@ -406,7 +471,7 @@ function generateFallbackResponse(
 ): AIResponse {
   const namePrefix = userName && userName !== 'Guest' ? `${userName}, ` : '';
   
-  let content = `Hey ${namePrefix}I'm Alex! 👋\n\n`;
+  let content = `Hey ${namePrefix}I'm Maria! 👋\n\n`;
   
   if (apiError) {
     content += `I apologize, but I'm having trouble connecting to my knowledge base right now. `;
@@ -455,9 +520,9 @@ export function generateWelcomeMessage(userName?: string): string {
   const nameGreeting = userName && userName !== 'Guest' ? ` ${userName}` : '';
   
   const greetings = [
-    `Hey${nameGreeting}! 👋 I'm Alex, your California divorce law specialist. I know this stuff can feel overwhelming, but I'm here to help you figure it out. What's on your mind?`,
-    `Hi${nameGreeting}! I'm Alex. I've helped a lot of people navigate California divorces, and I'm here for you too. What can I help with today?`,
-    `Hello${nameGreeting}! I'm Alex - I specialize in California divorce law. I get that this is a tough time, so let's talk through whatever you're dealing with. What's going on?`,
+    `Hey${nameGreeting}! 👋 I'm Maria, your California divorce law specialist. I know this stuff can feel overwhelming, but I'm here to help you figure it out. What's on your mind?`,
+    `Hi${nameGreeting}! I'm Maria. I've helped a lot of people navigate California divorces, and I'm here for you too. What can I help with today?`,
+    `Hello${nameGreeting}! I'm Maria - I specialize in California divorce law. I get that this is a tough time, so let's talk through whatever you're dealing with. What's going on?`,
   ];
   
   return greetings[Math.floor(Math.random() * greetings.length)];

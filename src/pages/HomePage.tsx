@@ -26,7 +26,7 @@ const features = [
   {
     icon: MessageSquare,
     title: 'AI-Powered Guidance',
-    description: 'Chat with Alex, our empathetic AI divorce specialist available 24/7.',
+    description: 'Chat with Maria, our empathetic AI divorce specialist available 24/7.',
   },
   {
     icon: FileText,
@@ -83,7 +83,7 @@ export function HomePage() {
                 <span className="text-emerald-200">Confidence</span>
               </h1>
               <p className="text-lg md:text-xl text-emerald-100 mb-8 max-w-lg">
-                Chat with Alex, your AI California divorce specialist. Get instant answers, 
+                Chat with Maria, your AI California divorce specialist. Get instant answers, 
                 access court forms, and understand your rights.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
@@ -139,7 +139,7 @@ export function HomePage() {
                         <MessageSquare className="h-4 w-4 text-white" />
                       </div>
                       <div>
-                        <CardTitle className="text-sm font-semibold">Alex</CardTitle>
+                        <CardTitle className="text-sm font-semibold">Maria</CardTitle>
                         <p className="text-xs text-gray-500">AI Divorce Specialist</p>
                       </div>
                     </div>
@@ -147,7 +147,7 @@ export function HomePage() {
                   <CardContent className="p-4 space-y-3">
                     <div className="bg-emerald-50 rounded-lg p-3 text-sm">
                       <p className="text-gray-700">
-                        &quot;Hey there! I&apos;m Alex. I know this divorce stuff can feel overwhelming, 
+                        &quot;Hey there! I&apos;m Maria. I know this divorce stuff can feel overwhelming, 
                         but I&apos;m here to help you figure it out. What&apos;s on your mind?&quot;
                       </p>
                     </div>
@@ -204,7 +204,7 @@ export function HomePage() {
               California Divorce Topics
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Ask Alex about any of these topics and get accurate, empathetic guidance.
+              Ask Maria about any of these topics and get accurate, empathetic guidance.
             </p>
           </div>
           
@@ -251,7 +251,7 @@ export function HomePage() {
                 </CardHeader>
                 <CardContent className="text-sm text-gray-600">
                   <p className="mb-4">
-                    Alex is available anytime to answer your questions about California divorce law.
+                    Maria is available anytime to answer your questions about California divorce law.
                   </p>
                   <ul className="space-y-2">
                     <li className="flex items-center gap-2">
@@ -279,7 +279,7 @@ export function HomePage() {
                 </CardHeader>
                 <CardContent className="text-sm text-gray-600">
                   <p>
-                    While Alex provides helpful information, this is not legal advice. 
+                    While Maria provides helpful information, this is not legal advice. 
                     For complex situations, please consult with a qualified California 
                     family law attorney.
                   </p>
@@ -314,7 +314,7 @@ export function HomePage() {
               Ready to Get Started?
             </h2>
             <p className="text-lg text-emerald-200 mb-8 max-w-2xl mx-auto">
-              Create your free account and start chatting with Alex today. 
+              Create your free account and start chatting with Maria today. 
               No credit card required.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
