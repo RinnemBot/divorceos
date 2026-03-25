@@ -35,6 +35,7 @@ export function ChatInterface({ currentUser }: ChatInterfaceProps) {
   const [showHistory, setShowHistory] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const shouldAutoScrollRef = useRef(false);
 
   // Load chat sessions when user changes
   useEffect(() => {
@@ -56,9 +57,23 @@ export function ChatInterface({ currentUser }: ChatInterfaceProps) {
     }
   }, [currentUser]);
 
-  // Scroll to bottom when messages change
+  const isNearBottom = () => {
+    const container = scrollContainerRef.current;
+    if (!container) return true;
+    const threshold = 120; // px from bottom to still auto-scroll
+    const distanceFromBottom = container.scrollHeight - container.scrollTop - container.clientHeight;
+    return distanceFromBottom <= threshold;
+  };
+
+  // Scroll only when user is already near bottom or we triggered it
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    if (shouldAutoScrollRef.current || isNearBottom()) {
+      messagesEndRef.current?.scrollIntoView({ behavior: shouldAutoScrollRef.current ? 'smooth' : 'auto' });
+      shouldAutoScrollRef.current = false;
+    }
   }, [messages]);
 
   const startNewChat = () => {
@@ -73,6 +88,8 @@ export function ChatInterface({ currentUser }: ChatInterfaceProps) {
     setMessages([welcomeMessage]);
     setCurrentSessionId(null);
     setInput('');
+    shouldAutoScrollRef.current = false;
+    scrollContainerRef.current?.scrollTo({ top: 0 });
   };
 
   const loadSession = (sessionId: string) => {
@@ -80,6 +97,8 @@ export function ChatInterface({ currentUser }: ChatInterfaceProps) {
     if (session) {
       setMessages(session.messages);
       setCurrentSessionId(sessionId);
+      shouldAutoScrollRef.current = false;
+      scrollContainerRef.current?.scrollTo({ top: 0 });
     }
   };
 
@@ -132,6 +151,7 @@ export function ChatInterface({ currentUser }: ChatInterfaceProps) {
           content: `I apologize, but ${canChat.reason}`,
           timestamp: new Date().toISOString(),
         };
+        shouldAutoScrollRef.current = true;
         setMessages(prev => [...prev, errorMessage]);
         return;
       }
@@ -145,6 +165,7 @@ export function ChatInterface({ currentUser }: ChatInterfaceProps) {
     };
     
     const updatedMessages = [...messages, userMessage];
+    shouldAutoScrollRef.current = true;
     setMessages(updatedMessages);
     setInput('');
     setIsLoading(true);
@@ -173,6 +194,7 @@ export function ChatInterface({ currentUser }: ChatInterfaceProps) {
       };
       
       const finalMessages = [...updatedMessages, assistantMessage];
+      shouldAutoScrollRef.current = true;
       setMessages(finalMessages);
       saveCurrentSession(finalMessages);
     } catch (error) {
@@ -183,6 +205,7 @@ export function ChatInterface({ currentUser }: ChatInterfaceProps) {
         content: 'I apologize, but I encountered an error. Please try again in a moment.',
         timestamp: new Date().toISOString(),
       };
+      shouldAutoScrollRef.current = true;
       setMessages([...updatedMessages, errorMessage]);
     } finally {
       setIsLoading(false);
@@ -218,7 +241,7 @@ export function ChatInterface({ currentUser }: ChatInterfaceProps) {
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2 text-lg font-semibold">
             <Bot className="h-5 w-5" />
-            Chat with Alex
+            Chat with Maria
           </CardTitle>
           <div className="flex items-center gap-2">
             {!currentUser && (
@@ -304,7 +327,7 @@ export function ChatInterface({ currentUser }: ChatInterfaceProps) {
           <div className="text-center py-8">
             <Bot className="h-12 w-12 text-emerald-600 mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-gray-700 mb-2">
-              Alex
+              Maria
             </h3>
             <p className="text-gray-500 mb-6">AI Divorce Specialist</p>
             
@@ -380,7 +403,7 @@ export function ChatInterface({ currentUser }: ChatInterfaceProps) {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder="Ask Alex about your divorce questions..."
+            placeholder="Ask Maria about your divorce questions..."
             className="flex-1"
             disabled={isLoading}
           />
@@ -397,7 +420,7 @@ export function ChatInterface({ currentUser }: ChatInterfaceProps) {
           </Button>
         </div>
         <p className="text-xs text-gray-400 mt-2 text-center">
-          Alex is an AI assistant. Not legal advice. Consult an attorney for your specific situation.
+          Maria is an AI assistant. Not legal advice. Consult an attorney for your specific situation.
         </p>
       </div>
     </Card>

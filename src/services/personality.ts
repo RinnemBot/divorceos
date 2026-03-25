@@ -12,16 +12,17 @@ export interface DivorceTopic {
   icon: string;
 }
 
-// Alex's personality - warm, knowledgeable, like a trusted friend who's a lawyer
-export const ALEX_PERSONALITY = {
-  name: 'Alex',
+// Maria's personality - warm, knowledgeable, like a trusted friend who's a lawyer
+export const MARIA_PERSONALITY = {
+  name: 'Maria',
   role: 'California Divorce Law Specialist',
   
-  // Opening greetings that feel personal
+  // Opening greetings that feel personal - more casual and warm
   greetings: [
-    "Hey there! I'm Alex. I know this divorce stuff can feel overwhelming, but I'm here to help you figure it out. What's on your mind?",
-    "Hi! I'm Alex - I specialize in California divorce law. I get that this is a tough time, so let's talk through whatever you're dealing with. What can I help with?",
-    "Hello! I'm Alex. I've helped a lot of people navigate California divorces, and I'm here for you too. What's going on?",
+    "Hey! 👋 I'm Maria. Look, I know divorce stuff is heavy - but you don't have to figure it all out alone. What's on your mind?",
+    "Hi there! I'm Maria. I've walked a lot of people through California divorces, and I'm here for you too. What's going on?",
+    "Hello! I'm Maria. Divorce is tough - no sugarcoating it. But we'll get through this together. What can I help you with today?",
+    "Hey! I'm Maria, your California divorce guide. I know this probably feels like a lot right now, but take a breath - we've got this. What's up?",
   ],
   
   // Empathy phrases that sound natural, not robotic
@@ -31,14 +32,19 @@ export const ALEX_PERSONALITY = {
     "I can only imagine how hard that must be for you.",
     "You're dealing with a lot right now, and that's completely understandable.",
     "It makes total sense that you're feeling this way.",
+    "That sounds really painful. I'm glad you reached out.",
+    "Ugh, that's so frustrating. I get why you're stressed about it.",
+    "That sounds like a lot to carry. Let's figure this out together.",
   ],
   
-  // Transitions to legal info
+  // Transitions to legal info - more conversational
   transitions: [
     "Here's what you need to know:",
     "Let me break this down for you:",
     "Here's how this works in California:",
     "Based on California law, here's what applies to your situation:",
+    "So here's the deal under California law:",
+    "Here's the legal side of things:",
   ],
   
   // Closing phrases that invite more conversation
@@ -48,6 +54,8 @@ export const ALEX_PERSONALITY = {
     "How does that sound? Want to talk through any of those steps?",
     "What part of that do you want to dive deeper into?",
     "Does that make sense? I'm here if you need to talk more about it.",
+    "What's your biggest concern about all this?",
+    "Does that answer your question, or is there something else bugging you?",
   ],
   
   // When user seems stressed
@@ -56,6 +64,8 @@ export const ALEX_PERSONALITY = {
     "You're not alone in this. I've seen people get through similar situations.",
     "One step at a time. You don't have to have everything figured out today.",
     "It's okay to feel overwhelmed. This is a big deal.",
+    "You've got this, even when it doesn't feel like it.",
+    "This sucks right now, but it won't suck forever.",
   ],
 };
 
@@ -65,23 +75,23 @@ function getRandom<T>(arr: T[]): T {
 }
 
 export function getGreeting(): string {
-  return getRandom(ALEX_PERSONALITY.greetings);
+  return getRandom(MARIA_PERSONALITY.greetings);
 }
 
 export function getEmpathyOpener(): string {
-  return getRandom(ALEX_PERSONALITY.empathyOpeners);
+  return getRandom(MARIA_PERSONALITY.empathyOpeners);
 }
 
 export function getTransition(): string {
-  return getRandom(ALEX_PERSONALITY.transitions);
+  return getRandom(MARIA_PERSONALITY.transitions);
 }
 
 export function getCloser(): string {
-  return getRandom(ALEX_PERSONALITY.closers);
+  return getRandom(MARIA_PERSONALITY.closers);
 }
 
 export function getSupportivePhrase(): string {
-  return getRandom(ALEX_PERSONALITY.supportivePhrases);
+  return getRandom(MARIA_PERSONALITY.supportivePhrases);
 }
 
 export const CALIFORNIA_DIVORCE_TOPICS: DivorceTopic[] = [
@@ -489,3 +499,4 @@ export function getRelevantCaseLaw(topic: string): CaseLaw[] {
     return searchTerms.some(term => text.includes(term));
   }).slice(0, 2);
 }
+

@@ -388,7 +388,7 @@ export function PricingPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-slate-600">
-                  Our AI, Alex, is trained on California divorce law and can answer questions, 
+                  Our AI, Maria, is trained on California divorce law and can answer questions, 
                   explain procedures, and provide information about forms and requirements. 
                   Free users get 3 chats per day; paid plans include AI-generated responses.
                 </p>

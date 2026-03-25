@@ -178,7 +178,7 @@ export function ProfilePage() {
               Case Information (Optional)
             </CardTitle>
             <CardDescription>
-              This information helps Alex provide more personalized guidance. 
+              This information helps Maria provide more personalized guidance. 
               All fields are optional.
             </CardDescription>
           </CardHeader>
@@ -233,7 +233,7 @@ export function ProfilePage() {
                   ))}
                 </select>
                 <p className="text-xs text-slate-500">
-                  This helps Alex provide county-specific information.
+                  This helps Maria provide county-specific information.
                 </p>
               </div>
 
