@@ -59,6 +59,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       if (!response.ok) {
         const errorText = await response.text();
         console.error('OpenAI API error:', response.status, errorText);
+        if (KIMI_API_KEY) {
+          console.warn('Falling back to Kimi provider due to OpenAI failure.');
+          return proxyKimi(messages, temperature, max_tokens, res);
+        }
         return res.status(response.status).json({ error: 'API error', details: errorText });
       }
 
@@ -66,28 +70,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(200).json({ ...data, provider: 'openai' });
     }
 
-    const response = await fetch(KIMI_API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${KIMI_API_KEY}`,
-      },
-      body: JSON.stringify({
-        model: KIMI_MODEL,
-        messages,
-        temperature,
-        max_tokens,
-      }),
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Kimi API error:', response.status, errorText);
-      return res.status(response.status).json({ error: 'API error', details: errorText });
-    }
-
-    const data = await response.json();
-    return res.status(200).json({ ...data, provider: 'kimi' });
+    return proxyKimi(messages, temperature, max_tokens, res);
   } catch (error) {
     console.error('API route error:', error);
     return res.status(500).json({
@@ -95,4 +78,41 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       message: error instanceof Error ? error.message : 'Unknown error',
     });
   }
+}
+
+async function proxyKimi(
+  messages: { role: string; content: string }[],
+  temperature: number,
+  max_tokens: number,
+  res: VercelResponse
+) {
+  if (!KIMI_API_KEY) {
+    return res.status(500).json({
+      error: 'Kimi API key missing',
+      message: 'Set MOONSHOT_API_KEY to allow Kimi fallback.',
+    });
+  }
+
+  const response = await fetch(KIMI_API_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${KIMI_API_KEY}`,
+    },
+    body: JSON.stringify({
+      model: KIMI_MODEL,
+      messages,
+      temperature,
+      max_tokens,
+    }),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error('Kimi API error:', response.status, errorText);
+    return res.status(response.status).json({ error: 'API error', details: errorText });
+  }
+
+  const data = await response.json();
+  return res.status(200).json({ ...data, provider: 'kimi' });
 }
