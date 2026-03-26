@@ -52,7 +52,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           model: OPENAI_MODEL,
           messages,
           temperature,
-          max_tokens,
+          max_completion_tokens: max_tokens,
         }),
       });
 
