@@ -1,21 +1,36 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-// Server-side API route - API key is hidden from client
-const KIMI_API_KEY = process.env.MOONSHOT_API_KEY || process.env.KIMI_API_KEY;
-const KIMI_API_URL = 'https://api.moonshot.cn/v1/chat/completions';
+// Prefer OpenAI GPT-5.1 when available; fall back to Kimi (Moonshot) otherwise.
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+const OPENAI_MODEL = process.env.OPENAI_MODEL || 'gpt-5.1';
+const OPENAI_API_URL = process.env.OPENAI_API_URL || 'https://api.openai.com/v1/chat/completions';
+
+const KIMI_API_KEY = process.env.MOONSHOT_API_KEY || process.env.KIMI_API_KEY || process.env.VITE_KIMI_API_KEY;
+const KIMI_MODEL = process.env.KIMI_MODEL || 'kimi-k2.5';
+const KIMI_API_URL = process.env.KIMI_API_URL || 'https://api.moonshot.cn/v1/chat/completions';
+
+const DEFAULT_PROVIDER = process.env.AI_PROVIDER || (OPENAI_API_KEY ? 'openai' : 'kimi');
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  // Only allow POST requests
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  // Check API key is configured
-  if (!KIMI_API_KEY || KIMI_API_KEY === 'sk-your-api-key-here') {
-    console.error('MOONSHOT_API_KEY not configured');
-    return res.status(500).json({ 
-      error: 'API key not configured',
-      message: 'Please set MOONSHOT_API_KEY environment variable' 
+  const provider = (req.query.provider as string) || DEFAULT_PROVIDER;
+
+  if (provider === 'openai') {
+    if (!OPENAI_API_KEY) {
+      console.error('OPENAI_API_KEY missing');
+      return res.status(500).json({
+        error: 'OPENAI_API_KEY not configured',
+        message: 'Set OPENAI_API_KEY (and optionally OPENAI_MODEL) in your environment.',
+      });
+    }
+  } else if (!KIMI_API_KEY) {
+    console.error('KIMI/MOONSHOT API key missing');
+    return res.status(500).json({
+      error: 'AI provider not configured',
+      message: 'Set OPENAI_API_KEY for OpenAI GPT-5.1 or MOONSHOT_API_KEY for Kimi.',
     });
   }
 
@@ -26,14 +41,39 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(400).json({ error: 'Messages array required' });
     }
 
+    if (provider === 'openai') {
+      const response = await fetch(OPENAI_API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${OPENAI_API_KEY}`,
+        },
+        body: JSON.stringify({
+          model: OPENAI_MODEL,
+          messages,
+          temperature,
+          max_tokens,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('OpenAI API error:', response.status, errorText);
+        return res.status(response.status).json({ error: 'API error', details: errorText });
+      }
+
+      const data = await response.json();
+      return res.status(200).json({ ...data, provider: 'openai' });
+    }
+
     const response = await fetch(KIMI_API_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${KIMI_API_KEY}`,
+        Authorization: `Bearer ${KIMI_API_KEY}`,
       },
       body: JSON.stringify({
-        model: 'kimi-k2.5',
+        model: KIMI_MODEL,
         messages,
         temperature,
         max_tokens,
@@ -42,21 +82,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('Moonshot API error:', response.status, errorText);
-      return res.status(response.status).json({ 
-        error: 'API error',
-        details: errorText 
-      });
+      console.error('Kimi API error:', response.status, errorText);
+      return res.status(response.status).json({ error: 'API error', details: errorText });
     }
 
     const data = await response.json();
-    return res.status(200).json(data);
-
+    return res.status(200).json({ ...data, provider: 'kimi' });
   } catch (error) {
     console.error('API route error:', error);
-    return res.status(500).json({ 
+    return res.status(500).json({
       error: 'Internal server error',
-      message: error instanceof Error ? error.message : 'Unknown error'
+      message: error instanceof Error ? error.message : 'Unknown error',
     });
   }
 }
