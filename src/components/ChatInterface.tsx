@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import type { JSX } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
@@ -21,6 +22,52 @@ import { authService, type User, type ChatSession, type ChatMessage } from '@/se
 import { CALIFORNIA_DIVORCE_TOPICS } from '@/services/personality';
 import { v4 as uuidv4 } from 'uuid';
 import { SUBSCRIPTION_LIMITS } from '@/services/auth';
+
+const URL_REGEX = /(https?:\/\/[^\s]+)/g;
+
+function renderMessageContent(content: string): string | (string | JSX.Element)[] {
+  const matches = [...content.matchAll(URL_REGEX)];
+  if (matches.length === 0) {
+    return content;
+  }
+
+  const segments: (string | JSX.Element)[] = [];
+  let lastIndex = 0;
+
+  matches.forEach((match, idx) => {
+    const url = match[0];
+    const index = match.index ?? 0;
+    if (index > lastIndex) {
+      segments.push(content.slice(lastIndex, index));
+    }
+    let hostname = '';
+    try {
+      hostname = new URL(url).hostname;
+    } catch {
+      hostname = '';
+    }
+    const favicon = hostname ? `https://www.google.com/s2/favicons?domain=${hostname}` : '';
+    segments.push(
+      <a
+        key={`link-${index}-${idx}`}
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center gap-2 px-2 py-1 bg-emerald-50 text-emerald-700 font-medium rounded-full break-all hover:bg-emerald-100 transition-colors"
+      >
+        {favicon ? <img src={favicon} alt="" className="h-4 w-4 rounded-sm" /> : null}
+        <span>{url}</span>
+      </a>
+    );
+    lastIndex = index + url.length;
+  });
+
+  if (lastIndex < content.length) {
+    segments.push(content.slice(lastIndex));
+  }
+
+  return segments;
+}
 
 interface ChatInterfaceProps {
   currentUser: User | null;
@@ -184,7 +231,8 @@ export function ChatInterface({ currentUser }: ChatInterfaceProps) {
       
       // Generate AI response with user's name for personalization
       const userName = currentUser?.name || currentUser?.email?.split('@')[0] || 'Guest';
-      const aiResponse = await generateAIResponse(userMessage.content, conversationHistory, userName);
+      const plan = currentUser?.subscription ?? 'free';
+      const aiResponse = await generateAIResponse(userMessage.content, conversationHistory, userName, plan);
       
       const assistantMessage: ChatMessage = {
         id: uuidv4(),
@@ -362,7 +410,9 @@ export function ChatInterface({ currentUser }: ChatInterfaceProps) {
                     : 'bg-white border border-gray-200 text-gray-800'
                 }`}
               >
-                <div className="text-sm whitespace-pre-wrap">{message.content}</div>
+                <div className="text-sm whitespace-pre-wrap">
+                  {renderMessageContent(message.content)}
+                </div>
                 <div className={`text-xs mt-1 ${message.role === 'user' ? 'text-emerald-200' : 'text-gray-400'}`}>
                   {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </div>

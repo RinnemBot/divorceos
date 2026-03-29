@@ -21,12 +21,14 @@ import { AuthModal } from '@/components/AuthModal';
 import { authService, type User } from '@/services/auth';
 import { CALIFORNIA_DIVORCE_TOPICS } from '@/services/personality';
 import { Link } from 'react-router-dom';
+import { CountyRoadmap } from '@/components/CountyRoadmap';
+import { ChildSupportEstimator } from '@/components/ChildSupportEstimator';
 
 const features = [
   {
     icon: MessageSquare,
     title: 'AI-Powered Guidance',
-    description: 'Chat with Maria, our empathetic AI divorce specialist available 24/7.',
+    description: 'Chat with Maria, our supportive AI divorce specialist available 24/7.',
   },
   {
     icon: FileText,
@@ -204,7 +206,7 @@ export function HomePage() {
               California Divorce Topics
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Ask Maria about any of these topics and get accurate, empathetic guidance.
+              Ask Maria about any of these topics and get accurate, caring guidance.
             </p>
           </div>
           
@@ -236,9 +238,22 @@ export function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2">
-              <ChatInterface 
-                currentUser={currentUser}
-              />
+              {currentUser ? (
+                <ChatInterface currentUser={currentUser} />
+              ) : (
+                <div className="bg-white border border-slate-200 rounded-xl p-8 text-center">
+                  <h3 className="text-xl font-semibold text-slate-900 mb-3">Sign in to chat with Maria</h3>
+                  <p className="text-sm text-slate-600 mb-5">
+                    Create a free account or sign in to start a conversation. Guests can browse the site, but Maria is exclusive to members now.
+                  </p>
+                  <Button
+                    onClick={() => setShowAuthModal(true)}
+                    className="bg-emerald-700 hover:bg-emerald-800"
+                  >
+                    Sign In to Continue
+                  </Button>
+                </div>
+              )}
             </div>
             
             <div className="space-y-6">
@@ -303,6 +318,20 @@ export function HomePage() {
               </Card>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* County Roadmap Section */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <CountyRoadmap />
+        </div>
+      </section>
+
+      {/* Child Support Estimator */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <ChildSupportEstimator />
         </div>
       </section>
 

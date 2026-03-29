@@ -5,11 +5,13 @@ import { Badge } from '@/components/ui/badge';
 import { Check, X, Sparkles, Zap, Crown, Building2, Loader2 } from 'lucide-react';
 import { AuthModal } from '@/components/AuthModal';
 import { authService, type User, SUBSCRIPTION_LIMITS } from '@/services/auth';
+import { redirectToCheckout } from '@/services/stripe';
+import { toast } from 'sonner';
 
 interface PricingTier {
   name: string;
-  price: string;
-  period: string;
+  monthlyPrice: number;
+  annualPrice: number;
   description: string;
   features: string[];
   notIncluded?: string[];
@@ -22,8 +24,8 @@ interface PricingTier {
 const pricingTiers: PricingTier[] = [
   {
     name: 'Free',
-    price: '$0',
-    period: '',
+    monthlyPrice: 0,
+    annualPrice: 0,
     description: 'Get started with basic divorce information',
     features: [
       '3 AI chats per day',
@@ -42,8 +44,8 @@ const pricingTiers: PricingTier[] = [
   },
   {
     name: 'Basic',
-    price: '$10',
-    period: '/month',
+    monthlyPrice: 20,
+    annualPrice: 200,
     description: 'AI guidance for your divorce journey',
     features: [
       '20 AI chats per day',
@@ -59,8 +61,8 @@ const pricingTiers: PricingTier[] = [
   },
   {
     name: 'Essential',
-    price: '$49',
-    period: '/month',
+    monthlyPrice: 49,
+    annualPrice: 490,
     description: 'Comprehensive support for your divorce',
     features: [
       'Unlimited AI chats',
@@ -77,8 +79,8 @@ const pricingTiers: PricingTier[] = [
   },
   {
     name: 'Plus',
-    price: '$99',
-    period: '/month',
+    monthlyPrice: 99,
+    annualPrice: 990,
     description: 'Advanced features for complex cases',
     features: [
       'Unlimited AI chats',
@@ -97,8 +99,8 @@ const pricingTiers: PricingTier[] = [
   },
   {
     name: 'Done-For-You',
-    price: '$299',
-    period: '/month',
+    monthlyPrice: 299,
+    annualPrice: 2990,
     description: 'Maximum support throughout your divorce',
     features: [
       'Unlimited AI chats',
@@ -127,38 +129,52 @@ const tierIcons: Record<string, React.ElementType> = {
   'Done-For-You': Building2,
 };
 
+const paidPlanIds: PricingTier['planId'][] = ['basic', 'essential', 'plus', 'done-for-you'];
+
+const formatCurrency = (value: number) => {
+  return `$${value.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
+};
+
 export function PricingPage() {
   const [currentUser, setCurrentUser] = useState<User | null>(authService.getCurrentUser());
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [isProcessing, setIsProcessing] = useState<string | null>(null);
+  const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'annual'>('monthly');
 
   const handleAuthSuccess = (user: User) => {
     setCurrentUser(user);
     setShowAuthModal(false);
   };
 
-  const handleSelectPlan = async (planId: string) => {
+  const handleSelectPlan = async (planId: PricingTier['planId']) => {
     if (!currentUser) {
       setShowAuthModal(true);
       return;
     }
 
     if (planId === 'free') {
-      // Already on free plan
+      if (currentUser.subscription !== 'free') {
+        const updatedUser = { ...currentUser, subscription: 'free' as User['subscription'] };
+        authService.updateUser(updatedUser);
+        setCurrentUser(updatedUser);
+        toast.success('You are back on the Free plan.');
+      }
       return;
     }
 
-    setIsProcessing(planId);
+    if (!paidPlanIds.includes(planId)) {
+      toast.error('This plan is not available yet.');
+      return;
+    }
 
-    // Simulate Stripe checkout
-    setTimeout(() => {
-      // Update user subscription
-      const updatedUser = { ...currentUser, subscription: planId as User['subscription'] };
-      authService.updateUser(updatedUser);
-      setCurrentUser(updatedUser);
+    try {
+      setIsProcessing(planId);
+      await redirectToCheckout(planId, billingPeriod, currentUser.email);
+    } catch (error) {
+      console.error(error);
+      toast.error(error instanceof Error ? error.message : 'Unable to start checkout.');
       setIsProcessing(null);
-      alert(`Thank you for selecting the ${planId} plan! In production, this would redirect to Stripe checkout.`);
-    }, 1500);
+    }
   };
 
   const getCurrentPlan = () => {
@@ -188,12 +204,45 @@ export function PricingPage() {
           )}
         </div>
 
+        <div className="flex justify-center mb-10">
+          <div className="inline-flex rounded-full border border-slate-200 bg-white p-1 text-sm font-medium">
+            <button
+              type="button"
+              onClick={() => setBillingPeriod('monthly')}
+              className={`px-4 py-2 rounded-full transition ${
+                billingPeriod === 'monthly'
+                  ? 'bg-blue-600 text-white shadow'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              Monthly billing
+            </button>
+            <button
+              type="button"
+              onClick={() => setBillingPeriod('annual')}
+              className={`px-4 py-2 rounded-full transition ${
+                billingPeriod === 'annual'
+                  ? 'bg-blue-600 text-white shadow'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              Annual billing
+              <span className="ml-2 rounded-full bg-blue-100 px-2 py-0.5 text-xs text-blue-700">
+                Save 2 months
+              </span>
+            </button>
+          </div>
+        </div>
+
         {/* Pricing Cards */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mb-16">
           {pricingTiers.map((tier) => {
             const Icon = tierIcons[tier.name];
             const isCurrentPlan = getCurrentPlan() === tier.planId;
             const isProcessingPlan = isProcessing === tier.planId;
+            const displayPrice = billingPeriod === 'monthly' ? tier.monthlyPrice : tier.annualPrice;
+            const priceSuffix = tier.planId === 'free' ? '' : billingPeriod === 'monthly' ? '/month' : '/year';
+            const showAnnualRibbon = billingPeriod === 'annual' && tier.planId !== 'free';
 
             return (
               <Card 
@@ -220,9 +269,12 @@ export function PricingPage() {
                   </div>
                   <CardTitle className="text-xl font-bold">{tier.name}</CardTitle>
                   <div className="mt-2">
-                    <span className="text-3xl font-bold">{tier.price}</span>
-                    <span className="text-slate-500">{tier.period}</span>
+                    <span className="text-3xl font-bold">{formatCurrency(displayPrice)}</span>
+                    <span className="text-slate-500">{priceSuffix}</span>
                   </div>
+                  {showAnnualRibbon && (
+                    <p className="text-xs text-blue-600 font-medium mt-1">2 months free when billed annually</p>
+                  )}
                   <p className="text-sm text-slate-500 mt-2">{tier.description}</p>
                 </CardHeader>
                 
@@ -257,7 +309,7 @@ export function PricingPage() {
                   
                   <Button
                     onClick={() => handleSelectPlan(tier.planId)}
-                    disabled={isCurrentPlan || isProcessingPlan !== null}
+                    disabled={isCurrentPlan || isProcessing !== null}
                     variant={tier.buttonVariant}
                     className={`w-full mt-6 ${
                       tier.highlighted 

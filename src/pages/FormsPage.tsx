@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -22,6 +23,8 @@ import {
 } from 'lucide-react';
 import { COURT_FORMS, FORM_CATEGORIES, searchForms, getFormsByCategory } from '@/data/forms';
 import type { CourtForm } from '@/data/forms';
+import { FORM_GUIDANCE } from '@/data/formGuidance';
+import { authService, type User } from '@/services/auth';
 
 const categoryIcons: Record<string, React.ElementType> = {
   petition: FileText,
@@ -34,7 +37,21 @@ const categoryIcons: Record<string, React.ElementType> = {
   judgment: CheckSquare,
 };
 
-function FormCard({ form }: { form: CourtForm }) {
+type SubscriptionPlan = User['subscription'];
+
+function FormCard({ form, currentPlan }: { form: CourtForm; currentPlan: SubscriptionPlan }) {
+  const guidance = FORM_GUIDANCE[form.id];
+  const hasDetailedGuidance = ['essential', 'plus', 'done-for-you'].includes(currentPlan);
+  const hasBasicGuidance = currentPlan === 'basic';
+  const guidanceText = guidance
+    ? hasDetailedGuidance
+      ? guidance.detailed
+      : hasBasicGuidance
+        ? guidance.basic
+        : null
+    : null;
+  const shouldUpsell = guidance && currentPlan === 'free';
+
   return (
     <Card className="hover:shadow-md transition-shadow">
       <CardContent className="p-4">
@@ -77,6 +94,34 @@ function FormCard({ form }: { form: CourtForm }) {
                 </a>
               )}
             </div>
+
+            {guidance && (
+              <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-4">
+                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 mb-2">
+                  Form Guidance
+                </p>
+                {guidanceText ? (
+                  <p className="text-sm text-slate-700 whitespace-pre-line">
+                    {guidanceText}
+                  </p>
+                ) : shouldUpsell ? (
+                  <div className="space-y-3">
+                    <p className="text-sm text-slate-600">
+                      Unlock personalized guidance that walks you through this form step-by-step. Upgrade to Basic for checklist support or Essential+ for in-depth coaching.
+                    </p>
+                    <Link to="/pricing">
+                      <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
+                        See Plans
+                      </Button>
+                    </Link>
+                  </div>
+                ) : (
+                  <p className="text-sm text-slate-600">
+                    Guidance for this plan level is coming soon.
+                  </p>
+                )}
+              </div>
+            )}
           </div>
           <FileText className="h-8 w-8 text-slate-300 flex-shrink-0" />
         </div>
@@ -89,6 +134,7 @@ export function FormsPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchResults, setSearchResults] = useState<CourtForm[]>([]);
+  const currentPlan: SubscriptionPlan = authService.getCurrentUser()?.subscription ?? 'free';
 
   const handleSearch = () => {
     if (searchQuery.trim()) {
@@ -208,7 +254,7 @@ export function FormsPage() {
             ) : (
               <div className="grid md:grid-cols-2 gap-4">
                 {formsToDisplay.map((form) => (
-                  <FormCard key={form.id} form={form} />
+                  <FormCard key={form.id} form={form} currentPlan={currentPlan} />
                 ))}
               </div>
             )}

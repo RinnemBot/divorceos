@@ -1,5 +1,10 @@
+import { FORM_GUIDANCE } from '@/data/formGuidance';
+import { COURT_FORMS } from '@/data/forms';
+
 // API Configuration - calls local server-side route (API key is hidden)
 const API_URL = '/api/chat';
+
+type SubscriptionPlan = 'free' | 'basic' | 'essential' | 'plus' | 'done-for-you';
 
 export interface AIResponse {
   content: string;
@@ -7,6 +12,12 @@ export interface AIResponse {
   topic?: string;
   error?: boolean;
 }
+
+const FORM_PATTERN = /(FL[-\s]?\d{2,3}[A-Z]?|DV[-\s]?\d{3})/gi;
+const FORM_LOOKUP = COURT_FORMS.reduce<Record<string, { title: string; formNumber: string }>>((acc, form) => {
+  acc[form.id] = { title: form.title, formNumber: form.formNumber };
+  return acc;
+}, {});
 
 // Detect what the user is asking about
 function detectTopic(message: string): string {
@@ -79,6 +90,87 @@ function detectTopic(message: string): string {
   return 'general';
 }
 
+function normalizeFormId(raw: string): string | null {
+  let normalized = raw.toLowerCase().replace(/\s+/g, '');
+  normalized = normalized.replace(/[()]/g, '');
+  normalized = normalized.replace(/[–—]/g, '-');
+  if (!normalized.includes('-')) {
+    normalized = normalized.replace(/^(fl|dv)/, '$1-');
+  }
+  normalized = normalized.replace(/[^a-z0-9-]/g, '');
+  if (normalized.startsWith('fl-341')) return 'fl-341';
+  if (normalized.startsWith('fl-342a')) return 'fl-342a';
+  if (normalized.startsWith('fl-342')) return 'fl-342';
+  if (normalized.startsWith('fl-347')) return 'fl-347';
+  return FORM_GUIDANCE[normalized] ? normalized : null;
+}
+
+function collectMentionedForms(texts: string[]): string[] {
+  const ids = new Set<string>();
+  texts.forEach((text) => {
+    if (!text) return;
+    const matches = text.match(FORM_PATTERN);
+    if (!matches) return;
+    matches.forEach((match) => {
+      const normalized = normalizeFormId(match);
+      if (normalized) {
+        ids.add(normalized);
+      }
+    });
+  });
+  return Array.from(ids);
+}
+
+function getPlanContext(plan: SubscriptionPlan): string {
+  switch (plan) {
+    case 'free':
+      return 'USER PLAN: Free tier. Provide high-level overviews and gently invite them to upgrade for step-by-step checklists and premium features.';
+    case 'basic':
+      return 'USER PLAN: Basic tier. You can share the basic checklists we provide, but encourage Essential/Plus/Done-For-You for deep dives or document analysis.';
+    default:
+      return 'USER PLAN: Premium (Essential/Plus/Done-For-You). You may share detailed guidance, proactive tips, and bespoke strategies.';
+  }
+}
+
+function buildFormGuidanceContext(
+  plan: SubscriptionPlan,
+  userMessage: string,
+  conversationHistory: { role: string; content: string }[]
+): string {
+  const texts = [userMessage, ...conversationHistory.filter(m => m.role === 'user').map(m => m.content)];
+  const formIds = collectMentionedForms(texts);
+  if (!formIds.length) {
+    return '';
+  }
+
+  if (plan === 'free') {
+    const labels = formIds.map(id => FORM_LOOKUP[id]?.formNumber || id.toUpperCase()).join(', ');
+    return `The user mentioned these California Judicial Council forms: ${labels}. They are on the Free plan. Give a concise overview and recommend upgrading to Basic for checklists or Essential+ for detailed walkthroughs. Do not reveal the proprietary guidance text.`;
+  }
+
+  const entries = formIds
+    .map((id) => {
+      const meta = FORM_LOOKUP[id];
+      const heading = meta ? `${meta.formNumber} – ${meta.title}` : id.toUpperCase();
+      const guidance = plan === 'basic' ? FORM_GUIDANCE[id]?.basic : FORM_GUIDANCE[id]?.detailed;
+      if (!guidance) return null;
+      return `${heading}:
+${guidance}`;
+    })
+    .filter(Boolean)
+    .join('\n\n');
+
+  if (!entries) {
+    return '';
+  }
+
+  if (plan === 'basic') {
+    return `BASIC PLAN GUIDANCE: Use the following checklists when the user asks about these forms. If they need deeper strategy, let them know Essential or higher unlocks detailed coaching.\n\n${entries}`;
+  }
+
+  return `PREMIUM GUIDANCE: The user can receive the full detailed walkthroughs. Weave the following information into your response naturally.\n\n${entries}`;
+}
+
 // NOTE: These template functions are kept for reference but now we use Kimi AI for all responses
 // for more natural, personable conversations.
 
@@ -103,13 +195,14 @@ function isFatherCustodyQuestion(message: string): boolean {
 export async function generateAIResponse(
   userMessage: string,
   conversationHistory: { role: string; content: string }[] = [],
-  userName?: string
+  userName?: string,
+  plan: SubscriptionPlan = 'free'
 ): Promise<AIResponse> {
   const topic = detectTopic(userMessage);
   
   // Always use AI for natural, personable responses
   // Pass topic info so AI can include relevant legal knowledge
-  return generateAIWithPersonality(userMessage, conversationHistory, topic, userName);
+  return generateAIWithPersonality(userMessage, conversationHistory, topic, userName, plan);
 }
 
 /*
@@ -278,10 +371,13 @@ async function generateAIWithPersonality(
   userMessage: string,
   conversationHistory: { role: string; content: string }[],
   topic: string,
-  userName?: string
+  userName?: string,
+  plan: SubscriptionPlan = 'free'
 ): Promise<AIResponse> {
 
   const nameGreeting = userName && userName !== 'Guest' ? `The user's name is ${userName}. Use their name naturally at least once in your response.` : '';
+  const planContext = getPlanContext(plan);
+  const formGuidanceContext = buildFormGuidanceContext(plan, userMessage, conversationHistory);
 
   // Build topic-specific legal knowledge
   let topicKnowledge = '';
@@ -334,10 +430,11 @@ TOPIC: STARTING DIVORCE - Key Legal Points to Include:
 - Need Form FL-100 (Petition) and FL-110 (Summons)`;
   }
 
-  const systemPrompt = `You are Maria, a knowledgeable, empathetic, and SOCIAL California divorce law specialist. You talk like a real person - warm, friendly, and conversational. Think of yourself as a really smart friend who happens to know divorce law inside and out.
+  const systemPrompt = `You are Maria, a knowledgeable, caring, and SOCIAL California divorce law specialist. You talk like a real person - warm, friendly, and conversational. Think of yourself as a really smart friend who happens to know divorce law inside and out.
 
 ${nameGreeting}
-${topicKnowledge}
+${planContext}
+${formGuidanceContext ? `${formGuidanceContext}\n` : ''}${topicKnowledge}
 
 HOW TO RESPOND (BE SOCIAL AND PERSONABLE!):
 1. ALWAYS acknowledge the person by name if you know it - sprinkle it naturally in your response
