@@ -49,3 +49,4 @@ Extend the existing `ChildSupportEstimator` so users can start with gross monthl
 - Advanced mode now ships with a working gross-income calculator that surfaces both the raw inputs and deduction breakdowns per parent.
 - Tax/FICA estimates assume a single filer, the 2024 IRS brackets, standard deduction, and California resident brackets. Each line item can be overridden manually to reflect exact numbers from DCSS or DissoMaster outputs.
 - Net disposable income feeds directly into the existing guideline logic only when the Advanced tab is active so Quick mode remains untouched for manual entry scenarios.
+- Added a companion spousal-support snapshot card (40/50 rule) with ATRO reminder, income sync button, and optional email summary UI for sharing results.
