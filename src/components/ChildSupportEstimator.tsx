@@ -20,6 +20,58 @@ const MULTI_CHILD_FACTORS: Record<number, number> = {
   6: 2.9,
 };
 
+type ParentKey = 'parentA' | 'parentB';
+
+type OverrideField = 'federalOverride' | 'stateOverride' | 'ficaOverride';
+
+type GrossField =
+  | 'wages'
+  | 'overtime'
+  | 'selfEmployment'
+  | 'unemployment'
+  | 'otherIncome'
+  | 'retirement'
+  | 'unionDues'
+  | 'healthPremiums'
+  | 'existingOrders'
+  | 'hardship';
+
+type ParentGrossInputs = {
+  wages: number;
+  overtime: number;
+  selfEmployment: number;
+  unemployment: number;
+  otherIncome: number;
+  retirement: number;
+  unionDues: number;
+  healthPremiums: number;
+  existingOrders: number;
+  hardship: number;
+  federalOverride: number | null;
+  stateOverride: number | null;
+  ficaOverride: number | null;
+};
+
+type AdvancedSummary = {
+  baseIncome: number;
+  additionalIncome: number;
+  totalGross: number;
+  autoFederal: number;
+  autoState: number;
+  autoFica: number;
+  federal: number;
+  state: number;
+  fica: number;
+  otherDeductions: number;
+  totalDeductions: number;
+  netDisposable: number;
+  overrides: {
+    federal: boolean;
+    state: boolean;
+    fica: boolean;
+  };
+};
+
 function getIncomeFraction(totalNet: number) {
   if (totalNet <= 0) return 0;
   if (totalNet <= 2900) {
@@ -32,33 +84,134 @@ function getIncomeFraction(totalNet: number) {
     return 0.25;
   }
   if (totalNet <= 15000) {
-    return 0.10 + 1499 / totalNet;
+    return 0.1 + 1499 / totalNet;
   }
   return 0.12 + 1200 / totalNet;
 }
 
 function formatCurrency(value: number) {
-  return value.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+  return value.toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    maximumFractionDigits: 0,
+  });
 }
 
-type ComingSoonFieldProps = {
-  label: string;
-  helper: string;
+function initialParentGrossInputs(defaultNet: number): ParentGrossInputs {
+  return {
+    wages: defaultNet,
+    overtime: 0,
+    selfEmployment: 0,
+    unemployment: 0,
+    otherIncome: 0,
+    retirement: 0,
+    unionDues: 0,
+    healthPremiums: 0,
+    existingOrders: 0,
+    hardship: 0,
+    federalOverride: null,
+    stateOverride: null,
+    ficaOverride: null,
+  };
+}
+
+const FEDERAL_BRACKETS = [
+  { max: 11000, rate: 0.1 },
+  { max: 44725, rate: 0.12 },
+  { max: 95375, rate: 0.22 },
+  { max: 182100, rate: 0.24 },
+  { max: Number.POSITIVE_INFINITY, rate: 0.32 },
+];
+
+const CALIFORNIA_BRACKETS = [
+  { max: 10099, rate: 0.01 },
+  { max: 23942, rate: 0.02 },
+  { max: 37788, rate: 0.04 },
+  { max: 52455, rate: 0.06 },
+  { max: 66295, rate: 0.08 },
+  { max: Number.POSITIVE_INFINITY, rate: 0.093 },
+];
+
+const SOCIAL_SECURITY_CAP = 168600;
+
+function estimateBracketTax(monthlyGross: number, brackets: { max: number; rate: number }[]) {
+  if (monthlyGross <= 0) return 0;
+  const annual = monthlyGross * 12;
+  for (const bracket of brackets) {
+    if (annual <= bracket.max) {
+      return (annual * bracket.rate) / 12;
+    }
+  }
+  return 0;
+}
+
+function estimateFederalTax(monthlyGross: number) {
+  return estimateBracketTax(monthlyGross, FEDERAL_BRACKETS);
+}
+
+function estimateCaliforniaTax(monthlyGross: number) {
+  return estimateBracketTax(monthlyGross, CALIFORNIA_BRACKETS);
+}
+
+function estimateFica(monthlyGross: number) {
+  if (monthlyGross <= 0) return 0;
+  const annual = monthlyGross * 12;
+  const socialSecurity = Math.min(annual, SOCIAL_SECURITY_CAP) * 0.062;
+  const medicare = annual * 0.0145;
+  return (socialSecurity + medicare) / 12;
+}
+
+function computeAdvancedSummary(inputs: ParentGrossInputs): AdvancedSummary {
+  const baseIncome = Math.max(0, inputs.wages);
+  const additionalIncome = Math.max(0, inputs.overtime)
+    + Math.max(0, inputs.selfEmployment)
+    + Math.max(0, inputs.unemployment)
+    + Math.max(0, inputs.otherIncome);
+  const totalGross = baseIncome + additionalIncome;
+
+  const autoFederal = estimateFederalTax(totalGross);
+  const autoState = estimateCaliforniaTax(totalGross);
+  const autoFica = estimateFica(totalGross);
+
+  const federal = inputs.federalOverride ?? autoFederal;
+  const state = inputs.stateOverride ?? autoState;
+  const fica = inputs.ficaOverride ?? autoFica;
+
+  const otherDeductions =
+    Math.max(0, inputs.retirement)
+    + Math.max(0, inputs.unionDues)
+    + Math.max(0, inputs.healthPremiums)
+    + Math.max(0, inputs.existingOrders)
+    + Math.max(0, inputs.hardship);
+
+  const totalDeductions = federal + state + fica + otherDeductions;
+  const netDisposable = Math.max(0, totalGross - totalDeductions);
+
+  return {
+    baseIncome,
+    additionalIncome,
+    totalGross,
+    autoFederal,
+    autoState,
+    autoFica,
+    federal,
+    state,
+    fica,
+    otherDeductions,
+    totalDeductions,
+    netDisposable,
+    overrides: {
+      federal: inputs.federalOverride !== null,
+      state: inputs.stateOverride !== null,
+      fica: inputs.ficaOverride !== null,
+    },
+  };
+}
+
+const parentLabels: Record<ParentKey, string> = {
+  parentA: 'Parent A (Petitioner)',
+  parentB: 'Parent B (Respondent)',
 };
-
-function ComingSoonField({ label, helper }: ComingSoonFieldProps) {
-  return (
-    <div>
-      <Label className="text-sm font-semibold text-slate-700">{label}</Label>
-      <Input
-        disabled
-        placeholder="Rolling out soon"
-        className="mt-1 cursor-not-allowed border-dashed bg-slate-50 text-slate-400 placeholder:text-slate-400"
-      />
-      <p className="text-xs text-slate-500 mt-1">{helper}</p>
-    </div>
-  );
-}
 
 export function ChildSupportEstimator() {
   const [countyId, setCountyId] = useState(counties[0]?.id);
@@ -69,10 +222,24 @@ export function ChildSupportEstimator() {
   const [childcare, setChildcare] = useState(400);
   const [medical, setMedical] = useState(150);
   const [mode, setMode] = useState<'quick' | 'advanced'>('quick');
+  const [grossInputs, setGrossInputs] = useState<{ parentA: ParentGrossInputs; parentB: ParentGrossInputs }>(
+    {
+      parentA: initialParentGrossInputs(7500),
+      parentB: initialParentGrossInputs(4500),
+    },
+  );
+
+  const advancedSummaries = useMemo(() => ({
+    parentA: computeAdvancedSummary(grossInputs.parentA),
+    parentB: computeAdvancedSummary(grossInputs.parentB),
+  }), [grossInputs]);
+
+  const effectiveParentAIncome = mode === 'advanced' ? advancedSummaries.parentA.netDisposable : parentAIncome;
+  const effectiveParentBIncome = mode === 'advanced' ? advancedSummaries.parentB.netDisposable : parentBIncome;
 
   const estimate = useMemo(() => {
-    const aIncome = Number(parentAIncome) || 0;
-    const bIncome = Number(parentBIncome) || 0;
+    const aIncome = Number(effectiveParentAIncome) || 0;
+    const bIncome = Number(effectiveParentBIncome) || 0;
     const totalIncome = aIncome + bIncome || 1;
     const higherIsA = aIncome >= bIncome;
     const highIncome = higherIsA ? aIncome : bIncome;
@@ -84,7 +251,7 @@ export function ChildSupportEstimator() {
     const incomeFraction = getIncomeFraction(TN);
     const K = parentingFactor * incomeFraction;
     const baseSupport = Math.max(0, K * (HN - highTimeShare * TN));
-    const netBase = isFinite(baseSupport) ? baseSupport : 0;
+    const netBase = Number.isFinite(baseSupport) ? baseSupport : 0;
     const childFactor =
       MULTI_CHILD_FACTORS[childrenCount] ?? Math.max(1, 1 + 0.2 * (childrenCount - 1));
     const scaledBase = netBase * childFactor;
@@ -105,7 +272,168 @@ export function ChildSupportEstimator() {
       parentingFactor,
       kFactor: K,
     };
-  }, [parentAIncome, parentBIncome, parentATimeShare, childcare, medical, childrenCount]);
+  }, [
+    childcare,
+    childrenCount,
+    effectiveParentAIncome,
+    effectiveParentBIncome,
+    medical,
+    parentATimeShare,
+  ]);
+
+  const handleGrossFieldChange = (parent: ParentKey, field: GrossField, rawValue: string) => {
+    const parsed = Math.max(0, Number(rawValue) || 0);
+    setGrossInputs((prev) => ({
+      ...prev,
+      [parent]: {
+        ...prev[parent],
+        [field]: parsed,
+      },
+    }));
+  };
+
+  const handleOverrideChange = (parent: ParentKey, field: OverrideField, rawValue: string) => {
+    const parsed = rawValue === '' ? null : Math.max(0, Number(rawValue) || 0);
+    setGrossInputs((prev) => ({
+      ...prev,
+      [parent]: {
+        ...prev[parent],
+        [field]: parsed,
+      },
+    }));
+  };
+
+  const renderAdvancedForm = (parent: ParentKey) => {
+    const inputs = grossInputs[parent];
+    const summary = advancedSummaries[parent];
+    const additionalIncomeFields: { field: GrossField; label: string; helper: string }[] = [
+      { field: 'overtime', label: 'Overtime / bonus / commission', helper: 'Average monthly extra pay.' },
+      { field: 'selfEmployment', label: 'Self-employment net income', helper: 'Net profit after business expenses.' },
+      { field: 'unemployment', label: 'Unemployment / disability benefits', helper: 'Taxable benefits only.' },
+      { field: 'otherIncome', label: 'Other taxable income', helper: 'Rental income, RSUs, etc.' },
+    ];
+
+    const deductionFields: { field: GrossField; label: string; helper: string }[] = [
+      { field: 'retirement', label: 'Mandatory retirement contributions', helper: 'CalPERS, 401(k) loan repayments, etc.' },
+      { field: 'unionDues', label: 'Union dues / agency fees', helper: 'Monthly dues that must be paid to keep the job.' },
+      { field: 'healthPremiums', label: 'Children’s health premiums', helper: 'Only the portion paid for the covered children.' },
+      { field: 'existingOrders', label: 'Existing child/spousal support paid', helper: 'Orders you are actually paying each month.' },
+      { field: 'hardship', label: 'Extreme hardship deduction', helper: 'Court-approved hardships (e.g., extraordinary medical).' },
+    ];
+
+    const overrideFields: { field: OverrideField; label: string; auto: number; helper: string }[] = [
+      {
+        field: 'federalOverride',
+        label: 'Federal tax',
+        auto: summary.autoFederal,
+        helper: summary.overrides.federal
+          ? 'Manual amount applied.'
+          : 'Auto estimate assumes single filer + standard deduction.',
+      },
+      {
+        field: 'stateOverride',
+        label: 'California tax',
+        auto: summary.autoState,
+        helper: summary.overrides.state
+          ? 'Manual amount applied.'
+          : 'Auto estimate assumes CA resident with no itemized deductions.',
+      },
+      {
+        field: 'ficaOverride',
+        label: 'FICA (Social Security + Medicare)',
+        auto: summary.autoFica,
+        helper: summary.overrides.fica
+          ? 'Manual amount applied.'
+          : 'Auto estimate uses 6.2% Social Security (capped) + 1.45% Medicare.',
+      },
+    ];
+
+    return (
+      <div key={parent} className="space-y-5 rounded-2xl border border-slate-200 bg-white p-5">
+        <div className="flex flex-col gap-1 md:flex-row md:items-center md:justify-between">
+          <div>
+            <p className="text-sm font-semibold text-slate-900">{parentLabels[parent]}</p>
+            <p className="text-xs text-slate-500">Enter monthly amounts before taxes, rounded to the nearest dollar.</p>
+          </div>
+          <Badge variant="secondary">Gross capture</Badge>
+        </div>
+
+        <div>
+          <Label className="text-sm font-semibold text-slate-700">Base wages / salary</Label>
+          <Input
+            type="number"
+            min={0}
+            value={inputs.wages}
+            onChange={(e) => handleGrossFieldChange(parent, 'wages', e.target.value)}
+          />
+          <p className="text-xs text-slate-500 mt-1">Use the monthly gross pay from the most recent pay stub.</p>
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-2">
+          {additionalIncomeFields.map(({ field, label, helper }) => (
+            <div key={field}>
+              <Label className="text-sm font-semibold text-slate-700">{label}</Label>
+              <Input
+                type="number"
+                min={0}
+                value={inputs[field]}
+                onChange={(e) => handleGrossFieldChange(parent, field, e.target.value)}
+              />
+              <p className="text-xs text-slate-500 mt-1">{helper}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-2">
+          {overrideFields.map(({ field, label, auto, helper }) => (
+            <div key={field}>
+              <Label className="text-sm font-semibold text-slate-700">
+                {label}
+                {' '}
+                <span className="font-normal text-slate-500">(auto {formatCurrency(auto)})</span>
+              </Label>
+              <Input
+                type="number"
+                min={0}
+                placeholder={`Auto ${formatCurrency(auto)}`}
+                value={grossInputs[parent][field] ?? ''}
+                onChange={(e) => handleOverrideChange(parent, field, e.target.value)}
+              />
+              <p className="text-xs text-slate-500 mt-1">{helper}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-2">
+          {deductionFields.map(({ field, label, helper }) => (
+            <div key={field}>
+              <Label className="text-sm font-semibold text-slate-700">{label}</Label>
+              <Input
+                type="number"
+                min={0}
+                value={inputs[field]}
+                onChange={(e) => handleGrossFieldChange(parent, field, e.target.value)}
+              />
+              <p className="text-xs text-slate-500 mt-1">{helper}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
+          <div className="flex flex-col gap-1">
+            <p className="font-semibold">Monthly summary</p>
+            <p>Base wages: {formatCurrency(summary.baseIncome)}</p>
+            <p>Additional income: {formatCurrency(summary.additionalIncome)}</p>
+            <p className="pt-2">Estimated federal tax: {formatCurrency(summary.federal)}</p>
+            <p>Estimated state tax: {formatCurrency(summary.state)}</p>
+            <p>FICA: {formatCurrency(summary.fica)}</p>
+            <p>Other deductions: {formatCurrency(summary.otherDeductions)}</p>
+            <p className="pt-2 font-semibold">Net disposable income: {formatCurrency(summary.netDisposable)}</p>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <Card className="shadow-sm border-blue-100">
@@ -113,7 +441,7 @@ export function ChildSupportEstimator() {
         <div>
           <p className="text-xs uppercase tracking-wide text-blue-600 font-semibold">Child Support Estimator</p>
           <CardTitle className="text-2xl text-slate-900">Model California guideline support</CardTitle>
-          <p className="text-sm text-slate-500">Enter monthly net incomes, parenting time, and add-ons to preview guideline support. Use this to prep for mediation or filings.</p>
+          <p className="text-sm text-slate-500">Toggle between quick net-income entry or the advanced gross-income workflow. The outputs mirror the statewide guideline formula.</p>
         </div>
         <div className="flex flex-col gap-2 text-sm">
           <Label className="text-slate-500">County (for notes & add-ons)</Label>
@@ -136,129 +464,97 @@ export function ChildSupportEstimator() {
               <TabsTrigger value="advanced">Advanced (Gross Income)</TabsTrigger>
             </TabsList>
             <TabsContent value="quick">
-              <div className="space-y-6">
+              <div className="space-y-4">
                 <div>
                   <Label className="text-sm font-semibold text-slate-700">Parent A net monthly income</Label>
                   <Input
                     type="number"
-                    value={parentAIncome}
-                    onChange={(e) => setParentAIncome(Number(e.target.value))}
                     min={0}
+                    value={parentAIncome}
+                    onChange={(e) => setParentAIncome(Math.max(0, Number(e.target.value) || 0))}
                   />
                 </div>
                 <div>
                   <Label className="text-sm font-semibold text-slate-700">Parent B net monthly income</Label>
                   <Input
                     type="number"
+                    min={0}
                     value={parentBIncome}
-                    onChange={(e) => setParentBIncome(Number(e.target.value))}
-                    min={0}
+                    onChange={(e) => setParentBIncome(Math.max(0, Number(e.target.value) || 0))}
                   />
                 </div>
-                <div>
-                  <div className="flex items-center justify-between">
-                    <Label className="text-sm font-semibold text-slate-700">Parent A parenting time</Label>
-                    <span className="text-sm text-slate-500">{parentATimeShare}%</span>
-                  </div>
-                  <Slider
-                    value={[parentATimeShare]}
-                    onValueChange={([value]) => setParentATimeShare(value)}
-                    min={0}
-                    max={100}
-                    step={1}
-                  />
-                  <div className="flex justify-between text-xs text-slate-500 mt-1">
-                    <span>Parent A primary</span>
-                    <span>Equal</span>
-                    <span>Parent B primary</span>
-                  </div>
-                </div>
-                <div>
-                  <Label className="text-sm font-semibold text-slate-700">Number of children covered</Label>
-                  <Input
-                    type="number"
-                    min={1}
-                    max={6}
-                    value={childrenCount}
-                    onChange={(e) => setChildrenCount(Math.max(1, Number(e.target.value)))}
-                  />
-                  <p className="text-xs text-slate-500 mt-1">Applies the statewide multi-child factor (1 child = 1.0, 2 = 1.6, 3 = 2.1, 4 = 2.5, 5 = 2.7, 6 = 2.9).</p>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label className="text-sm font-semibold text-slate-700">Monthly child care add-on</Label>
-                    <Input
-                      type="number"
-                      value={childcare}
-                      onChange={(e) => setChildcare(Number(e.target.value))}
-                      min={0}
-                    />
-                  </div>
-                  <div>
-                    <Label className="text-sm font-semibold text-slate-700">Uninsured medical add-on</Label>
-                    <Input
-                      type="number"
-                      value={medical}
-                      onChange={(e) => setMedical(Number(e.target.value))}
-                      min={0}
-                    />
-                  </div>
-                </div>
-                <div className="text-xs text-slate-500 flex items-start gap-2">
-                  <Info className="h-4 w-4 mt-0.5" /> California guideline: CS = K × [HN − (H% × TN)] × (multi-child factor). This tool mirrors that structure, but run DissoMaster or the state calculator for official numbers.
-                </div>
+                <p className="text-xs text-slate-500">Use this mode if you already know each parent’s net disposable income (e.g., from DissoMaster).</p>
               </div>
             </TabsContent>
             <TabsContent value="advanced">
-              <div className="space-y-6">
+              <div className="space-y-5">
+                {renderAdvancedForm('parentA')}
+                {renderAdvancedForm('parentB')}
                 <Alert className="border-amber-200 bg-amber-50 text-amber-900">
-                  <AlertTitle>Gross income mode is in progress</AlertTitle>
-                  <AlertDescription>We are wiring up the full DCSS gross-income and deduction workflow. Use this preview to plan what data you will need (pay stubs, benefit statements, deduction amounts) before the inputs unlock.</AlertDescription>
+                  <AlertTitle>Approximation only</AlertTitle>
+                  <AlertDescription>
+                    Federal/state taxes assume a single filer using the 2024 brackets with a standard deduction and no itemized adjustments.
+                    Override any line if you have precise numbers from pay stubs or the official DCSS calculator.
+                  </AlertDescription>
                 </Alert>
-                <div className="rounded-2xl border border-slate-200 bg-white p-5 space-y-4">
-                  <div className="flex items-center justify-between gap-4">
-                    <div>
-                      <p className="text-sm font-semibold text-slate-900">Gross income capture</p>
-                      <p className="text-xs text-slate-500">Wages, salary, and guaranteed pay per Family Code §4058.</p>
-                    </div>
-                    <Badge variant="secondary">Step 1</Badge>
-                  </div>
-                  <div className="grid gap-4 md:grid-cols-2">
-                    <ComingSoonField label="Parent A monthly wages" helper="Attach pay stubs or payroll reports for the last 2 months." />
-                    <ComingSoonField label="Parent B monthly wages" helper="We will mirror the same capture for the other parent." />
-                    <ComingSoonField label="Overtime / bonus" helper="Toggle on and add average overtime, bonus, or commission." />
-                    <ComingSoonField label="Self-employment net" helper="Import Schedule C or bookkeeping exports." />
-                  </div>
-                </div>
-                <div className="rounded-2xl border border-slate-200 bg-white p-5 space-y-4">
-                  <div className="flex items-center justify-between gap-4">
-                    <div>
-                      <p className="text-sm font-semibold text-slate-900">Deductions & adjustments</p>
-                      <p className="text-xs text-slate-500">We will auto-estimate taxes, FICA, retirement, union dues, health premiums, and existing orders.</p>
-                    </div>
-                    <Badge variant="secondary">Step 2</Badge>
-                  </div>
-                  <div className="grid gap-4 md:grid-cols-2">
-                    <ComingSoonField label="Federal & state taxes" helper="Simplified brackets with manual override." />
-                    <ComingSoonField label="FICA (Social Security + Medicare)" helper="Automatic caps + prompts for high earners." />
-                    <ComingSoonField label="Health premiums for kids" helper="Track what each parent pays so we can split add-ons." />
-                    <ComingSoonField label="Existing support orders" helper="Input monthly amounts actually being paid." />
-                    <ComingSoonField label="Retirement / union dues" helper="Capture mandatory deductions per §4059." />
-                    <ComingSoonField label="Extreme hardship" helper="Manual field + note for the judge." />
-                  </div>
-                </div>
-                <div className="rounded-2xl border border-slate-200 bg-white p-5 space-y-3">
-                  <div className="flex items-center gap-2 text-sm text-slate-600">
-                    <Badge variant="outline">Summary</Badge>
-                    Net disposable preview (shared with quick mode)
-                  </div>
-                  <p className="text-sm text-slate-600">Parent A quick-mode net: {formatCurrency(Number(parentAIncome) || 0)}</p>
-                  <p className="text-sm text-slate-600">Parent B quick-mode net: {formatCurrency(Number(parentBIncome) || 0)}</p>
-                  <p className="text-xs text-slate-500">Advanced entry will feed the computed net disposable income straight into the same calculation shown on the right so you can compare modes instantly.</p>
-                </div>
               </div>
             </TabsContent>
           </Tabs>
+
+          <div className="space-y-6">
+            <div>
+              <div className="flex items-center justify-between">
+                <Label className="text-sm font-semibold text-slate-700">Parent A parenting time</Label>
+                <span className="text-sm text-slate-500">{parentATimeShare}%</span>
+              </div>
+              <Slider
+                value={[parentATimeShare]}
+                onValueChange={([value]) => setParentATimeShare(value)}
+                min={0}
+                max={100}
+                step={1}
+              />
+              <div className="flex justify-between text-xs text-slate-500 mt-1">
+                <span>Parent A primary</span>
+                <span>Equal</span>
+                <span>Parent B primary</span>
+              </div>
+            </div>
+            <div>
+              <Label className="text-sm font-semibold text-slate-700">Number of children covered</Label>
+              <Input
+                type="number"
+                min={1}
+                max={6}
+                value={childrenCount}
+                onChange={(e) => setChildrenCount(Math.max(1, Number(e.target.value) || 1))}
+              />
+              <p className="text-xs text-slate-500 mt-1">Applies the statewide multi-child factor (1 child = 1.0, 2 = 1.6, 3 = 2.1, 4 = 2.5, 5 = 2.7, 6 = 2.9).</p>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label className="text-sm font-semibold text-slate-700">Monthly child care add-on</Label>
+                <Input
+                  type="number"
+                  min={0}
+                  value={childcare}
+                  onChange={(e) => setChildcare(Math.max(0, Number(e.target.value) || 0))}
+                />
+              </div>
+              <div>
+                <Label className="text-sm font-semibold text-slate-700">Uninsured medical add-on</Label>
+                <Input
+                  type="number"
+                  min={0}
+                  value={medical}
+                  onChange={(e) => setMedical(Math.max(0, Number(e.target.value) || 0))}
+                />
+              </div>
+            </div>
+            <div className="text-xs text-slate-500 flex items-start gap-2">
+              <Info className="h-4 w-4 mt-0.5" /> California guideline: CS = K × [HN − (H% × TN)] × (multi-child factor). Run DissoMaster or the official DCSS calculator for the court-certified figure.
+            </div>
+          </div>
         </div>
         <div className="space-y-4">
           <div className="p-5 rounded-2xl border border-blue-100 bg-gradient-to-br from-blue-50 to-white">
@@ -266,7 +562,7 @@ export function ChildSupportEstimator() {
               <span className="flex items-center gap-2">
                 <Calculator className="h-4 w-4" /> Guideline estimate
               </span>
-              <Badge variant="outline">{mode === 'quick' ? 'Quick mode' : 'Advanced preview'}</Badge>
+              <Badge variant="outline">{mode === 'advanced' ? 'Advanced gross mode' : 'Quick net mode'}</Badge>
             </div>
             <p className="text-4xl font-bold text-blue-900">{formatCurrency(estimate.guideline)}</p>
             <p className="text-sm text-blue-600">{estimate.payer} would pay this amount each month (before arrears or credits).</p>
