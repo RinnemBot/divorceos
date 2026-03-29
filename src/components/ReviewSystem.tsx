@@ -1,125 +1,266 @@
 import { useState, useEffect } from 'react';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
-import { Star, MessageSquare, User, Calendar, Lock, CheckCircle } from 'lucide-react';
-import { authService, type User } from '@/services/auth';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Star, MessageSquare, ThumbsUp, User, Calendar } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import { type User } from '@/services/auth';
+import { v4 as uuidv4 } from 'uuid';
 
-interface Review {
+export interface Review {
   id: string;
   userId: string;
-  userName: string;
+  userName?: string;
+  userEmail: string;
   rating: number;
-  text: string;
-  date: string;
-  plan: string;
+  content: string;
+  subscriptionTier: string;
+  helpfulCount: number;
+  createdAt: string;
+  updatedAt?: string;
   verified: boolean;
 }
 
-export function ReviewSystem() {
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+const REVIEWS_KEY = 'divorceos_reviews';
+const USER_REVIEWS_KEY = 'divorceos_user_reviews';
+
+// Paid subscription tiers that can leave reviews
+const PAID_TIERS = ['basic', 'essential', 'plus', 'done-for-you'];
+
+export function isPaidUser(user: User): boolean {
+  return PAID_TIERS.includes(user.subscription);
+}
+
+export function hasUserReviewed(userId: string): boolean {
+  const data = localStorage.getItem(USER_REVIEWS_KEY);
+  if (!data) return false;
+  
+  try {
+    const userReviews: string[] = JSON.parse(data);
+    return userReviews.includes(userId);
+  } catch {
+    return false;
+  }
+}
+
+export function getAllReviews(): Review[] {
+  const data = localStorage.getItem(REVIEWS_KEY);
+  if (!data) return [];
+  
+  try {
+    const reviews: Review[] = JSON.parse(data);
+    return reviews.sort((a, b) => 
+      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+  } catch {
+    return [];
+  }
+}
+
+export function getAverageRating(): { average: number; total: number } {
+  const reviews = getAllReviews();
+  if (reviews.length === 0) return { average: 0, total: 0 };
+  
+  const sum = reviews.reduce((acc, r) => acc + r.rating, 0);
+  return {
+    average: Math.round((sum / reviews.length) * 10) / 10,
+    total: reviews.length
+  };
+}
+
+export function submitReview(
+  user: User,
+  rating: number,
+  content: string
+): { success: boolean; error?: string } {
+  if (!isPaidUser(user)) {
+    return { 
+      success: false, 
+      error: 'Only paid subscribers can leave reviews. Please upgrade to share your experience.' 
+    };
+  }
+  
+  if (hasUserReviewed(user.id)) {
+    return { 
+      success: false, 
+      error: 'You have already submitted a review. You can edit your existing review.' 
+    };
+  }
+  
+  if (rating < 1 || rating > 5) {
+    return { success: false, error: 'Please select a rating between 1 and 5 stars' };
+  }
+  
+  if (content.trim().length < 10) {
+    return { success: false, error: 'Review must be at least 10 characters long' };
+  }
+  
+  const newReview: Review = {
+    id: uuidv4(),
+    userId: user.id,
+    userName: user.name,
+    userEmail: user.email,
+    rating,
+    content: content.trim(),
+    subscriptionTier: user.subscription,
+    helpfulCount: 0,
+    createdAt: new Date().toISOString(),
+    verified: true
+  };
+  
+  // Save review
+  const reviews = getAllReviews();
+  reviews.unshift(newReview);
+  localStorage.setItem(REVIEWS_KEY, JSON.stringify(reviews));
+  
+  // Mark user as reviewed
+  const userReviewsData = localStorage.getItem(USER_REVIEWS_KEY);
+  let userReviews: string[] = [];
+  
+  if (userReviewsData) {
+    try {
+      userReviews = JSON.parse(userReviewsData);
+    } catch {
+      userReviews = [];
+    }
+  }
+  
+  userReviews.push(user.id);
+  localStorage.setItem(USER_REVIEWS_KEY, JSON.stringify(userReviews));
+  
+  return { success: true };
+}
+
+export function updateReview(
+  reviewId: string,
+  userId: string,
+  rating: number,
+  content: string
+): { success: boolean; error?: string } {
+  const reviews = getAllReviews();
+  const reviewIndex = reviews.findIndex(r => r.id === reviewId && r.userId === userId);
+  
+  if (reviewIndex === -1) {
+    return { success: false, error: 'Review not found' };
+  }
+  
+  if (rating < 1 || rating > 5) {
+    return { success: false, error: 'Please select a rating between 1 and 5 stars' };
+  }
+  
+  if (content.trim().length < 10) {
+    return { success: false, error: 'Review must be at least 10 characters long' };
+  }
+  
+  reviews[reviewIndex] = {
+    ...reviews[reviewIndex],
+    rating,
+    content: content.trim(),
+    updatedAt: new Date().toISOString()
+  };
+  
+  localStorage.setItem(REVIEWS_KEY, JSON.stringify(reviews));
+  return { success: true };
+}
+
+export function markReviewHelpful(reviewId: string): void {
+  const reviews = getAllReviews();
+  const review = reviews.find(r => r.id === reviewId);
+  
+  if (review) {
+    review.helpfulCount++;
+    localStorage.setItem(REVIEWS_KEY, JSON.stringify(reviews));
+  }
+}
+
+export function getUserReview(userId: string): Review | null {
+  const reviews = getAllReviews();
+  return reviews.find(r => r.userId === userId) || null;
+}
+
+interface ReviewSystemProps {
+  user: User | null;
+}
+
+export function ReviewSystem({ user }: ReviewSystemProps) {
+  const { toast } = useToast();
   const [reviews, setReviews] = useState<Review[]>([]);
-  const [userReview, setUserReview] = useState<{ rating: number; text: string }>({
-    rating: 0,
-    text: '',
-  });
-  const [hoveredStar, setHoveredStar] = useState(0);
-  const [submitted, setSubmitted] = useState(false);
-  const [showForm, setShowForm] = useState(false);
-
+  const [averageRating, setAverageRating] = useState({ average: 0, total: 0 });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  
+  // Form state
+  const [rating, setRating] = useState(0);
+  const [hoverRating, setHoverRating] = useState(0);
+  const [reviewContent, setReviewContent] = useState('');
+  
+  const isPaid = user ? isPaidUser(user) : false;
+  const hasReviewed = user ? hasUserReviewed(user.id) : false;
+  const userReview = user ? getUserReview(user.id) : null;
+  
   useEffect(() => {
-    const user = authService.getCurrentUser();
-    setCurrentUser(user);
-
-    // Load reviews from localStorage
-    const stored = localStorage.getItem('divorceos_reviews');
-    if (stored) {
-      setReviews(JSON.parse(stored));
+    setReviews(getAllReviews());
+    setAverageRating(getAverageRating());
+  }, []);
+  
+  // Load user's existing review if editing
+  useEffect(() => {
+    if (userReview && isEditing) {
+      setRating(userReview.rating);
+      setReviewContent(userReview.content);
+    }
+  }, [userReview, isEditing]);
+  
+  const handleSubmit = async () => {
+    if (!user) return;
+    
+    setIsSubmitting(true);
+    
+    let result;
+    if (userReview) {
+      result = updateReview(userReview.id, user.id, rating, reviewContent);
     } else {
-      // Seed with sample reviews
-      const sampleReviews: Review[] = [
-        {
-          id: '1',
-          userId: 'sample1',
-          userName: 'Sarah M.',
-          rating: 5,
-          text: 'Maria helped me understand the divorce process so much better. The child support calculator was incredibly accurate and saved me hours of research.',
-          date: '2026-03-15',
-          plan: 'Essential',
-          verified: true,
-        },
-        {
-          id: '2',
-          userId: 'sample2',
-          userName: 'Michael R.',
-          rating: 5,
-          text: 'Worth every penny. The forms generation feature alone saved me $2,000 in attorney fees. Highly recommend for anyone going through divorce in California.',
-          date: '2026-03-10',
-          plan: 'Plus',
-          verified: true,
-        },
-        {
-          id: '3',
-          userId: 'sample3',
-          userName: 'Jennifer K.',
-          rating: 4,
-          text: 'Great tool for understanding my rights. The 24/7 chat was helpful during late nights when I had questions. Would love even more county-specific info.',
-          date: '2026-03-05',
-          plan: 'Basic',
-          verified: true,
-        },
-      ];
-      setReviews(sampleReviews);
-      localStorage.setItem('divorceos_reviews', JSON.stringify(sampleReviews));
+      result = submitReview(user, rating, reviewContent);
     }
-
-    // Check if user already submitted a review
-    if (user) {
-      const hasReviewed = reviews.some((r) => r.userId === user.id);
-      setSubmitted(hasReviewed);
+    
+    if (result.success) {
+      toast({
+        title: userReview ? 'Review Updated!' : 'Review Submitted!',
+        description: 'Thank you for sharing your experience.',
+      });
+      
+      // Refresh reviews
+      setReviews(getAllReviews());
+      setAverageRating(getAverageRating());
+      
+      // Reset form
+      setRating(0);
+      setReviewContent('');
+      setIsEditing(false);
+    } else {
+      toast({
+        title: 'Error',
+        description: result.error,
+        variant: 'destructive'
+      });
     }
-  }, [reviews]);
-
-  const isPayingCustomer = (): boolean => {
-    if (!currentUser) return false;
-    // Check if user has a paid plan
-    const plan = currentUser.plan?.toLowerCase() || '';
-    return plan === 'basic' || plan === 'essential' || plan === 'plus' || plan === 'pro';
+    
+    setIsSubmitting(false);
   };
-
-  const handleSubmit = () => {
-    if (!currentUser || !isPayingCustomer() || userReview.rating === 0) return;
-
-    const newReview: Review = {
-      id: Date.now().toString(),
-      userId: currentUser.id,
-      userName: currentUser.name || currentUser.email?.split('@')[0] || 'Anonymous',
-      rating: userReview.rating,
-      text: userReview.text,
-      date: new Date().toISOString().split('T')[0],
-      plan: currentUser.plan || 'Basic',
-      verified: true,
-    };
-
-    const updatedReviews = [newReview, ...reviews];
-    setReviews(updatedReviews);
-    localStorage.setItem('divorceos_reviews', JSON.stringify(updatedReviews));
-    setSubmitted(true);
-    setShowForm(false);
+  
+  const handleHelpful = (reviewId: string) => {
+    markReviewHelpful(reviewId);
+    setReviews(getAllReviews());
+    
+    toast({
+      title: 'Thanks!',
+      description: 'Your feedback helps others.',
+    });
   };
-
-  const averageRating = reviews.length > 0
-    ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
-    : '0.0';
-
-  const StarRating = ({ rating, interactive = false, size = 'md' }: { rating: number; interactive?: boolean; size?: 'sm' | 'md' | 'lg' }) => {
-    const sizeClasses = {
-      sm: 'h-4 w-4',
-      md: 'h-5 w-5',
-      lg: 'h-8 w-8',
-    };
-
+  
+  const renderStars = (count: number, interactive = false) => {
     return (
       <div className="flex gap-1">
         {[1, 2, 3, 4, 5].map((star) => (
@@ -127,16 +268,16 @@ export function ReviewSystem() {
             key={star}
             type="button"
             disabled={!interactive}
-            onClick={() => interactive && setUserReview((prev) => ({ ...prev, rating: star }))}
-            onMouseEnter={() => interactive && setHoveredStar(star)}
-            onMouseLeave={() => interactive && setHoveredStar(0)}
+            onClick={() => interactive && setRating(star)}
+            onMouseEnter={() => interactive && setHoverRating(star)}
+            onMouseLeave={() => interactive && setHoverRating(0)}
             className={`${interactive ? 'cursor-pointer hover:scale-110' : 'cursor-default'} transition-transform`}
           >
             <Star
-              className={`${sizeClasses[size]} ${
-                star <= (interactive && hoveredStar ? hoveredStar : rating)
-                  ? 'fill-yellow-400 text-yellow-400'
-                  : 'fill-gray-200 text-gray-200'
+              className={`h-5 w-5 ${
+                star <= (interactive ? (hoverRating || rating) : count)
+                  ? 'fill-amber-400 text-amber-400'
+                  : 'text-slate-300'
               }`}
             />
           </button>
@@ -144,163 +285,255 @@ export function ReviewSystem() {
       </div>
     );
   };
-
+  
+  const getRatingDistribution = () => {
+    const distribution = [0, 0, 0, 0, 0]; // 5, 4, 3, 2, 1 stars
+    reviews.forEach(r => {
+      if (r.rating >= 1 && r.rating <= 5) {
+        distribution[5 - r.rating]++;
+      }
+    });
+    return distribution;
+  };
+  
+  const ratingDistribution = getRatingDistribution();
+  
   return (
     <div className="space-y-6">
-      {/* Header with Stats */}
-      <Card className="bg-gradient-to-br from-blue-50 to-white border-blue-200">
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center">
-                <MessageSquare className="h-6 w-6 text-white" />
-              </div>
-              <div>
-                <CardTitle className="text-xl">Customer Reviews</CardTitle>
-                <p className="text-sm text-gray-600">
-                  See what paying customers are saying about DivorceOS
-                </p>
-              </div>
-            </div>
+      {/* Rating Summary */}
+      <Card>
+        <CardContent className="pt-6">
+          <div className="flex flex-col md:flex-row items-center gap-8">
             <div className="text-center">
-              <p className="text-4xl font-bold text-blue-900">{averageRating}</p>
-              <StarRating rating={parseFloat(averageRating)} size="sm" />
-              <p className="text-xs text-gray-500 mt-1">{reviews.length} reviews</p>
-            </div>
-          </div>
-        </CardHeader>
-      </Card>
-
-      {/* Write Review Section */}
-      {currentUser ? (
-        isPayingCustomer() ? (
-          submitted ? (
-            <Card className="bg-green-50 border-green-200">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-3">
-                  <CheckCircle className="h-6 w-6 text-green-600" />
-                  <div>
-                    <p className="font-medium text-green-900">Thank you for your review!</p>
-                    <p className="text-sm text-green-700">Your feedback helps others make informed decisions.</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ) : showForm ? (
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Write a Review</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <label className="text-sm font-medium text-gray-700 mb-2 block">
-                    Your Rating
-                  </label>
-                  <StarRating rating={userReview.rating} interactive size="lg" />
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-gray-700 mb-2 block">
-                    Your Review
-                  </label>
-                  <Textarea
-                    value={userReview.text}
-                    onChange={(e) => setUserReview((prev) => ({ ...prev, text: e.target.value }))}
-                    placeholder="Share your experience with DivorceOS..."
-                    rows={4}
-                  />
-                </div>
-                <div className="flex gap-2">
-                  <Button onClick={handleSubmit} disabled={userReview.rating === 0}>
-                    Submit Review
-                  </Button>
-                  <Button variant="outline" onClick={() => setShowForm(false)}>
-                    Cancel
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ) : (
-            <Card className="border-dashed border-blue-300">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <Star className="h-6 w-6 text-blue-600" />
-                    <div>
-                      <p className="font-medium text-gray-900">Share Your Experience</p>
-                      <p className="text-sm text-gray-600">
-                        Your feedback helps others navigating divorce in California
-                      </p>
-                    </div>
-                  </div>
-                  <Button onClick={() => setShowForm(true)} variant="outline">
-                    Write a Review
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          )
-        ) : (
-          <Card className="bg-gray-50 border-gray-200">
-            <CardContent className="p-6">
-              <div className="flex items-center gap-3">
-                <Lock className="h-5 w-5 text-gray-400" />
-                <p className="text-sm text-gray-600">
-                  <span className="font-medium">Reviews are for paying customers only.</span>{' '}
-                  Upgrade to any paid plan to share your experience.
-                </p>
+              <div className="text-5xl font-bold text-slate-900">
+                {averageRating.average > 0 ? averageRating.average : '-'}
               </div>
-            </CardContent>
-          </Card>
-        )
-      ) : (
-        <Card className="bg-gray-50 border-gray-200">
-          <CardContent className="p-6">
-            <div className="flex items-center gap-3">
-              <Lock className="h-5 w-5 text-gray-400" />
-              <p className="text-sm text-gray-600">
-                <span className="font-medium">Sign in to write a review.</span> Only paying customers can submit reviews.
+              <div className="flex justify-center my-2">
+                {renderStars(Math.round(averageRating.average))}
+              </div>
+              <p className="text-sm text-slate-500">
+                {averageRating.total} {averageRating.total === 1 ? 'review' : 'reviews'}
               </p>
             </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Reviews List */}
-      <div className="space-y-4">
-        {reviews.map((review) => (
-          <Card key={review.id}>
-            <CardContent className="p-5">
-              <div className="flex items-start justify-between mb-3">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-semibold">
-                    {review.userName.charAt(0).toUpperCase()}
+            
+            <div className="flex-1 w-full max-w-md">
+              {[5, 4, 3, 2, 1].map((stars, index) => {
+                const count = ratingDistribution[index];
+                const percentage = averageRating.total > 0 
+                  ? Math.round((count / averageRating.total) * 100) 
+                  : 0;
+                
+                return (
+                  <div key={stars} className="flex items-center gap-3 mb-2">
+                    <span className="text-sm text-slate-600 w-3">{stars}</span>
+                    <Star className="h-4 w-4 text-slate-400" />
+                    <div className="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-amber-400 rounded-full transition-all"
+                        style={{ width: `${percentage}%` }}
+                      />
+                    </div>
+                    <span className="text-sm text-slate-500 w-8">{count}</span>
                   </div>
-                  <div>
-                    <p className="font-medium text-gray-900">{review.userName}</p>
-                    <div className="flex items-center gap-2">
-                      <StarRating rating={review.rating} size="sm" />
+                );
+              })}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+      
+      {/* Write a Review Section */}
+      {user && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <MessageSquare className="h-5 w-5" />
+              {userReview ? 'Your Review' : 'Write a Review'}
+            </CardTitle>
+            <CardDescription>
+              {isPaid 
+                ? userReview 
+                  ? 'Update your review of DivorceOS'
+                  : 'Share your experience with DivorceOS'
+                : 'Only paid subscribers can leave reviews. Please upgrade to Basic or higher.'}
+            </CardDescription>
+          </CardHeader>
+          
+          <CardContent>
+            {!isPaid ? (
+              <div className="text-center py-6 text-slate-500">
+                <Star className="h-12 w-12 mx-auto mb-3 text-slate-300" />
+                <p className="mb-2">Upgrade to leave a review</p>
+                <Button variant="outline" onClick={() => window.location.href = '/pricing'}>
+                  View Pricing Plans
+                </Button>
+              </div>
+            ) : userReview && !isEditing ? (
+              <div className="space-y-4">
+                <div className="flex items-start gap-4 p-4 bg-slate-50 rounded-lg">
+                  <Avatar>
+                    <AvatarFallback className="bg-blue-100 text-blue-600">
+                      {userReview.userName?.charAt(0) || user.email.charAt(0).toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      {renderStars(userReview.rating)}
                       <Badge variant="secondary" className="text-xs">
-                        {review.plan} Plan
+                        {userReview.subscriptionTier}
                       </Badge>
-                      {review.verified && (
-                        <Badge variant="outline" className="text-xs text-green-700 border-green-300">
-                          <CheckCircle className="h-3 w-3 mr-1" />
-                          Verified
-                        </Badge>
+                    </div>
+                    <p className="text-slate-700 mb-2">{userReview.content}</p>
+                    <div className="flex items-center gap-4 text-sm text-slate-500">
+                      <span>{new Date(userReview.createdAt).toLocaleDateString()}</span>
+                      {userReview.updatedAt && (
+                        <span className="text-xs">(edited)</span>
                       )}
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center gap-1 text-sm text-gray-500">
-                  <Calendar className="h-4 w-4" />
-                  {new Date(review.date).toLocaleDateString()}
+                <Button onClick={() => setIsEditing(true)} variant="outline">
+                  Edit Review
+                </Button>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div>
+                  <label className="text-sm font-medium text-slate-700 mb-2 block">
+                    Your Rating
+                  </label>
+                  {renderStars(rating, true)}
+                  {rating > 0 && (
+                    <p className="text-sm text-slate-500 mt-1">
+                      {rating === 5 && 'Excellent!'}
+                      {rating === 4 && 'Very Good'}
+                      {rating === 3 && 'Good'}
+                      {rating === 2 && 'Fair'}
+                      {rating === 1 && 'Poor'}
+                    </p>
+                  )}
+                </div>
+                
+                <div>
+                  <label className="text-sm font-medium text-slate-700 mb-2 block">
+                    Your Review
+                  </label>
+                  <Textarea
+                    value={reviewContent}
+                    onChange={(e) => setReviewContent(e.target.value)}
+                    placeholder="Share your experience with DivorceOS. How has it helped you? What did you like most?"
+                    rows={4}
+                    className="resize-none"
+                  />
+                  <p className="text-xs text-slate-500 mt-1">
+                    Minimum 10 characters ({reviewContent.length} / 10)
+                  </p>
+                </div>
+                
+                <div className="flex gap-2">
+                  <Button
+                    onClick={handleSubmit}
+                    disabled={rating === 0 || reviewContent.length < 10 || isSubmitting}
+                  >
+                    {isSubmitting 
+                      ? 'Submitting...' 
+                      : userReview ? 'Update Review' : 'Submit Review'
+                    }
+                  </Button>
+                  {isEditing && (
+                    <Button 
+                      variant="outline" 
+                      onClick={() => {
+                        setIsEditing(false);
+                        setRating(0);
+                        setReviewContent('');
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                  )}
                 </div>
               </div>
-              <p className="text-gray-700 leading-relaxed">{review.text}</p>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
+      
+      {/* Reviews List */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Customer Reviews</CardTitle>
+          <CardDescription>
+            See what our customers are saying about DivorceOS
+          </CardDescription>
+        </CardHeader>
+        
+        <CardContent>
+          {reviews.length === 0 ? (
+            <div className="text-center py-8 text-slate-500">
+              <MessageSquare className="h-12 w-12 mx-auto mb-3 text-slate-300" />
+              <p>No reviews yet</p>
+              <p className="text-sm">Be the first to share your experience!</p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {reviews.map((review) => (
+                <div
+                  key={review.id}
+                  className="p-4 border rounded-lg hover:border-slate-300 transition-colors"
+                >
+                  <div className="flex items-start gap-4">
+                    <Avatar>
+                      <AvatarFallback className="bg-slate-100 text-slate-600">
+                        {review.userName?.charAt(0) || review.userEmail.charAt(0).toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                    
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="font-medium">
+                          {review.userName || review.userEmail.split('@')[0]}
+                        </span>
+                        {review.verified && (
+                          <Badge variant="outline" className="text-xs text-green-600 border-green-200">
+                            Verified Customer
+                          </Badge>
+                        )}
+                        <Badge variant="secondary" className="text-xs">
+                          {review.subscriptionTier}
+                        </Badge>
+                      </div>
+                      
+                      <div className="flex items-center gap-2 mt-1 mb-2">
+                        {renderStars(review.rating)}
+                        <span className="text-sm text-slate-400">•</span>
+                        <span className="text-sm text-slate-500 flex items-center gap-1">
+                          <Calendar className="h-3 w-3" />
+                          {new Date(review.createdAt).toLocaleDateString()}
+                        </span>
+                      </div>
+                      
+                      <p className="text-slate-700 mb-3">{review.content}</p>
+                      
+                      <div className="flex items-center gap-2">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-8 text-slate-500 hover:text-slate-700"
+                          onClick={() => handleHelpful(review.id)}
+                        >
+                          <ThumbsUp className="h-4 w-4 mr-1" />
+                          Helpful ({review.helpfulCount})
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }
