@@ -43,7 +43,7 @@ export interface ChatSession {
 
 export const SUBSCRIPTION_LIMITS = {
   free: { maxChats: 3, aiResponses: true, price: 0, name: 'Free' },
-  basic: { maxChats: 20, aiResponses: true, price: 10, name: 'Basic' },
+  basic: { maxChats: 20, aiResponses: true, price: 20, name: 'Basic' },
   essential: { maxChats: Infinity, aiResponses: true, price: 49, name: 'Essential' },
   plus: { maxChats: Infinity, aiResponses: true, price: 99, name: 'Plus' },
   'done-for-you': { maxChats: Infinity, aiResponses: true, price: 299, name: 'Done-For-You' },
@@ -56,7 +56,15 @@ const CURRENT_USER_KEY = 'divorceos_current_user';
 class AuthService {
   private getUsers(): User[] {
     const data = localStorage.getItem(STORAGE_KEY);
-    return data ? JSON.parse(data) : [];
+    if (!data) return [];
+
+    try {
+      return JSON.parse(data);
+    } catch (error) {
+      console.error('Failed to parse stored users, clearing corrupt data.', error);
+      localStorage.removeItem(STORAGE_KEY);
+      return [];
+    }
   }
 
   private saveUsers(users: User[]): void {
@@ -65,7 +73,17 @@ class AuthService {
 
   getChatSessions(userId: string): ChatSession[] {
     const data = localStorage.getItem(SESSIONS_KEY);
-    const allSessions: ChatSession[] = data ? JSON.parse(data) : [];
+    let allSessions: ChatSession[] = [];
+
+    if (data) {
+      try {
+        allSessions = JSON.parse(data);
+      } catch (error) {
+        console.error('Failed to parse stored chat sessions, clearing corrupt data.', error);
+        localStorage.removeItem(SESSIONS_KEY);
+      }
+    }
+
     return allSessions.filter(s => s.userId === userId).sort((a, b) => 
       new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
     );
@@ -73,7 +91,17 @@ class AuthService {
 
   saveChatSession(session: ChatSession): void {
     const data = localStorage.getItem(SESSIONS_KEY);
-    const allSessions: ChatSession[] = data ? JSON.parse(data) : [];
+    let allSessions: ChatSession[] = [];
+
+    if (data) {
+      try {
+        allSessions = JSON.parse(data);
+      } catch (error) {
+        console.error('Failed to parse stored chat sessions, resetting list.', error);
+        localStorage.removeItem(SESSIONS_KEY);
+      }
+    }
+
     const existingIndex = allSessions.findIndex(s => s.id === session.id);
     
     if (existingIndex >= 0) {
@@ -87,7 +115,17 @@ class AuthService {
 
   deleteChatSession(sessionId: string): void {
     const data = localStorage.getItem(SESSIONS_KEY);
-    const allSessions: ChatSession[] = data ? JSON.parse(data) : [];
+    let allSessions: ChatSession[] = [];
+
+    if (data) {
+      try {
+        allSessions = JSON.parse(data);
+      } catch (error) {
+        console.error('Failed to parse stored chat sessions during delete, resetting list.', error);
+        localStorage.removeItem(SESSIONS_KEY);
+      }
+    }
+
     const filtered = allSessions.filter(s => s.id !== sessionId);
     localStorage.setItem(SESSIONS_KEY, JSON.stringify(filtered));
   }
@@ -104,13 +142,14 @@ class AuthService {
     
     // Admin users get premium subscription
     const isAdmin = this.isAdminEmail(email);
+    const isPremium = this.isPremiumEmail(email);
     
     const newUser: User = {
       id: uuidv4(),
       email: email.toLowerCase(),
       password,
       name,
-      subscription: isAdmin ? 'done-for-you' : 'free',
+      subscription: isAdmin || isPremium ? 'done-for-you' : 'free',
       chatCount: 0,
       chatCountResetDate: new Date().toISOString(),
       emailVerified: isAdmin, // Auto-verify admin emails
@@ -179,7 +218,9 @@ class AuthService {
     }
 
     // Auto-upgrade admin users to premium tier
-    if (this.isAdminEmail(user.email) && user.subscription === 'free') {
+    const isAdmin = this.isAdminEmail(user.email);
+    const isPremium = this.isPremiumEmail(user.email);
+    if ((isAdmin || isPremium) && user.subscription !== 'done-for-you') {
       user.subscription = 'done-for-you';
       this.updateUser(user);
     }
@@ -198,8 +239,14 @@ class AuthService {
     const data = localStorage.getItem(CURRENT_USER_KEY);
     if (!data) return null;
     
-    const user: User = JSON.parse(data);
-    return this.resetChatCountIfNeeded(user);
+    try {
+      const user: User = JSON.parse(data);
+      return this.resetChatCountIfNeeded(user);
+    } catch (error) {
+      console.error('Failed to parse current user, clearing corrupt data.', error);
+      localStorage.removeItem(CURRENT_USER_KEY);
+      return null;
+    }
   }
 
   private resetChatCountIfNeeded(user: User): User {
@@ -224,10 +271,18 @@ class AuthService {
     if (index >= 0) {
       users[index] = user;
       this.saveUsers(users);
-      
-      const current = this.getCurrentUser();
-      if (current?.id === user.id) {
-        this.setCurrentUser(user);
+
+      const currentData = localStorage.getItem(CURRENT_USER_KEY);
+      if (currentData) {
+        try {
+          const currentUser: User = JSON.parse(currentData);
+          if (currentUser.id === user.id) {
+            this.setCurrentUser(user);
+          }
+        } catch (error) {
+          console.error('Failed to parse current user while updating, clearing corrupt data.', error);
+          localStorage.removeItem(CURRENT_USER_KEY);
+        }
       }
     }
   }
@@ -240,6 +295,11 @@ class AuthService {
   private isAdminEmail(email: string): boolean {
     const adminEmails = ['rmalaspina19@icloud.com'];
     return adminEmails.includes(email.toLowerCase());
+  }
+
+  private isPremiumEmail(email: string): boolean {
+    const premiumEmails = ['huezostan@gmail.com', 'marialeon1@aol.com'];
+    return premiumEmails.includes(email.toLowerCase());
   }
 
   canUserChat(user: User): { allowed: boolean; reason?: string } {
