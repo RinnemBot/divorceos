@@ -28,3 +28,33 @@
 
 ### Next Step
 - Kick off Iteration 3: spousal support estimate card + ATRO reminder + email summary flow (per plan).
+
+---
+
+## Iteration 3 – Spousal support integration (2026-03-29 08:55 PT)
+
+### Status
+- [x] Complete
+
+### What Was Done
+- Added a “Spousal support snapshot” card that leverages the 40/50 heuristic, syncs with the current child-support numbers, and exposes filing status, dependents, and adjustment inputs.
+- Surfaced an ATRO reminder plus an optional email summary form (front-end only for now) to mirror the workflow attorneys expect.
+- Wired the child-support outputs up so higher/lower net incomes can populate the spousal estimate with a single click.
+- Updated specs + implementation plan to reflect the new behavior and queued Iteration 4 (validation & docs).
+
+### Blockers
+- Email delivery is still a stub—awaiting backend/mail service hookup.
+
+### Validation
+- `npx eslint src/components/ChildSupportEstimator.tsx`
+- `npm run test` → script missing (still pending).
+- `npm run build`
+
+### Files Touched
+- `src/components/ChildSupportEstimator.tsx`
+- `specs/child-support-gross-mode.md`
+- `IMPLEMENTATION_PLAN.md`
+- `PROGRESS.md`
+
+### Next Step
+- Iteration 4: focus on automated validation (lint/test parity) and documentation/marketing copy updates per plan.

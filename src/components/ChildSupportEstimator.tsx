@@ -8,6 +8,7 @@ import { Slider } from '@/components/ui/slider';
 import { Info, Calculator } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
 
 const counties = COUNTY_GUIDES.map((c) => ({ id: c.id, name: c.name }));
 
@@ -72,6 +73,26 @@ type AdvancedSummary = {
   };
 };
 
+type FilingStatus = 'single' | 'married-joint' | 'married-separate';
+
+type SpousalInputs = {
+  filingStatus: FilingStatus;
+  dependentCount: number;
+  higherNet: number;
+  lowerNet: number;
+  childSupportPaid: number;
+  healthPremiums: number;
+};
+
+type SpousalEstimate = {
+  amount: number;
+  range: {
+    low: number;
+    high: number;
+  };
+  note: string;
+};
+
 function getIncomeFraction(totalNet: number) {
   if (totalNet <= 0) return 0;
   if (totalNet <= 2900) {
@@ -112,6 +133,17 @@ function initialParentGrossInputs(defaultNet: number): ParentGrossInputs {
     federalOverride: null,
     stateOverride: null,
     ficaOverride: null,
+  };
+}
+
+function initialSpousalInputs(higher: number, lower: number): SpousalInputs {
+  return {
+    filingStatus: 'single',
+    dependentCount: 0,
+    higherNet: higher,
+    lowerNet: lower,
+    childSupportPaid: 0,
+    healthPremiums: 0,
   };
 }
 
@@ -228,6 +260,9 @@ export function ChildSupportEstimator() {
       parentB: initialParentGrossInputs(4500),
     },
   );
+  const [spousalInputs, setSpousalInputs] = useState<SpousalInputs>(() => initialSpousalInputs(7500, 4500));
+  const [shareEmail, setShareEmail] = useState('');
+  const [shareMessage, setShareMessage] = useState<string | null>(null);
 
   const advancedSummaries = useMemo(() => ({
     parentA: computeAdvancedSummary(grossInputs.parentA),
@@ -281,6 +316,31 @@ export function ChildSupportEstimator() {
     parentATimeShare,
   ]);
 
+  const higherParentNet = Math.max(effectiveParentAIncome, effectiveParentBIncome);
+  const lowerParentNet = Math.min(effectiveParentAIncome, effectiveParentBIncome);
+  const presumedChildSupport = estimate.guideline;
+
+  const spousalEstimate: SpousalEstimate = useMemo(() => {
+    const higher = Math.max(0, spousalInputs.higherNet);
+    const lower = Math.max(0, spousalInputs.lowerNet);
+    const adjustedHigher = Math.max(0, higher - spousalInputs.childSupportPaid - spousalInputs.healthPremiums);
+    const base = Math.max(0, adjustedHigher * 0.4 - lower * 0.5);
+    const dependentBuffer = Math.min(base, spousalInputs.dependentCount * 50);
+    const amount = Math.max(0, base - dependentBuffer);
+    const note =
+      spousalInputs.filingStatus === 'married-joint'
+        ? 'Joint filers sometimes see a slightly smaller number because taxes are balanced.'
+        : 'Short-term 40/50 guideline only. Courts still weigh Family Code §4320 factors.';
+    return {
+      amount,
+      range: {
+        low: amount * 0.9,
+        high: amount * 1.1,
+      },
+      note,
+    };
+  }, [spousalInputs]);
+
   const handleGrossFieldChange = (parent: ParentKey, field: GrossField, rawValue: string) => {
     const parsed = Math.max(0, Number(rawValue) || 0);
     setGrossInputs((prev) => ({
@@ -301,6 +361,24 @@ export function ChildSupportEstimator() {
         [field]: parsed,
       },
     }));
+  };
+
+  const syncSpousalFromGuideline = () => {
+    setSpousalInputs((prev) => ({
+      ...prev,
+      higherNet: higherParentNet,
+      lowerNet: lowerParentNet,
+      childSupportPaid: presumedChildSupport,
+    }));
+    setShareMessage(null);
+  };
+
+  const handleShareSummary = () => {
+    if (!shareEmail || !shareEmail.includes('@')) {
+      setShareMessage('Enter a valid email address.');
+      return;
+    }
+    setShareMessage(`We’ll send a PDF summary to ${shareEmail} as soon as email delivery is wired up.`);
   };
 
   const renderAdvancedForm = (parent: ParentKey) => {
@@ -583,6 +661,100 @@ export function ChildSupportEstimator() {
             <p className="text-sm text-slate-600">
               Use this number for settlement talks. When you’re ready to file, attach FL-342 plus county-specific add-ons (child care receipts, health insurance proof). Essential+ members can save scenarios and auto-fill the forms.
             </p>
+          </div>
+          <div className="p-5 rounded-2xl border border-rose-100 bg-rose-50/70 space-y-4">
+            <div className="flex flex-col gap-1 md:flex-row md:items-center md:justify-between">
+              <div>
+                <p className="text-sm font-semibold text-rose-900">Spousal support snapshot</p>
+                <p className="text-xs text-rose-700">Quick 40/50 guideline estimate (short-term marriages).</p>
+              </div>
+              <Button variant="secondary" size="sm" onClick={syncSpousalFromGuideline}>
+                Sync from child support
+              </Button>
+            </div>
+            <div className="grid gap-4 md:grid-cols-2">
+              <div>
+                <Label className="text-sm font-semibold text-slate-700">Higher earner net income</Label>
+                <Input
+                  type="number"
+                  min={0}
+                  value={spousalInputs.higherNet}
+                  onChange={(e) => setSpousalInputs((prev) => ({ ...prev, higherNet: Math.max(0, Number(e.target.value) || 0) }))}
+                />
+              </div>
+              <div>
+                <Label className="text-sm font-semibold text-slate-700">Lower earner net income</Label>
+                <Input
+                  type="number"
+                  min={0}
+                  value={spousalInputs.lowerNet}
+                  onChange={(e) => setSpousalInputs((prev) => ({ ...prev, lowerNet: Math.max(0, Number(e.target.value) || 0) }))}
+                />
+              </div>
+              <div>
+                <Label className="text-sm font-semibold text-slate-700">Child support paid by higher earner</Label>
+                <Input
+                  type="number"
+                  min={0}
+                  value={spousalInputs.childSupportPaid}
+                  onChange={(e) => setSpousalInputs((prev) => ({ ...prev, childSupportPaid: Math.max(0, Number(e.target.value) || 0) }))}
+                />
+              </div>
+              <div>
+                <Label className="text-sm font-semibold text-slate-700">Health insurance premiums (spouse)</Label>
+                <Input
+                  type="number"
+                  min={0}
+                  value={spousalInputs.healthPremiums}
+                  onChange={(e) => setSpousalInputs((prev) => ({ ...prev, healthPremiums: Math.max(0, Number(e.target.value) || 0) }))}
+                />
+              </div>
+              <div>
+                <Label className="text-sm font-semibold text-slate-700">Filing status</Label>
+                <select
+                  value={spousalInputs.filingStatus}
+                  onChange={(e) => setSpousalInputs((prev) => ({ ...prev, filingStatus: e.target.value as FilingStatus }))}
+                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+                >
+                  <option value="single">Single / Head of Household</option>
+                  <option value="married-joint">Married filing jointly</option>
+                  <option value="married-separate">Married filing separately</option>
+                </select>
+              </div>
+              <div>
+                <Label className="text-sm font-semibold text-slate-700">Dependents claimed</Label>
+                <Input
+                  type="number"
+                  min={0}
+                  value={spousalInputs.dependentCount}
+                  onChange={(e) => setSpousalInputs((prev) => ({ ...prev, dependentCount: Math.max(0, Number(e.target.value) || 0) }))}
+                />
+              </div>
+            </div>
+            <div className="rounded-xl border border-white/60 bg-white p-4 text-sm text-slate-700 space-y-1">
+              <p className="text-xs uppercase tracking-wide text-rose-600 font-semibold">Guideline heuristic</p>
+              <p className="text-2xl font-bold text-rose-900">{formatCurrency(spousalEstimate.amount)}</p>
+              <p className="text-xs text-slate-500">Range: {formatCurrency(spousalEstimate.range.low)} – {formatCurrency(spousalEstimate.range.high)}</p>
+              <p className="text-xs text-slate-500">{spousalEstimate.note}</p>
+            </div>
+            <div className="rounded-xl border border-amber-200 bg-amber-50 p-3 text-xs text-amber-900">
+              ATRO reminder: Neither spouse can cancel insurance, sell or borrow against property, or move children out of California without written consent or a court order.
+            </div>
+            <div className="space-y-2">
+              <Label className="text-sm font-semibold text-slate-700">Email a quick summary (optional)</Label>
+              <div className="flex flex-col gap-2 sm:flex-row">
+                <Input
+                  type="email"
+                  placeholder="you@example.com"
+                  value={shareEmail}
+                  onChange={(e) => setShareEmail(e.target.value)}
+                />
+                <Button type="button" variant="outline" onClick={handleShareSummary}>
+                  Send summary
+                </Button>
+              </div>
+              {shareMessage && <p className="text-xs text-slate-500">{shareMessage}</p>}
+            </div>
           </div>
           <div className="rounded-xl bg-emerald-50 border border-emerald-100 p-4 text-sm text-emerald-800">
             Want to keep a negotiation history or let Maria reference this estimator? Upgrade to Basic to save scenarios and Essential/Plus to link them directly into your filings.
