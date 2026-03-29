@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { sendConfirmationEmail, sendAdminSignupNotification, isTokenValid, getConfirmationByToken, removeConfirmation } from './email';
+import { trackReferralSignup, completeReferralReward, getPendingReferralCode, clearPendingReferralCode } from '@/components/ReferralProgram';
 
 export interface UserProfile {
   firstName?: string;
@@ -130,7 +131,7 @@ class AuthService {
     localStorage.setItem(SESSIONS_KEY, JSON.stringify(filtered));
   }
 
-  async register(email: string, password: string, name?: string): Promise<User> {
+  async register(email: string, password: string, name?: string, referralCode?: string): Promise<User> {
     const users = this.getUsers();
     
     if (users.find(u => u.email.toLowerCase() === email.toLowerCase())) {
@@ -159,6 +160,13 @@ class AuthService {
     users.push(newUser);
     this.saveUsers(users);
     this.setCurrentUser(newUser);
+    
+    // Check for pending referral code from session storage
+    const pendingReferralCode = referralCode || getPendingReferralCode();
+    if (pendingReferralCode) {
+      trackReferralSignup(pendingReferralCode, newUser);
+      clearPendingReferralCode();
+    }
     
     // Send admin notification
     await sendAdminSignupNotification(email, name, false);
