@@ -5,8 +5,8 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { COUNTY_GUIDES } from '@/data/countyGuides';
 import { Slider } from '@/components/ui/slider';
-import { Info, Calculator } from 'lucide-react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Info, Calculator, Zap, Settings2 } from 'lucide-react';
+import { Tabs, TabsContent } from '@/components/ui/tabs';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 
@@ -378,7 +378,7 @@ export function ChildSupportEstimator() {
       setShareMessage('Enter a valid email address.');
       return;
     }
-    setShareMessage(`We’ll send a PDF summary to ${shareEmail} as soon as email delivery is wired up.`);
+    setShareMessage(`We'll send a PDF summary to ${shareEmail} as soon as email delivery is wired up.`);
   };
 
   const renderAdvancedForm = (parent: ParentKey) => {
@@ -394,7 +394,7 @@ export function ChildSupportEstimator() {
     const deductionFields: { field: GrossField; label: string; helper: string }[] = [
       { field: 'retirement', label: 'Mandatory retirement contributions', helper: 'CalPERS, 401(k) loan repayments, etc.' },
       { field: 'unionDues', label: 'Union dues / agency fees', helper: 'Monthly dues that must be paid to keep the job.' },
-      { field: 'healthPremiums', label: 'Children’s health premiums', helper: 'Only the portion paid for the covered children.' },
+      { field: 'healthPremiums', label: "Children's health premiums", helper: 'Only the portion paid for the covered children.' },
       { field: 'existingOrders', label: 'Existing child/spousal support paid', helper: 'Orders you are actually paying each month.' },
       { field: 'hardship', label: 'Extreme hardship deduction', helper: 'Court-approved hardships (e.g., extraordinary medical).' },
     ];
@@ -537,10 +537,73 @@ export function ChildSupportEstimator() {
       <CardContent className="grid gap-8 lg:grid-cols-2">
         <div className="space-y-6">
           <Tabs value={mode} onValueChange={(value) => setMode(value as 'quick' | 'advanced')} className="w-full space-y-4">
-            <TabsList className="grid w-full grid-cols-2 bg-slate-100">
-              <TabsTrigger value="quick">Quick (Net Income)</TabsTrigger>
-              <TabsTrigger value="advanced">Advanced (Gross Income)</TabsTrigger>
-            </TabsList>
+            {/* Custom Mode Selector Buttons */}
+            <div className="grid w-full grid-cols-2 gap-3">
+              <button
+                type="button"
+                onClick={() => setMode('quick')}
+                className={`relative flex flex-col items-center gap-2 rounded-xl border-2 p-4 text-left transition-all duration-200 ${
+                  mode === 'quick'
+                    ? 'border-emerald-500 bg-emerald-50 shadow-md'
+                    : 'border-slate-200 bg-white hover:border-emerald-300 hover:bg-emerald-50/50'
+                }`}
+              >
+                <div className={`flex h-10 w-10 items-center justify-center rounded-full ${
+                  mode === 'quick' ? 'bg-emerald-500 text-white' : 'bg-emerald-100 text-emerald-600'
+                }`}>
+                  <Zap className="h-5 w-5" />
+                </div>
+                <div className="text-center">
+                  <p className={`font-semibold ${mode === 'quick' ? 'text-emerald-900' : 'text-slate-700'}`}>
+                    Quick Estimate
+                  </p>
+                  <p className={`text-xs mt-1 ${mode === 'quick' ? 'text-emerald-700' : 'text-slate-500'}`}>
+                    Net Income Mode
+                  </p>
+                  <p className={`text-xs mt-1 ${mode === 'quick' ? 'text-emerald-600' : 'text-slate-400'}`}>
+                    Simple & Fast
+                  </p>
+                </div>
+                {mode === 'quick' && (
+                  <div className="absolute -top-2 -right-2">
+                    <Badge className="bg-emerald-500 text-white border-0">Active</Badge>
+                  </div>
+                )}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setMode('advanced')}
+                className={`relative flex flex-col items-center gap-2 rounded-xl border-2 p-4 text-left transition-all duration-200 ${
+                  mode === 'advanced'
+                    ? 'border-blue-500 bg-blue-50 shadow-md'
+                    : 'border-slate-200 bg-white hover:border-blue-300 hover:bg-blue-50/50'
+                }`}
+              >
+                <div className={`flex h-10 w-10 items-center justify-center rounded-full ${
+                  mode === 'advanced' ? 'bg-blue-500 text-white' : 'bg-blue-100 text-blue-600'
+                }`}>
+                  <Settings2 className="h-5 w-5" />
+                </div>
+                <div className="text-center">
+                  <p className={`font-semibold ${mode === 'advanced' ? 'text-blue-900' : 'text-slate-700'}`}>
+                    Advanced Calculation
+                  </p>
+                  <p className={`text-xs mt-1 ${mode === 'advanced' ? 'text-blue-700' : 'text-slate-500'}`}>
+                    Gross Income Mode
+                  </p>
+                  <p className={`text-xs mt-1 ${mode === 'advanced' ? 'text-blue-600' : 'text-slate-400'}`}>
+                    Detailed & Precise
+                  </p>
+                </div>
+                {mode === 'advanced' && (
+                  <div className="absolute -top-2 -right-2">
+                    <Badge className="bg-blue-500 text-white border-0">Active</Badge>
+                  </div>
+                )}
+              </button>
+            </div>
+
             <TabsContent value="quick">
               <div className="space-y-4">
                 <div>
@@ -561,7 +624,7 @@ export function ChildSupportEstimator() {
                     onChange={(e) => setParentBIncome(Math.max(0, Number(e.target.value) || 0))}
                   />
                 </div>
-                <p className="text-xs text-slate-500">Use this mode if you already know each parent’s net disposable income (e.g., from DissoMaster).</p>
+                <p className="text-xs text-slate-500">Use this mode if you already know each parent's net disposable income (e.g., from DissoMaster).</p>
               </div>
             </TabsContent>
             <TabsContent value="advanced">
@@ -659,7 +722,7 @@ export function ChildSupportEstimator() {
               {counties.find((c) => c.id === countyId)?.name}
             </div>
             <p className="text-sm text-slate-600">
-              Use this number for settlement talks. When you’re ready to file, attach FL-342 plus county-specific add-ons (child care receipts, health insurance proof). Essential+ members can save scenarios and auto-fill the forms.
+              Use this number for settlement talks. When you're ready to file, attach FL-342 plus county-specific add-ons (child care receipts, health insurance proof). Essential+ members can save scenarios and auto-fill the forms.
             </p>
           </div>
           <div className="p-5 rounded-2xl border border-rose-100 bg-rose-50/70 space-y-4">
