@@ -250,6 +250,11 @@ export function ReferralProgram({ user }: ReferralProgramProps) {
       icon: '✉️'
     },
     {
+      name: 'Text Message',
+      url: `sms:&body=${encodeURIComponent(`Get expert California divorce guidance with DivorceOS. Use my link for $10 credit: ${referralLink}`)}`,
+      icon: '💬'
+    },
+    {
       name: 'Twitter',
       url: `https://twitter.com/intent/tweet?text=${encodeURIComponent(`Get expert California divorce guidance with DivorceOS. Sign up with my link and get $10 credit! ${referralLink}`)}`,
       icon: '🐦'

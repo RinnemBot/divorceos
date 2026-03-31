@@ -351,6 +351,8 @@ export function ChildSupportEstimator({ initialCountyId }: ChildSupportEstimator
     };
   }, [spousalInputs]);
 
+  const combinedSupport = Math.max(0, estimate.guideline + spousalEstimate.amount);
+
   const handleGrossFieldChange = (parent: ParentKey, field: GrossField, rawValue: string) => {
     const parsed = Math.max(0, Number(rawValue) || 0);
     setGrossInputs((prev) => ({
@@ -828,6 +830,14 @@ export function ChildSupportEstimator({ initialCountyId }: ChildSupportEstimator
               </div>
               {shareMessage && <p className="text-xs text-slate-500">{shareMessage}</p>}
             </div>
+          </div>
+          <div className="p-5 rounded-2xl border border-emerald-200 bg-gradient-to-br from-emerald-50 to-white space-y-2">
+            <div className="flex items-center justify-between text-sm text-emerald-700">
+              <span>Combined monthly (child + spousal)</span>
+              <Badge variant="secondary" className="bg-emerald-100 text-emerald-800 border-0">Preview</Badge>
+            </div>
+            <p className="text-3xl font-bold text-emerald-900">{formatCurrency(combinedSupport)}</p>
+            <p className="text-xs text-emerald-700">Assumes {estimate.payer} also covers the spousal guideline heuristic. Courts can deviate.</p>
           </div>
           <div className="rounded-xl bg-emerald-50 border border-emerald-100 p-4 text-sm text-emerald-800">
             Want to keep a negotiation history or let Maria reference this estimator? Upgrade to Basic to save scenarios and Essential/Plus to link them directly into your filings.
