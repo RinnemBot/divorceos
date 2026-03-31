@@ -4,8 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Star, MessageSquare, ThumbsUp, User, Calendar } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import { Star, MessageSquare, ThumbsUp, Calendar } from 'lucide-react';
+import { toast } from 'sonner';
 import { type User } from '@/services/auth';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -185,7 +185,6 @@ interface ReviewSystemProps {
 }
 
 export function ReviewSystem({ user }: ReviewSystemProps) {
-  const { toast } = useToast();
   const [reviews, setReviews] = useState<Review[]>([]);
   const [averageRating, setAverageRating] = useState({ average: 0, total: 0 });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -197,7 +196,6 @@ export function ReviewSystem({ user }: ReviewSystemProps) {
   const [reviewContent, setReviewContent] = useState('');
   
   const isPaid = user ? isPaidUser(user) : false;
-  const hasReviewed = user ? hasUserReviewed(user.id) : false;
   const userReview = user ? getUserReview(user.id) : null;
   
   useEffect(() => {
@@ -226,8 +224,7 @@ export function ReviewSystem({ user }: ReviewSystemProps) {
     }
     
     if (result.success) {
-      toast({
-        title: userReview ? 'Review Updated!' : 'Review Submitted!',
+      toast.success(userReview ? 'Review Updated!' : 'Review Submitted!', {
         description: 'Thank you for sharing your experience.',
       });
       
@@ -240,10 +237,8 @@ export function ReviewSystem({ user }: ReviewSystemProps) {
       setReviewContent('');
       setIsEditing(false);
     } else {
-      toast({
-        title: 'Error',
+      toast.error('Error', {
         description: result.error,
-        variant: 'destructive'
       });
     }
     
@@ -254,8 +249,7 @@ export function ReviewSystem({ user }: ReviewSystemProps) {
     markReviewHelpful(reviewId);
     setReviews(getAllReviews());
     
-    toast({
-      title: 'Thanks!',
+    toast.success('Thanks!', {
       description: 'Your feedback helps others.',
     });
   };

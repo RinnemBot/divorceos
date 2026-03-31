@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { COUNTY_GUIDES } from '@/data/countyGuides';
 import type { CountyGuide } from '@/data/countyGuides';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,9 +7,19 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { MapPin, Clock, FileCheck2, Info } from 'lucide-react';
 
-export function CountyRoadmap() {
-  const [selectedCountyId, setSelectedCountyId] = useState(COUNTY_GUIDES[0]?.id);
+interface CountyRoadmapProps {
+  initialCountyId?: string;
+}
+
+export function CountyRoadmap({ initialCountyId }: CountyRoadmapProps) {
+  const [selectedCountyId, setSelectedCountyId] = useState(initialCountyId || COUNTY_GUIDES[0]?.id);
   const county = COUNTY_GUIDES.find((c) => c.id === selectedCountyId) as CountyGuide;
+
+  useEffect(() => {
+    if (initialCountyId) {
+      setSelectedCountyId(initialCountyId);
+    }
+  }, [initialCountyId]);
 
   return (
     <Card className="border-emerald-100 shadow-sm">

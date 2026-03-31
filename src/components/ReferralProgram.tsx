@@ -3,7 +3,6 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   Users, 
   Gift, 
@@ -14,9 +13,9 @@ import {
   TrendingUp,
   UserPlus
 } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
-import { authService, type User } from '@/services/auth';
+import { type User } from '@/services/auth';
 import { v4 as uuidv4 } from 'uuid';
+import { toast } from 'sonner';
 
 export interface Referral {
   id: string;
@@ -211,7 +210,6 @@ interface ReferralProgramProps {
 }
 
 export function ReferralProgram({ user }: ReferralProgramProps) {
-  const { toast } = useToast();
   const [copied, setCopied] = useState(false);
   const [referrals, setReferrals] = useState<Referral[]>([]);
   const [stats, setStats] = useState<ReferralStats>({
@@ -234,16 +232,13 @@ export function ReferralProgram({ user }: ReferralProgramProps) {
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
-      toast({
-        title: 'Copied!',
+      toast.success('Copied!', {
         description: `${label} copied to clipboard`,
       });
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      toast({
-        title: 'Failed to copy',
+      toast.error('Failed to copy', {
         description: 'Please try copying manually',
-        variant: 'destructive'
       });
     }
   };

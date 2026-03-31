@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -245,8 +245,12 @@ const parentLabels: Record<ParentKey, string> = {
   parentB: 'Parent B (Respondent)',
 };
 
-export function ChildSupportEstimator() {
-  const [countyId, setCountyId] = useState(counties[0]?.id);
+interface ChildSupportEstimatorProps {
+  initialCountyId?: string;
+}
+
+export function ChildSupportEstimator({ initialCountyId }: ChildSupportEstimatorProps) {
+  const [countyId, setCountyId] = useState(initialCountyId || counties[0]?.id);
   const [parentAIncome, setParentAIncome] = useState(7500);
   const [parentBIncome, setParentBIncome] = useState(4500);
   const [parentATimeShare, setParentATimeShare] = useState(65);
@@ -263,6 +267,12 @@ export function ChildSupportEstimator() {
   const [spousalInputs, setSpousalInputs] = useState<SpousalInputs>(() => initialSpousalInputs(7500, 4500));
   const [shareEmail, setShareEmail] = useState('');
   const [shareMessage, setShareMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (initialCountyId) {
+      setCountyId(initialCountyId);
+    }
+  }, [initialCountyId]);
 
   const advancedSummaries = useMemo(() => ({
     parentA: computeAdvancedSummary(grossInputs.parentA),
