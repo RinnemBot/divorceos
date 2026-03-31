@@ -23,6 +23,21 @@ export interface CountyGuide {
 }
 
 
+export function getCountyGuideIdFromName(countyName?: string | null): string | undefined {
+  if (!countyName) return undefined;
+  const normalized = countyName.trim().toLowerCase();
+  const slug = normalized
+    .replace(/&/g, 'and')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+  const slugMatch = COUNTY_GUIDES.find((guide) => guide.id === slug);
+  if (slugMatch) {
+    return slugMatch.id;
+  }
+  return COUNTY_GUIDES.find((guide) => guide.name.toLowerCase().includes(normalized))?.id;
+}
+
+
 export const COUNTY_GUIDES: CountyGuide[] = [
   {
     id: 'los-angeles',

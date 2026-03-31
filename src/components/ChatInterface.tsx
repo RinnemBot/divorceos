@@ -15,10 +15,14 @@ import {
   Trash2,
   ChevronDown,
   ChevronUp,
-  Sparkles
+  Sparkles,
+  Paperclip,
+  Image as ImageIcon,
+  FileText as FileTextIcon,
+  XCircle
 } from 'lucide-react';
 import { generateAIResponse, generateWelcomeMessage } from '@/services/api';
-import { authService, type User, type ChatSession, type ChatMessage } from '@/services/auth';
+import { authService, type User, type ChatSession, type ChatMessage, type ChatAttachment } from '@/services/auth';
 import { CALIFORNIA_DIVORCE_TOPICS } from '@/services/personality';
 import { v4 as uuidv4 } from 'uuid';
 import { SUBSCRIPTION_LIMITS } from '@/services/auth';
@@ -71,9 +75,11 @@ function renderMessageContent(content: string): string | (string | JSX.Element)[
 
 interface ChatInterfaceProps {
   currentUser: User | null;
+  prefillPrompt?: string | null;
+  onPrefillConsumed?: () => void;
 }
 
-export function ChatInterface({ currentUser }: ChatInterfaceProps) {
+export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }: ChatInterfaceProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -83,6 +89,77 @@ export function ChatInterface({ currentUser }: ChatInterfaceProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const shouldAutoScrollRef = useRef(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+  type ComposerAttachment = ChatAttachment & { previewUrl?: string };
+
+  const [attachments, setAttachments] = useState<ComposerAttachment[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const quickPrompts = [
+    'Draft a parenting plan for 50/50 custody',
+    'Walk me through dividing our house + retirement',
+    'Prep me for a child support hearing',
+    'What do I file after we agree to everything?'
+  ];
+  const maxAttachments = 4;
+
+  const formatFileSize = (bytes: number) => {
+    if (!bytes) return '0 KB';
+    if (bytes < 1024) return `${bytes} B`;
+    if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} KB`;
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  };
+
+  const releaseAttachmentPreview = (attachment: ComposerAttachment) => {
+    if (attachment.previewUrl) {
+      URL.revokeObjectURL(attachment.previewUrl);
+    }
+  };
+
+  const handleAttachmentSelection = (fileList: FileList | null) => {
+    if (!fileList) return;
+    const files = Array.from(fileList);
+    const availableSlots = maxAttachments - attachments.length;
+    if (availableSlots <= 0) return;
+    const accepted = files.slice(0, availableSlots).map((file) => {
+      const isImage = file.type.startsWith('image/');
+      const attachmentType: ChatAttachment['type'] = isImage ? 'image' : 'document';
+      return {
+        id: uuidv4(),
+        name: file.name,
+        type: attachmentType,
+        sizeLabel: formatFileSize(file.size),
+        previewUrl: isImage ? URL.createObjectURL(file) : undefined,
+      };
+    });
+    if (accepted.length) {
+      setAttachments((prev) => [...prev, ...accepted]);
+    }
+  };
+
+  const handleRemoveAttachment = (id: string) => {
+    setAttachments((prev) => {
+      const next = prev.filter((attachment) => {
+        if (attachment.id === id) {
+          releaseAttachmentPreview(attachment);
+          return false;
+        }
+        return true;
+      });
+      return next;
+    });
+  };
+
+  const clearAttachments = () => {
+    attachments.forEach(releaseAttachmentPreview);
+    setAttachments([]);
+  };
+
+  const triggerAttachmentPicker = (mode: 'image' | 'document') => {
+    if (!fileInputRef.current) return;
+    fileInputRef.current.value = '';
+    fileInputRef.current.accept = mode === 'image' ? 'image/*' : '.pdf,.doc,.docx,.txt,.rtf,.xlsx,.csv';
+    fileInputRef.current.click();
+  };
 
   // Load chat sessions when user changes
   useEffect(() => {
@@ -122,6 +199,14 @@ export function ChatInterface({ currentUser }: ChatInterfaceProps) {
       shouldAutoScrollRef.current = false;
     }
   }, [messages]);
+
+  useEffect(() => {
+    if (prefillPrompt && prefillPrompt.trim()) {
+      setInput(prefillPrompt);
+      inputRef.current?.focus();
+      onPrefillConsumed?.();
+    }
+  }, [prefillPrompt, onPrefillConsumed]);
 
   const startNewChat = () => {
     const userName = currentUser?.name || currentUser?.email?.split('@')[0] || 'Guest';
@@ -186,9 +271,8 @@ export function ChatInterface({ currentUser }: ChatInterfaceProps) {
   };
 
   const handleSend = async () => {
-    if (!input.trim() || isLoading) return;
+    if ((input.trim().length === 0 && attachments.length === 0) || isLoading) return;
     
-    // Check if user can chat (for non-guest users)
     if (currentUser) {
       const canChat = authService.canUserChat(currentUser);
       if (!canChat.allowed) {
@@ -204,17 +288,32 @@ export function ChatInterface({ currentUser }: ChatInterfaceProps) {
       }
     }
     
+    const attachmentSummary = attachments.length
+      ? attachments
+          .map((file, index) => `Attachment ${index + 1}: ${file.name}${file.sizeLabel ? ` (${file.sizeLabel})` : ''} [${file.type === 'image' ? 'Image' : 'Document'}]`)
+          .join('\n')
+      : '';
+    const baseContent = input.trim();
+    const composedContent = attachmentSummary
+      ? [baseContent, `[Attachments]\n${attachmentSummary}`].filter(Boolean).join('\n\n')
+      : baseContent;
+    const attachmentMeta: ChatAttachment[] = attachments.length
+      ? attachments.map(({ id, name, type, sizeLabel }) => ({ id, name, type, sizeLabel }))
+      : [];
+
     const userMessage: ChatMessage = {
       id: uuidv4(),
       role: 'user',
-      content: input.trim(),
+      content: composedContent,
       timestamp: new Date().toISOString(),
+      attachments: attachmentMeta.length ? attachmentMeta : undefined,
     };
     
     const updatedMessages = [...messages, userMessage];
     shouldAutoScrollRef.current = true;
     setMessages(updatedMessages);
     setInput('');
+    clearAttachments();
     setIsLoading(true);
     
     try {
@@ -284,7 +383,7 @@ export function ChatInterface({ currentUser }: ChatInterfaceProps) {
   const remainingChats = getRemainingChats();
 
   return (
-    <Card className="h-[600px] flex flex-col">
+    <Card className="min-h-[780px] lg:min-h-[820px] flex flex-col border-2 border-emerald-200 shadow-[0_25px_70px_rgba(16,185,129,0.18)] bg-white rounded-2xl">
       <CardHeader className="border-b bg-emerald-700 text-white py-3">
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2 text-lg font-semibold">
@@ -332,6 +431,21 @@ export function ChatInterface({ currentUser }: ChatInterfaceProps) {
               </>
             )}
           </div>
+        </div>
+        <div className="mt-3 flex flex-wrap gap-2">
+          {quickPrompts.map((prompt) => (
+            <button
+              key={prompt}
+              type="button"
+              onClick={() => {
+                setInput(prompt);
+                inputRef.current?.focus();
+              }}
+              className="text-xs bg-white/15 hover:bg-white/25 text-white px-3 py-1 rounded-full transition-colors"
+            >
+              {prompt}
+            </button>
+          ))}
         </div>
       </CardHeader>
       
@@ -413,7 +527,28 @@ export function ChatInterface({ currentUser }: ChatInterfaceProps) {
                 <div className="text-sm whitespace-pre-wrap">
                   {renderMessageContent(message.content)}
                 </div>
-                <div className={`text-xs mt-1 ${message.role === 'user' ? 'text-emerald-200' : 'text-gray-400'}`}>
+                {message.attachments && message.attachments.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {message.attachments.map((attachment) => (
+                      <span
+                        key={attachment.id}
+                        className={`inline-flex items-center gap-2 text-xs px-3 py-1 rounded-full border ${
+                          message.role === 'user'
+                            ? 'border-white/30 text-white bg-white/10'
+                            : 'border-slate-200 text-slate-600 bg-slate-50'
+                        }`}
+                      >
+                        {attachment.type === 'image' ? (
+                          <ImageIcon className="h-3.5 w-3.5" />
+                        ) : (
+                          <FileTextIcon className="h-3.5 w-3.5" />
+                        )}
+                        <span className="truncate max-w-[120px]">{attachment.name}</span>
+                      </span>
+                    ))}
+                  </div>
+                )}
+                <div className={`text-xs mt-2 ${message.role === 'user' ? 'text-emerald-200' : 'text-gray-400'}`}>
                   {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </div>
               </div>
@@ -439,6 +574,13 @@ export function ChatInterface({ currentUser }: ChatInterfaceProps) {
       </div>
       
       <div className="p-4 border-t bg-white">
+        <input
+          ref={fileInputRef}
+          type="file"
+          multiple
+          className="hidden"
+          onChange={(event) => handleAttachmentSelection(event.target.files)}
+        />
         {currentUser && remainingChats <= 3 && remainingChats !== Infinity && remainingChats > 0 && (
           <Alert className="mb-3 bg-amber-50 border-amber-200">
             <AlertDescription className="text-amber-700 text-sm">
@@ -447,19 +589,99 @@ export function ChatInterface({ currentUser }: ChatInterfaceProps) {
             </AlertDescription>
           </Alert>
         )}
+
+        {attachments.length > 0 && (
+          <div className="mb-3">
+            <div className="flex items-center justify-between text-xs text-slate-500 mb-2">
+              <span>Attachments ({attachments.length}/{maxAttachments})</span>
+              <button
+                type="button"
+                onClick={clearAttachments}
+                className="text-slate-400 hover:text-slate-600"
+              >
+                Clear all
+              </button>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {attachments.map((attachment) => (
+                <div
+                  key={attachment.id}
+                  className="flex items-center gap-2 bg-slate-100 border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-600"
+                >
+                  {attachment.previewUrl ? (
+                    <img
+                      src={attachment.previewUrl}
+                      alt={attachment.name}
+                      className="h-10 w-10 rounded-md object-cover border border-white"
+                    />
+                  ) : (
+                    <div className="h-10 w-10 rounded-md bg-white flex items-center justify-center border">
+                      {attachment.type === 'image' ? (
+                        <ImageIcon className="h-4 w-4 text-emerald-600" />
+                      ) : (
+                        <FileTextIcon className="h-4 w-4 text-emerald-600" />
+                      )}
+                    </div>
+                  )}
+                  <div className="max-w-[140px]">
+                    <p className="font-medium text-slate-700 truncate">{attachment.name}</p>
+                    {attachment.sizeLabel && (
+                      <p className="text-[11px] text-slate-500">{attachment.sizeLabel}</p>
+                    )}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveAttachment(attachment.id)}
+                    className="text-slate-400 hover:text-slate-600"
+                  >
+                    <XCircle className="h-4 w-4" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between mb-3">
+          <div className="flex items-center gap-2 text-sm text-slate-500">
+            <span>Share supporting files:</span>
+            <div className="flex gap-1">
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="text-slate-600 hover:text-emerald-700"
+                onClick={() => triggerAttachmentPicker('document')}
+              >
+                <Paperclip className="h-4 w-4" />
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="text-slate-600 hover:text-emerald-700"
+                onClick={() => triggerAttachmentPicker('image')}
+              >
+                <ImageIcon className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+          <span className="text-xs text-slate-400">{attachments.length}/{maxAttachments} attachments</span>
+        </div>
         
         <div className="flex gap-2">
           <Input
+            ref={inputRef}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder="Ask Maria about your divorce questions..."
+            placeholder="Ask Maria a question or describe the files you're sharing..."
             className="flex-1"
             disabled={isLoading}
           />
           <Button
             onClick={handleSend}
-            disabled={!input.trim() || isLoading}
+            disabled={((!input.trim() && attachments.length === 0) || isLoading)}
             className="bg-emerald-700 hover:bg-emerald-800"
           >
             {isLoading ? (

@@ -19,10 +19,10 @@ import {
 import { ChatInterface } from '@/components/ChatInterface';
 import { AuthModal } from '@/components/AuthModal';
 import { authService, type User } from '@/services/auth';
-import { CALIFORNIA_DIVORCE_TOPICS } from '@/services/personality';
-import { Link } from 'react-router-dom';
+import { CALIFORNIA_DIVORCE_TOPICS, type DivorceTopic } from '@/services/personality';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { CountyRoadmap } from '@/components/CountyRoadmap';
-import { ChildSupportEstimator } from '@/components/ChildSupportEstimator';
+import { getCountyGuideIdFromName } from '@/data/countyGuides';
 
 const features = [
   {
@@ -59,16 +59,40 @@ const topicIcons: Record<string, React.ElementType> = {
 export function HomePage() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [topicPrompt, setTopicPrompt] = useState<string>('');
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const user = authService.getCurrentUser();
     setCurrentUser(user);
   }, []);
 
+  useEffect(() => {
+    const state = (location.state as { focusChat?: boolean } | null);
+    if (state?.focusChat) {
+      document.getElementById('chat')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location, navigate]);
+
   const handleAuthSuccess = (user: User) => {
     setCurrentUser(user);
     setShowAuthModal(false);
   };
+
+  const handleTopicSelect = (topic: DivorceTopic) => {
+    const prompt = topic.prompt ?? `Tell me about ${topic.title.toLowerCase()}`;
+    setTopicPrompt(prompt);
+    if (typeof document !== 'undefined') {
+      document.getElementById('chat')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    if (!currentUser) {
+      setShowAuthModal(true);
+    }
+  };
+
+  const profileCountyId = getCountyGuideIdFromName(currentUser?.profile?.county);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -214,7 +238,19 @@ export function HomePage() {
             {CALIFORNIA_DIVORCE_TOPICS.map((topic) => {
               const Icon = topicIcons[topic.id] || Scale;
               return (
-                <Card key={topic.id} className="hover:shadow-lg transition-shadow cursor-pointer group">
+                <Card
+                  key={topic.id}
+                  onClick={() => handleTopicSelect(topic)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      handleTopicSelect(topic);
+                    }
+                  }}
+                  role="button"
+                  tabIndex={0}
+                  className="hover:shadow-lg transition-shadow cursor-pointer group focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                >
                   <CardContent className="p-6">
                     <div className="flex items-start gap-4">
                       <div className="w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center flex-shrink-0 group-hover:bg-emerald-200 transition-colors">
@@ -236,10 +272,14 @@ export function HomePage() {
       {/* Chat Section */}
       <section id="chat" className="py-16 bg-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2">
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,2.2fr)_minmax(0,1fr)]">
+            <div className="min-h-full">
               {currentUser ? (
-                <ChatInterface currentUser={currentUser} />
+                <ChatInterface
+                  currentUser={currentUser}
+                  prefillPrompt={topicPrompt}
+                  onPrefillConsumed={() => setTopicPrompt('')}
+                />
               ) : (
                 <div className="bg-white border border-slate-200 rounded-xl p-8 text-center">
                   <h3 className="text-xl font-semibold text-slate-900 mb-3">Sign in to chat with Maria</h3>
@@ -322,16 +362,40 @@ export function HomePage() {
       </section>
 
       {/* County Roadmap Section */}
-      <section className="py-16 bg-white">
+      <section id="county-roadmap" className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <CountyRoadmap />
+          <CountyRoadmap initialCountyId={profileCountyId} />
         </div>
       </section>
 
-      {/* Child Support Estimator */}
-      <section className="py-16 bg-gray-50">
+      {/* Support Tools CTA */}
+      <section className="py-16 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <ChildSupportEstimator />
+          <div className="grid gap-8 lg:grid-cols-[1.4fr,1fr]">
+            <div>
+              <p className="text-sm uppercase tracking-[0.2em] text-slate-300 mb-3">Support planning</p>
+              <h2 className="text-3xl font-bold leading-tight mb-4">Need deeper child & spousal support modeling?</h2>
+              <p className="text-slate-200 mb-6">We carved out a full page for the estimator so you can live inside the numbers without scrolling the entire homepage. Advanced overrides, multi-child factors, and sharable summaries are all there.</p>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Button asChild size="lg" className="bg-white text-slate-900 hover:bg-slate-100">
+                  <Link to="/support-tools">Open Support Tools</Link>
+                </Button>
+                <Button asChild variant="outline" size="lg" className="border-white text-white hover:bg-white/10">
+                  <Link to="/forms">Prep the FL-342 packet</Link>
+                </Button>
+              </div>
+            </div>
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-6 space-y-4">
+              <p className="text-sm text-slate-200">What's inside the Support Tools page:</p>
+              <ul className="space-y-2 text-slate-100 text-sm">
+                <li>• Quick + Advanced modes with instant switching</li>
+                <li>• Parent time-share slider tied to k-factor math</li>
+                <li>• Spousal-support heuristic synced to child support</li>
+                <li>• County-specific notes + reminders</li>
+              </ul>
+              <p className="text-xs text-slate-300">Done-For-You members can ask Maria to read the latest scenario before drafting messages or disclosures.</p>
+            </div>
+          </div>
         </div>
       </section>
 

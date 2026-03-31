@@ -10,6 +10,7 @@ export interface DivorceTopic {
   title: string;
   description: string;
   icon: string;
+  prompt?: string;
 }
 
 // Maria's personality - warm, knowledgeable, like a trusted friend who's a lawyer
@@ -100,36 +101,42 @@ export const CALIFORNIA_DIVORCE_TOPICS: DivorceTopic[] = [
     title: 'Starting a Divorce',
     description: 'Filing requirements, residency, and initial steps',
     icon: 'FileText',
+    prompt: 'Can you walk me through the steps to start a divorce in California?',
   },
   {
     id: 'property',
     title: 'Property Division',
     description: 'Community property, separate property, and asset division',
     icon: 'Home',
+    prompt: 'How does California divide property and what counts as community property?',
   },
   {
     id: 'support',
     title: 'Child & Spousal Support',
     description: 'Support calculations, modifications, and enforcement',
     icon: 'DollarSign',
+    prompt: 'How are child support and spousal support calculated in California?',
   },
   {
     id: 'custody',
     title: 'Child Custody',
     description: 'Legal custody, physical custody, and parenting plans',
     icon: 'Users',
+    prompt: 'What factors do California courts look at for child custody?',
   },
   {
     id: 'domestic-violence',
     title: 'Domestic Violence',
     description: 'Restraining orders and protective measures',
     icon: 'Shield',
+    prompt: 'I need help understanding restraining orders in a domestic violence situation.',
   },
   {
     id: 'mediation',
     title: 'Mediation & Settlement',
     description: 'Alternative dispute resolution options',
     icon: 'Handshake',
+    prompt: 'Can you explain how mediation works in a California divorce?',
   },
 ];
 

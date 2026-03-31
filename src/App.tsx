@@ -5,7 +5,9 @@ import { Footer } from '@/components/Footer';
 import { HomePage } from '@/pages/HomePage';
 import { PricingPage } from '@/pages/PricingPage';
 import { FormsPage } from '@/pages/FormsPage';
+import { SupportToolsPage } from '@/pages/SupportToolsPage';
 import { ProfilePage } from '@/pages/ProfilePage';
+import { DashboardPage } from '@/pages/DashboardPage';
 import { ConfirmEmailPage } from '@/pages/ConfirmEmailPage';
 import { AuthModal } from '@/components/AuthModal';
 import { authService, type User } from '@/services/auth';
@@ -57,7 +59,9 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/pricing" element={<PricingPage />} />
             <Route path="/forms" element={<FormsPage />} />
+            <Route path="/support-tools" element={<SupportToolsPage />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/confirm-email" element={<ConfirmEmailPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

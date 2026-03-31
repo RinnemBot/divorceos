@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -27,6 +27,7 @@ interface NavigationProps {
 
 const navLinks = [
   { path: '/', label: 'Home' },
+  { path: '/support-tools', label: 'Support Tools' },
   { path: '/forms', label: 'Forms' },
   { path: '/pricing', label: 'Pricing' },
 ];
@@ -34,10 +35,19 @@ const navLinks = [
 export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     authService.logout();
     onLogout();
+  };
+
+  const handleChatCta = () => {
+    if (location.pathname === '/') {
+      document.getElementById('chat')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
+    navigate('/', { state: { focusChat: true } });
   };
 
   return (
@@ -75,6 +85,13 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
 
           {/* User Actions */}
           <div className="hidden md:flex items-center gap-3">
+            <Button
+              variant="outline"
+              className="border-emerald-600 text-emerald-700 hover:bg-emerald-50"
+              onClick={handleChatCta}
+            >
+              Talk to Maria
+            </Button>
             {currentUser ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -159,7 +176,18 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
                 {link.label}
               </Link>
             ))}
-            
+
+            <Button
+              variant="outline"
+              className="w-full border-emerald-600 text-emerald-700 hover:bg-emerald-50"
+              onClick={() => {
+                handleChatCta();
+                setIsMobileMenuOpen(false);
+              }}
+            >
+              Talk to Maria
+            </Button>
+
             <div className="border-t border-gray-200 pt-3 mt-3">
               {currentUser ? (
                 <>

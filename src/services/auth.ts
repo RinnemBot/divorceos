@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { sendConfirmationEmail, sendAdminSignupNotification, isTokenValid, getConfirmationByToken, removeConfirmation } from './email';
-import { trackReferralSignup, completeReferralReward, getPendingReferralCode, clearPendingReferralCode } from '@/components/ReferralProgram';
+import { trackReferralSignup, getPendingReferralCode, clearPendingReferralCode } from '@/components/ReferralProgram';
 
 export interface UserProfile {
   firstName?: string;
@@ -26,11 +26,19 @@ export interface User {
   emailVerificationToken?: string;
 }
 
+export interface ChatAttachment {
+  id: string;
+  name: string;
+  type: 'image' | 'document';
+  sizeLabel?: string;
+}
+
 export interface ChatMessage {
   id: string;
   role: 'user' | 'assistant';
   content: string;
   timestamp: string;
+  attachments?: ChatAttachment[];
 }
 
 export interface ChatSession {
