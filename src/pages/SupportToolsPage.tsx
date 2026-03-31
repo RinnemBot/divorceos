@@ -91,7 +91,7 @@ export function SupportToolsPage() {
 
       <section id="estimator" className="py-10 pb-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <ChildSupportEstimator initialCountyId={profileCountyId} />
+          <ChildSupportEstimator initialCountyId={profileCountyId} currentUserId={currentUser?.id} />
         </div>
       </section>
     </div>

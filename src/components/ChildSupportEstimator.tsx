@@ -3,12 +3,14 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
+import { toast } from 'sonner';
 import { COUNTY_GUIDES } from '@/data/countyGuides';
 import { Slider } from '@/components/ui/slider';
-import { Info, Calculator, Zap, Settings2 } from 'lucide-react';
+import { Info, Calculator, Zap, Settings2, Save } from 'lucide-react';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
+import { saveSupportScenario } from '@/services/savedFiles';
 
 const counties = COUNTY_GUIDES.map((c) => ({ id: c.id, name: c.name }));
 
@@ -247,9 +249,10 @@ const parentLabels: Record<ParentKey, string> = {
 
 interface ChildSupportEstimatorProps {
   initialCountyId?: string;
+  currentUserId?: string;
 }
 
-export function ChildSupportEstimator({ initialCountyId }: ChildSupportEstimatorProps) {
+export function ChildSupportEstimator({ initialCountyId, currentUserId }: ChildSupportEstimatorProps) {
   const [countyId, setCountyId] = useState(initialCountyId || counties[0]?.id);
   const [parentAIncome, setParentAIncome] = useState(7500);
   const [parentBIncome, setParentBIncome] = useState(4500);
@@ -352,6 +355,39 @@ export function ChildSupportEstimator({ initialCountyId }: ChildSupportEstimator
   }, [spousalInputs]);
 
   const combinedSupport = Math.max(0, estimate.guideline + spousalEstimate.amount);
+
+  const handleSaveScenario = () => {
+    if (!currentUserId) {
+      toast.error('Sign in to save scenarios', {
+        description: 'Create an account or sign in to store runs in your case file.',
+      });
+      return;
+    }
+    const defaultTitle = `Support run ${new Date().toLocaleDateString()}`;
+    const title = window.prompt('Name this support scenario', defaultTitle);
+    if (!title) return;
+    saveSupportScenario(currentUserId, {
+      title: title.trim(),
+      childSupport: Number(estimate.guideline.toFixed(2)),
+      spousalSupport: Number(spousalEstimate.amount.toFixed(2)),
+      combinedSupport: Number(combinedSupport.toFixed(2)),
+      estimatePayer: estimate.payer,
+      snapshot: {
+        parentAIncome,
+        parentBIncome,
+        parentATimeShare,
+        childrenCount,
+        childcare,
+        medical,
+        countyId,
+        countyName: countyId ? COUNTY_GUIDES.find((guide) => guide.id === countyId)?.name : undefined,
+        mode,
+      },
+    });
+    toast.success('Scenario saved', {
+      description: 'Profile → Saved Files has the print-ready version.',
+    });
+  };
 
   const handleGrossFieldChange = (parent: ParentKey, field: GrossField, rawValue: string) => {
     const parsed = Math.max(0, Number(rawValue) || 0);
@@ -711,11 +747,24 @@ export function ChildSupportEstimator({ initialCountyId }: ChildSupportEstimator
         </div>
         <div className="space-y-4">
           <div className="p-5 rounded-2xl border border-blue-100 bg-gradient-to-br from-blue-50 to-white">
-            <div className="flex items-center justify-between text-sm font-semibold text-blue-700 mb-2">
-              <span className="flex items-center gap-2">
+            <div className="flex flex-col gap-3 text-sm text-blue-700 mb-2 sm:flex-row sm:items-center sm:justify-between">
+              <span className="flex items-center gap-2 font-semibold">
                 <Calculator className="h-4 w-4" /> Guideline estimate
               </span>
-              <Badge variant="outline">{mode === 'advanced' ? 'Advanced gross mode' : 'Quick net mode'}</Badge>
+              <div className="flex items-center gap-2">
+                <Badge variant="outline">{mode === 'advanced' ? 'Advanced gross mode' : 'Quick net mode'}</Badge>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={handleSaveScenario}
+                  disabled={!currentUserId}
+                  title={currentUserId ? 'Save this run to your case file' : 'Sign in to save scenarios'}
+                  className="border-blue-200 text-blue-700 hover:bg-blue-50"
+                >
+                  <Save className="h-3.5 w-3.5 mr-1" /> Save run
+                </Button>
+              </div>
             </div>
             <p className="text-4xl font-bold text-blue-900">{formatCurrency(estimate.guideline)}</p>
             <p className="text-sm text-blue-600">{estimate.payer} would pay this amount each month (before arrears or credits).</p>
