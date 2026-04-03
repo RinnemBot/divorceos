@@ -137,6 +137,24 @@ export const FORM_GUIDANCE: Record<string, FormGuidanceEntry> = {
 - Serve one copy on the employer (certified mail works) and another on the other party; keep proof of service.
 - The employer usually has 10 days to start withholding. Follow up with the local child support agency if nothing happens.`,
   },
+  'fl-300': {
+    basic: `• Use FL-300 whenever you want the court to make or change temporary orders (custody, visitation, support, property, fees).
+• Check every box that applies and reference attachments (FL-311 for parenting time, FL-150 for support, FL-105 for UCCJEA info).
+• Attach a declaration (FL-300(A)) that explains the facts supporting your request. Courts won’t rule on vague or unsupported boxes.
+• Serve the other party and file proofs on time—16 court days before the hearing for mailed service (longer if out of state).`,
+    detailed: `**FL-300 (Request for Order) walkthrough**
+1. **Caption & hearing info** – match the case caption exactly. If you already have a hearing date from the clerk, fill it in; otherwise leave blank.
+2. **Orders requested (Items 1–5)** – check every type of relief you want (custody, visitation, child support, spousal support, attorney fees, property control). Use the “Other orders” line for unique requests (travel restrictions, therapy, etc.).
+3. **Emergency (ex parte) orders** – only check Item 6 if there’s immediate harm; be prepared to attach FL-305 and a notice declaration per local rule.
+4. **Supporting declaration (FL-300(A))** – tell the story in plain language: What changed? Why is the current order unworkable? Tie every fact to the box you checked.
+5. **Attachments** –
+   • Custody/visitation → add FL-311 (parenting schedule) and FL-105 if minors were not listed before.
+   • Support → attach FL-150 plus guideline numbers (DissoMaster) if available.
+   • Property/fees → explain the assets, debts, or § 2030 fee factors.
+6. **Sign + copy** – sign under penalty of perjury, make two copies, and file with the clerk (fee is $60 unless a waiver is on file).
+7. **Service** – personal service is safest; if mailing, count backward 16 court days (add 5 calendar days for in-state mail, 10 for out-of-state). Always file FL-330/FL-335 proofs.
+8. **Hearing prep** – bring originals + copies of exhibits and the proof of service. If the other party doesn’t respond, you can ask the judge to adopt your proposed order (FL-340/FL-341/FL-342/FL-343).`,
+  },
   'fl-115': {
     basic: `• Proof of Service of Summons—file after the Respondent is personally served.
 • Your process server (not you) must complete and sign it.

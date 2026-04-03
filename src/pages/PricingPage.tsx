@@ -46,13 +46,13 @@ const pricingTiers: PricingTier[] = [
     name: 'Basic',
     monthlyPrice: 20,
     annualPrice: 200,
-    description: 'AI guidance for your divorce journey',
+    description: 'AI guidance plus concierge prep for your county',
     features: [
       '20 AI chats per day',
       'AI-generated responses 24/7',
       'Private conversation history',
       'Access to all blank court forms',
-      'Basic form guidance',
+      'County concierge roadmaps + filing prep checklists',
     ],
     buttonText: 'Start Basic Plan',
     buttonVariant: 'default',
@@ -63,7 +63,7 @@ const pricingTiers: PricingTier[] = [
     name: 'Essential',
     monthlyPrice: 49,
     annualPrice: 490,
-    description: 'Comprehensive support for your divorce',
+    description: 'Comprehensive support with in-house filings',
     features: [
       'Unlimited AI chats',
       'AI-generated responses 24/7',
@@ -72,6 +72,7 @@ const pricingTiers: PricingTier[] = [
       'Detailed form guidance',
       'Priority AI responses',
       'Case law references',
+      'In-house concierge e-filing for supported counties (1 active case)',
     ],
     buttonText: 'Start Essential Plan',
     buttonVariant: 'outline',
@@ -81,7 +82,7 @@ const pricingTiers: PricingTier[] = [
     name: 'Plus',
     monthlyPrice: 99,
     annualPrice: 990,
-    description: 'Advanced features for complex cases',
+    description: 'Advanced strategy with white-glove concierge filings',
     features: [
       'Unlimited AI chats',
       'AI-generated responses 24/7',
@@ -92,6 +93,7 @@ const pricingTiers: PricingTier[] = [
       'Case law references',
       'Document analysis',
       'Strategy suggestions',
+      'Priority concierge filings + process server coordination',
     ],
     buttonText: 'Start Plus Plan',
     buttonVariant: 'outline',
@@ -101,7 +103,7 @@ const pricingTiers: PricingTier[] = [
     name: 'Done-For-You',
     monthlyPrice: 299,
     annualPrice: 2990,
-    description: 'Maximum support throughout your divorce',
+    description: 'Maximum support with full-service filings',
     features: [
       'Unlimited AI chats',
       'AI-generated responses 24/7',
@@ -114,6 +116,7 @@ const pricingTiers: PricingTier[] = [
       'Strategy suggestions',
       'Priority support queue',
       'Custom document templates',
+      'Full-service concierge filings, service of process, and follow-up',
     ],
     buttonText: 'Start Done-For-You',
     buttonVariant: 'outline',
@@ -191,7 +194,7 @@ export function PricingPage() {
           </h1>
           <p className="text-lg text-slate-600 max-w-2xl mx-auto">
             Choose the plan that fits your needs. All plans include access to our 
-            comprehensive California divorce form library.
+            comprehensive California divorce form library, and paid tiers now add our in-house concierge filings across 17 counties.
           </p>
           
           {currentUser && (

@@ -29,6 +29,7 @@ const navLinks = [
   { path: '/', label: 'Home' },
   { path: '/support-tools', label: 'Support Tools' },
   { path: '/forms', label: 'Forms' },
+  { path: '/concierge', label: 'Concierge' },
   { path: '/pricing', label: 'Pricing' },
 ];
 
@@ -73,7 +74,7 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
                 key={link.path}
                 to={link.path}
                 className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                  location.pathname === link.path
+                  (link.path === '/' ? location.pathname === '/' : location.pathname.startsWith(link.path))
                     ? 'bg-emerald-100 text-emerald-800'
                     : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
                 }`}
@@ -168,7 +169,7 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
                 to={link.path}
                 onClick={() => setIsMobileMenuOpen(false)}
                 className={`block px-3 py-2 rounded-md text-base font-medium ${
-                  location.pathname === link.path
+                  (link.path === '/' ? location.pathname === '/' : location.pathname.startsWith(link.path))
                     ? 'bg-emerald-100 text-emerald-800'
                     : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
                 }`}

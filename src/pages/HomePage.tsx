@@ -21,8 +21,6 @@ import { AuthModal } from '@/components/AuthModal';
 import { authService, type User } from '@/services/auth';
 import { CALIFORNIA_DIVORCE_TOPICS, type DivorceTopic } from '@/services/personality';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { CountyRoadmap } from '@/components/CountyRoadmap';
-import { getCountyGuideIdFromName } from '@/data/countyGuides';
 
 const features = [
   {
@@ -91,8 +89,6 @@ export function HomePage() {
       setShowAuthModal(true);
     }
   };
-
-  const profileCountyId = getCountyGuideIdFromName(currentUser?.profile?.county);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -218,6 +214,78 @@ export function HomePage() {
                 </CardContent>
               </Card>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Concierge + Filing Section */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-10 lg:grid-cols-[1.2fr,0.8fr] items-center">
+            <div>
+              <p className="text-sm uppercase tracking-[0.2em] text-emerald-600 font-semibold mb-3">
+                County concierge + filings
+              </p>
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                In-house filings for the counties you actually need
+              </h2>
+              <p className="text-lg text-gray-600 mb-6">
+                Our concierge team now covers the entire Central Valley, Sacramento corridor, and the north-state circuit. 
+                Paid plans include human-reviewed packets, e-filing (or drop-box runs when required), and clerk rejection monitoring so you don&apos;t have to babysit submissions.
+              </p>
+              <ul className="space-y-3 text-gray-700 mb-8">
+                <li className="flex items-start gap-3">
+                  <CheckCircle className="h-5 w-5 text-emerald-600 mt-0.5" />
+                  <span>17 counties live on the concierge map with filing method, local cover sheets, and service rules baked in.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <CheckCircle className="h-5 w-5 text-emerald-600 mt-0.5" />
+                  <span>Essential+ tiers unlock in-house e-filing—our staff assembles, uploads, and chases clerk approvals while you stay in the loop.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <CheckCircle className="h-5 w-5 text-emerald-600 mt-0.5" />
+                  <span>Plus and Done-For-You add white-glove extras like process server coordination, return-mail tracking, and rejection escalation.</span>
+                </li>
+              </ul>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Link 
+                  to="/concierge"
+                  className="inline-flex items-center justify-center px-6 py-3 bg-emerald-700 text-white font-semibold rounded-lg hover:bg-emerald-800 transition-colors"
+                >
+                  Explore concierge counties
+                </Link>
+                <Link 
+                  to="/pricing"
+                  className="inline-flex items-center justify-center px-6 py-3 border-2 border-emerald-700 text-emerald-700 font-semibold rounded-lg hover:bg-emerald-50 transition-colors"
+                >
+                  Compare plan coverage
+                </Link>
+              </div>
+            </div>
+
+            <div className="grid gap-4">
+              {[ 
+                {
+                  title: 'Statewide coverage',
+                  body: 'Fresno to Lake County (and every county in between) lives inside the concierge picker with clerk-ready checklists.',
+                },
+                {
+                  title: 'We click submit',
+                  body: 'Essential tier and above include staff-assembled, in-house e-filings or drop-box runs when the county still requires paper.',
+                },
+                {
+                  title: 'Follow-through included',
+                  body: 'We monitor rejection queues, escalate to supervisors, and drop updated packets back into your dashboard the moment they are stamped.',
+                },
+              ].map((card) => (
+                <Card key={card.title} className="border border-emerald-100 shadow-sm">
+                  <CardContent className="p-5">
+                    <p className="text-sm font-semibold text-emerald-600 mb-1">{card.title}</p>
+                    <p className="text-sm text-gray-600">{card.body}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -358,13 +426,6 @@ export function HomePage() {
               </Card>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* County Roadmap Section */}
-      <section id="county-roadmap" className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <CountyRoadmap initialCountyId={profileCountyId} />
         </div>
       </section>
 
