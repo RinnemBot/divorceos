@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { CountyRoadmap } from '@/components/CountyRoadmap';
 import { COUNTY_GUIDES, type CountyGuide } from '@/data/countyGuides';
 import { COURT_FORMS, type CourtForm } from '@/data/forms';
@@ -20,20 +20,34 @@ function getCountyFromParams(countyId?: string): CountyGuide {
 
 export function CountyConciergePage() {
   const { countyId } = useParams<{ countyId?: string }>();
-  const county = useMemo(() => getCountyFromParams(countyId), [countyId]);
+  const navigate = useNavigate();
+  const county = useMemo(() => {
+    if (!countyId) return null;
+    return getCountyFromParams(countyId);
+  }, [countyId]);
 
   const packetForms = useMemo(() => {
-    if (!county.packetFormIds?.length) return [] as CourtForm[];
+    if (!county?.packetFormIds?.length) return [] as CourtForm[];
     return county.packetFormIds
       .map((formId) => COURT_FORMS.find((form) => form.id === formId))
       .filter((form): form is CourtForm => Boolean(form));
   }, [county]);
 
-  const shareUrl = typeof window !== 'undefined'
-    ? `${window.location.origin}/concierge/${county.id}`
-    : `/concierge/${county.id}`;
+  const shareUrl = county
+    ? (typeof window !== 'undefined'
+      ? `${window.location.origin}/concierge/${county.id}`
+      : `/concierge/${county.id}`)
+    : null;
+
+  const handleCountyChange = (selectedCountyId: string) => {
+    navigate(`/concierge/${selectedCountyId}`);
+  };
 
   const handleCopyLink = async () => {
+    if (!shareUrl) {
+      toast.error('Pick a county first');
+      return;
+    }
     try {
       if (typeof navigator !== 'undefined' && navigator.clipboard) {
         await navigator.clipboard.writeText(shareUrl);
@@ -46,6 +60,64 @@ export function CountyConciergePage() {
       toast.error('Unable to copy link. Copy manually instead.');
     }
   };
+
+  if (!county) {
+    return (
+      <div className="min-h-screen bg-slate-50">
+        <section className="bg-gradient-to-br from-emerald-800 via-emerald-900 to-slate-900 text-white py-16">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 text-center">
+            <Badge variant="secondary" className="bg-white/20 text-white border-0">
+              County Filing Concierge
+            </Badge>
+            <h1 className="text-4xl sm:text-5xl font-bold leading-tight">
+              Pick your county to unlock the concierge roadmap
+            </h1>
+            <p className="text-lg text-emerald-100">
+              We now cover 17 Central Valley, Sacramento corridor, and North State courts with in-house filing support. Choose your courthouse to see filing methods, packet checklists, pro tips, and e-filing links in one place.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Button asChild size="lg" className="bg-white text-emerald-900 hover:bg-emerald-100">
+                <a href="#county-roadmap">Browse concierge counties</a>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+                <Link to="/pricing">See plan coverage</Link>
+              </Button>
+            </div>
+          </div>
+        </section>
+
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
+          <div className="grid gap-6 md:grid-cols-3">
+            {[
+              {
+                title: 'Statewide research',
+                body: 'Every concierge entry cites the latest clerk pages, fees, and service quirks so you stay current.',
+              },
+              {
+                title: 'In-house filings',
+                body: 'Essential+ plans let our staff assemble and e-file/drop your packet—no chasing Odyssey queues.',
+              },
+              {
+                title: 'Live monitoring',
+                body: 'We track rejections, escalations, and service deadlines so you get alerts before the clerk does.',
+              },
+            ].map((card) => (
+              <Card key={card.title} className="h-full border-emerald-100">
+                <CardHeader>
+                  <CardTitle className="text-lg text-slate-900">{card.title}</CardTitle>
+                  <CardDescription className="text-sm text-slate-600">{card.body}</CardDescription>
+                </CardHeader>
+              </Card>
+            ))}
+          </div>
+
+          <div id="county-roadmap">
+            <CountyRoadmap onCountyChange={handleCountyChange} />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -182,7 +254,7 @@ export function CountyConciergePage() {
                 <CardHeader>
                   <CardTitle className="text-xl">Recommended packet</CardTitle>
                   <CardDescription>
-                    These are the statewide forms most Contra Costa clerks expect in the opening packet. Download blanks or pair with our generator.
+                    These are the statewide forms most {county.name} clerks expect in the opening packet. Download blanks or pair with our generator.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="grid gap-4 md:grid-cols-2">
@@ -212,7 +284,7 @@ export function CountyConciergePage() {
             )}
 
             <div id="county-roadmap">
-              <CountyRoadmap initialCountyId={county.id} />
+              <CountyRoadmap initialCountyId={county.id} onCountyChange={handleCountyChange} />
             </div>
           </div>
         </div>
