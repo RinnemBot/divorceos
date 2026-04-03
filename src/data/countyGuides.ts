@@ -20,6 +20,12 @@ export interface CountyGuide {
   serviceNotes: string;
   steps: CountyStep[];
   proTips: string[];
+  packetFormIds?: string[];
+  resources?: {
+    label: string;
+    url: string;
+    description?: string;
+  }[];
 }
 
 
@@ -250,6 +256,19 @@ export const COUNTY_GUIDES: CountyGuide[] = [
     },
     processingTime: 'Most Odyssey filings are accepted in 1–2 court days; counter filings receive same-day stamps if submitted before 3:00 p.m.',
     serviceNotes: 'Serve FL-100/FL-110 within 60 days. The Sheriff’s Civil Division picks up work twice a week, so private servers are faster for East County addresses.',
+    packetFormIds: ['fl-100', 'fl-110', 'fl-105', 'fl-115', 'fl-117', 'fl-120', 'fl-140', 'fl-142', 'fl-150'],
+    resources: [
+      {
+        label: 'FamLaw-001 Starting Divorce Packet (PDF)',
+        url: 'https://retired.cc-courts.org/forms/packets/FamLaw001-StartingDivorcePacket.pdf',
+        description: 'County-issued checklist plus all statewide forms needed to open a case in Contra Costa.',
+      },
+      {
+        label: 'Contra Costa Divorce Roadmap',
+        url: 'https://contracosta.courts.ca.gov/divisions/family-and-children/divorce-legal-separation-annulment/divorce-roadmap',
+        description: 'Official court roadmap that pairs with our concierge walkthrough.',
+      },
+    ],
     steps: [
       {
         title: 'Use the Contra Costa cover sheet',
