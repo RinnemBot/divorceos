@@ -79,7 +79,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Declaration for Default or Uncontested Dissolution',
     description: 'For uncontested divorces where spouse does not respond.',
     category: 'response',
-    pdfUrl: 'https://www.courts.ca.gov/documents/fl272.pdf',
+    pdfUrl: '/forms/fl-272.pdf',
   },
   
   // Financial Disclosures
@@ -113,7 +113,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Declaration Regarding Service of Declaration of Disclosure',
     description: 'Confirms you served your financial disclosures on your spouse.',
     category: 'financial',
-    pdfUrl: 'https://www.courts.ca.gov/documents/fl141.pdf',
+    pdfUrl: '/forms/fl-141.pdf',
   },
   {
     id: 'fl-160',
@@ -121,7 +121,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Property Declaration',
     description: 'Alternative form for listing assets and debts.',
     category: 'financial',
-    pdfUrl: 'https://www.courts.ca.gov/documents/fl160.pdf',
+    pdfUrl: '/forms/fl-160.pdf',
   },
   
   // Child Custody & Support
@@ -140,7 +140,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Child Custody and Visitation Application Attachment',
     description: 'Details your requested custody and visitation arrangement.',
     category: 'custody',
-    pdfUrl: 'https://www.courts.ca.gov/documents/fl311.pdf',
+    pdfUrl: '/forms/fl-311.pdf',
   },
   {
     id: 'fl-312',
@@ -148,7 +148,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Child Custody and Visitation (Parenting Time) Order Attachment',
     description: 'Proposed order for custody and visitation.',
     category: 'custody',
-    pdfUrl: 'https://www.courts.ca.gov/documents/fl312.pdf',
+    pdfUrl: '/forms/fl-312.pdf',
   },
   {
     id: 'fl-341',
@@ -156,7 +156,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Child Custody Information Forms',
     description: 'Various forms for child custody matters including visitation details.',
     category: 'custody',
-    pdfUrl: 'https://www.courts.ca.gov/documents/fl341.pdf',
+    pdfUrl: '/forms/fl-341.pdf',
   },
   {
     id: 'fl-342',
@@ -164,7 +164,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Supervised Visitation Order',
     description: 'For cases requiring supervised visitation.',
     category: 'custody',
-    pdfUrl: 'https://www.courts.ca.gov/documents/fl342.pdf',
+    pdfUrl: '/forms/fl-342.pdf',
   },
   {
     id: 'fl-191',
@@ -172,7 +172,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Child Support Case Registry Form',
     description: 'Required form to register child support case.',
     category: 'custody',
-    pdfUrl: 'https://www.courts.ca.gov/documents/fl191.pdf',
+    pdfUrl: '/forms/fl-191.pdf',
   },
   {
     id: 'fl-195',
@@ -180,7 +180,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Income Withholding for Support',
     description: 'For wage garnishment of child support payments.',
     category: 'custody',
-    pdfUrl: 'https://www.courts.ca.gov/documents/fl195.pdf',
+    pdfUrl: '/forms/fl-195.pdf',
   },
   {
     id: 'fl-342a',
@@ -188,7 +188,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Joint Custody Attachment',
     description: 'Additional provisions for joint custody arrangements.',
     category: 'custody',
-    pdfUrl: 'https://www.courts.ca.gov/documents/fl342a.pdf',
+    pdfUrl: '/forms/fl-342a.pdf',
   },
   
   // Spousal Support
@@ -198,7 +198,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Spousal or Partner Support Declaration Attachment',
     description: 'Provides additional information for spousal support requests.',
     category: 'support',
-    pdfUrl: 'https://www.courts.ca.gov/documents/fl346.pdf',
+    pdfUrl: '/forms/fl-346.pdf',
   },
   {
     id: 'fl-431',
@@ -206,7 +206,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Spousal or Partner Support Order Attachment',
     description: 'Proposed order for spousal support.',
     category: 'support',
-    pdfUrl: 'https://www.courts.ca.gov/documents/fl431.pdf',
+    pdfUrl: '/forms/fl-431.pdf',
   },
   {
     id: 'fl-435',
@@ -214,7 +214,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Spousal or Partner Support Order After Hearing',
     description: 'Final spousal support order after court hearing.',
     category: 'support',
-    pdfUrl: 'https://www.courts.ca.gov/documents/fl435.pdf',
+    pdfUrl: '/forms/fl-435.pdf',
   },
   {
     id: 'fl-830',
@@ -222,7 +222,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Spousal Support Registry Form',
     description: 'For registering spousal support orders.',
     category: 'support',
-    pdfUrl: 'https://www.courts.ca.gov/documents/fl830.pdf',
+    pdfUrl: '/forms/fl-830.pdf',
   },
   
   // Property & Debt
@@ -232,7 +232,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Property Declaration - Attachment',
     description: 'Detailed property and debt information.',
     category: 'property',
-    pdfUrl: 'https://www.courts.ca.gov/documents/fl345.pdf',
+    pdfUrl: '/forms/fl-345.pdf',
   },
   {
     id: 'fl-348',
@@ -240,7 +240,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Property Order Attachment to Judgment',
     description: 'Orders regarding division of property.',
     category: 'property',
-    pdfUrl: 'https://www.courts.ca.gov/documents/fl348.pdf',
+    pdfUrl: '/forms/fl-348.pdf',
   },
   {
     id: 'fl-460',
@@ -248,7 +248,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Property Declaration (Attachment) - Simplified',
     description: 'Simplified property declaration for certain cases.',
     category: 'property',
-    pdfUrl: 'https://www.courts.ca.gov/documents/fl460.pdf',
+    pdfUrl: '/forms/fl-460.pdf',
   },
   
   // Domestic Violence
@@ -258,7 +258,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Request for Domestic Violence Restraining Order',
     description: 'The main form to request protection from domestic violence.',
     category: 'dv',
-    pdfUrl: 'https://www.courts.ca.gov/documents/dv100.pdf',
+    pdfUrl: '/forms/dv-100.pdf',
     instructionsUrl: 'https://www.courts.ca.gov/documents/dv100info.pdf',
   },
   {
@@ -267,7 +267,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Description of Abuse',
     description: 'Detailed description of the abuse you have experienced.',
     category: 'dv',
-    pdfUrl: 'https://www.courts.ca.gov/documents/dv101.pdf',
+    pdfUrl: '/forms/dv-101.pdf',
   },
   {
     id: 'dv-105',
@@ -275,7 +275,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Request for Child Custody and Visitation Orders',
     description: 'Request custody orders as part of DV restraining order.',
     category: 'dv',
-    pdfUrl: 'https://www.courts.ca.gov/documents/dv105.pdf',
+    pdfUrl: '/forms/dv-105.pdf',
   },
   {
     id: 'dv-108',
@@ -283,7 +283,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Request for Order: No Travel With Children',
     description: 'Prevents abuser from traveling with children.',
     category: 'dv',
-    pdfUrl: 'https://www.courts.ca.gov/documents/dv108.pdf',
+    pdfUrl: '/forms/dv-108.pdf',
   },
   {
     id: 'dv-109',
@@ -291,7 +291,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Notice of Court Hearing',
     description: 'Notifies parties of hearing date for DV restraining order.',
     category: 'dv',
-    pdfUrl: 'https://www.courts.ca.gov/documents/dv109.pdf',
+    pdfUrl: '/forms/dv-109.pdf',
   },
   {
     id: 'dv-110',
@@ -299,7 +299,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Temporary Restraining Order',
     description: 'Temporary orders issued before the hearing.',
     category: 'dv',
-    pdfUrl: 'https://www.courts.ca.gov/documents/dv110.pdf',
+    pdfUrl: '/forms/dv-110.pdf',
   },
   {
     id: 'dv-120',
@@ -307,7 +307,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Response to Request for Domestic Violence Restraining Order',
     description: 'Form for responding to a DV restraining order request.',
     category: 'dv',
-    pdfUrl: 'https://www.courts.ca.gov/documents/dv120.pdf',
+    pdfUrl: '/forms/dv-120.pdf',
   },
   {
     id: 'dv-130',
@@ -315,7 +315,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Restraining Order After Hearing',
     description: 'The final restraining order issued after the court hearing.',
     category: 'dv',
-    pdfUrl: 'https://www.courts.ca.gov/documents/dv130.pdf',
+    pdfUrl: '/forms/dv-130.pdf',
   },
   {
     id: 'dv-140',
@@ -323,7 +323,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Request for Firearms Restraining Order',
     description: 'Request to remove firearms from abuser.',
     category: 'dv',
-    pdfUrl: 'https://www.courts.ca.gov/documents/dv140.pdf',
+    pdfUrl: '/forms/dv-140.pdf',
   },
   {
     id: 'dv-200',
@@ -331,7 +331,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Proof of Personal Service',
     description: 'Proves the restrained person was served with the order.',
     category: 'dv',
-    pdfUrl: 'https://www.courts.ca.gov/documents/dv200.pdf',
+    pdfUrl: '/forms/dv-200.pdf',
   },
   
   // Finalizing Divorce
@@ -341,7 +341,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Appearance, Stipulations, and Waivers',
     description: 'For uncontested divorces where spouse agrees to terms.',
     category: 'judgment',
-    pdfUrl: 'https://www.courts.ca.gov/documents/fl130.pdf',
+    pdfUrl: '/forms/fl-130.pdf',
   },
   {
     id: 'fl-144',
@@ -349,7 +349,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Stipulation to Establish or Modify Child Support',
     description: 'Agreement between parents on child support.',
     category: 'judgment',
-    pdfUrl: 'https://www.courts.ca.gov/documents/fl144.pdf',
+    pdfUrl: '/forms/fl-144.pdf',
   },
   {
     id: 'fl-165',
@@ -357,7 +357,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Notice of Entry of Judgment',
     description: 'Notifies parties that the divorce judgment has been entered.',
     category: 'judgment',
-    pdfUrl: 'https://www.courts.ca.gov/documents/fl165.pdf',
+    pdfUrl: '/forms/fl-165.pdf',
   },
   {
     id: 'fl-170',
@@ -365,7 +365,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Declaration for Default or Uncontested Dissolution',
     description: 'For finalizing uncontested divorces.',
     category: 'judgment',
-    pdfUrl: 'https://www.courts.ca.gov/documents/fl170.pdf',
+    pdfUrl: '/forms/fl-170.pdf',
   },
   {
     id: 'fl-180',
@@ -373,7 +373,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Judgment',
     description: 'The final judgment of dissolution of marriage.',
     category: 'judgment',
-    pdfUrl: 'https://www.courts.ca.gov/documents/fl180.pdf',
+    pdfUrl: '/forms/fl-180.pdf',
   },
   {
     id: 'fl-182',
@@ -381,7 +381,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Notice of Entry of Judgment (Proof of Service)',
     description: 'Proof that the judgment was served on the other party.',
     category: 'judgment',
-    pdfUrl: 'https://www.courts.ca.gov/documents/fl182.pdf',
+    pdfUrl: '/forms/fl-182.pdf',
   },
   {
     id: 'fl-190',
@@ -389,7 +389,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Notice of Entry of Judgment (Uncontested)',
     description: 'For uncontested judgment entries.',
     category: 'judgment',
-    pdfUrl: 'https://www.courts.ca.gov/documents/fl190.pdf',
+    pdfUrl: '/forms/fl-190.pdf',
   },
   {
     id: 'fl-347',
@@ -397,7 +397,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Stipulation for Entry of Judgment',
     description: 'Agreement to enter judgment on stipulated terms.',
     category: 'judgment',
-    pdfUrl: 'https://www.courts.ca.gov/documents/fl347.pdf',
+    pdfUrl: '/forms/fl-347.pdf',
   },
 ];
 
