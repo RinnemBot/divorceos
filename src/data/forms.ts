@@ -27,7 +27,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Petition - Marriage/Domestic Partnership',
     description: 'The main form to start a divorce or legal separation.',
     category: 'petition',
-    pdfUrl: 'https://www.courts.ca.gov/documents/fl100.pdf',
+    pdfUrl: '/forms/fl-100.pdf',
     instructionsUrl: 'https://www.courts.ca.gov/documents/fl100info.pdf',
   },
   {
@@ -36,7 +36,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Summons - Family Law',
     description: 'Notifies your spouse that you have filed for divorce.',
     category: 'petition',
-    pdfUrl: 'https://www.courts.ca.gov/documents/fl110.pdf',
+    pdfUrl: '/forms/fl-110.pdf',
   },
   {
     id: 'fl-105',
@@ -44,7 +44,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Declaration Under UCCJEA',
     description: 'Required if you have children under 18. Declares where children have lived.',
     category: 'petition',
-    pdfUrl: 'https://www.courts.ca.gov/documents/fl105.pdf',
+    pdfUrl: '/forms/fl-105.pdf',
   },
   {
     id: 'fl-115',
@@ -52,7 +52,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Proof of Service of Summons',
     description: 'Proves your spouse was properly served with divorce papers.',
     category: 'petition',
-    pdfUrl: 'https://www.courts.ca.gov/documents/fl115.pdf',
+    pdfUrl: '/forms/fl-115.pdf',
   },
   {
     id: 'fl-117',
@@ -60,7 +60,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Notice and Acknowledgment of Receipt',
     description: 'Alternative way for spouse to acknowledge receiving papers.',
     category: 'petition',
-    pdfUrl: 'https://www.courts.ca.gov/documents/fl117.pdf',
+    pdfUrl: '/forms/fl-117.pdf',
   },
   
   // Responding to Divorce
@@ -70,7 +70,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Response - Marriage/Domestic Partnership',
     description: 'The form to respond to a divorce petition.',
     category: 'response',
-    pdfUrl: 'https://www.courts.ca.gov/documents/fl120.pdf',
+    pdfUrl: '/forms/fl-120.pdf',
     instructionsUrl: 'https://www.courts.ca.gov/documents/fl120info.pdf',
   },
   {
@@ -89,7 +89,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Declaration of Disclosure',
     description: 'Required declaration that you have disclosed all financial information.',
     category: 'financial',
-    pdfUrl: 'https://www.courts.ca.gov/documents/fl140.pdf',
+    pdfUrl: '/forms/fl-140.pdf',
   },
   {
     id: 'fl-142',
@@ -97,7 +97,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Schedule of Assets and Debts',
     description: 'Lists all property and debts - community and separate.',
     category: 'financial',
-    pdfUrl: 'https://www.courts.ca.gov/documents/fl142.pdf',
+    pdfUrl: '/forms/fl-142.pdf',
   },
   {
     id: 'fl-150',
@@ -105,7 +105,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Income and Expense Declaration',
     description: 'Details your income, expenses, and financial situation.',
     category: 'financial',
-    pdfUrl: 'https://www.courts.ca.gov/documents/fl150.pdf',
+    pdfUrl: '/forms/fl-150.pdf',
   },
   {
     id: 'fl-141',
@@ -131,7 +131,7 @@ export const COURT_FORMS: CourtForm[] = [
     title: 'Request for Order',
     description: 'Ask the court to make or change temporary orders about custody, visitation, or support.',
     category: 'custody',
-    pdfUrl: 'https://www.courts.ca.gov/documents/fl300.pdf',
+    pdfUrl: '/forms/fl-300.pdf',
     instructionsUrl: 'https://www.courts.ca.gov/documents/fl300info.pdf',
   },
   {
