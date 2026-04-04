@@ -15,7 +15,8 @@ import {
   User as UserIcon, 
   LogOut, 
   Settings,
-  ChevronDown 
+  ChevronDown,
+  LayoutDashboard 
 } from 'lucide-react';
 import { authService, type User, SUBSCRIPTION_LIMITS } from '@/services/auth';
 
@@ -115,6 +116,12 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
                   </div>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
+                    <Link to="/dashboard" className="cursor-pointer">
+                      <LayoutDashboard className="h-4 w-4 mr-2" />
+                      Dashboard
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
                     <Link to="/profile" className="cursor-pointer">
                       <Settings className="h-4 w-4 mr-2" />
                       Profile Settings
@@ -198,6 +205,13 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
                       {SUBSCRIPTION_LIMITS[currentUser.subscription].name} Plan
                     </p>
                   </div>
+                  <Link
+                    to="/dashboard"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:bg-gray-100"
+                  >
+                    Dashboard
+                  </Link>
                   <Link
                     to="/profile"
                     onClick={() => setIsMobileMenuOpen(false)}
