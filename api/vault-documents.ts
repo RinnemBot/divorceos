@@ -1,8 +1,55 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { ensureVaultBucketExists, SUPABASE_STORAGE_BUCKET, supabaseServerClient } from './lib/supabase';
+import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 
 const SIGNED_URL_TTL_SECONDS = 60 * 5; // 5 minutes
 const MAX_RESULTS = 100;
+
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const SUPABASE_STORAGE_BUCKET = process.env.SUPABASE_STORAGE_BUCKET || 'divorceos-vault';
+
+const supabaseServerClient: SupabaseClient | null =
+  SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY
+    ? createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
+        auth: {
+          persistSession: false,
+        },
+      })
+    : null;
+
+let bucketInitialization: Promise<void> | null = null;
+
+async function ensureVaultBucketExists(): Promise<void> {
+  if (!supabaseServerClient) {
+    throw new Error('Supabase client is not configured');
+  }
+
+  if (!bucketInitialization) {
+    bucketInitialization = (async () => {
+      const { error: getError } = await supabaseServerClient.storage.getBucket(SUPABASE_STORAGE_BUCKET);
+
+      if (getError) {
+        if (getError.message?.toLowerCase().includes('not found')) {
+          const { error: createError } = await supabaseServerClient.storage.createBucket(
+            SUPABASE_STORAGE_BUCKET,
+            { public: false }
+          );
+
+          if (createError && !createError.message?.toLowerCase().includes('already exists')) {
+            throw createError;
+          }
+        } else if (!getError.message?.toLowerCase().includes('already exists')) {
+          throw getError;
+        }
+      }
+    })().catch((error) => {
+      bucketInitialization = null;
+      throw error;
+    });
+  }
+
+  return bucketInitialization;
+}
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'GET') {
