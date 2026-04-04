@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import formidable, { type Fields, type Files } from 'formidable';
 import { promises as fs } from 'fs';
-import { ensureVaultBucketExists, SUPABASE_STORAGE_BUCKET, supabaseServerClient } from './_lib/supabase';
+import { ensureVaultBucketExists, SUPABASE_STORAGE_BUCKET, supabaseServerClient } from './lib/supabase';
 
 export const config = {
   api: {

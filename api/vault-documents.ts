@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { ensureVaultBucketExists, SUPABASE_STORAGE_BUCKET, supabaseServerClient } from './_lib/supabase';
+import { ensureVaultBucketExists, SUPABASE_STORAGE_BUCKET, supabaseServerClient } from './lib/supabase';
 
 const SIGNED_URL_TTL_SECONDS = 60 * 5; // 5 minutes
 const MAX_RESULTS = 100;
