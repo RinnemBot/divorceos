@@ -75,11 +75,21 @@ src/
 
 ## Environment Variables
 
-Create a `.env` file for local development:
+Create a `.env.local` (for browser-safe keys) and `.env.server` (for serverless-only secrets) when developing locally. On Vercel, set the same keys in Project → Settings → Environment Variables.
 
 ```env
-# Optional: Add your API keys here
+# AI providers
+OPENAI_API_KEY=sk-...
+OPENAI_MODEL=gpt-5.1
+VITE_KIMI_API_KEY=moonshot-...
+
+# Secure document vault (server-side only)
+SUPABASE_URL=https://YOUR_PROJECT.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=service-role-key
+SUPABASE_STORAGE_BUCKET=divorceos-vault
 ```
+
+> ⚠️ Never expose the Supabase service-role key to the browser. Keep it in `.env.server` locally and in Vercel’s encrypted serverless env vars so only API routes can access it.
 
 ## License
 

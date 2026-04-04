@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import type { ChangeEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Progress } from '@/components/ui/progress';
 import { CountyRoadmap } from '@/components/CountyRoadmap';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { ReferralProgram, getReferralStats } from '@/components/ReferralProgram';
 import { ReviewSystem } from '@/components/ReviewSystem';
 import { COURT_FORMS } from '@/data/forms';
@@ -23,6 +25,10 @@ import {
   FileText,
   Users,
   ChevronRight,
+  UploadCloud,
+  Shield,
+  Loader2,
+  Download,
 } from 'lucide-react';
 
 const SERVICE_TASKS = [
@@ -50,6 +56,27 @@ const SERVICE_TASKS = [
 
 const FEATURED_FORM_IDS = ['fl-100', 'fl-110', 'fl-115', 'fl-300', 'fl-150', 'fl-311', 'fl-346'];
 
+interface VaultDocument {
+  id: string;
+  name: string;
+  size: number;
+  uploadedAt: string;
+  downloadUrl: string | null;
+}
+
+const formatBytes = (bytes: number) => {
+  if (!bytes) return '0 B';
+  const units = ['B', 'KB', 'MB', 'GB'];
+  const exponent = Math.min(
+    Math.floor(Math.log(bytes) / Math.log(1024)),
+    units.length - 1
+  );
+  const value = bytes / Math.pow(1024, exponent);
+  return `${value.toFixed(value >= 10 || exponent === 0 ? 0 : 1)} ${units[exponent]}`;
+};
+
+const VAULT_MAX_FILE_SIZE = 10 * 1024 * 1024;
+
 export function DashboardPage() {
   const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(() => authService.getCurrentUser());
@@ -58,6 +85,11 @@ export function DashboardPage() {
   const [referralStats, setReferralStats] = useState(() =>
     user ? getReferralStats(user.id) : null
   );
+  const [vaultDocs, setVaultDocs] = useState<VaultDocument[]>([]);
+  const [isVaultLoading, setIsVaultLoading] = useState(false);
+  const [vaultError, setVaultError] = useState<string | null>(null);
+  const [isVaultUploading, setIsVaultUploading] = useState(false);
+  const vaultFileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const session = authService.getCurrentUser();
@@ -68,6 +100,92 @@ export function DashboardPage() {
     setUser(session);
     setReferralStats(getReferralStats(session.id));
   }, [navigate]);
+
+  const fetchVaultDocuments = useCallback(async () => {
+    if (!user?.id) {
+      setVaultDocs([]);
+      return;
+    }
+
+    setIsVaultLoading(true);
+    setVaultError(null);
+
+    try {
+      const response = await fetch(`/api/vault-documents?userId=${encodeURIComponent(user.id)}`);
+      if (!response.ok) {
+        const message = await response.text();
+        throw new Error(message || 'Unable to load documents');
+      }
+
+      const payload = await response.json();
+      setVaultDocs(payload.documents ?? []);
+    } catch (error) {
+      setVaultError(
+        error instanceof Error ? error.message : 'Unable to load documents'
+      );
+    } finally {
+      setIsVaultLoading(false);
+    }
+  }, [user?.id]);
+
+  useEffect(() => {
+    fetchVaultDocuments();
+  }, [fetchVaultDocuments]);
+
+  const triggerVaultPicker = () => {
+    vaultFileInputRef.current?.click();
+  };
+
+  const handleVaultFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
+    if (!user?.id) return;
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    if (file.type !== 'application/pdf') {
+      setVaultError('Only PDF uploads are supported right now.');
+      event.target.value = '';
+      return;
+    }
+
+    if (file.size > VAULT_MAX_FILE_SIZE) {
+      setVaultError('File is larger than 10 MB. Please compress it before uploading.');
+      event.target.value = '';
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('userId', user.id);
+    formData.append('file', file);
+
+    setIsVaultUploading(true);
+    setVaultError(null);
+
+    try {
+      const response = await fetch('/api/vault-upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(text || 'Upload failed');
+      }
+
+      const payload = await response.json();
+      if (payload.document) {
+        setVaultDocs((prev) => [payload.document, ...prev]);
+      } else {
+        await fetchVaultDocuments();
+      }
+    } catch (error) {
+      setVaultError(error instanceof Error ? error.message : 'Upload failed');
+    } finally {
+      setIsVaultUploading(false);
+      if (event.target) {
+        event.target.value = '';
+      }
+    }
+  };
 
   if (!user) {
     return null;
@@ -239,6 +357,102 @@ export function DashboardPage() {
           </TabsContent>
 
           <TabsContent value="documents" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Shield className="h-4 w-4 text-emerald-600" />
+                  Document vault
+                </CardTitle>
+                <CardDescription>Upload finished packets so we can e-file them straight from DivorceOS.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                  <div className="text-sm text-slate-600 lg:w-2/3">
+                    <p className="mb-2">
+                      Stored documents live in an encrypted Supabase bucket. Essential+ members can authorize Maria to pull these filings directly into concierge e-filing queues.
+                    </p>
+                    <p>PDF only • 10 MB max • Need edits first? Attach drafts in chat and we&apos;ll clean them before uploading.</p>
+                  </div>
+                  <div className="flex flex-col gap-2 lg:w-1/3">
+                    <input
+                      ref={vaultFileInputRef}
+                      type="file"
+                      accept="application/pdf"
+                      className="hidden"
+                      onChange={handleVaultFileChange}
+                    />
+                    <Button onClick={triggerVaultPicker} disabled={isVaultUploading} className="justify-center">
+                      {isVaultUploading ? (
+                        <>
+                          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                          Uploading…
+                        </>
+                      ) : (
+                        <>
+                          <UploadCloud className="h-4 w-4 mr-2" />
+                          Upload PDF
+                        </>
+                      )}
+                    </Button>
+                    <span className="text-xs text-slate-500">Don&apos;t leave this tab while uploading. We&apos;ll refresh the vault automatically once it finishes.</span>
+                  </div>
+                </div>
+                {vaultError && (
+                  <Alert variant="destructive">
+                    <AlertDescription>{vaultError}</AlertDescription>
+                  </Alert>
+                )}
+                <div className="rounded-2xl border border-slate-200 overflow-hidden">
+                  {isVaultLoading ? (
+                    <div className="p-6 text-sm text-slate-500">Loading vault…</div>
+                  ) : vaultDocs.length === 0 ? (
+                    <div className="p-6 text-sm text-slate-500">Nothing in your vault yet. Upload your first stamped packet to kick things off.</div>
+                  ) : (
+                    <div className="overflow-x-auto">
+                      <table className="min-w-full text-sm">
+                        <thead className="bg-slate-50 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
+                          <tr>
+                            <th className="px-4 py-3">Document</th>
+                            <th className="px-4 py-3">Uploaded</th>
+                            <th className="px-4 py-3">Size</th>
+                            <th className="px-4 py-3 text-right">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {vaultDocs.map((doc) => (
+                            <tr key={doc.id} className="border-t border-slate-100">
+                              <td className="px-4 py-3">
+                                <p className="font-medium text-slate-800">{doc.name}</p>
+                                <p className="text-xs text-slate-500">Stored securely in DivorceOS</p>
+                              </td>
+                              <td className="px-4 py-3 text-slate-600">
+                                {new Date(doc.uploadedAt).toLocaleString()}
+                              </td>
+                              <td className="px-4 py-3 text-slate-600">{formatBytes(doc.size)}</td>
+                              <td className="px-4 py-3 text-right">
+                                {doc.downloadUrl ? (
+                                  <Button asChild size="sm" variant="outline">
+                                    <a href={doc.downloadUrl} target="_blank" rel="noopener noreferrer">
+                                      <Download className="h-4 w-4 mr-2" />
+                                      Download
+                                    </a>
+                                  </Button>
+                                ) : (
+                                  <Button size="sm" variant="outline" disabled>
+                                    <Download className="h-4 w-4 mr-2" />
+                                    Download
+                                  </Button>
+                                )}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
             <Card>
               <CardHeader>
                 <CardTitle>Priority court forms</CardTitle>
