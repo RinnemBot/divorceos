@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { ChangeEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { cn } from '@/lib/utils';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -11,6 +12,7 @@ import { CountyRoadmap } from '@/components/CountyRoadmap';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { ReferralProgram, getReferralStats } from '@/components/ReferralProgram';
 import { ReviewSystem } from '@/components/ReviewSystem';
+import { ConciergeQueuePanel } from '@/components/ConciergeQueuePanel';
 import { COURT_FORMS } from '@/data/forms';
 import { COUNTY_GUIDES } from '@/data/countyGuides';
 import { authService, SUBSCRIPTION_LIMITS, type User } from '@/services/auth';
@@ -90,6 +92,7 @@ export function DashboardPage() {
   const [vaultError, setVaultError] = useState<string | null>(null);
   const [isVaultUploading, setIsVaultUploading] = useState(false);
   const vaultFileInputRef = useRef<HTMLInputElement>(null);
+  const isStaffUser = useMemo(() => (user ? authService.isConciergeStaff(user) : false), [user]);
 
   useEffect(() => {
     const session = authService.getCurrentUser();
@@ -236,13 +239,19 @@ export function DashboardPage() {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 bg-white border rounded-xl">
+          <TabsList
+            className={cn(
+              'grid w-full grid-cols-2 sm:grid-cols-3 bg-white border rounded-xl',
+              isStaffUser ? 'lg:grid-cols-7' : 'lg:grid-cols-6'
+            )}
+          >
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="documents">Documents</TabsTrigger>
             <TabsTrigger value="county">County Filing</TabsTrigger>
             <TabsTrigger value="service">Service</TabsTrigger>
             <TabsTrigger value="referral">Referral</TabsTrigger>
             <TabsTrigger value="review">Review</TabsTrigger>
+            {isStaffUser && <TabsTrigger value="staff">Staff</TabsTrigger>}
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
@@ -553,6 +562,12 @@ export function DashboardPage() {
           <TabsContent value="review">
             <ReviewSystem user={user} />
           </TabsContent>
+
+          {isStaffUser && (
+            <TabsContent value="staff">
+              <ConciergeQueuePanel currentUser={user} />
+            </TabsContent>
+          )}
         </Tabs>
       </div>
     </div>

@@ -54,6 +54,37 @@ const topicIcons: Record<string, React.ElementType> = {
   mediation: Handshake,
 };
 
+const FEATURED_REGION_LOGOS = [
+  {
+    id: 'bay-area',
+    initials: 'BA',
+    title: 'Bay Area counties',
+    counties: 'San Francisco • Alameda • Contra Costa • Santa Clara • San Mateo',
+    gradient: 'from-rose-500 via-orange-400 to-amber-300',
+  },
+  {
+    id: 'la-oc',
+    initials: 'LA',
+    title: 'Los Angeles + OC',
+    counties: 'Los Angeles • Orange • Riverside • San Bernardino',
+    gradient: 'from-indigo-500 via-purple-500 to-pink-500',
+  },
+  {
+    id: 'sac-corridor',
+    initials: 'SAC',
+    title: 'Sacramento corridor',
+    counties: 'Sacramento • Placer • Yolo • El Dorado',
+    gradient: 'from-emerald-500 via-lime-400 to-sky-400',
+  },
+  {
+    id: 'valley',
+    initials: 'CV',
+    title: 'Central Valley spine',
+    counties: 'Fresno • Kern • Tulare • Stanislaus • San Joaquin',
+    gradient: 'from-amber-500 via-orange-500 to-red-500',
+  },
+];
+
 export function HomePage() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -92,6 +123,32 @@ export function HomePage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Concierge Announcement */}
+      <div className="bg-emerald-900 text-emerald-50 border-b border-emerald-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col gap-2 md:flex-row md:items-center md:justify-between text-sm">
+          <div className="flex items-center gap-3">
+            <Badge className="bg-white/15 text-white border-white/40">New</Badge>
+            <p className="font-medium">
+              In-house e-filing + full-service concierge now spans 40+ California counties—Bay Area, LA/OC, Sacramento corridor, and the Valley.
+            </p>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-2">
+            <Link
+              to="/concierge"
+              className="inline-flex items-center justify-center px-4 py-2 rounded-md text-emerald-900 bg-white font-semibold hover:bg-emerald-50 transition-colors"
+            >
+              View coverage map
+            </Link>
+            <Link
+              to="/pricing"
+              className="inline-flex items-center justify-center px-4 py-2 rounded-md border border-white/60 text-white hover:bg-white/10 transition-colors"
+            >
+              Compare concierge plans
+            </Link>
+          </div>
+        </div>
+      </div>
+
       {/* Hero Section */}
       <section className="bg-emerald-700 text-white py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -233,10 +290,21 @@ export function HomePage() {
                 Our concierge team now covers the entire Central Valley, Sacramento corridor, and the north-state circuit. 
                 Paid plans include human-reviewed packets, e-filing (or drop-box runs when required), and clerk rejection monitoring so you don&apos;t have to babysit submissions.
               </p>
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-6">
+                {FEATURED_REGION_LOGOS.map((region) => (
+                  <div key={region.id} className="flex items-start gap-3 rounded-xl border border-emerald-100 bg-white/60 p-3 shadow-sm">
+                    <div className={`h-12 w-12 rounded-full bg-gradient-to-br ${region.gradient} text-white font-semibold flex items-center justify-center`}>{region.initials}</div>
+                    <div>
+                      <p className="text-sm font-semibold text-gray-900">{region.title}</p>
+                      <p className="text-xs text-gray-600 leading-snug">{region.counties}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
               <ul className="space-y-3 text-gray-700 mb-8">
                 <li className="flex items-start gap-3">
                   <CheckCircle className="h-5 w-5 text-emerald-600 mt-0.5" />
-                  <span>17 counties live on the concierge map with filing method, local cover sheets, and service rules baked in.</span>
+                  <span>40+ counties live on the concierge map with filing method, local cover sheets, and service rules baked in.</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle className="h-5 w-5 text-emerald-600 mt-0.5" />

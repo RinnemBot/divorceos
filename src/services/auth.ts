@@ -362,6 +362,13 @@ class AuthService {
       }
     }
   }
+
+  isConciergeStaff(user: Pick<User, 'email'> | null | undefined): boolean {
+    if (!user) {
+      return false;
+    }
+    return this.isAdminEmail(user.email);
+  }
 }
 
 export const authService = new AuthService();

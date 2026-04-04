@@ -1,5 +1,33 @@
 # Ralph Loop Progress
 
+## Iteration 5 – Supabase concierge queue + staff dashboard (2026-04-03 22:30 PT)
+
+### Status
+- [x] Complete
+
+### What Was Done
+- Defined the `concierge_filing_requests` Supabase table (SQL + trigger) to track intake status, rush priority, deadlines, and attachments for every concierge filing.
+- Added a new `/api/filing-queue` route (GET/POST/PATCH) that reads/writes the table with service-role credentials, generates signed document URLs, and exposes summary metrics for the UI.
+- Built an internal “Staff” tab inside the dashboard featuring filters, search, live status updates, claim/unclaim actions, and document shortcuts.
+- Wired the staff tab to auto-load queue data, display rush/awaiting-client counts, and enforce staff-only visibility using the existing admin email list.
+
+### Blockers
+- None. One Legal API is still pending credentials, but this queue is ready to feed that integration.
+
+### Validation
+- `npm run build`
+
+### Files Touched
+- `api/filing-queue.ts`
+- `src/components/ConciergeQueuePanel.tsx`
+- `src/pages/DashboardPage.tsx`
+- `src/services/auth.ts`
+- `src/types/concierge.ts`
+- `supabase/concierge-queue.sql`
+- `PROGRESS.md`
+
+---
+
 ## Iteration 2 – Advanced gross-mode calculator (2026-03-29 08:55 PT)
 
 ### Status
