@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { Navigation } from '@/components/Navigation';
 import { Footer } from '@/components/Footer';
 import { HomePage } from '@/pages/HomePage';
+import { ScrollToTop } from '@/components/ScrollToTop';
 import { PricingPage } from '@/pages/PricingPage';
 import { FormsPage } from '@/pages/FormsPage';
 import { SupportToolsPage } from '@/pages/SupportToolsPage';
@@ -49,6 +50,7 @@ function App() {
 
   return (
     <Router>
+      <ScrollToTop />
       <div className="min-h-screen flex flex-col bg-slate-50">
         <Navigation 
           currentUser={currentUser}
