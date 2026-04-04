@@ -29,6 +29,9 @@ export interface CountyGuide {
 }
 
 
+const DEFAULT_PACKET_FORMS = ['fl-100', 'fl-110', 'fl-105', 'fl-115', 'fl-117', 'fl-120', 'fl-140', 'fl-142', 'fl-150'];
+
+
 export function getCountyGuideIdFromName(countyName?: string | null): string | undefined {
   if (!countyName) return undefined;
   const normalized = countyName.trim().toLowerCase();
@@ -256,7 +259,7 @@ export const COUNTY_GUIDES: CountyGuide[] = [
     },
     processingTime: 'Most Odyssey filings are accepted in 1–2 court days; counter filings receive same-day stamps if submitted before 3:00 p.m.',
     serviceNotes: 'Serve FL-100/FL-110 within 60 days. The Sheriff’s Civil Division picks up work twice a week, so private servers are faster for East County addresses.',
-    packetFormIds: ['fl-100', 'fl-110', 'fl-105', 'fl-115', 'fl-117', 'fl-120', 'fl-140', 'fl-142', 'fl-150'],
+    packetFormIds: DEFAULT_PACKET_FORMS,
     resources: [
       {
         label: 'FamLaw-001 Starting Divorce Packet (PDF)',
@@ -666,6 +669,838 @@ export const COUNTY_GUIDES: CountyGuide[] = [
     proTips: [
       'Parking near Civic Center is scarce—use BART (Downtown Berkeley) or AC Transit.',
       'Because this is a satellite, staff cannot accept drop box filings after 2:00 p.m. on Fridays; route urgent packets to Oakland instead.',
+    ],
+  },
+  // Central Valley & North State coverage
+  {
+    id: 'fresno',
+    name: 'Fresno County',
+    filingMethod: 'B.F. Sisk Courthouse handles all Family Law filings. Attorneys must use Odyssey eFileCA; self-represented parties may e-file, use the lobby drop box, or book limited counter appointments (shortened hours).',
+    filingFee: '$435 (petition)',
+    responseFee: '$435 (response)',
+    clerk: {
+      courthouse: 'B.F. Sisk Courthouse – Family Law Clerk',
+      address: '1130 O St., Fresno, CA 93721',
+      hours: 'Mon–Thu, 8:00am – 3:00pm; Fri, 8:00am – 12:00pm',
+      phone: '(559) 457-2000',
+      efilePortal: 'https://www.fresno.courts.ca.gov/online-services/efile-resources',
+    },
+    processingTime: 'Odyssey filings are generally reviewed within 1–2 court days; drop-box packets filed before 3:00 p.m. receive same-day file stamps.',
+    serviceNotes: 'Serve FL-100/FL-110 within 60 days. Fresno Sheriff Civil typically needs 2+ weeks—private servers are faster for Clovis, Sanger, and foothill addresses.',
+    packetFormIds: DEFAULT_PACKET_FORMS,
+    resources: [
+      {
+        label: 'Fresno eFile resources',
+        url: 'https://www.fresno.courts.ca.gov/online-services/efile-resources',
+        description: 'EFSP onboarding, formatting rules, and Odyssey fee details.',
+      },
+      {
+        label: 'B.F. Sisk location + clerk hours',
+        url: 'https://www.fresno.courts.ca.gov/location/b-f-sisk-courthouse',
+      },
+    ],
+    steps: [
+      {
+        title: 'Assemble the Fresno starter packet',
+        description: 'Combine FL-100, FL-110, FL-105 (if kids) plus the Fresno filing checklist. Attach FW-001 when requesting a fee waiver.',
+      },
+      {
+        title: 'File through Odyssey or the lobby drop box',
+        description: 'Upload a text-searchable PDF (select Fresno – Family) or leave two copies with payment in the B.F. Sisk drop box before 3:00 p.m.',
+      },
+      {
+        title: 'Lock in mediation early',
+        description: 'Family Court Services fills quickly—call as soon as a custody hearing is reserved so you do not lose your spot.',
+      },
+      {
+        title: 'Serve and e-file FL-115',
+        description: 'Use professional servers for rural service, then e-file FL-115 so the department keeps your first hearing on calendar.',
+      },
+    ],
+    proTips: [
+      'If Odyssey rejects a filing, correct it within two court days to keep the original submission date.',
+      'Bring a large self-addressed envelope for counter filings—clerks no longer provide courtesy copies.',
+    ],
+  },
+  {
+    id: 'tulare',
+    name: 'Tulare County',
+    filingMethod: 'Visalia County Civic Center processes all Family Law filings. Odyssey eFileCA is available for Civil/Family; self-represented parties can still file at the Mooney Boulevard windows or use drop boxes.',
+    filingFee: '$435 (petition)',
+    responseFee: '$435 (response)',
+    clerk: {
+      courthouse: 'Visalia County Civic Center Courthouse',
+      address: '221 S. Mooney Blvd., Visalia, CA 93291',
+      hours: 'Mon–Fri, 8:00am – 4:00pm',
+      phone: '(559) 730-5000',
+      efilePortal: 'https://www.tulare.courts.ca.gov/online-services/efiling',
+    },
+    processingTime: 'E-filings post within 2–3 court days. Counter filings submitted before 4:00 p.m. receive same-day stamps; drop-box packets are processed the next morning.',
+    serviceNotes: 'Serve within 60 days. Sheriff Civil pickup routes happen twice weekly—hire a private server for Porterville/South County matters if you are on a deadline.',
+    packetFormIds: DEFAULT_PACKET_FORMS,
+    resources: [
+      {
+        label: 'Visalia courthouse info',
+        url: 'https://www.tulare.courts.ca.gov/location/visalia-county-civic-center',
+      },
+      {
+        label: 'Tulare Family Law division',
+        url: 'https://www.tulare.courts.ca.gov/divisions/family-law',
+      },
+    ],
+    steps: [
+      {
+        title: 'Build the Tulare packet',
+        description: 'Complete FL-100/110/105 plus Tulare’s local Family Law Cover Sheet if required. Add FW-001 if you plan to request a fee waiver.',
+      },
+      {
+        title: 'File electronically or at S. Mooney Blvd.',
+        description: 'Submit via Odyssey or bring two copies to the Visalia counter. Use the drop box when lines are long.',
+      },
+      {
+        title: 'Contact Family Court Services',
+        description: 'Call the FCS scheduler (559-730-5000 x1089) when custody or visitation is contested to avoid hearing continuances.',
+      },
+      {
+        title: 'Serve and lodge proofs',
+        description: 'File FL-115 or POS-010 as soon as service is complete so the court will keep your Case Management Conference.',
+      },
+    ],
+    proTips: [
+      'Use the remote appearance hotline (559-738-2330) if you need help connecting to a Teams hearing.',
+      'Appointments fill quickly; schedule counter visits online if you need conformed copies the same day.',
+    ],
+  },
+  {
+    id: 'kings',
+    name: 'Kings County',
+    filingMethod: 'The Hanford courthouse processes Family Law filings at 1640 Kings County Drive. Odyssey eFileCA is enabled, but self-represented parties can still file at the clerk windows 8:00 a.m.–4:00 p.m.',
+    filingFee: '$435 (petition)',
+    responseFee: '$435 (response)',
+    clerk: {
+      courthouse: 'Kings County Courthouse – Civil/Family Division',
+      address: '1640 Kings County Dr., Hanford, CA 93230',
+      hours: 'Mon–Fri, 8:00am – 4:00pm',
+      phone: '(559) 582-1010',
+      efilePortal: 'https://www.kings.courts.ca.gov/online-services/efile',
+    },
+    processingTime: 'E-filings process within two court days; counter filings recorded the same day if submitted before 4:00 p.m.',
+    serviceNotes: 'Serve within 60 days. Sheriff Civil routes cover the valley floor weekly—hire a registered server for Lemoore NAS or outlying towns.',
+    packetFormIds: DEFAULT_PACKET_FORMS,
+    resources: [
+      {
+        label: 'Kings court locations & contacts',
+        url: 'https://www.kings.courts.ca.gov/general-information/location-contact-info',
+      },
+      {
+        label: 'Family Court Services',
+        url: 'https://www.kings.courts.ca.gov/divisions/family-court-services',
+      },
+    ],
+    steps: [
+      {
+        title: 'Prep the Hanford packet',
+        description: 'Complete the statewide forms plus Kings’ local case assignment sheet (available on the court site).',
+      },
+      {
+        title: 'File via Odyssey or at the clerk windows',
+        description: 'Upload through Odyssey (select Kings – Civil/Family) or bring two copies with a return envelope to the main courthouse.',
+      },
+      {
+        title: 'Coordinate mediation',
+        description: 'Email familycourtservices@kings.courts.ca.gov once a custody hearing is set to lock in mediation dates.',
+      },
+      {
+        title: 'Serve and confirm proofs',
+        description: 'File FL-115 promptly—judges routinely drop hearings if proof of service is missing 5 court days prior.',
+      },
+    ],
+    proTips: [
+      'Kings often requests courtesy copies for RFOs longer than 35 pages—deliver them to Dept. 6 the next business day.',
+      'Phone tree options change often; press 2 then 4 to reach a live Family Law clerk faster.',
+    ],
+  },
+  {
+    id: 'madera',
+    name: 'Madera County',
+    filingMethod: 'The new Madera Courthouse on G Street handles Civil/Family filings. Odyssey eFileCA is available, but self-represented litigants can still file at the lobby windows 8:00 a.m.–4:00 p.m.',
+    filingFee: '$435 (petition)',
+    responseFee: '$435 (response)',
+    clerk: {
+      courthouse: 'Madera Courthouse – Family Law Clerk',
+      address: '200 S. G St., Madera, CA 93637',
+      hours: 'Mon–Fri, 8:00am – 4:00pm',
+      phone: '(559) 416-5525',
+      efilePortal: 'https://www.madera.courts.ca.gov/online-services/efiling-dvgv-petition-online-case-information',
+    },
+    processingTime: 'E-filings usually post within two court days. Counter filings submitted before 4:00 p.m. receive same-day processing.',
+    serviceNotes: 'Serve within 60 days. Sheriff Civil serves within the city limits weekly; use private servers for Chowchilla and foothill addresses.',
+    packetFormIds: DEFAULT_PACKET_FORMS,
+    resources: [
+      {
+        label: 'Madera Family Law division',
+        url: 'https://www.madera.courts.ca.gov/divisions/family-law-court',
+      },
+      {
+        label: 'Madera eFile portal',
+        url: 'https://www.madera.courts.ca.gov/online-services/efiling-dvgv-petition-online-case-information',
+      },
+    ],
+    steps: [
+      {
+        title: 'Assemble statewide + Madera forms',
+        description: 'Complete FL-100/110/105 and pick up the local packet checklist from the clerk or self-help desk.',
+      },
+      {
+        title: 'File online or at 200 S. G Street',
+        description: 'Upload via Odyssey or bring paper copies to the courthouse with payment (cashier’s check or money order).',
+      },
+      {
+        title: 'Book FCS interviews',
+        description: 'Family Court Services calendars fill quickly—call 559-416-5570 after filing any custody request.',
+      },
+      {
+        title: 'Serve and e-file FL-115',
+        description: 'Once service is complete, e-file FL-115 to avoid continuances at the Mandatory Settlement Conference.',
+      },
+    ],
+    proTips: [
+      'Self-Help computers on the first floor let you e-file for free—bring your packet on a flash drive to speed things up.',
+      'If you need certified copies, submit the request before noon; the Records Unit batches afternoon pickups.',
+    ],
+  },
+  {
+    id: 'merced',
+    name: 'Merced County',
+    filingMethod: 'The Old Merced Courthouse on 21st Street handles Family Law filings. Odyssey eFileCA is available; drop boxes at 21st Street and the Los Banos branch clear at 5:00 p.m.',
+    filingFee: '$435 (petition)',
+    responseFee: '$435 (response)',
+    clerk: {
+      courthouse: 'Old Merced Courthouse – Family Law Clerk',
+      address: '627 W. 21st St., Merced, CA 95340',
+      hours: 'Mon–Fri, 8:00am – 4:00pm',
+      phone: '(209) 725-4101',
+      efilePortal: 'https://www.merced.courts.ca.gov/online-services/e-filing',
+    },
+    processingTime: 'E-filings are reviewed within two court days; counter filings and drop-box packets submitted before 4:00 p.m. receive same-day stamps.',
+    serviceNotes: 'Serve within 60 days. Sheriff Civil serves Merced/Atwater weekly; plan for longer timelines in Los Banos or the foothills.',
+    packetFormIds: DEFAULT_PACKET_FORMS,
+    resources: [
+      {
+        label: 'Merced Family Law division',
+        url: 'https://www.merced.courts.ca.gov/divisions/family-law',
+      },
+      {
+        label: 'Merced forms & eFile',
+        url: 'https://www.merced.courts.ca.gov/forms-filing',
+      },
+    ],
+    steps: [
+      {
+        title: 'Prep the Merced packet',
+        description: 'Fill FL-100/110/105 and add the local case cover sheet from the court website. Staple the first appearance fee worksheet on top.',
+      },
+      {
+        title: 'File via Odyssey or at 21st Street',
+        description: 'Upload electronically or bring two copies to the clerk. Include a return envelope for conformed copies.',
+      },
+      {
+        title: 'Schedule mediation in advance',
+        description: 'Call Family Court Services (209-725-4100 option 3) once a custody hearing is set; the calendar fills months ahead.',
+      },
+      {
+        title: 'Serve and lodge proofs',
+        description: 'File FL-115 immediately so your Case Management Conference stays on calendar.',
+      },
+    ],
+    proTips: [
+      'Merced judges expect proposed orders in Word format when you e-file—upload both DOCX and PDF.',
+      'Los Banos drop-box pickups happen at noon; plan accordingly if you need same-day stamps there.',
+    ],
+  },
+  {
+    id: 'stanislaus',
+    name: 'Stanislaus County',
+    filingMethod: '800 11th Street (Modesto) processes all Family Law filings. Odyssey eFileCA is available for most documents; counter windows accept packets 8:00 a.m.–4:00 p.m. by queue ticket.',
+    filingFee: '$435 (petition)',
+    responseFee: '$435 (response)',
+    clerk: {
+      courthouse: 'Stanislaus County Courthouse – Family Law Clerk',
+      address: '800 11th St., Modesto, CA 95354',
+      hours: 'Mon–Fri, 8:00am – 4:00pm',
+      phone: '(209) 530-3100',
+      efilePortal: 'https://www.stanislaus.courts.ca.gov/forms-filing',
+    },
+    processingTime: 'E-filings post within two court days. Request-for-Order packets submitted in person before 8:45 a.m. are ready for pickup the following court day at noon.',
+    serviceNotes: 'Serve within 60 days. Sheriff Civil requires prepayment and a self-addressed envelope; private servers cover Turlock/Salida faster.',
+    packetFormIds: DEFAULT_PACKET_FORMS,
+    resources: [
+      {
+        label: 'Stanislaus Family Law division',
+        url: 'https://www.stanislaus.courts.ca.gov/divisions/family-law',
+      },
+      {
+        label: 'Court forms & eFile',
+        url: 'https://www.stanislaus.courts.ca.gov/forms-filing',
+      },
+    ],
+    steps: [
+      {
+        title: 'Download the Stanislaus checklist',
+        description: 'Complete FL-100/110/105 and the local Family Law Case Cover Sheet. Add MC-025 if you need extra space for facts.',
+      },
+      {
+        title: 'File via Odyssey or Window 1',
+        description: 'Submit electronically or pull a lobby ticket to reach Window 1 for filings and RFO pickups.',
+      },
+      {
+        title: 'Coordinate mediation',
+        description: 'Family Court Services requires a questionnaire one week before the appointment—return it to 800 11th Street, Room 220.',
+      },
+      {
+        title: 'Serve and lodge proofs',
+        description: 'E-file FL-115 or leave it with the drop box so the department has proof of service before your hearing.',
+      },
+    ],
+    proTips: [
+      'Bring government ID to pick up RFO packets between noon and 12:30 p.m.—staff releases only during that window.',
+      'The clerk rejects PDFs that exceed 25MB; split exhibits before uploading to Odyssey.',
+    ],
+  },
+  {
+    id: 'san-joaquin',
+    name: 'San Joaquin County',
+    filingMethod: 'The Stockton Family Law Courthouse (180 E. Weber Ave.) accepts Odyssey e-file submissions and limited in-person filings 8:00 a.m.–4:00 p.m.',
+    filingFee: '$435 (petition)',
+    responseFee: '$435 (response)',
+    clerk: {
+      courthouse: 'Stockton Family Law Courthouse',
+      address: '180 E. Weber Ave., Stockton, CA 95202',
+      hours: 'Mon–Fri, 8:00am – 4:00pm',
+      phone: '(209) 992-5555',
+      efilePortal: 'http://www.odysseyefileca.com/',
+    },
+    processingTime: 'Most e-filings are reviewed within 1–2 court days. Counter filings stamped the same day if submitted before 3:30 p.m.',
+    serviceNotes: 'Serve within 60 days. Sheriff Civil routes cover Stockton/Lodi weekly; hire private servers for Mountain House, Tracy, or Delta islands.',
+    packetFormIds: DEFAULT_PACKET_FORMS,
+    resources: [
+      {
+        label: 'Family Law & Support division',
+        url: 'https://www.sjcourts.org/family-law-and-support',
+      },
+      {
+        label: 'County filing info',
+        url: 'https://www.sjcourts.org/forms-filing',
+      },
+    ],
+    steps: [
+      {
+        title: 'Compile Stockton packet',
+        description: 'Complete FL-100/110/105 and attach the local case cover sheet from sjcourts.org. Include FW-001 if requesting a fee waiver.',
+      },
+      {
+        title: 'File via Odyssey or lobby kiosks',
+        description: 'Use Odyssey or the public kiosks in the first-floor lobby. Drop boxes clear at 4:00 p.m.',
+      },
+      {
+        title: 'Schedule DCSS/FCS appointments',
+        description: 'For child support matters, coordinate with DCSS; for custody, call Family Court Services immediately after setting a hearing.',
+      },
+      {
+        title: 'Serve and upload FL-115',
+        description: 'Upload proofs in Odyssey with bookmarked exhibits to avoid rejection.',
+      },
+    ],
+    proTips: [
+      'Bring payment separate from document packets; security lines are long, so arrive 30 minutes early.',
+      'Odyssey requires fillable cover sheets—download the current version before filing.',
+    ],
+  },
+  {
+    id: 'placer',
+    name: 'Placer County',
+    filingMethod: 'Family Law matters file at the Santucci Justice Center (Roseville). Odyssey eFileCA is active, but drop boxes and window filing remain available 8:00 a.m.–4:00 p.m.',
+    filingFee: '$435 (petition)',
+    responseFee: '$435 (response)',
+    clerk: {
+      courthouse: 'Bill Santucci Justice Center – Family/Civil Clerk',
+      address: '10820 Justice Center Dr., Roseville, CA 95678',
+      hours: 'Mon–Fri, 8:00am – 4:00pm (windows close 3:00pm)',
+      phone: '(916) 408-6000',
+      efilePortal: 'https://www.placer.courts.ca.gov/online-services/efiling',
+    },
+    processingTime: 'E-filings typically review within 2 court days; drop-box packets processed the morning after submission.',
+    serviceNotes: 'Serve within 60 days. Sheriff Civil serves Roseville/Rocklin quickly but requires prepaid mileage for Tahoe/Truckee service.',
+    packetFormIds: DEFAULT_PACKET_FORMS,
+    resources: [
+      {
+        label: 'Placer court locations',
+        url: 'https://www.placer.courts.ca.gov/locations',
+      },
+      {
+        label: 'Family Law facilitator',
+        url: 'https://www.placer.courts.ca.gov/self-help-families',
+      },
+    ],
+    steps: [
+      {
+        title: 'Gather statewide + Placer forms',
+        description: 'Complete FL-100/110/105 and add the local cover sheet and case assignment form from the court website.',
+      },
+      {
+        title: 'File at Santucci or via Odyssey',
+        description: 'Submit electronically or drop packets at the first-floor windows with a return envelope.',
+      },
+      {
+        title: 'Schedule mediation with FCS',
+        description: 'Call Family Court Services once you file an RFO involving custody to secure a Roseville or Tahoe appointment.',
+      },
+      {
+        title: 'Serve and lodge proofs',
+        description: 'E-file FL-115 and any POS-030 forms so the judge sees proof before the Settlement Conference.',
+      },
+    ],
+    proTips: [
+      'Parking fills by 8:15 a.m.—use the overflow lot on Justice Center Dr. if you have a morning appointment.',
+      'Bookmark long declarations; Placer rejects PDFs without bookmarks or page numbers.',
+    ],
+  },
+  {
+    id: 'el-dorado',
+    name: 'El Dorado County',
+    filingMethod: 'Placerville’s Main Street courthouse processes Family Law filings (limited windows 8:00 a.m.–4:00 p.m.). Odyssey eFile is enabled for Civil/Family; South Lake Tahoe accepts drop-box filings for local matters.',
+    filingFee: '$435 (petition)',
+    responseFee: '$435 (response)',
+    clerk: {
+      courthouse: 'El Dorado County Courthouse – Family/Civil Clerk',
+      address: '2850 Fairlane Ct., Placerville, CA 95667',
+      hours: 'Mon–Fri, 8:00am – 4:00pm',
+      phone: '(530) 621-6427',
+      efilePortal: 'https://www.eldorado.courts.ca.gov/online-services/efiling',
+    },
+    processingTime: 'E-filings review within 2–3 court days. Paper filings submitted before 4:00 p.m. receive same-day stamps in Placerville.',
+    serviceNotes: 'Serve within 60 days. Sheriff Civil charges travel for Tahoe/foothill service; plan ahead for winter weather delays.',
+    packetFormIds: DEFAULT_PACKET_FORMS,
+    resources: [
+      {
+        label: 'El Dorado court locations',
+        url: 'https://www.eldorado.courts.ca.gov/locations',
+      },
+      {
+        label: 'Family Law division',
+        url: 'https://www.eldorado.courts.ca.gov/divisions/family-law',
+      },
+    ],
+    steps: [
+      {
+        title: 'Compile El Dorado packet',
+        description: 'Complete statewide forms plus the optional “Family Law Case Cover Sheet” from the court website. Include FW-001 for fee waivers.',
+      },
+      {
+        title: 'File in Placerville or e-file',
+        description: 'Upload via Odyssey or bring two copies to Fairlane Court. Leave extra time for security screening.',
+      },
+      {
+        title: 'Arrange mediation',
+        description: 'Call Family Court Services early—Placerville and Tahoe calendars book weeks ahead.',
+      },
+      {
+        title: 'Serve and file FL-115',
+        description: 'Return proofs quickly; departments reset hearings if service is not of record 10 days beforehand.',
+      },
+    ],
+    proTips: [
+      'Check storm closures before driving to Placerville in winter—courts sometimes reduce hours due to weather.',
+      'Tahoe filings can be dropped locally but are processed in Placerville; expect a one-day lag for conformed copies.',
+    ],
+  },
+  {
+    id: 'yolo',
+    name: 'Yolo County',
+    filingMethod: 'All Family Law filings route through the Woodland courthouse (1000 Main Street). Odyssey eFile is available for Civil/Family; self-represented parties may file at the clerk windows or drop boxes.',
+    filingFee: '$435 (petition)',
+    responseFee: '$435 (response)',
+    clerk: {
+      courthouse: 'Yolo Superior Court – Family Division',
+      address: '1000 Main St., Woodland, CA 95695',
+      hours: 'Mon–Fri, 8:00am – 4:00pm',
+      phone: '(530) 406-6704',
+      efilePortal: 'https://www.yolo.courts.ca.gov/online-services/efile-court-documents',
+    },
+    processingTime: 'Most e-filings post within 2 court days; counter filings before 3:30 p.m. receive same-day stamps.',
+    serviceNotes: 'Serve within 60 days. Sheriff Civil covers Woodland/West Sacramento weekly; private servers are faster for Davis and rural Capay Valley.',
+    packetFormIds: DEFAULT_PACKET_FORMS,
+    resources: [
+      {
+        label: 'Yolo Family Division',
+        url: 'https://www.yolo.courts.ca.gov/divisions/family-division',
+      },
+      {
+        label: 'Yolo eFile instructions',
+        url: 'https://www.yolo.courts.ca.gov/online-services/efile-court-documents',
+      },
+    ],
+    steps: [
+      {
+        title: 'Prepare statewide + Yolo forms',
+        description: 'Complete FL-100/110/105 and attach the local case cover sheet (FL-800).',
+      },
+      {
+        title: 'File through Odyssey or the Main Street counter',
+        description: 'Upload electronically or bring paper packets with a return envelope for conformed copies.',
+      },
+      {
+        title: 'Schedule CCRC mediation',
+        description: 'Email familylaw@yolo.courts.ca.gov after filing custody requests so Child Custody Recommending Counseling is scheduled on time.',
+      },
+      {
+        title: 'Serve and confirm proofs',
+        description: 'File FL-115 as soon as service is complete; judges continue hearings without proof on file.',
+      },
+    ],
+    proTips: [
+      'Yolo requires hearing reservation numbers in the caption—enter them before e-filing RFOs.',
+      'Self-help desks open at 8:00 a.m.—arrive early if you need document review before filing.',
+    ],
+  },
+  {
+    id: 'nevada',
+    name: 'Nevada County',
+    filingMethod: 'Nevada City Courthouse accepts Family Law filings at 201 Church Street. E-filing is limited; most parties file in person or via drop box (8:00 a.m.–4:00 p.m.).',
+    filingFee: '$435 (petition)',
+    responseFee: '$435 (response)',
+    clerk: {
+      courthouse: 'Nevada City Courthouse – Civil/Family Counter',
+      address: '201 Church St., Nevada City, CA 95959',
+      hours: 'Mon–Fri, 8:00am – 4:00pm',
+      phone: '(530) 362-4309',
+    },
+    processingTime: 'Paper filings submitted before 4:00 p.m. receive same-day stamps. Drop-box packets are processed the next business day.',
+    serviceNotes: 'Serve within 60 days. Sheriff Civil covers Nevada City/Grass Valley weekly; hire a registered server for Truckee or remote mountain communities.',
+    packetFormIds: DEFAULT_PACKET_FORMS,
+    resources: [
+      {
+        label: 'Nevada County Self-Help',
+        url: 'https://www.nevada.courts.ca.gov/self-help',
+      },
+      {
+        label: 'Court location & contact',
+        url: 'https://www.nevada.courts.ca.gov/general-information',
+      },
+    ],
+    steps: [
+      {
+        title: 'Assemble the Nevada County packet',
+        description: 'Complete statewide forms and add any local standing orders provided by the Self-Help Center.',
+      },
+      {
+        title: 'File at 201 Church Street',
+        description: 'Take a queue ticket or use the drop box. Bring exact change or a cashier’s check.',
+      },
+      {
+        title: 'Schedule mediation',
+        description: 'Contact Family Court Services early—mediators travel between Nevada City and Truckee on limited schedules.',
+      },
+      {
+        title: 'Serve and lodge proofs',
+        description: 'File FL-115 or POS-040 as soon as service is complete so the judicial officer keeps your hearing.',
+      },
+    ],
+    proTips: [
+      'Winter storms can close Highway 20/49—plan filings ahead during snow season.',
+      'Bring two hole-punched copies or the clerk will charge to punch them for you.',
+    ],
+  },
+  {
+    id: 'butte',
+    name: 'Butte County',
+    filingMethod: 'North Butte County Courthouse (1775 Concord Ave., Chico) processes Family Law filings. Odyssey eFileCA is available; counters run 8:30 a.m.–4:00 p.m.',
+    filingFee: '$435 (petition)',
+    responseFee: '$435 (response)',
+    clerk: {
+      courthouse: 'North Butte County Courthouse – Family Division',
+      address: '1775 Concord Ave., Chico, CA 95928',
+      hours: 'Mon–Fri, 8:30am – 4:00pm',
+      phone: '(530) 532-7008',
+      efilePortal: 'https://www.butte.courts.ca.gov/online-services/efiling',
+    },
+    processingTime: 'E-filings are reviewed within 1–2 court days; counter filings submitted before 4:00 p.m. receive same-day processing.',
+    serviceNotes: 'Serve within 60 days. Sheriff Civil requires a conformed copy of the petition; private servers are faster for Paradise/Oroville areas rebuilding after fires.',
+    packetFormIds: DEFAULT_PACKET_FORMS,
+    resources: [
+      {
+        label: 'Butte Family Law division',
+        url: 'https://www.butte.courts.ca.gov/divisions/family-law',
+      },
+      {
+        label: 'Self-Help & facilitator',
+        url: 'https://www.butte.courts.ca.gov/self-help',
+      },
+    ],
+    steps: [
+      {
+        title: 'Collect statewide + Butte forms',
+        description: 'Complete FL-100/110/105 and review any standing orders for North Butte filings.',
+      },
+      {
+        title: 'File in Chico or via Odyssey',
+        description: 'Upload through Odyssey or drop paper packets at the courthouse front desk.',
+      },
+      {
+        title: 'Book Family Court Services',
+        description: 'Call 530-532-7008 to schedule mediation before custody hearings.',
+      },
+      {
+        title: 'Serve and file proofs',
+        description: 'E-file FL-115 quickly so your case management review stays on the calendar.',
+      },
+    ],
+    proTips: [
+      'Arrive early—security lines and parking spill onto Concord Ave. after 9:00 a.m.',
+      'Bookmark long declarations to avoid Odyssey rejection notices.',
+    ],
+  },
+  {
+    id: 'shasta',
+    name: 'Shasta County',
+    filingMethod: 'Redding’s courthouse (1500 Court Street) handles Family Law filings. E-filing is available through Journal Technologies; counters operate 8:30 a.m.–4:30 p.m.',
+    filingFee: '$435 (petition)',
+    responseFee: '$435 (response)',
+    clerk: {
+      courthouse: 'Shasta County Courthouse – Civil/Family Clerk',
+      address: '1500 Court St., Redding, CA 96001',
+      hours: 'Mon–Fri, 8:30am – 4:30pm',
+      phone: '(530) 245-6900',
+      efilePortal: 'https://www.shasta.courts.ca.gov/forms-filing',
+    },
+    processingTime: 'Electronic filings are reviewed within about 2 court days; counter filings receive same-day stamps if submitted before 4:00 p.m.',
+    serviceNotes: 'Serve within 60 days. Sheriff Civil requires prepayment and proof of residency; private servers cover Anderson and Cottonwood faster.',
+    packetFormIds: DEFAULT_PACKET_FORMS,
+    resources: [
+      {
+        label: 'Shasta Family Law division',
+        url: 'https://www.shasta.courts.ca.gov/divisions/family-law-division',
+      },
+      {
+        label: 'Self-help/facilitator',
+        url: 'https://www.shastacounty.gov/media/28896',
+      },
+    ],
+    steps: [
+      {
+        title: 'Complete statewide forms',
+        description: 'Fill FL-100/110/105 and gather supporting declarations before heading to the courthouse.',
+      },
+      {
+        title: 'File online or at Room 115',
+        description: 'E-file via Journal Technologies or submit paper packets in Room 115 at 1500 Court Street.',
+      },
+      {
+        title: 'Coordinate CCRC appointments',
+        description: 'Email familycrtsvc@shasta.courts.ca.gov to schedule mediation as soon as a custody issue is raised.',
+      },
+      {
+        title: 'Serve and confirm FL-115',
+        description: 'Upload proofs with bookmarks to avoid rejection; judges want them filed at least 5 court days before hearings.',
+      },
+    ],
+    proTips: [
+      'Security screening can back up when jury panels report—plan for extra time in the mornings.',
+      'Use the clerk’s drop box (Court St. entrance) after hours; items are time-stamped the next business day.',
+    ],
+  },
+  {
+    id: 'humboldt',
+    name: 'Humboldt County',
+    filingMethod: 'Eureka courthouse (825 5th Street) accepts Family Law filings at the Civil counter 8:00 a.m.–5:00 p.m. Limited e-filing is available for represented parties via Journal Technologies.',
+    filingFee: '$435 (petition)',
+    responseFee: '$435 (response)',
+    clerk: {
+      courthouse: 'Humboldt County Courthouse – Civil/Family Services',
+      address: '825 5th St., Eureka, CA 95501',
+      hours: 'Mon–Fri, 8:00am – 5:00pm',
+      phone: '(707) 445-7256',
+      efilePortal: 'https://www.humboldt.courts.ca.gov/online-services',
+    },
+    processingTime: 'Counter filings submitted before 4:30 p.m. get same-day stamps; e-filings are processed within 2–3 court days.',
+    serviceNotes: 'Serve within 60 days. Sheriff Civil coverage outside Eureka/Arcata can take several weeks—hire a private server for Fortuna, Garberville, or rural communities.',
+    packetFormIds: DEFAULT_PACKET_FORMS,
+    resources: [
+      {
+        label: 'Humboldt online services',
+        url: 'https://www.humboldt.courts.ca.gov/online-services',
+      },
+      {
+        label: 'Courthouse contact info',
+        url: 'https://www.humboldt.courts.ca.gov/general-information/contact-uslocations',
+      },
+    ],
+    steps: [
+      {
+        title: 'Assemble statewide + Humboldt instructions',
+        description: 'Complete FL-100/110/105 and review local standing orders linked from the court website.',
+      },
+      {
+        title: 'File at 825 5th Street or e-file',
+        description: 'Drop packets at the civil counter or upload through the Journal Technologies portal.',
+      },
+      {
+        title: 'Coordinate mediation',
+        description: 'Contact Family Court Services early—staff also cover satellite days in Garberville and Hoopa.',
+      },
+      {
+        title: 'Serve and file proofs',
+        description: 'File FL-115 promptly so the department keeps your CMC or custody hearing on calendar.',
+      },
+    ],
+    proTips: [
+      'Fog often delays travel along Highway 101—allow extra time if you’re driving from the North or South county.',
+      'Use the lobby kiosks to print conformed copies if you e-file and need stamped sets for service.',
+    ],
+  },
+  {
+    id: 'mendocino',
+    name: 'Mendocino County',
+    filingMethod: 'Ukiah courthouse (100 N. State Street) and the Fort Bragg branch share Family Law filings. Journal Technologies eFile is enabled; counters operate 8:00 a.m.–4:00 p.m.',
+    filingFee: '$435 (petition)',
+    responseFee: '$435 (response)',
+    clerk: {
+      courthouse: 'Mendocino County Courthouse – Family/Civil Clerk',
+      address: '100 N. State St., Ukiah, CA 95482',
+      hours: 'Mon–Fri, 8:00am – 4:00pm',
+      phone: '(707) 468-2001',
+      efilePortal: 'https://www.mendocino.courts.ca.gov/e-filing',
+    },
+    processingTime: 'E-filings are reviewed within approximately 2 court days; counter filings before 4:00 p.m. are processed the same day.',
+    serviceNotes: 'Serve within 60 days. Sheriff Civil charges mileage for coast runs—hire private servers for Fort Bragg or Anderson Valley matters.',
+    packetFormIds: DEFAULT_PACKET_FORMS,
+    resources: [
+      {
+        label: 'Mendocino Family Law',
+        url: 'https://www.mendocino.courts.ca.gov/divisions/family/family-law',
+      },
+      {
+        label: 'e-Filing information',
+        url: 'https://www.mendocino.courts.ca.gov/e-filing',
+      },
+    ],
+    steps: [
+      {
+        title: 'Collect statewide + local instructions',
+        description: 'Fill FL-100/110/105 and review the Family Mediation packet if custody is disputed.',
+      },
+      {
+        title: 'File in Ukiah/Fort Bragg or e-file',
+        description: 'Submit electronically or bring paper packets to the appropriate branch with a return envelope.',
+      },
+      {
+        title: 'Schedule mediation',
+        description: 'Contact Family Court Services (Room 212) once you calendar any custody motion.',
+      },
+      {
+        title: 'Serve and lodge proofs',
+        description: 'File FL-115 as soon as service is complete—judges expect proof five days before hearings.',
+      },
+    ],
+    proTips: [
+      'Phone coverage is limited after 3:00 p.m.—email familylaw@mendocino.courts.ca.gov for status questions.',
+      'If you need coast coverage, use the Fort Bragg drop box to avoid long drives over Highway 20.',
+    ],
+  },
+  {
+    id: 'lake',
+    name: 'Lake County',
+    filingMethod: 'The Lakeport courthouse (255 N. Forbes Street) accepts Family Law filings at the civil counter 8:00 a.m.–4:00 p.m. E-filing is not yet available, so SRLs must file in person, by mail, or via drop box.',
+    filingFee: '$435 (petition)',
+    responseFee: '$435 (response)',
+    clerk: {
+      courthouse: 'Lake County Superior Court – Civil/Family Clerk',
+      address: '255 N. Forbes St., Lakeport, CA 95453',
+      hours: 'Mon–Fri, 8:00am – 4:00pm',
+      phone: '(707) 263-2374',
+    },
+    processingTime: 'Paper filings submitted before 4:00 p.m. get same-day stamps; mailed packets are processed the day they arrive.',
+    serviceNotes: 'Serve within 60 days. Sheriff Civil covers Lakeport/Clearlake weekly; remote Cobb/Hwy 175 addresses take longer—use private servers if time-sensitive.',
+    packetFormIds: DEFAULT_PACKET_FORMS,
+    resources: [
+      {
+        label: 'Lake Superior Court general info',
+        url: 'https://lake.courts.ca.gov/general-information',
+      },
+      {
+        label: 'Self-help resources',
+        url: 'https://lake.courts.ca.gov/self-help',
+      },
+    ],
+    steps: [
+      {
+        title: 'Complete statewide forms',
+        description: 'Finish FL-100/110/105 and any case-specific attachments (Income & Expense, Property Declaration, etc.).',
+      },
+      {
+        title: 'File at Lakeport or mail packets',
+        description: 'Bring two copies to 255 N. Forbes Street or mail filings with a self-addressed stamped envelope.',
+      },
+      {
+        title: 'Schedule mediation',
+        description: 'Call Family Court Services as soon as custody is disputed; mediators rotate between Lakeport and Clearlake.',
+      },
+      {
+        title: 'Serve and file proofs',
+        description: 'Once service is complete, file FL-115 so the judge will hear your motion.',
+      },
+    ],
+    proTips: [
+      'Bring exact change or a cashier’s check—credit card terminals occasionally go offline.',
+      'Expect security lines around 8:30 a.m.; plan filings earlier in the day.',
+    ],
+  },
+  {
+    id: 'tehama',
+    name: 'Tehama County',
+    filingMethod: 'Red Bluff courthouse (1740 Walnut Street) processes all Family Law filings. E-filing is not yet available; use the clerk windows or the exterior drop box (cleared daily at 4:00 p.m.).',
+    filingFee: '$435 (petition)',
+    responseFee: '$435 (response)',
+    clerk: {
+      courthouse: 'Tehama County Courthouse – Civil/Family Clerk',
+      address: '1740 Walnut St., Red Bluff, CA 96080',
+      hours: 'Mon–Fri, 8:00am – 4:00pm',
+      phone: '(530) 527-3484',
+    },
+    processingTime: 'Counter filings before 4:00 p.m. post same day; drop-box items are stamped the morning after collection.',
+    serviceNotes: 'Serve within 60 days. Sheriff Civil requires separate checks for mileage outside Red Bluff; private servers are faster for Corning or rural ranches.',
+    packetFormIds: DEFAULT_PACKET_FORMS,
+    resources: [
+      {
+        label: 'Tehama Superior Court',
+        url: 'https://www.tehama.courts.ca.gov/',
+      },
+      {
+        label: 'Family Court Services info',
+        url: 'https://www.tehama.courts.ca.gov/divisions/family-law',
+      },
+    ],
+    steps: [
+      {
+        title: 'Prepare the Tehama packet',
+        description: 'Complete the statewide divorce packet and attach any standing orders or cover sheets posted on the court website.',
+      },
+      {
+        title: 'File at Walnut Street or via drop box',
+        description: 'Bring two copies and payment to the clerk windows or use the exterior drop box before 4:00 p.m.',
+      },
+      {
+        title: 'Schedule mediation through FCS',
+        description: 'Family Court Services provides mediation in Red Bluff; call immediately once you set a custody hearing.',
+      },
+      {
+        title: 'Serve and return proofs',
+        description: 'File FL-115 promptly so the judicial officer keeps your hearing.',
+      },
+    ],
+    proTips: [
+      'Lines are shortest between 8:00–9:00 a.m.—arrive early during harvest season.',
+      'The clerk accepts money orders or cashier’s checks; personal checks are returned if you are not a local attorney.',
     ],
   },
   // Southern jurisdictions
