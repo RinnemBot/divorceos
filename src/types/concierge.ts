@@ -16,6 +16,7 @@ export interface FilingQueueDocument {
   downloadUrl?: string | null;
   uploadedAt?: string | null;
   size?: number | null;
+  metadata?: Record<string, any> | null;
 }
 
 export interface FilingQueueItem {

@@ -1,5 +1,32 @@
 # Ralph Loop Progress
 
+## Iteration 6 – AgentMail intake sync (2026-04-03 23:40 PT)
+
+### Status
+- [x] Complete (AgentMail); Paperclip pending source hookup
+
+### What Was Done
+- Added a `scripts/sync-concierge.mjs` ingestion script that pulls AgentMail threads via the official SDK, normalizes metadata, uploads attachments into the Supabase vault, and upserts the new queue rows.
+- Introduced a `sync:queue` npm script (`npm run sync:queue -- agentmail`) plus `agentmail` + `dotenv` dependencies so the job can run locally or from a cron/worker with minimal setup.
+- Extended `FilingQueueDocument` to carry per-document metadata (attachment IDs, content types) so we can skip duplicates and attribute sources in the dashboard.
+- Hardened the sync script with `.env.server` loading, bucket uploads, dedupe logic, and a table-existence guard (errors early if the SQL migration hasn’t been applied).
+
+### Blockers / Next Up
+- Paperclip feed still needs a defined data source (API or webhook). Once we know where Paperclip emits filings, we can plug that into the same script.
+- Supabase table must exist before running the sync; execute `supabase/concierge-queue.sql` if it hasn’t been applied.
+
+### Validation
+- `npm run sync:queue -- agentmail` (currently halts early because the concierge table hasn’t been created yet—expected until the SQL migration runs).
+
+### Files Touched
+- `scripts/sync-concierge.mjs`
+- `package.json`
+- `package-lock.json`
+- `src/types/concierge.ts`
+- `PROGRESS.md`
+
+---
+
 ## Iteration 5 – Supabase concierge queue + staff dashboard (2026-04-03 22:30 PT)
 
 ### Status
