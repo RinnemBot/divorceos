@@ -8,6 +8,7 @@ import { FormsPage } from '@/pages/FormsPage';
 import { SupportToolsPage } from '@/pages/SupportToolsPage';
 import { ProfilePage } from '@/pages/ProfilePage';
 import { ConfirmEmailPage } from '@/pages/ConfirmEmailPage';
+import { DashboardPage } from '@/pages/DashboardPage';
 import { CountyConciergePage } from '@/pages/CountyConciergePage';
 import { AuthModal } from '@/components/AuthModal';
 import { authService, type User } from '@/services/auth';
@@ -62,6 +63,7 @@ function App() {
             <Route path="/support-tools" element={<SupportToolsPage />} />
             <Route path="/concierge" element={<CountyConciergePage />} />
             <Route path="/concierge/:countyId" element={<CountyConciergePage />} />
+            <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/confirm-email" element={<ConfirmEmailPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
