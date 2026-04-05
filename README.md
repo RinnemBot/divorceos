@@ -87,9 +87,26 @@ VITE_KIMI_API_KEY=moonshot-...
 SUPABASE_URL=https://YOUR_PROJECT.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=service-role-key
 SUPABASE_STORAGE_BUCKET=divorceos-vault
+
+# Intake + mission control (server-side only)
+AGENTMAIL_API_KEY=am_...
+AGENTMAIL_INBOX_ID=divorceos@agentmail.to
+PAPERCLIP_API_URL=http://localhost:3100/api
+PAPERCLIP_API_KEY=pc_sk_...
+PAPERCLIP_COMPANY_ID=company_...
 ```
 
 > ⚠️ Never expose the Supabase service-role key to the browser. Keep it in `.env.server` locally and in Vercel’s encrypted serverless env vars so only API routes can access it.
+
+### Syncing the concierge queue
+
+Use the intake sync script to pull new filings from all configured sources (AgentMail, Paperclip mission control, etc.):
+
+```bash
+npm run sync:queue -- agentmail paperclip
+```
+
+If you omit the trailing arguments, the script will try every source listed in the default array. Each source checks for its required environment variables before running, so you can enable them one at a time.
 
 ## License
 

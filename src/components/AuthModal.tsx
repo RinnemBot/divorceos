@@ -90,7 +90,7 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-md bg-white">
+      <DialogContent className="sm:max-w-md bg-white dark:bg-slate-950">
         <DialogHeader>
           <DialogTitle className="text-center text-2xl font-bold text-slate-900">
             Welcome to DivorceOS
@@ -99,8 +99,8 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
         
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-2 bg-slate-100">
-            <TabsTrigger value="login" className="data-[state=active]:bg-white">Sign In</TabsTrigger>
-            <TabsTrigger value="signup" className="data-[state=active]:bg-white">Create Account</TabsTrigger>
+            <TabsTrigger value="login" className="data-[state=active]:bg-white dark:data-[state=active]:bg-slate-900">Sign In</TabsTrigger>
+            <TabsTrigger value="signup" className="data-[state=active]:bg-white dark:data-[state=active]:bg-slate-900">Create Account</TabsTrigger>
           </TabsList>
           
           {error && (

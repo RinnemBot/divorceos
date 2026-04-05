@@ -36,7 +36,7 @@ export function SupportToolsPage() {
   const profileCountyId = getCountyGuideIdFromName(currentUser?.profile?.county);
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-50 dark:bg-black transition-colors">
       <section className="bg-gradient-to-br from-emerald-900 via-emerald-800 to-emerald-700 text-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 grid gap-10 lg:grid-cols-[3fr,2fr] items-center">
           <div>
@@ -77,13 +77,13 @@ export function SupportToolsPage() {
 
       <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid gap-6 md:grid-cols-3">
         {supportHighlights.map((item) => (
-          <Card key={item.title} className="border-emerald-100 bg-white">
+          <Card key={item.title} className="border-emerald-100 bg-white dark:bg-black dark:border-slate-800">
             <CardContent className="p-6">
               <div className="h-12 w-12 rounded-lg bg-emerald-50 flex items-center justify-center mb-4">
                 <item.icon className="h-5 w-5 text-emerald-700" />
               </div>
-              <h3 className="text-lg font-semibold text-slate-900 mb-2">{item.title}</h3>
-              <p className="text-sm text-slate-600">{item.description}</p>
+              <h3 className="text-lg font-semibold text-slate-900 mb-2 dark:text-white">{item.title}</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-300">{item.description}</p>
             </CardContent>
           </Card>
         ))}

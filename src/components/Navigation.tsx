@@ -19,6 +19,7 @@ import {
   LayoutDashboard 
 } from 'lucide-react';
 import { authService, type User, SUBSCRIPTION_LIMITS } from '@/services/auth';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 interface NavigationProps {
   currentUser: User | null;
@@ -53,7 +54,7 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
   };
 
   return (
-    <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <nav className="bg-white border-b border-gray-200 sticky top-0 z-50 dark:bg-slate-950 dark:border-slate-800 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           {/* Logo */}
@@ -62,7 +63,7 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
               <div className="w-8 h-8 bg-emerald-700 rounded-lg flex items-center justify-center">
                 <Scale className="h-5 w-5 text-white" />
               </div>
-              <span className="text-xl font-bold text-gray-800">
+              <span className="text-xl font-bold text-gray-800 dark:text-white">
                 DivorceOS
               </span>
             </Link>
@@ -76,8 +77,8 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
                 to={link.path}
                 className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                   (link.path === '/' ? location.pathname === '/' : location.pathname.startsWith(link.path))
-                    ? 'bg-emerald-100 text-emerald-800'
-                    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                    ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-200'
+                    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-slate-300 dark:hover:bg-slate-900/70 dark:hover:text-white'
                 }`}
               >
                 {link.label}
@@ -87,9 +88,10 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
 
           {/* User Actions */}
           <div className="hidden md:flex items-center gap-3">
+            <ThemeToggle />
             <Button
               variant="outline"
-              className="border-emerald-600 text-emerald-700 hover:bg-emerald-50"
+              className="border-emerald-600 text-emerald-700 hover:bg-emerald-50 dark:text-emerald-200 dark:border-emerald-500 dark:hover:bg-emerald-950/40"
               onClick={handleChatCta}
             >
               Talk to Maria
@@ -97,11 +99,11 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
             {currentUser ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="flex items-center gap-2">
+                  <Button variant="ghost" className="flex items-center gap-2 text-gray-700 dark:text-slate-200">
                     <div className="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center">
                       <UserIcon className="h-4 w-4 text-white" />
                     </div>
-                    <span className="text-sm font-medium text-gray-700">
+                    <span className="text-sm font-medium text-gray-700 dark:text-slate-200">
                       {currentUser.name || currentUser.email.split('@')[0]}
                     </span>
                     <ChevronDown className="h-4 w-4 text-gray-400" />
@@ -140,13 +142,13 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-            ) : (
-              <Button 
-                onClick={onAuthClick}
-                className="bg-emerald-700 hover:bg-emerald-800 text-white"
-              >
-                Sign In/Create Account
-              </Button>
+              ) : (
+                <Button 
+                  onClick={onAuthClick}
+                  className="bg-emerald-700 hover:bg-emerald-800 text-white dark:bg-emerald-600 dark:hover:bg-emerald-500"
+                >
+                  Sign In/Create Account
+                </Button>
             )}
           </div>
 
@@ -154,7 +156,7 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
           <div className="md:hidden flex items-center">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 rounded-md text-gray-600 hover:bg-gray-100"
+              className="p-2 rounded-md text-gray-600 hover:bg-gray-100 dark:text-slate-200 dark:hover:bg-slate-900/70"
             >
               {isMobileMenuOpen ? (
                 <X className="h-6 w-6" />
@@ -168,7 +170,7 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-white border-t border-gray-200">
+        <div className="md:hidden bg-white border-t border-gray-200 dark:bg-slate-950 dark:border-slate-800">
           <div className="px-4 py-3 space-y-2">
             {navLinks.map((link) => (
               <Link
@@ -177,17 +179,19 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
                 onClick={() => setIsMobileMenuOpen(false)}
                 className={`block px-3 py-2 rounded-md text-base font-medium ${
                   (link.path === '/' ? location.pathname === '/' : location.pathname.startsWith(link.path))
-                    ? 'bg-emerald-100 text-emerald-800'
-                    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                    ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-200'
+                    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-slate-300 dark:hover:bg-slate-900/70 dark:hover:text-white'
                 }`}
               >
                 {link.label}
               </Link>
             ))}
 
+            <ThemeToggle showLabel className="mt-2" />
+
             <Button
               variant="outline"
-              className="w-full border-emerald-600 text-emerald-700 hover:bg-emerald-50"
+              className="w-full border-emerald-600 text-emerald-700 hover:bg-emerald-50 dark:text-emerald-200 dark:border-emerald-500 dark:hover:bg-emerald-950/40"
               onClick={() => {
                 handleChatCta();
                 setIsMobileMenuOpen(false);
@@ -196,26 +200,26 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
               Talk to Maria
             </Button>
 
-            <div className="border-t border-gray-200 pt-3 mt-3">
+            <div className="border-t border-gray-200 pt-3 mt-3 dark:border-slate-800">
               {currentUser ? (
                 <>
                   <div className="px-3 py-2">
-                    <p className="text-sm font-medium text-gray-900">{currentUser.email}</p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-sm font-medium text-gray-900 dark:text-white">{currentUser.email}</p>
+                    <p className="text-xs text-gray-500 dark:text-slate-400">
                       {SUBSCRIPTION_LIMITS[currentUser.subscription].name} Plan
                     </p>
                   </div>
                   <Link
                     to="/dashboard"
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:bg-gray-100"
+                    className="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:bg-gray-100 dark:text-slate-300 dark:hover:bg-slate-900/70"
                   >
                     Dashboard
                   </Link>
                   <Link
                     to="/profile"
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:bg-gray-100"
+                    className="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:bg-gray-100 dark:text-slate-300 dark:hover:bg-slate-900/70"
                   >
                     Profile Settings
                   </Link>
@@ -224,7 +228,7 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
                       handleLogout();
                       setIsMobileMenuOpen(false);
                     }}
-                    className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-red-600 hover:bg-red-50"
+                    className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10"
                   >
                     Sign Out
                   </button>
@@ -235,7 +239,7 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
                     onAuthClick();
                     setIsMobileMenuOpen(false);
                   }}
-                  className="w-full bg-emerald-700 hover:bg-emerald-800 text-white"
+                  className="w-full bg-emerald-700 hover:bg-emerald-800 text-white dark:bg-emerald-600 dark:hover:bg-emerald-500"
                 >
                   Sign In/Create Account
                 </Button>

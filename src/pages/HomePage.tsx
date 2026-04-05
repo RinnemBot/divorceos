@@ -122,7 +122,7 @@ export function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-black transition-colors">
       {/* Concierge Announcement */}
       <div className="bg-emerald-900 text-emerald-50 border-b border-emerald-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col gap-2 md:flex-row md:items-center md:justify-between text-sm">
@@ -210,31 +210,31 @@ export function HomePage() {
             
             <div className="hidden md:block">
               <div className="relative">
-                <div className="absolute -inset-4 bg-white/10 rounded-2xl blur-xl"></div>
-                <Card className="relative bg-white/95 backdrop-blur text-gray-800">
-                  <CardHeader className="border-b bg-gray-50">
+                <div className="absolute -inset-4 bg-white/10 rounded-2xl blur-xl dark:bg-white/5"></div>
+                <Card className="relative bg-white/95 backdrop-blur text-gray-800 dark:bg-black/80 dark:text-white">
+                  <CardHeader className="border-b bg-gray-50 dark:bg-black/40 dark:border-white/10">
                     <div className="flex items-center gap-2">
                       <div className="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center">
                         <MessageSquare className="h-4 w-4 text-white" />
                       </div>
                       <div>
                         <CardTitle className="text-sm font-semibold">Maria</CardTitle>
-                        <p className="text-xs text-gray-500">AI Divorce Specialist</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-300">AI Divorce Specialist</p>
                       </div>
                     </div>
                   </CardHeader>
                   <CardContent className="p-4 space-y-3">
-                    <div className="bg-emerald-50 rounded-lg p-3 text-sm">
-                      <p className="text-gray-700">
+                    <div className="bg-emerald-50 rounded-lg p-3 text-sm border border-emerald-100 dark:bg-emerald-500/20 dark:border-emerald-400/40">
+                      <p className="text-gray-700 dark:text-emerald-50">
                         &quot;Hey there! I&apos;m Maria. I know this divorce stuff can feel overwhelming, 
                         but I&apos;m here to help you figure it out. What&apos;s on your mind?&quot;
                       </p>
                     </div>
                     <div className="flex gap-2">
-                      <div className="bg-gray-100 rounded-full px-3 py-1 text-xs text-gray-600">
+                      <div className="bg-gray-100 rounded-full px-3 py-1 text-xs text-gray-600 dark:bg-white/10 dark:text-white">
                         How do I file for divorce?
                       </div>
-                      <div className="bg-gray-100 rounded-full px-3 py-1 text-xs text-gray-600">
+                      <div className="bg-gray-100 rounded-full px-3 py-1 text-xs text-gray-600 dark:bg-white/10 dark:text-white">
                         Child custody help
                       </div>
                     </div>
@@ -250,10 +250,10 @@ export function HomePage() {
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4 dark:text-white">
               Everything You Need for Your California Divorce
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto dark:text-gray-300">
               From initial questions to final paperwork, DivorceOS provides the guidance 
               and resources you need.
             </p>
@@ -261,13 +261,13 @@ export function HomePage() {
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {features.map((feature) => (
-              <Card key={feature.title} className="hover:shadow-lg transition-shadow">
+              <Card key={feature.title} className="hover:shadow-lg transition-shadow dark:bg-black/70 dark:border dark:border-white/10">
                 <CardContent className="p-6">
                   <div className="w-12 h-12 rounded-lg bg-emerald-100 flex items-center justify-center mb-4">
                     <feature.icon className="h-6 w-6 text-emerald-700" />
                   </div>
-                  <h3 className="font-semibold text-gray-900 mb-2">{feature.title}</h3>
-                  <p className="text-sm text-gray-600">{feature.description}</p>
+                  <h3 className="font-semibold text-gray-900 mb-2 dark:text-white">{feature.title}</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">{feature.description}</p>
                 </CardContent>
               </Card>
             ))}
@@ -276,27 +276,27 @@ export function HomePage() {
       </section>
 
       {/* Concierge + Filing Section */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-white dark:bg-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid gap-10 lg:grid-cols-[1.2fr,0.8fr] items-center">
             <div>
               <p className="text-sm uppercase tracking-[0.2em] text-emerald-600 font-semibold mb-3">
                 County concierge + filings
               </p>
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              <h2 className="text-3xl font-bold text-gray-900 mb-4 dark:text-white">
                 In-house filings for the counties you actually need
               </h2>
-              <p className="text-lg text-gray-600 mb-6">
+              <p className="text-lg text-gray-600 mb-6 dark:text-gray-300">
                 Our concierge team now covers the entire Central Valley, Sacramento corridor, and the north-state circuit. 
                 Paid plans include human-reviewed packets, e-filing (or drop-box runs when required), and clerk rejection monitoring so you don&apos;t have to babysit submissions.
               </p>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-6">
                 {FEATURED_REGION_LOGOS.map((region) => (
-                  <div key={region.id} className="flex items-start gap-3 rounded-xl border border-emerald-100 bg-white/60 p-3 shadow-sm">
+                  <div key={region.id} className="flex items-start gap-3 rounded-xl border border-emerald-100 bg-white/60 p-3 shadow-sm dark:bg-white/5">
                     <div className={`h-12 w-12 rounded-full bg-gradient-to-br ${region.gradient} text-white font-semibold flex items-center justify-center`}>{region.initials}</div>
                     <div>
-                      <p className="text-sm font-semibold text-gray-900">{region.title}</p>
-                      <p className="text-xs text-gray-600 leading-snug">{region.counties}</p>
+                      <p className="text-sm font-semibold text-gray-900 dark:text-white">{region.title}</p>
+                      <p className="text-xs text-gray-600 leading-snug dark:text-gray-300">{region.counties}</p>
                     </div>
                   </div>
                 ))}
@@ -304,15 +304,15 @@ export function HomePage() {
               <ul className="space-y-3 text-gray-700 mb-8">
                 <li className="flex items-start gap-3">
                   <CheckCircle className="h-5 w-5 text-emerald-600 mt-0.5" />
-                  <span>40+ counties live on the concierge map with filing method, local cover sheets, and service rules baked in.</span>
+                  <span className="text-gray-700 dark:text-gray-200">40+ counties live on the concierge map with filing method, local cover sheets, and service rules baked in.</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle className="h-5 w-5 text-emerald-600 mt-0.5" />
-                  <span>Essential+ tiers unlock in-house e-filing—our staff assembles, uploads, and chases clerk approvals while you stay in the loop.</span>
+                  <span className="text-gray-700 dark:text-gray-200">Essential+ tiers unlock in-house e-filing—our staff assembles, uploads, and chases clerk approvals while you stay in the loop.</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle className="h-5 w-5 text-emerald-600 mt-0.5" />
-                  <span>Plus and Done-For-You add white-glove extras like process server coordination, return-mail tracking, and rejection escalation.</span>
+                  <span className="text-gray-700 dark:text-gray-200">Plus and Done-For-You add white-glove extras like process server coordination, return-mail tracking, and rejection escalation.</span>
                 </li>
               </ul>
               <div className="flex flex-col sm:flex-row gap-4">
@@ -359,7 +359,7 @@ export function HomePage() {
       </section>
 
       {/* Topics Section */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-white dark:bg-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
@@ -417,7 +417,7 @@ export function HomePage() {
                   onPrefillConsumed={() => setTopicPrompt('')}
                 />
               ) : (
-                <div className="bg-white border border-slate-200 rounded-xl p-8 text-center">
+                <div className="bg-white border border-slate-200 rounded-xl p-8 text-center dark:bg-black dark:border-slate-800">
                   <h3 className="text-xl font-semibold text-slate-900 mb-3">Sign in to chat with Maria</h3>
                   <p className="text-sm text-slate-600 mb-5">
                     Create a free account or sign in to start a conversation. Guests can browse the site, but Maria is exclusive to members now.

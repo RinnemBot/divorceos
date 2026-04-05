@@ -53,7 +53,7 @@ function FormCard({ form, currentPlan }: { form: CourtForm; currentPlan: Subscri
   const shouldUpsell = guidance && currentPlan === 'free';
 
   return (
-    <Card className="hover:shadow-md transition-shadow">
+    <Card className="hover:shadow-md transition-shadow dark:bg-black">
       <CardContent className="p-4">
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1">
@@ -68,8 +68,8 @@ function FormCard({ form, currentPlan }: { form: CourtForm; currentPlan: Subscri
                 </Badge>
               )}
             </div>
-            <h3 className="font-semibold text-slate-900 mb-1">{form.title}</h3>
-            <p className="text-sm text-slate-600 mb-3">{form.description}</p>
+            <h3 className="font-semibold text-slate-900 mb-1 dark:text-white">{form.title}</h3>
+            <p className="text-sm text-slate-600 mb-3 dark:text-slate-300">{form.description}</p>
             <div className="flex gap-2">
               <a
                 href={form.pdfUrl}
@@ -96,17 +96,17 @@ function FormCard({ form, currentPlan }: { form: CourtForm; currentPlan: Subscri
             </div>
 
             {guidance && (
-              <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-4">
-                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 mb-2">
+              <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-4 dark:bg-black dark:border-slate-800">
+                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 mb-2 dark:text-slate-300">
                   Form Guidance
                 </p>
                 {guidanceText ? (
-                  <p className="text-sm text-slate-700 whitespace-pre-line">
+                  <p className="text-sm text-slate-700 whitespace-pre-line dark:text-slate-200">
                     {guidanceText}
                   </p>
                 ) : shouldUpsell ? (
                   <div className="space-y-3">
-                    <p className="text-sm text-slate-600">
+                    <p className="text-sm text-slate-600 dark:text-slate-300">
                       Unlock personalized guidance that walks you through this form step-by-step. Upgrade to Basic for checklist support or Essential+ for in-depth coaching.
                     </p>
                     <Link to="/pricing">
@@ -116,7 +116,7 @@ function FormCard({ form, currentPlan }: { form: CourtForm; currentPlan: Subscri
                     </Link>
                   </div>
                 ) : (
-                  <p className="text-sm text-slate-600">
+                  <p className="text-sm text-slate-600 dark:text-slate-300">
                     Guidance for this plan level is coming soon.
                   </p>
                 )}
@@ -166,24 +166,24 @@ export function FormsPage() {
   const formsToDisplay = getFormsToDisplay();
 
   return (
-    <div className="min-h-screen bg-slate-50 py-12">
+    <div className="min-h-screen bg-slate-50 py-12 dark:bg-black">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-slate-900 mb-4">
+          <h1 className="text-4xl font-bold text-slate-900 mb-4 dark:text-white">
             California Divorce Forms
           </h1>
-          <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+          <p className="text-lg text-slate-600 max-w-2xl mx-auto dark:text-slate-300">
             Access all official California Judicial Council divorce forms. 
             Download directly from the California Courts website.
           </p>
         </div>
 
         {/* Info Banner */}
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8 flex items-start gap-3">
-          <AlertCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8 flex items-start gap-3 dark:bg-blue-950 dark:border-blue-900">
+          <AlertCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5 dark:text-blue-200" />
           <div>
-            <p className="text-sm text-blue-800">
+            <p className="text-sm text-blue-800 dark:text-blue-100">
               <strong>Important:</strong> All forms are official California Judicial Council forms 
               from courts.ca.gov. Forms are updated regularly by the courts. Always ensure you're 
               using the most current version.
@@ -263,7 +263,7 @@ export function FormsPage() {
 
         {/* Quick Links */}
         <div className="mt-12 grid md:grid-cols-3 gap-6">
-          <Card>
+          <Card className="dark:bg-black">
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
                 <ExternalLink className="h-5 w-5 text-blue-600" />
@@ -271,7 +271,7 @@ export function FormsPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-slate-600 mb-4">
+              <p className="text-sm text-slate-600 mb-4 dark:text-slate-300">
                 Visit the official California Courts Self-Help Center for additional resources.
               </p>
               <a 
@@ -287,7 +287,7 @@ export function FormsPage() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="dark:bg-black">
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
                 <DollarSign className="h-5 w-5 text-green-600" />
@@ -295,7 +295,7 @@ export function FormsPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-slate-600 mb-4">
+              <p className="text-sm text-slate-600 mb-4 dark:text-slate-300">
                 Can't afford court fees? You may qualify for a fee waiver.
               </p>
               <a 
@@ -311,7 +311,7 @@ export function FormsPage() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="dark:bg-black">
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
                 <CheckCircle className="h-5 w-5 text-purple-600" />
@@ -319,10 +319,10 @@ export function FormsPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-slate-600 mb-4">
+              <p className="text-sm text-slate-600 mb-4 dark:text-slate-300">
                 Many forms include detailed instructions. Look for the "Instructions" button.
               </p>
-              <div className="flex items-center gap-2 text-sm text-slate-500">
+              <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-300">
                 <BookOpen className="h-4 w-4" />
                 <span>Instructions available for most forms</span>
               </div>

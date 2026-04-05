@@ -20,6 +20,9 @@ const SUPABASE_STORAGE_BUCKET = process.env.SUPABASE_STORAGE_BUCKET || 'divorceo
 const AGENTMAIL_API_KEY = process.env.AGENTMAIL_API_KEY;
 const AGENTMAIL_INBOX_ID = process.env.AGENTMAIL_INBOX_ID || 'divorceos@agentmail.to';
 const AGENTMAIL_SYNC_LIMIT = Number.parseInt(process.env.AGENTMAIL_SYNC_LIMIT || '50', 10);
+const PAPERCLIP_API_URL = (process.env.PAPERCLIP_API_URL || 'http://localhost:3100/api').replace(/\/$/, '');
+const PAPERCLIP_API_KEY = process.env.PAPERCLIP_API_KEY;
+const PAPERCLIP_COMPANY_ID = process.env.PAPERCLIP_COMPANY_ID;
 
 if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
   console.error('Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY. Aborting.');
@@ -32,7 +35,7 @@ const supabase = createSupabaseClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
 
 const agentMail = AGENTMAIL_API_KEY ? new AgentMailClient({ apiKey: AGENTMAIL_API_KEY }) : null;
 
-const DEFAULT_SOURCES = ['agentmail'];
+const DEFAULT_SOURCES = ['agentmail', 'paperclip'];
 const argvSources = process.argv.slice(2).filter((arg) => !arg.startsWith('--'));
 const requestedSources = argvSources.length ? argvSources : DEFAULT_SOURCES;
 
@@ -47,7 +50,11 @@ const requestedSources = argvSources.length ? argvSources : DEFAULT_SOURCES;
     }
 
     if (requestedSources.includes('paperclip')) {
-      console.warn('Paperclip sync is not yet implemented. Configure the data source and re-run.');
+      if (!PAPERCLIP_API_KEY || !PAPERCLIP_COMPANY_ID) {
+        console.warn('Skipping Paperclip sync (PAPERCLIP_API_KEY or PAPERCLIP_COMPANY_ID is not set).');
+      } else {
+        await syncPaperclip();
+      }
     }
   } catch (error) {
     console.error('Sync failed:', error);
@@ -116,7 +123,7 @@ async function upsertAgentMailThread(threadSummary) {
   const newDocuments = await collectNewAttachments(threadDetail, existingDocuments);
   const mergedDocuments = mergeDocuments(existingDocuments, newDocuments);
 
-  const metadata = mergeMetadata(existing?.metadata, {
+  const metadata = mergeMetadata(existing?.metadata, 'agentmail', {
     thread_id: threadId,
     inbox_id: AGENTMAIL_INBOX_ID,
     last_message_id: threadSummary.lastMessageId,
@@ -159,7 +166,7 @@ async function findExistingQueueRow(source, threadId) {
     .from(TABLE_NAME)
     .select('id, documents, metadata, status, submitted_at')
     .eq('source', source)
-    .eq('metadata->>thread_id', threadId)
+    .eq('metadata->agentmail->>thread_id', threadId)
     .maybeSingle();
 
   if (error && error.code !== 'PGRST116') {
@@ -305,10 +312,160 @@ async function ensureQueueTable() {
   tableVerified = true;
 }
 
-function mergeMetadata(existing, updates) {
+async function syncPaperclip() {
+  console.log('→ Syncing Paperclip issues');
+
+  const issues = await fetchPaperclipIssues();
+  if (!issues.length) {
+    console.log('   No Paperclip issues returned.');
+    return;
+  }
+
+  await ensureQueueTable();
+
+  let inserted = 0;
+  let updated = 0;
+  let skipped = 0;
+
+  for (const issue of issues) {
+    try {
+      const result = await upsertPaperclipIssue(issue);
+      if (result === 'inserted') inserted += 1;
+      else if (result === 'updated') updated += 1;
+      else skipped += 1;
+    } catch (error) {
+      skipped += 1;
+      console.error(
+        `   ✖ Failed to sync Paperclip issue ${issue?.identifier || issue?.id || 'unknown'}:`,
+        error.message || error
+      );
+    }
+  }
+
+  console.log(`   ✔ Paperclip sync complete (inserted: ${inserted}, updated: ${updated}, skipped: ${skipped})`);
+}
+
+async function fetchPaperclipIssues() {
+  const endpoint = `${PAPERCLIP_API_URL}/companies/${PAPERCLIP_COMPANY_ID}/issues`;
+  const response = await fetch(endpoint, {
+    headers: {
+      Authorization: `Bearer ${PAPERCLIP_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    const message = await response.text();
+    throw new Error(message || `Paperclip API request failed (${response.status})`);
+  }
+
+  const payload = await response.json();
+  if (!Array.isArray(payload)) {
+    console.warn('Paperclip response was not an array; skipping.');
+    return [];
+  }
+
+  return payload;
+}
+
+const PAPERCLIP_STATUS_MAP = {
+  backlog: 'new',
+  todo: 'intake',
+  in_progress: 'prep',
+  in_review: 'qc',
+  done: 'complete',
+  blocked: 'on-hold',
+  cancelled: 'on-hold',
+};
+
+function mapPaperclipStatus(status) {
+  return PAPERCLIP_STATUS_MAP[status] || 'new';
+}
+
+function mapPaperclipPriority(priority) {
+  if (priority === 'critical' || priority === 'high') {
+    return 'rush';
+  }
+  return 'standard';
+}
+
+async function upsertPaperclipIssue(issue) {
+  if (!issue || (!issue.id && !issue.identifier)) {
+    return 'skipped';
+  }
+
+  const issueId = issue.id || issue.identifier;
+  const existing = await findPaperclipQueueRow(issueId);
+  const metadata = mergeMetadata(existing?.metadata, 'paperclip', {
+    issue_id: issue.id || null,
+    identifier: issue.identifier || null,
+    project_id: issue.projectId || null,
+    goal_id: issue.goalId || null,
+    status: issue.status || null,
+    priority: issue.priority || null,
+    company_id: issue.companyId || PAPERCLIP_COMPANY_ID,
+    last_synced_at: new Date().toISOString(),
+  });
+
+  const baseFields = {
+    customer_name: issue.title || issue.identifier || 'Paperclip Task',
+    customer_email: null,
+    plan: issue.project?.name || null,
+    county_id: null,
+    county_name: null,
+    priority: mapPaperclipPriority(issue.priority),
+    status: mapPaperclipStatus(issue.status),
+    requested_service: issue.title || issue.identifier || null,
+    needs_efiling: issue.status !== 'done' && issue.status !== 'cancelled',
+    notes: issue.description || null,
+    internal_notes: issue.identifier ? `Paperclip ${issue.identifier}` : null,
+    next_deadline: issue.dueAt || null,
+    documents: [],
+    metadata,
+    source: 'paperclip',
+    last_activity_at: issue.updatedAt || issue.startedAt || null,
+  };
+
+  if (!existing) {
+    const insertPayload = Object.assign(
+      {
+        submitted_at: issue.createdAt || new Date().toISOString(),
+        status: baseFields.status,
+      },
+      baseFields
+    );
+
+    const { error } = await supabase.from(TABLE_NAME).insert(insertPayload);
+    if (error) throw new Error(error.message);
+    return 'inserted';
+  }
+
+  const updates = Object.assign({}, baseFields, { updated_at: new Date().toISOString() });
+  const { error } = await supabase.from(TABLE_NAME).update(updates).eq('id', existing.id);
+  if (error) throw new Error(error.message);
+  return 'updated';
+}
+
+async function findPaperclipQueueRow(issueId) {
+  const { data, error } = await supabase
+    .from(TABLE_NAME)
+    .select('id, documents, metadata, status, submitted_at')
+    .eq('source', 'paperclip')
+    .eq('metadata->paperclip->>issue_id', issueId)
+    .maybeSingle();
+
+  if (error && error.code !== 'PGRST116') {
+    throw new Error(error.message);
+  }
+  return data || null;
+}
+
+function mergeMetadata(existing, sourceKey, updates) {
   const base = typeof existing === 'object' && existing !== null ? existing : {};
-  const agentmailMeta = Object.assign({}, base.agentmail, updates);
-  return Object.assign(Object.assign({}, base), { agentmail: agentmailMeta });
+  const currentSourceMeta =
+    typeof base[sourceKey] === 'object' && base[sourceKey] !== null ? base[sourceKey] : {};
+  const mergedSourceMeta = Object.assign({}, currentSourceMeta, updates);
+  return Object.assign({}, base, { [sourceKey]: mergedSourceMeta });
 }
 
 function sanitizeFileName(name) {

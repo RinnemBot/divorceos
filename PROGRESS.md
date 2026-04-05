@@ -1,18 +1,19 @@
 # Ralph Loop Progress
 
-## Iteration 6 – AgentMail intake sync (2026-04-03 23:40 PT)
+## Iteration 6 – AgentMail + Paperclip intake sync (2026-04-03 23:40 PT)
 
 ### Status
-- [x] Complete (AgentMail); Paperclip pending source hookup
+- [x] Complete (AgentMail + Paperclip sources wired)
 
 ### What Was Done
 - Added a `scripts/sync-concierge.mjs` ingestion script that pulls AgentMail threads via the official SDK, normalizes metadata, uploads attachments into the Supabase vault, and upserts the new queue rows.
 - Introduced a `sync:queue` npm script (`npm run sync:queue -- agentmail`) plus `agentmail` + `dotenv` dependencies so the job can run locally or from a cron/worker with minimal setup.
 - Extended `FilingQueueDocument` to carry per-document metadata (attachment IDs, content types) so we can skip duplicates and attribute sources in the dashboard.
 - Hardened the sync script with `.env.server` loading, bucket uploads, dedupe logic, and a table-existence guard (errors early if the SQL migration hasn’t been applied).
+- Added a Paperclip ingestion path to the same script (env-driven). When `PAPERCLIP_*` variables are present, it calls `GET /api/companies/:companyId/issues`, maps Paperclip statuses/priorities into the concierge queue, and upserts using the same metadata scheme.
 
 ### Blockers / Next Up
-- Paperclip feed still needs a defined data source (API or webhook). Once we know where Paperclip emits filings, we can plug that into the same script.
+- Need Paperclip API credentials + company ID from the local mission-control instance before the new sync path can run end-to-end.
 - Supabase table must exist before running the sync; execute `supabase/concierge-queue.sql` if it hasn’t been applied.
 
 ### Validation
@@ -24,6 +25,43 @@
 - `package-lock.json`
 - `src/types/concierge.ts`
 - `PROGRESS.md`
+
+---
+
+## Iteration 7 – Dark mode sweep + concierge sync docs (2026-04-05 10:50 PT)
+
+### Status
+- [x] Complete
+
+### What Was Done
+- Added a persistent `ThemeProvider` plus `ThemeToggle` control so visitors can flip between light and dark palettes (defaults to system preference, persists via `localStorage`).
+- Updated global styles (`tailwind.config.js`, `src/index.css`) and every public surface (navigation, hero, pricing grid, calculator, forms + tools pages, chat shell, auth modal) with `dark:` tokens so typography, cards, alerts, and CTA buttons read cleanly on pure black backgrounds.
+- Documented the concierge sync CLI in `README.md` and expanded the `.env.server` guidance so ops knows which AgentMail/Paperclip secrets are required in each environment.
+- Extended the concierge sync script to treat Paperclip as a first-class source (default source list, metadata scoping, queue lookups) so operations can run `npm run sync:queue` without bespoke flags.
+
+### Blockers / Next Up
+- Paperclip ingestion still needs live API keys + `PAPERCLIP_COMPANY_ID` before it can pull non-local data; waiting on mission-control credentials.
+
+### Validation
+- `npm run build`
+
+### Files Touched
+- `src/index.css`
+- `src/main.tsx`
+- `src/components/Navigation.tsx`
+- `src/components/ChildSupportEstimator.tsx`
+- `src/components/ChatInterface.tsx`
+- `src/components/AuthModal.tsx`
+- `src/components/ThemeProvider.tsx`
+- `src/components/ThemeToggle.tsx`
+- `src/pages/HomePage.tsx`
+- `src/pages/PricingPage.tsx`
+- `src/pages/SupportToolsPage.tsx`
+- `src/pages/FormsPage.tsx`
+- `src/App.tsx`
+- `PROGRESS.md`
+- `README.md`
+- `scripts/sync-concierge.mjs`
 
 ---
 

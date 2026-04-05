@@ -383,7 +383,7 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
   const remainingChats = getRemainingChats();
 
   return (
-    <Card className="min-h-[780px] lg:min-h-[820px] flex flex-col border-2 border-emerald-200 shadow-[0_25px_70px_rgba(16,185,129,0.18)] bg-white rounded-2xl">
+    <Card className="min-h-[780px] lg:min-h-[820px] flex flex-col border-2 border-emerald-200 shadow-[0_25px_70px_rgba(16,185,129,0.18)] bg-white rounded-2xl dark:bg-slate-950">
       <CardHeader className="border-b bg-emerald-700 text-white py-3">
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2 text-lg font-semibold">
