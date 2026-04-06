@@ -161,6 +161,10 @@ async function mapRow(row: Record<string, any>): Promise<FilingQueueItem> {
     claimedBy: row.claimed_by ?? null,
     claimedByEmail: row.claimed_by_email ?? null,
     claimedAt: row.claimed_at ?? null,
+    source: row.source ?? null,
+    paperclipIssueId: row.metadata?.paperclip?.issue_id ?? null,
+    paperclipIdentifier: row.metadata?.paperclip?.identifier ?? null,
+    paperclipLastSyncedAt: row.metadata?.paperclip?.last_synced_at ?? null,
   };
 }
 

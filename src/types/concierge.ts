@@ -41,6 +41,10 @@ export interface FilingQueueItem {
   claimedBy?: string | null;
   claimedByEmail?: string | null;
   claimedAt?: string | null;
+  source?: string | null;
+  paperclipIssueId?: string | null;
+  paperclipIdentifier?: string | null;
+  paperclipLastSyncedAt?: string | null;
 }
 
 export interface FilingQueueSummary {

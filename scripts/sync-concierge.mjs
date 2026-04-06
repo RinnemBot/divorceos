@@ -315,6 +315,7 @@ async function ensureQueueTable() {
 async function syncPaperclip() {
   console.log('→ Syncing Paperclip issues');
 
+  const agentDirectory = await fetchPaperclipAgents();
   const issues = await fetchPaperclipIssues();
   if (!issues.length) {
     console.log('   No Paperclip issues returned.');
@@ -329,7 +330,7 @@ async function syncPaperclip() {
 
   for (const issue of issues) {
     try {
-      const result = await upsertPaperclipIssue(issue);
+      const result = await upsertPaperclipIssue(issue, agentDirectory);
       if (result === 'inserted') inserted += 1;
       else if (result === 'updated') updated += 1;
       else skipped += 1;
@@ -343,6 +344,36 @@ async function syncPaperclip() {
   }
 
   console.log(`   ✔ Paperclip sync complete (inserted: ${inserted}, updated: ${updated}, skipped: ${skipped})`);
+}
+
+async function fetchPaperclipAgents() {
+  const endpoint = `${PAPERCLIP_API_URL}/companies/${PAPERCLIP_COMPANY_ID}/agents`;
+  const response = await fetch(endpoint, {
+    headers: {
+      Authorization: `Bearer ${PAPERCLIP_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    const message = await response.text();
+    console.warn(`Skipping Paperclip agent directory lookup: ${message || response.status}`);
+    return new Map();
+  }
+
+  const payload = await response.json();
+  const agents = Array.isArray(payload) ? payload : [];
+  return new Map(
+    agents
+      .filter((agent) => agent?.id)
+      .map((agent) => [
+        agent.id,
+        {
+          name: agent.name || agent.title || agent.id,
+          email: agent.email || null,
+        },
+      ])
+  );
 }
 
 async function fetchPaperclipIssues() {
@@ -389,13 +420,63 @@ function mapPaperclipPriority(priority) {
   return 'standard';
 }
 
-async function upsertPaperclipIssue(issue) {
+function buildPaperclipCustomerLabel(issue) {
+  if (issue?.identifier) {
+    return `Paperclip ${issue.identifier}`;
+  }
+  if (issue?.id) {
+    return `Paperclip ${issue.id}`;
+  }
+  return 'Paperclip Task';
+}
+
+function buildPaperclipPlan(issue) {
+  return issue?.project?.name || issue?.goal?.title || 'Paperclip';
+}
+
+function buildPaperclipNotes(issue) {
+  const segments = [];
+  if (issue?.title) {
+    segments.push(`Task: ${cleanPaperclipTitle(issue.title)}`);
+  }
+  if (issue?.description) {
+    segments.push(issue.description);
+  }
+  return segments.join('\n\n') || null;
+}
+
+function cleanPaperclipTitle(value) {
+  if (!value || typeof value !== 'string') return value;
+  return value.replace(/\*+/g, '').replace(/\s+/g, ' ').trim();
+}
+
+function resolvePaperclipAssignee(issue, agentDirectory) {
+  if (issue?.assigneeAgentId && agentDirectory?.has(issue.assigneeAgentId)) {
+    return agentDirectory.get(issue.assigneeAgentId);
+  }
+  if (issue?.assigneeUser?.name || issue?.assigneeUser?.email) {
+    return {
+      name: issue.assigneeUser.name || issue.assigneeUser.email,
+      email: issue.assigneeUser.email || null,
+    };
+  }
+  if (issue?.assigneeAgentId) {
+    return {
+      name: `Agent ${issue.assigneeAgentId}`,
+      email: null,
+    };
+  }
+  return null;
+}
+
+async function upsertPaperclipIssue(issue, agentDirectory) {
   if (!issue || (!issue.id && !issue.identifier)) {
     return 'skipped';
   }
 
   const issueId = issue.id || issue.identifier;
   const existing = await findPaperclipQueueRow(issueId);
+  const assignee = resolvePaperclipAssignee(issue, agentDirectory);
   const metadata = mergeMetadata(existing?.metadata, 'paperclip', {
     issue_id: issue.id || null,
     identifier: issue.identifier || null,
@@ -404,26 +485,31 @@ async function upsertPaperclipIssue(issue) {
     status: issue.status || null,
     priority: issue.priority || null,
     company_id: issue.companyId || PAPERCLIP_COMPANY_ID,
+    assignee_agent_id: issue.assigneeAgentId || null,
+    assignee_user_id: issue.assigneeUserId || null,
     last_synced_at: new Date().toISOString(),
   });
 
   const baseFields = {
-    customer_name: issue.title || issue.identifier || 'Paperclip Task',
+    customer_name: buildPaperclipCustomerLabel(issue),
     customer_email: null,
-    plan: issue.project?.name || null,
+    plan: buildPaperclipPlan(issue),
     county_id: null,
-    county_name: null,
+    county_name: 'Paperclip',
     priority: mapPaperclipPriority(issue.priority),
     status: mapPaperclipStatus(issue.status),
-    requested_service: issue.title || issue.identifier || null,
-    needs_efiling: issue.status !== 'done' && issue.status !== 'cancelled',
-    notes: issue.description || null,
-    internal_notes: issue.identifier ? `Paperclip ${issue.identifier}` : null,
+    requested_service: cleanPaperclipTitle(issue.title) || issue.identifier || null,
+    needs_efiling: !['done', 'cancelled', 'blocked'].includes(issue.status),
+    notes: buildPaperclipNotes(issue),
+    internal_notes: issue.identifier ? `Synced from Paperclip issue ${issue.identifier}` : 'Synced from Paperclip',
     next_deadline: issue.dueAt || null,
     documents: [],
     metadata,
     source: 'paperclip',
     last_activity_at: issue.updatedAt || issue.startedAt || null,
+    claimed_by: assignee?.name || null,
+    claimed_by_email: assignee?.email || null,
+    claimed_at: assignee ? issue.startedAt || issue.updatedAt || new Date().toISOString() : null,
   };
 
   if (!existing) {

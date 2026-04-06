@@ -1,19 +1,28 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Navigation } from '@/components/Navigation';
 import { Footer } from '@/components/Footer';
-import { HomePage } from '@/pages/HomePage';
 import { ScrollToTop } from '@/components/ScrollToTop';
-import { PricingPage } from '@/pages/PricingPage';
-import { FormsPage } from '@/pages/FormsPage';
-import { SupportToolsPage } from '@/pages/SupportToolsPage';
-import { ProfilePage } from '@/pages/ProfilePage';
-import { ConfirmEmailPage } from '@/pages/ConfirmEmailPage';
-import { DashboardPage } from '@/pages/DashboardPage';
-import { CountyConciergePage } from '@/pages/CountyConciergePage';
 import { AuthModal } from '@/components/AuthModal';
 import { authService, type User } from '@/services/auth';
 import { Toaster } from '@/components/ui/sonner';
+
+const HomePage = lazy(() => import('@/pages/HomePage').then((m) => ({ default: m.HomePage })));
+const PricingPage = lazy(() => import('@/pages/PricingPage').then((m) => ({ default: m.PricingPage })));
+const FormsPage = lazy(() => import('@/pages/FormsPage').then((m) => ({ default: m.FormsPage })));
+const SupportToolsPage = lazy(() => import('@/pages/SupportToolsPage').then((m) => ({ default: m.SupportToolsPage })));
+const ProfilePage = lazy(() => import('@/pages/ProfilePage').then((m) => ({ default: m.ProfilePage })));
+const ConfirmEmailPage = lazy(() => import('@/pages/ConfirmEmailPage').then((m) => ({ default: m.ConfirmEmailPage })));
+const DashboardPage = lazy(() => import('@/pages/DashboardPage').then((m) => ({ default: m.DashboardPage })));
+const CountyConciergePage = lazy(() => import('@/pages/CountyConciergePage').then((m) => ({ default: m.CountyConciergePage })));
+
+function RouteLoader() {
+  return (
+    <div className="min-h-[40vh] flex items-center justify-center bg-background text-foreground transition-colors">
+      <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600"></div>
+    </div>
+  );
+}
 
 function App() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -58,18 +67,20 @@ function App() {
           onLogout={handleLogout}
         />
         <main className="flex-1">
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/pricing" element={<PricingPage />} />
-            <Route path="/forms" element={<FormsPage />} />
-            <Route path="/support-tools" element={<SupportToolsPage />} />
-            <Route path="/concierge" element={<CountyConciergePage />} />
-            <Route path="/concierge/:countyId" element={<CountyConciergePage />} />
-            <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/confirm-email" element={<ConfirmEmailPage />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
+          <Suspense fallback={<RouteLoader />}>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/pricing" element={<PricingPage />} />
+              <Route path="/forms" element={<FormsPage />} />
+              <Route path="/support-tools" element={<SupportToolsPage />} />
+              <Route path="/concierge" element={<CountyConciergePage />} />
+              <Route path="/concierge/:countyId" element={<CountyConciergePage />} />
+              <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/confirm-email" element={<ConfirmEmailPage />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </Suspense>
         </main>
         <Footer />
         <Toaster />

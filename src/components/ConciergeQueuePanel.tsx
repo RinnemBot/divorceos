@@ -27,8 +27,31 @@ import {
   FILING_REQUEST_STATUS_LABELS,
   FILING_REQUEST_STATUS_ORDER,
 } from '@/types/concierge';
-import { Loader2, RefreshCcw, Search, Users, AlertCircle, CheckCircle2, Clock, FileText } from 'lucide-react';
+import { Loader2, RefreshCcw, Search, Users, AlertCircle, CheckCircle2, Clock, FileText, Bot } from 'lucide-react';
 import { toast } from 'sonner';
+
+const SOURCE_BADGE_STYLES: Record<string, string> = {
+  paperclip: 'border-violet-200 bg-violet-50 text-violet-700',
+  agentmail: 'border-sky-200 bg-sky-50 text-sky-700',
+  dashboard: 'border-slate-200 bg-slate-50 text-slate-700',
+};
+
+function formatSourceLabel(source?: string | null) {
+  if (!source) return 'Manual';
+  if (source === 'paperclip') return 'Paperclip';
+  if (source === 'agentmail') return 'AgentMail';
+  if (source === 'dashboard') return 'Manual';
+  return source;
+}
+
+function formatSyncTime(value?: string | null) {
+  if (!value) return null;
+  try {
+    return new Date(value).toLocaleString();
+  } catch {
+    return value;
+  }
+}
 
 interface ConciergeQueuePanelProps {
   currentUser: User;
@@ -36,6 +59,7 @@ interface ConciergeQueuePanelProps {
 
 type StatusFilter = 'active' | 'all' | FilingRequestStatus;
 type PriorityFilter = 'all' | FilingRequestPriority;
+type SourceFilter = 'all' | 'paperclip' | 'agentmail' | 'dashboard';
 
 const STATUS_FILTER_OPTIONS: { value: StatusFilter; label: string }[] = [
   { value: 'active', label: 'Active' },
@@ -52,6 +76,13 @@ const PRIORITY_FILTER_OPTIONS: { value: PriorityFilter; label: string }[] = [
   { value: 'standard', label: 'Standard only' },
 ];
 
+const SOURCE_FILTER_OPTIONS: { value: SourceFilter; label: string }[] = [
+  { value: 'all', label: 'All sources' },
+  { value: 'paperclip', label: 'Paperclip' },
+  { value: 'agentmail', label: 'AgentMail' },
+  { value: 'dashboard', label: 'Manual' },
+];
+
 export function ConciergeQueuePanel({ currentUser }: ConciergeQueuePanelProps) {
   const [requests, setRequests] = useState<FilingQueueItem[]>([]);
   const [summary, setSummary] = useState<FilingQueueSummary | null>(null);
@@ -59,6 +90,7 @@ export function ConciergeQueuePanel({ currentUser }: ConciergeQueuePanelProps) {
   const [error, setError] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('active');
   const [priorityFilter, setPriorityFilter] = useState<PriorityFilter>('all');
+  const [sourceFilter, setSourceFilter] = useState<SourceFilter>('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [updatingId, setUpdatingId] = useState<string | null>(null);
 
@@ -86,7 +118,7 @@ export function ConciergeQueuePanel({ currentUser }: ConciergeQueuePanelProps) {
     loadQueue();
   }, [loadQueue]);
 
-  const filteredRequests = useMemo(() => {
+const filteredRequests = useMemo(() => {
     return requests.filter((request) => {
       const matchesStatus = (() => {
         if (statusFilter === 'all') return true;
@@ -99,15 +131,18 @@ export function ConciergeQueuePanel({ currentUser }: ConciergeQueuePanelProps) {
       const matchesPriority =
         priorityFilter === 'all' ? true : request.priority === priorityFilter;
 
+      const matchesSource =
+        sourceFilter === 'all' ? true : (request.source || 'dashboard') === sourceFilter;
+
       const matchesSearch = searchTerm
-        ? [request.customerName, request.customerEmail, request.countyName]
+        ? [request.customerName, request.customerEmail, request.countyName, request.requestedService, request.paperclipIdentifier]
             .filter(Boolean)
             .some((value) => value!.toLowerCase().includes(searchTerm.toLowerCase()))
         : true;
 
-      return matchesStatus && matchesPriority && matchesSearch;
+      return matchesStatus && matchesPriority && matchesSource && matchesSearch;
     });
-  }, [requests, statusFilter, priorityFilter, searchTerm]);
+  }, [requests, statusFilter, priorityFilter, sourceFilter, searchTerm]);
 
   const formatDate = (value?: string | null) => {
     if (!value) return '—';
@@ -232,12 +267,24 @@ export function ConciergeQueuePanel({ currentUser }: ConciergeQueuePanelProps) {
                 ))}
               </SelectContent>
             </Select>
+            <Select value={sourceFilter} onValueChange={(value) => setSourceFilter(value as SourceFilter)}>
+              <SelectTrigger className="sm:w-40">
+                <SelectValue placeholder="Source" />
+              </SelectTrigger>
+              <SelectContent>
+                {SOURCE_FILTER_OPTIONS.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
           <div className="relative">
             <Search className="h-4 w-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
             <Input
               className="pl-10"
-              placeholder="Search by name, email, county"
+              placeholder="Search by name, task, source, county"
               value={searchTerm}
               onChange={(event) => setSearchTerm(event.target.value)}
             />
@@ -278,8 +325,43 @@ export function ConciergeQueuePanel({ currentUser }: ConciergeQueuePanelProps) {
                   {filteredRequests.map((request) => (
                     <TableRow key={request.id} className="align-top">
                       <TableCell>
-                        <div className="font-semibold text-slate-900">{request.customerName}</div>
-                        <div className="text-xs text-slate-500">{request.customerEmail || 'No email on file'}</div>
+                        <div className="flex flex-wrap items-center gap-2">
+                          <div className="font-semibold text-slate-900">{request.customerName}</div>
+                          <Badge
+                            variant="outline"
+                            className={SOURCE_BADGE_STYLES[request.source || 'dashboard'] || SOURCE_BADGE_STYLES.dashboard}
+                          >
+                            {request.source === 'paperclip' ? <Bot className="h-3 w-3 mr-1" /> : null}
+                            {formatSourceLabel(request.source)}
+                          </Badge>
+                        </div>
+                        <div className="text-xs text-slate-500">
+                          {request.customerEmail || (request.source === 'paperclip' ? 'No contact email (internal task)' : 'No email on file')}
+                        </div>
+                        {request.requestedService ? (
+                          <div className="text-xs text-slate-600 mt-1">
+                            {request.requestedService}
+                            {request.source === 'paperclip' && request.paperclipIssueId ? (
+                              <>
+                                {' · '}
+                                  <a
+                                    href={`http://localhost:3100/issues/${request.paperclipIssueId}`}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="text-violet-700 hover:underline"
+                                    title="Open in Paperclip"
+                                  >
+                                  {request.paperclipIdentifier || 'Open issue'}
+                                </a>
+                              </>
+                            ) : null}
+                          </div>
+                        ) : null}
+                        {request.source === 'paperclip' && request.paperclipLastSyncedAt ? (
+                          <div className="text-[11px] text-slate-500 mt-1">
+                            Last synced {formatSyncTime(request.paperclipLastSyncedAt)}
+                          </div>
+                        ) : null}
                         {request.documents?.length ? (
                           <div className="flex flex-wrap gap-2 mt-2">
                             {request.documents.map((doc) => (
