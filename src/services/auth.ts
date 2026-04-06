@@ -39,6 +39,7 @@ export interface ChatMessage {
   content: string;
   timestamp: string;
   attachments?: ChatAttachment[];
+  suggestedActions?: { label: string; href: string }[];
 }
 
 export interface ChatSession {

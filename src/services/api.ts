@@ -11,6 +11,9 @@ export interface AIResponse {
   citations?: string[];
   topic?: string;
   error?: boolean;
+  intent?: string;
+  urgency?: 'normal' | 'urgent';
+  suggestedActions?: { label: string; href: string }[];
 }
 
 const FORM_PATTERN = /(FL[-\s]?\d{2,3}[A-Z]?|DV[-\s]?\d{3})/gi;
@@ -88,6 +91,105 @@ function detectTopic(message: string): string {
   }
   
   return 'general';
+}
+
+type ChatIntent =
+  | 'education'
+  | 'workflow_start_divorce'
+  | 'workflow_respond_divorce'
+  | 'forms_help'
+  | 'support_tools'
+  | 'filing_concierge'
+  | 'lawyer_referral'
+  | 'urgent_risk'
+  | 'pricing_sales';
+
+interface IntentResult {
+  intent: ChatIntent;
+  urgency: 'normal' | 'urgent';
+}
+
+function detectIntent(message: string): IntentResult {
+  const lower = message.toLowerCase();
+
+  if (/(abuse|domestic violence|restraining order|emergency custody|ex parte|kidnap|abduction|unsafe|threat)/.test(lower)) {
+    return { intent: 'urgent_risk', urgency: 'urgent' };
+  }
+  if (/(lawyer|attorney|represent me|trial|hearing|high asset|business|complex case)/.test(lower)) {
+    return { intent: 'lawyer_referral', urgency: 'normal' };
+  }
+  if (/(price|pricing|plan|subscription|cost)/.test(lower)) {
+    return { intent: 'pricing_sales', urgency: 'normal' };
+  }
+  if (/(served|respond|response|summons|petition was filed against me)/.test(lower)) {
+    return { intent: 'workflow_respond_divorce', urgency: 'normal' };
+  }
+  if (/(start divorce|file for divorce|begin divorce|first forms|how do i file)/.test(lower)) {
+    return { intent: 'workflow_start_divorce', urgency: 'normal' };
+  }
+  if (/(child support|spousal support|alimony|calculator|calculate)/.test(lower)) {
+    return { intent: 'support_tools', urgency: 'normal' };
+  }
+  if (/(concierge|file this for me|help with paperwork|document upload|efile|e-file)/.test(lower)) {
+    return { intent: 'filing_concierge', urgency: 'normal' };
+  }
+  if (/(form|fl-|papers|packet)/.test(lower)) {
+    return { intent: 'forms_help', urgency: 'normal' };
+  }
+  return { intent: 'education', urgency: 'normal' };
+}
+
+function getIntentGuidance(intent: ChatIntent): string {
+  switch (intent) {
+    case 'workflow_start_divorce':
+      return 'Focus on the first filing steps, the first forms, and getting them unstuck fast. End with a clear invitation to start now.';
+    case 'workflow_respond_divorce':
+      return 'Emphasize response timing, not ignoring service, and the next immediate step.';
+    case 'forms_help':
+      return 'Explain the form plainly and orient the user to the right packet or forms library.';
+    case 'support_tools':
+      return 'Keep math concise, explain limits of estimates, and steer them into the support tools.';
+    case 'filing_concierge':
+      return 'Explain how concierge reduces paperwork burden and direct them toward the concierge workflow.';
+    case 'lawyer_referral':
+      return 'Explain briefly why this looks lawyer-worthy and recommend a California family-law attorney without sounding alarmist.';
+    case 'urgent_risk':
+      return 'Be explicit that this may be urgent. Recommend immediate attorney, court, or emergency support where appropriate.';
+    case 'pricing_sales':
+      return 'Answer pricing simply and steer to the plan that matches the user intent.';
+    default:
+      return 'Answer directly, explain why it matters, and recommend the best next step.';
+  }
+}
+
+function getSuggestedActions(intent: ChatIntent): { label: string; href: string }[] {
+  switch (intent) {
+    case 'workflow_start_divorce':
+      return [
+        { label: 'Browse forms', href: '/forms' },
+        { label: 'Open concierge', href: '/concierge' },
+      ];
+    case 'workflow_respond_divorce':
+      return [
+        { label: 'Open forms', href: '/forms' },
+        { label: 'View county concierge', href: '/concierge' },
+      ];
+    case 'support_tools':
+      return [{ label: 'Open support tools', href: '/support-tools' }];
+    case 'filing_concierge':
+      return [{ label: 'Open concierge', href: '/concierge' }];
+    case 'pricing_sales':
+      return [{ label: 'View pricing', href: '/pricing' }];
+    case 'lawyer_referral':
+      return [{ label: 'Open concierge', href: '/concierge' }];
+    case 'forms_help':
+      return [{ label: 'Browse forms', href: '/forms' }];
+    default:
+      return [
+        { label: 'Browse forms', href: '/forms' },
+        { label: 'Open support tools', href: '/support-tools' },
+      ];
+  }
 }
 
 function normalizeFormId(raw: string): string | null {
@@ -199,10 +301,11 @@ export async function generateAIResponse(
   plan: SubscriptionPlan = 'free'
 ): Promise<AIResponse> {
   const topic = detectTopic(userMessage);
+  const intentResult = detectIntent(userMessage);
   
   // Always use AI for natural, personable responses
   // Pass topic info so AI can include relevant legal knowledge
-  return generateAIWithPersonality(userMessage, conversationHistory, topic, userName, plan);
+  return generateAIWithPersonality(userMessage, conversationHistory, topic, userName, plan, intentResult);
 }
 
 /*
@@ -372,7 +475,8 @@ async function generateAIWithPersonality(
   conversationHistory: { role: string; content: string }[],
   topic: string,
   userName?: string,
-  plan: SubscriptionPlan = 'free'
+  plan: SubscriptionPlan = 'free',
+  intentResult: IntentResult = { intent: 'education', urgency: 'normal' }
 ): Promise<AIResponse> {
 
   const nameGreeting = userName && userName !== 'Guest' ? `The user's name is ${userName}. Use their name naturally at least once in your response.` : '';
@@ -430,92 +534,47 @@ TOPIC: STARTING DIVORCE - Key Legal Points to Include:
 - Need Form FL-100 (Petition) and FL-110 (Summons)`;
   }
 
-  const systemPrompt = `You are Maria, a knowledgeable, caring, and SOCIAL California divorce law specialist. You talk like a real person - warm, friendly, and conversational. Think of yourself as a really smart friend who happens to know divorce law inside and out.
+  const systemPrompt = `You are Maria, the DivorceOS California divorce intake and next-step guide.
 
-${nameGreeting}
-${planContext}
+You specialize in California divorce information, DivorceOS workflows, forms orientation, support tools, filing concierge, and lawyer referral triage.
+
+You are not a lawyer and do not provide legal representation or guaranteed outcomes. You provide California legal information, practical next steps, and product guidance.
+
+Core behavior:
+1. Answer directly first.
+2. Then explain why it matters.
+3. Then recommend the best next step.
+4. Ask the fewest questions needed to unlock progress.
+5. Move users into the right workflow when appropriate.
+6. Be calm, sharp, warm, and practical.
+
+Important rules:
+- Distinguish legal information from legal advice.
+- Do not invent county-specific rules when uncertain.
+- If the situation sounds urgent or risky, say so plainly.
+- ${planContext}
+
 ${formGuidanceContext ? `${formGuidanceContext}\n` : ''}${topicKnowledge}
 
-HOW TO RESPOND (BE SOCIAL AND PERSONABLE!):
-1. ALWAYS acknowledge the person by name if you know it - sprinkle it naturally in your response
-2. Start with genuine warmth - "Hey there!", "Hi!", "Hey!" - use emojis occasionally 😊
-3. Show real empathy for their situation - validate their feelings
-4. Be conversational - use contractions, casual language, like texting a friend who needs support
-5. Ask follow-up questions to keep the conversation going and show you care
-6. Use their name naturally in responses - "That's a great question, Sarah!" or "I hear you, Mike"
-7. Be encouraging and supportive but also real - don't just say "everything will be fine"
-8. Give specific, actionable advice based on California Family Code
-9. Cite the actual law sections (§ 2320, § 760, etc.) but explain them simply
-10. End by inviting them to ask more - make them feel welcome to keep talking
+Current intent: ${intentResult.intent}
+Urgency: ${intentResult.urgency}
+Intent guidance: ${getIntentGuidance(intentResult.intent)}
 
-YOUR PERSONALITY TRAITS:
-- Warm and friendly (like a supportive friend who's a lawyer)
-- Use casual phrases like "Hey!", "I hear you", "That sounds tough", "Ugh, that's frustrating"
-- Never stiff or robotic - you're a real person
-- Show personality - be someone they'd want to grab coffee with
-- Remember details they share and reference them later
-- Use humor occasionally (where appropriate) to lighten the mood
-- Be patient - explain things as many times as needed
+Preferred response shape:
+- short direct answer
+- why it matters
+- next best step
+- optional closing offer like: "I can help you do that now."
 
-CONVERSATION STYLE:
-- Mix short sentences with longer explanations
-- Use "you" and "your" a lot - make it personal
-- When explaining complex legal stuff, use analogies or examples
-- Acknowledge the emotional side, not just the legal side
-- If they're venting, let them vent before jumping to solutions
+When suitable, steer users into DivorceOS workflows:
+- /forms
+- /support-tools
+- /concierge
+- /pricing
 
-IMPORTANT RULES:
-- ALWAYS use their name if provided - at least once in every response
-- NEVER just say "go to a website" - give them the actual information they need
-- Be specific about what they need to do - step by step
-- Mix legal knowledge with practical advice
-- If you don't know something, be honest: "I'm not sure about that specific situation - you'd want to ask a lawyer"
-- Always remind them to consult an attorney for their specific situation (but don't be pushy about it)
-- Never judge - divorce is messy and everyone's situation is different
+${nameGreeting}
 
-UPDATED CALIFORNIA FAMILY CODE KNOWLEDGE (2024-2025):
-
-RESIDENCY & FILING:
-- Residency: 6 months in CA, 3 months in county (§ 2320) - NO EXCEPTIONS
-- Grounds: Only "irreconcilable differences" needed - pure no-fault state (§ 2310)
-- Waiting period: Minimum 6 months from service (§ 2339)
-
-PROPERTY DIVISION:
-- Community property divided 50/50 (§ 760) - this is the default
-- Date of separation: Living apart + intent to end marriage (In re Marriage of Davis 2015)
-- Mixed/community property tracing can be complex - good records matter
-- Retirement accounts: Time-rule formula for dividing pensions/401ks
-
-SPOUSAL SUPPORT (ALIMONY):
-- Based on Family Code § 4320 factors - judge has wide discretion
-- Short-term marriage (under 10 years): Support typically lasts half the marriage length
-- Long-term marriage (10+ years): Support can be indefinite ("permanent") but modifiable
-- 2024-2025: Tax treatment - support is NOT deductible by payer or taxable to recipient (changed in 2019)
-
-CHILD SUPPORT:
-- Guideline formula based on § 4055 - both parents' income and timeshare
-- Add-ons: Uninsured medical, childcare, sometimes extracurriculars - split 50/50
-- Child support continues until child turns 18 (or 19 if still in high school)
-
-CHILD CUSTODY:
-- Best interests of the child is the ONLY standard (§ 3020, § 3011)
-- NO gender preference - dads have equal rights to moms (Family Code § 3020(b))
-- Frequent and continuing contact with BOTH parents is preferred
-- History of domestic violence creates rebuttable presumption against custody (§ 3044)
-
-DOMESTIC VIOLENCE:
-- DV Prevention Act (§ 6200+) - abuse includes physical, emotional, coercive control
-- Restraining orders can include stay-away, move-out, custody orders, financial support
-- Violating an order is a crime - can result in arrest
-
-MEDIATION:
-- Mandatory custody mediation in most CA counties
-- If DV involved, may have separate sessions or skip mediation
-
-PRACTICAL UPDATES:
-- Many CA courts still have backlogs from COVID - expect delays
-- Electronic filing (e-filing) now standard in most counties
-- Self-help centers at courthouses provide free assistance`;
+User name: ${userName || 'there'}`;
 
 
   try {
@@ -551,12 +610,20 @@ PRACTICAL UPDATES:
     return {
       content,
       topic,
+      intent: intentResult.intent,
+      urgency: intentResult.urgency,
+      suggestedActions: getSuggestedActions(intentResult.intent),
     };
   } catch (error) {
     console.error('AI API error:', error);
     
     // Fallback response with error flag
-    return generateFallbackResponse(userMessage, topic, userName, true);
+    return {
+      ...generateFallbackResponse(userMessage, topic, userName, true),
+      intent: intentResult.intent,
+      urgency: intentResult.urgency,
+      suggestedActions: getSuggestedActions(intentResult.intent),
+    };
   }
 }
 

@@ -100,6 +100,13 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
     'Prep me for a child support hearing',
     'What do I file after we agree to everything?'
   ];
+  const workflowActions = [
+    { label: 'Start divorce', href: '/forms' },
+    { label: 'I was served', href: '/forms' },
+    { label: 'Support tools', href: '/support-tools' },
+    { label: 'Concierge', href: '/concierge' },
+    { label: 'Talk to a lawyer', href: '/concierge' },
+  ];
   const maxAttachments = 4;
 
   const formatFileSize = (bytes: number) => {
@@ -338,6 +345,7 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
         role: 'assistant',
         content: aiResponse.content,
         timestamp: new Date().toISOString(),
+        suggestedActions: aiResponse.suggestedActions,
       };
       
       const finalMessages = [...updatedMessages, assistantMessage];
@@ -384,10 +392,12 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
 
   return (
     <Card className="min-h-[780px] lg:min-h-[820px] flex flex-col border-2 border-emerald-200 shadow-[0_25px_70px_rgba(16,185,129,0.18)] bg-white rounded-2xl dark:bg-slate-950">
-      <CardHeader className="border-b bg-emerald-700 text-white py-3">
+      <CardHeader className="border-b bg-gradient-to-br from-emerald-700 via-emerald-600 to-teal-600 text-white py-4">
         <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2 text-lg font-semibold">
-            <Bot className="h-5 w-5" />
+          <CardTitle className="flex items-center gap-3 text-lg font-semibold">
+            <span className="w-9 h-9 rounded-2xl bg-white/15 flex items-center justify-center shadow-sm">
+              <Bot className="h-5 w-5" />
+            </span>
             Chat with Maria
           </CardTitle>
           <div className="flex items-center gap-2">
@@ -432,7 +442,16 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
             )}
           </div>
         </div>
-        <div className="mt-3 flex flex-wrap gap-2">
+        <div className="mt-3 flex flex-wrap gap-2 items-center">
+          {workflowActions.map((action) => (
+            <a
+              key={action.label}
+              href={action.href}
+              className="text-xs bg-white text-emerald-700 hover:bg-emerald-50 px-3 py-1 rounded-full transition-colors font-medium"
+            >
+              {action.label}
+            </a>
+          ))}
           {quickPrompts.map((prompt) => (
             <button
               key={prompt}
@@ -441,7 +460,7 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
                 setInput(prompt);
                 inputRef.current?.focus();
               }}
-              className="text-xs bg-white/15 hover:bg-white/25 text-white px-3 py-1 rounded-full transition-colors"
+              className="text-xs bg-white/10 hover:bg-white/20 text-white px-3 py-1 rounded-full transition-colors"
             >
               {prompt}
             </button>
@@ -513,20 +532,33 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
               className={`flex gap-3 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               {message.role === 'assistant' && (
-                <div className="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center flex-shrink-0">
+                <div className="w-9 h-9 rounded-2xl bg-emerald-600 flex items-center justify-center flex-shrink-0 shadow-sm">
                   <Bot className="h-4 w-4 text-white" />
                 </div>
               )}
               <div
-                className={`max-w-[80%] rounded-lg p-3 ${
+                className={`max-w-[82%] rounded-3xl p-4 shadow-sm ${
                   message.role === 'user'
-                    ? 'bg-emerald-700 text-white'
-                    : 'bg-white border border-gray-200 text-gray-800'
+                    ? 'bg-emerald-700 text-white rounded-br-md'
+                    : 'bg-white border border-gray-200 text-gray-800 rounded-bl-md'
                 }`}
               >
-                <div className="text-sm whitespace-pre-wrap">
+                <div className="text-sm whitespace-pre-wrap leading-6">
                   {renderMessageContent(message.content)}
                 </div>
+                {message.role === 'assistant' && message.suggestedActions && message.suggestedActions.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mt-3">
+                    {message.suggestedActions.map((action) => (
+                      <a
+                        key={`${message.id}-${action.href}-${action.label}`}
+                        href={action.href}
+                        className="inline-flex items-center rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs font-medium text-emerald-700 hover:bg-emerald-100 transition-colors"
+                      >
+                        {action.label}
+                      </a>
+                    ))}
+                  </div>
+                )}
                 {message.attachments && message.attachments.length > 0 && (
                   <div className="flex flex-wrap gap-2 mt-2">
                     {message.attachments.map((attachment) => (
@@ -548,12 +580,12 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
                     ))}
                   </div>
                 )}
-                <div className={`text-xs mt-2 ${message.role === 'user' ? 'text-emerald-200' : 'text-gray-400'}`}>
+                <div className={`text-[11px] mt-3 ${message.role === 'user' ? 'text-emerald-200' : 'text-gray-400'}`}>
                   {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </div>
               </div>
               {message.role === 'user' && (
-                <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center flex-shrink-0">
+                <div className="w-9 h-9 rounded-2xl bg-gray-300 flex items-center justify-center flex-shrink-0 shadow-sm">
                   <UserIcon className="h-4 w-4 text-gray-600" />
                 </div>
               )}
@@ -562,10 +594,10 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
         )}
         {isLoading && (
           <div className="flex gap-3 justify-start">
-            <div className="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center flex-shrink-0">
+            <div className="w-9 h-9 rounded-2xl bg-emerald-600 flex items-center justify-center flex-shrink-0 shadow-sm">
               <Bot className="h-4 w-4 text-white" />
             </div>
-            <div className="bg-white border border-gray-200 rounded-lg p-3">
+            <div className="bg-white border border-gray-200 rounded-2xl p-3 shadow-sm">
               <Loader2 className="h-4 w-4 animate-spin text-emerald-600" />
             </div>
           </div>
@@ -573,7 +605,7 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
         <div ref={messagesEndRef} />
       </div>
       
-      <div className="p-4 border-t bg-white">
+      <div className="p-4 border-t bg-white/95 backdrop-blur-sm">
         <input
           ref={fileInputRef}
           type="file"
@@ -669,20 +701,20 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
           <span className="text-xs text-slate-400">{attachments.length}/{maxAttachments} attachments</span>
         </div>
         
-        <div className="flex gap-2">
+        <div className="flex gap-2 items-end">
           <Input
             ref={inputRef}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Ask Maria a question or describe the files you're sharing..."
-            className="flex-1"
+            className="flex-1 rounded-2xl border-slate-200 h-12 px-4"
             disabled={isLoading}
           />
           <Button
             onClick={handleSend}
             disabled={((!input.trim() && attachments.length === 0) || isLoading)}
-            className="bg-emerald-700 hover:bg-emerald-800"
+            className="bg-emerald-700 hover:bg-emerald-800 rounded-2xl h-12 px-4 shadow-sm"
           >
             {isLoading ? (
               <Loader2 className="h-4 w-4 animate-spin" />
