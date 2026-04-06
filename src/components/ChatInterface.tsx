@@ -94,19 +94,6 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
 
   const [attachments, setAttachments] = useState<ComposerAttachment[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const quickPrompts = [
-    'Draft a parenting plan for 50/50 custody',
-    'Walk me through dividing our house + retirement',
-    'Prep me for a child support hearing',
-    'What do I file after we agree to everything?'
-  ];
-  const workflowActions = [
-    { label: 'Start divorce', href: '/forms' },
-    { label: 'I was served', href: '/forms' },
-    { label: 'Support tools', href: '/support-tools' },
-    { label: 'Concierge', href: '/concierge' },
-    { label: 'Talk to a lawyer', href: '/concierge' },
-  ];
   const maxAttachments = 4;
 
   const formatFileSize = (bytes: number) => {
@@ -442,30 +429,6 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
             )}
           </div>
         </div>
-        <div className="mt-3 flex flex-wrap gap-2 items-center">
-          {workflowActions.map((action) => (
-            <a
-              key={action.label}
-              href={action.href}
-              className="text-xs bg-white text-emerald-700 hover:bg-emerald-50 px-3 py-1 rounded-full transition-colors font-medium"
-            >
-              {action.label}
-            </a>
-          ))}
-          {quickPrompts.map((prompt) => (
-            <button
-              key={prompt}
-              type="button"
-              onClick={() => {
-                setInput(prompt);
-                inputRef.current?.focus();
-              }}
-              className="text-xs bg-white/10 hover:bg-white/20 text-white px-3 py-1 rounded-full transition-colors"
-            >
-              {prompt}
-            </button>
-          ))}
-        </div>
       </CardHeader>
       
       {showHistory && currentUser && (
@@ -546,19 +509,6 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
                 <div className="text-sm whitespace-pre-wrap leading-6">
                   {renderMessageContent(message.content)}
                 </div>
-                {message.role === 'assistant' && message.suggestedActions && message.suggestedActions.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mt-3">
-                    {message.suggestedActions.map((action) => (
-                      <a
-                        key={`${message.id}-${action.href}-${action.label}`}
-                        href={action.href}
-                        className="inline-flex items-center rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs font-medium text-emerald-700 hover:bg-emerald-100 transition-colors"
-                      >
-                        {action.label}
-                      </a>
-                    ))}
-                  </div>
-                )}
                 {message.attachments && message.attachments.length > 0 && (
                   <div className="flex flex-wrap gap-2 mt-2">
                     {message.attachments.map((attachment) => (
