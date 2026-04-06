@@ -378,15 +378,24 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
   const remainingChats = getRemainingChats();
 
   return (
-    <Card className="min-h-[780px] lg:min-h-[820px] flex flex-col border-2 border-emerald-200 shadow-[0_25px_70px_rgba(16,185,129,0.18)] bg-white rounded-2xl dark:bg-slate-950">
-      <CardHeader className="border-b bg-gradient-to-br from-emerald-700 via-emerald-600 to-teal-600 text-white py-4">
-        <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-3 text-lg font-semibold">
-            <span className="w-9 h-9 rounded-2xl bg-white/15 flex items-center justify-center shadow-sm">
-              <Bot className="h-5 w-5" />
-            </span>
-            Chat with Maria
-          </CardTitle>
+    <Card className="min-h-[780px] lg:min-h-[820px] flex flex-col border border-emerald-100 shadow-[0_25px_70px_rgba(16,185,129,0.16)] bg-white rounded-3xl dark:bg-slate-950 overflow-hidden">
+      <CardHeader className="border-b bg-gradient-to-br from-emerald-700 via-emerald-600 to-teal-600 text-white py-5">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <div className="flex flex-wrap items-center gap-2 mb-2">
+              <Badge variant="secondary" className="bg-white/15 text-white border-0">California divorce info</Badge>
+              <Badge variant="secondary" className="bg-white/15 text-white border-0">Practical next steps</Badge>
+            </div>
+            <CardTitle className="flex items-center gap-3 text-lg font-semibold">
+              <span className="w-9 h-9 rounded-2xl bg-white/15 flex items-center justify-center shadow-sm">
+                <Bot className="h-5 w-5" />
+              </span>
+              Chat with Maria
+            </CardTitle>
+            <p className="mt-2 text-sm text-emerald-50 max-w-2xl leading-6">
+              Warm, sharp California divorce guidance, plus clear next steps when things feel messy.
+            </p>
+          </div>
           <div className="flex items-center gap-2">
             {!currentUser && (
               <Badge variant="secondary" className="bg-white/20 text-white border-0">
@@ -468,19 +477,24 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
         style={{ scrollBehavior: 'smooth' }}
       >
         {messages.length === 0 ? (
-          <div className="text-center py-8">
-            <Bot className="h-12 w-12 text-emerald-600 mx-auto mb-4" />
+          <div className="text-center py-10">
+            <div className="w-14 h-14 rounded-3xl bg-emerald-100 text-emerald-700 mx-auto mb-4 flex items-center justify-center shadow-sm">
+              <Bot className="h-7 w-7" />
+            </div>
             <h3 className="text-lg font-semibold text-gray-700 mb-2">
               Maria
             </h3>
-            <p className="text-gray-500 mb-6">AI Divorce Specialist</p>
+            <p className="text-gray-500 mb-2">California divorce guide with a practical streak</p>
+            <p className="text-sm text-slate-500 mb-6 max-w-lg mx-auto leading-6">
+              Ask a question, upload paperwork, or start with one of the topics below. I’ll help you figure out the cleanest next move.
+            </p>
             
             <div className="grid grid-cols-2 gap-2 max-w-md mx-auto">
               {CALIFORNIA_DIVORCE_TOPICS.slice(0, 4).map(topic => (
                 <button
                   key={topic.id}
                   onClick={() => handleTopicClick(topic.id)}
-                  className="p-3 text-left bg-white border rounded-lg hover:border-emerald-400 hover:shadow-sm transition-all"
+                  className="p-3 text-left bg-white border rounded-2xl hover:border-emerald-400 hover:shadow-sm transition-all"
                 >
                   <p className="font-medium text-gray-700 text-sm">{topic.title}</p>
                   <p className="text-xs text-gray-500 mt-1">{topic.description}</p>
@@ -503,12 +517,17 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
                 className={`max-w-[82%] rounded-3xl p-4 shadow-sm ${
                   message.role === 'user'
                     ? 'bg-emerald-700 text-white rounded-br-md'
-                    : 'bg-white border border-gray-200 text-gray-800 rounded-bl-md'
+                    : 'bg-white border border-gray-200 text-gray-800 rounded-bl-md ring-1 ring-emerald-50'
                 }`}
               >
                 <div className="text-sm whitespace-pre-wrap leading-6">
                   {renderMessageContent(message.content)}
                 </div>
+                {message.role === 'assistant' && (
+                  <div className="text-[11px] uppercase tracking-wide text-emerald-600/80 mt-3 font-medium">
+                    Maria
+                  </div>
+                )}
                 {message.attachments && message.attachments.length > 0 && (
                   <div className="flex flex-wrap gap-2 mt-2">
                     {message.attachments.map((attachment) => (
