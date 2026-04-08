@@ -73,7 +73,7 @@ export function CountyConciergePage() {
               Pick your county to unlock the concierge roadmap
             </h1>
             <p className="text-lg text-emerald-100">
-              We now cover 17 Central Valley, Sacramento corridor, and North State courts with in-house filing support. Choose your courthouse to see filing methods, packet checklists, pro tips, and e-filing links in one place.
+              We now cover 40+ California counties with concierge filing support. Choose your courthouse to see filing methods, packet checklists, pro tips, and e-filing links in one place, with deeper filing workflows coming soon.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button asChild size="lg" className="bg-white text-emerald-900 hover:bg-emerald-100">
@@ -95,11 +95,11 @@ export function CountyConciergePage() {
               },
               {
                 title: 'In-house filings',
-                body: 'Essential+ plans let our staff assemble and e-file/drop your packet—no chasing Odyssey queues.',
+                body: 'Essential+ plans include concierge packet support today, with direct e-file and paper-routing workflows expanding soon.',
               },
               {
                 title: 'Live monitoring',
-                body: 'We track rejections, escalations, and service deadlines so you get alerts before the clerk does.',
+                body: 'We are building deeper rejection tracking, escalation workflows, and service deadline alerts now.',
               },
             ].map((card) => (
               <Card key={card.title} className="h-full border-emerald-100">

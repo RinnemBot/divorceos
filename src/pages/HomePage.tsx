@@ -129,7 +129,7 @@ export function HomePage() {
           <div className="flex items-center gap-3">
             <Badge className="bg-white/15 text-white border-white/40">New</Badge>
             <p className="font-medium">
-              In-house e-filing + full-service concierge now spans 40+ California counties—Bay Area, LA/OC, Sacramento corridor, and the Valley.
+              Concierge filing support now covers 40+ California counties, with guided workflows live now and deeper filing automation coming soon.
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-2">
@@ -287,8 +287,8 @@ export function HomePage() {
                 In-house Court filings for over 40 Counties
               </h2>
               <p className="text-lg text-gray-600 mb-6 dark:text-gray-300">
-                Our concierge team now covers the entire Central Valley, Sacramento corridor, and the north-state circuit. 
-                Paid plans include human-reviewed packets, e-filing (or drop-box runs when required), and clerk rejection monitoring so you don&apos;t have to babysit submissions.
+                Our concierge coverage now spans the Central Valley, Sacramento corridor, and the north-state circuit.
+                Paid plans include county-specific filing guidance, human-reviewed packet support, and document workflow help, with expanded filing automation coming soon.
               </p>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-6">
                 {FEATURED_REGION_LOGOS.map((region) => (
@@ -308,11 +308,11 @@ export function HomePage() {
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle className="h-5 w-5 text-emerald-600 mt-0.5" />
-                  <span className="text-gray-700 dark:text-gray-200">Essential+ tiers unlock in-house e-filing—our staff assembles, uploads, and chases clerk approvals while you stay in the loop.</span>
+                  <span className="text-gray-700 dark:text-gray-200">Essential+ tiers include concierge filing support today, with direct in-platform filing workflows and status automation coming soon.</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle className="h-5 w-5 text-emerald-600 mt-0.5" />
-                  <span className="text-gray-700 dark:text-gray-200">Plus and Done-For-You add white-glove extras like process server coordination, return-mail tracking, and rejection escalation.</span>
+                  <span className="text-gray-700 dark:text-gray-200">Plus and Done-For-You are designed for higher-touch filing support, with process coordination and expanded follow-through features rolling out soon.</span>
                 </li>
               </ul>
               <div className="flex flex-col sm:flex-row gap-4">
@@ -339,11 +339,11 @@ export function HomePage() {
                 },
                 {
                   title: 'We click submit',
-                  body: 'Essential tier and above include staff-assembled, in-house e-filings or drop-box runs when the county still requires paper.',
+                  body: 'Essential tier and above include concierge packet review and filing support today, with direct e-filing and paper-routing workflows expanding soon.',
                 },
                 {
                   title: 'Follow-through included',
-                  body: 'We monitor rejection queues, escalate to supervisors, and drop updated packets back into your dashboard the moment they are stamped.',
+                  body: 'We are building deeper status tracking, rejection handling, and packet follow-through into the dashboard now.',
                 },
               ].map((card) => (
                 <Card key={card.title} className="border border-emerald-100 shadow-sm">

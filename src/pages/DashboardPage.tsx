@@ -13,6 +13,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { ReferralProgram, getReferralStats } from '@/components/ReferralProgram';
 import { ReviewSystem } from '@/components/ReviewSystem';
 import { ConciergeQueuePanel } from '@/components/ConciergeQueuePanel';
+import { FilingOpsPanel } from '@/components/FilingOpsPanel';
 import { COURT_FORMS } from '@/data/forms';
 import { COUNTY_GUIDES } from '@/data/countyGuides';
 import { authService, SUBSCRIPTION_LIMITS, type User } from '@/services/auth';
@@ -372,13 +373,13 @@ export function DashboardPage() {
                   <Shield className="h-4 w-4 text-emerald-600" />
                   Document vault
                 </CardTitle>
-                <CardDescription>Upload finished packets so we can e-file them straight from DivorceOS.</CardDescription>
+                <CardDescription>Upload finished packets so we can route them into concierge filing workflows, with direct in-platform filing coming soon.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                   <div className="text-sm text-slate-600 lg:w-2/3">
                     <p className="mb-2">
-                      Stored documents live in an encrypted Supabase bucket. Essential+ members can authorize Maria to pull these filings directly into concierge e-filing queues.
+                      Stored documents live in an encrypted Supabase bucket. Essential+ members can authorize Maria to pull these filings into concierge review and filing workflows, with deeper queue automation coming soon.
                     </p>
                     <p>PDF only • 10 MB max • Need edits first? Attach drafts in chat and we&apos;ll clean them before uploading.</p>
                   </div>
@@ -411,6 +412,7 @@ export function DashboardPage() {
                     <AlertDescription>{vaultError}</AlertDescription>
                   </Alert>
                 )}
+                <FilingOpsPanel />
                 <div className="rounded-2xl border border-slate-200 overflow-hidden">
                   {isVaultLoading ? (
                     <div className="p-6 text-sm text-slate-500">Loading vault…</div>

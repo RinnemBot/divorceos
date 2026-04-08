@@ -62,7 +62,7 @@ const pricingTiers: PricingTier[] = [
     name: 'Essential',
     monthlyPrice: 49,
     annualPrice: 490,
-    description: 'Comprehensive support with in-house filings',
+    description: 'Comprehensive support with concierge filing help',
     features: [
       'Unlimited AI chats',
       'AI-generated responses 24/7',
@@ -71,7 +71,7 @@ const pricingTiers: PricingTier[] = [
       'Detailed form guidance',
       'Priority AI responses',
       'Case law references',
-      'In-house concierge e-filing for supported counties (1 active case)',
+      'Concierge filing support for supported counties (1 active case), with direct e-filing workflows coming soon',
     ],
     buttonText: 'Start Essential Plan',
     buttonVariant: 'default',
@@ -82,7 +82,7 @@ const pricingTiers: PricingTier[] = [
     name: 'Plus',
     monthlyPrice: 99,
     annualPrice: 990,
-    description: 'Advanced strategy with white-glove concierge filings',
+    description: 'Advanced strategy with higher-touch concierge filing support',
     features: [
       'Unlimited AI chats',
       'AI-generated responses 24/7',
@@ -93,7 +93,7 @@ const pricingTiers: PricingTier[] = [
       'Case law references',
       'Document analysis',
       'Strategy suggestions',
-      'Priority concierge filings + process server coordination',
+      'Priority concierge filing support + process coordination features coming soon',
     ],
     buttonText: 'Start Plus Plan',
     buttonVariant: 'outline',
@@ -103,7 +103,7 @@ const pricingTiers: PricingTier[] = [
     name: 'Done-For-You',
     monthlyPrice: 299,
     annualPrice: 2990,
-    description: 'Maximum support with full-service filings',
+    description: 'Maximum support with full-service concierge guidance',
     features: [
       'Unlimited AI chats',
       'AI-generated responses 24/7',
@@ -116,7 +116,7 @@ const pricingTiers: PricingTier[] = [
       'Strategy suggestions',
       'Priority support queue',
       'Custom document templates',
-      'Full-service concierge filings, service of process, and follow-up',
+      'Full-service concierge guidance, with service-of-process and follow-up workflows expanding soon',
     ],
     buttonText: 'Start Done-For-You',
     buttonVariant: 'outline',
@@ -194,7 +194,7 @@ export function PricingPage() {
           </h1>
           <p className="text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
             Choose the plan that fits your needs. All plans include access to our 
-            comprehensive California divorce form library, and paid tiers now add our in-house concierge filings across 17 counties.
+            comprehensive California divorce form library, and paid tiers now add concierge filing support across 40+ counties, with deeper automation rolling out soon.
           </p>
 
           {currentUser && (

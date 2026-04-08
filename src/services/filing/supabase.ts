@@ -191,6 +191,119 @@ export async function insertWebhookEvent(params: {
   return data;
 }
 
+export async function findSubmissionByProviderSubmissionId(providerSubmissionId: string): Promise<FilingSubmission | null> {
+  const supabase = requireSupabase();
+  const { data, error } = await supabase
+    .from(SUBMISSIONS_TABLE)
+    .select('*')
+    .eq('provider_submission_id', providerSubmissionId)
+    .maybeSingle();
+
+  if (error) throw error;
+  return data ? mapSubmissionRow(data) : null;
+}
+
+export async function findServiceRequestByProviderServiceId(providerServiceId: string): Promise<ServiceRequest | null> {
+  const supabase = requireSupabase();
+  const { data, error } = await supabase
+    .from(SERVICE_REQUESTS_TABLE)
+    .select('*')
+    .eq('provider_service_id', providerServiceId)
+    .maybeSingle();
+
+  if (error) throw error;
+  return data ? mapServiceRequestRow(data) : null;
+}
+
+export async function updateMatterStatus(id: string, status: FilingMatterStatus) {
+  const supabase = requireSupabase();
+  const { data, error } = await supabase
+    .from(MATTERS_TABLE)
+    .update({ status, updated_at: nowIso() })
+    .eq('id', id)
+    .select('*')
+    .single();
+
+  if (error) throw error;
+  return mapMatterRow(data);
+}
+
+export async function updateSubmissionStatus(params: {
+  id: string;
+  status: FilingSubmissionStatus;
+  rejectionReason?: string;
+  rawProviderPayload?: unknown;
+}) {
+  const supabase = requireSupabase();
+  const patch: Record<string, unknown> = {
+    status: params.status,
+    updated_at: nowIso(),
+    raw_provider_payload: params.rawProviderPayload ?? null,
+  };
+
+  if (params.status === 'accepted') patch.accepted_at = nowIso();
+  if (params.status === 'rejected') {
+    patch.rejected_at = nowIso();
+    patch.rejection_reason = params.rejectionReason ?? null;
+  }
+
+  const { data, error } = await supabase
+    .from(SUBMISSIONS_TABLE)
+    .update(patch)
+    .eq('id', params.id)
+    .select('*')
+    .single();
+
+  if (error) throw error;
+  const updated = mapSubmissionRow(data);
+
+  const matterStatusMap: Partial<Record<FilingSubmissionStatus, FilingMatterStatus>> = {
+    queued: 'submitted',
+    submitting: 'submitted',
+    submitted: 'submitted',
+    under_review: 'under_review',
+    accepted: 'accepted',
+    rejected: 'rejected',
+    needs_attention: 'needs_attention',
+  };
+
+  const nextMatterStatus = matterStatusMap[params.status];
+  if (nextMatterStatus) {
+    await updateMatterStatus(updated.matterId, nextMatterStatus);
+  }
+
+  return updated;
+}
+
+export async function updateServiceRequestStatus(params: {
+  id: string;
+  status: ServiceRequestStatus;
+  proofOfServiceUrl?: string;
+}) {
+  const supabase = requireSupabase();
+  const { data, error } = await supabase
+    .from(SERVICE_REQUESTS_TABLE)
+    .update({
+      status: params.status,
+      proof_of_service_url: params.proofOfServiceUrl ?? null,
+      updated_at: nowIso(),
+    })
+    .eq('id', params.id)
+    .select('*')
+    .single();
+
+  if (error) throw error;
+  const updated = mapServiceRequestRow(data);
+
+  if (params.status === 'served') {
+    await updateMatterStatus(updated.matterId, 'served');
+  } else if (params.status === 'failed') {
+    await updateMatterStatus(updated.matterId, 'needs_attention');
+  }
+
+  return updated;
+}
+
 export async function upsertServiceRequest(serviceRequest: ServiceRequest): Promise<ServiceRequest> {
   const supabase = requireSupabase();
   const { data, error } = await supabase
@@ -223,6 +336,37 @@ export async function getServiceRequest(id: string): Promise<ServiceRequest | nu
   const { data, error } = await supabase.from(SERVICE_REQUESTS_TABLE).select('*').eq('id', id).maybeSingle();
   if (error) throw error;
   return data ? mapServiceRequestRow(data) : null;
+}
+
+export async function getOpsSnapshot(matterId: string) {
+  const [matter, latestSubmission, documents] = await Promise.all([
+    getFilingMatter(matterId),
+    getLatestSubmissionForMatter(matterId),
+    listDocumentsForMatter(matterId),
+  ]);
+
+  const supabase = requireSupabase();
+  const { data: serviceRequests, error: serviceError } = await supabase
+    .from(SERVICE_REQUESTS_TABLE)
+    .select('*')
+    .eq('matter_id', matterId)
+    .order('created_at', { ascending: false });
+  if (serviceError) throw serviceError;
+
+  const { data: webhookEvents, error: webhookError } = await supabase
+    .from(WEBHOOK_EVENTS_TABLE)
+    .select('*')
+    .or(`external_id.eq.${latestSubmission?.providerSubmissionId ?? '__none__'}`)
+    .order('received_at', { ascending: false });
+  if (webhookError) throw webhookError;
+
+  return {
+    matter,
+    latestSubmission,
+    documents,
+    serviceRequests: (serviceRequests ?? []).map(mapServiceRequestRow),
+    webhookEvents: webhookEvents ?? [],
+  };
 }
 
 export function buildMatter(params: {
