@@ -192,6 +192,37 @@ function getSuggestedActions(intent: ChatIntent): { label: string; href: string 
   }
 }
 
+function buildVoiceGuidance(userMessage: string, intent: ChatIntent): string {
+  const lower = userMessage.toLowerCase();
+  const upsetSignals = /(scared|afraid|overwhelmed|stressed|panic|anxious|devastated|furious|angry|worried|crying|lost)/.test(lower);
+  const shortQuestion = userMessage.trim().split(/\s+/).length <= 12;
+
+  const baseRules = [
+    'Sound like a smart, grounded human, not a customer support bot.',
+    'Warm, direct, and a little conversational is good. Do not sound chirpy, salesy, or scripted.',
+    'Avoid filler like "I apologize," "great question," or "I understand this can be difficult."',
+    'Use plain English. Prefer short paragraphs, natural cadence, and concrete next steps.',
+    'Do not overuse exclamation points or emoji. At most one emoji, and only if it feels natural.',
+    'If the user sounds stressed, acknowledge it briefly and plainly before helping.',
+    'If the answer is simple, keep it short. If the situation is complex, organize it cleanly.',
+    'End by offering one useful next move, not a generic "let me know if you have questions."',
+  ];
+
+  if (upsetSignals) {
+    baseRules.push('The user seems emotionally loaded. Start with one calm validating sentence, then move into help quickly.');
+  }
+
+  if (shortQuestion) {
+    baseRules.push('The user asked briefly. Match that energy with a concise answer unless urgency requires more.');
+  }
+
+  if (intent === 'pricing_sales') {
+    baseRules.push('Do not sound like a salesperson. Recommend the right plan plainly if it genuinely helps.');
+  }
+
+  return baseRules.map((rule) => `- ${rule}`).join('\n');
+}
+
 function normalizeFormId(raw: string): string | null {
   let normalized = raw.toLowerCase().replace(/\s+/g, '');
   normalized = normalized.replace(/[()]/g, '');
@@ -482,6 +513,7 @@ async function generateAIWithPersonality(
   const nameGreeting = userName && userName !== 'Guest' ? `The user's name is ${userName}. Use their name naturally at least once in your response.` : '';
   const planContext = getPlanContext(plan);
   const formGuidanceContext = buildFormGuidanceContext(plan, userMessage, conversationHistory);
+  const voiceGuidance = buildVoiceGuidance(userMessage, intentResult.intent);
 
   // Build topic-specific legal knowledge
   let topicKnowledge = '';
@@ -554,6 +586,9 @@ Important rules:
 - If the situation sounds urgent or risky, say so plainly.
 - ${planContext}
 
+Voice and tone rules:
+${voiceGuidance}
+
 ${formGuidanceContext ? `${formGuidanceContext}\n` : ''}${topicKnowledge}
 
 Current intent: ${intentResult.intent}
@@ -565,6 +600,7 @@ Preferred response shape:
 - why it matters
 - next best step
 - optional closing offer like: "I can help you do that now."
+- Do not include section labels every time unless they genuinely help readability.
 
 When suitable, steer users into DivorceOS workflows:
 - /forms
@@ -634,45 +670,43 @@ function generateFallbackResponse(
   apiError: boolean = false
 ): AIResponse {
   const namePrefix = userName && userName !== 'Guest' ? `${userName}, ` : '';
-  
-  let content = `Hey ${namePrefix}I'm Maria! 👋\n\n`;
-  
+
+  let content = `Hey ${namePrefix}I’m Maria.\n\n`;
+
   if (apiError) {
-    content += `I apologize, but I'm having trouble connecting to my knowledge base right now. `;
-    content += `Let me give you what I can from my California divorce expertise:\n\n`;
+    content += `My full chat brain is acting up right now, but I can still give you the California basics.\n\n`;
   } else {
-    content += `I hear you - divorce can be really overwhelming. Let me help you with that.\n\n`;
+    content += `This stuff can get heavy fast. Let’s make it simpler.\n\n`;
   }
-  
-  // Provide specific guidance based on topic
+
   if (topic === 'custody' || userMessage.toLowerCase().includes('custody')) {
-    content += `**About Child Custody in California:**\n\n`;
-    content += `California courts focus on the "best interests of the child" (Family Code § 3011). Here's what matters:\n\n`;
-    content += `• **Legal Custody** - Who makes decisions about school, doctors, religion\n`;
-    content += `• **Physical Custody** - Where the child actually lives\n`;
-    content += `• Courts prefer frequent contact with BOTH parents\n`;
-    content += `• Your relationship with your child, stability, and ability to co-parent are key\n\n`;
-    content += `What specifically would you like to know about custody? I'm here to help!\n`;
+    content += `**About child custody in California:**\n\n`;
+    content += `California courts focus on the best interests of the child (Family Code § 3011). The big pieces are:\n\n`;
+    content += `• **Legal custody**: who makes major decisions about school, medical care, and religion\n`;
+    content += `• **Physical custody**: where the child lives and the parenting schedule\n`;
+    content += `• Courts usually want frequent, continuing contact with both parents when that’s safe\n`;
+    content += `• Your involvement, stability, and ability to co-parent matter a lot\n\n`;
+    content += `If you want, tell me your child’s age and the current schedule, and I’ll help you think through the likely pressure points.\n`;
   } else if (topic === 'starting' || userMessage.toLowerCase().includes('file')) {
-    content += `**Starting a Divorce in California:**\n\n`;
-    content += `Here's what you need to know:\n\n`;
-    content += `• **Residency**: You or your spouse must have lived in CA for 6 months and in your county for 3 months (§ 2320)\n`;
-    content += `• **Grounds**: California is a "no-fault" state - you just need "irreconcilable differences" (§ 2310)\n`;
-    content += `• **Forms**: You'll need Form FL-100 (Petition) and FL-110 (Summons)\n`;
-    content += `• **Waiting Period**: Minimum 6 months from when your spouse is served\n\n`;
-    content += `Want me to walk you through the filing process step by step?\n`;
+    content += `**Starting a divorce in California:**\n\n`;
+    content += `Here are the basics:\n\n`;
+    content += `• **Residency**: one spouse needs 6 months in California and 3 months in the county (§ 2320)\n`;
+    content += `• **Grounds**: California is no-fault, usually irreconcilable differences (§ 2310)\n`;
+    content += `• **Forms**: usually FL-100 and FL-110 to start\n`;
+    content += `• **Waiting period**: at least 6 months after service\n\n`;
+    content += `If you want, I can map the filing sequence out step by step.\n`;
   } else {
-    content += `**Here's what I can tell you about California divorce:**\n\n`;
-    content += `• It's a no-fault state - no need to prove anyone did anything wrong\n`;
-    content += `• Community property (earned during marriage) is split 50/50\n`;
-    content += `• Child custody is based on what's best for the child\n`;
-    content += `• There's a 6-month waiting period\n\n`;
-    content += `What would you like to dive deeper into? I'm all ears! 👂\n`;
+    content += `**California divorce basics:**\n\n`;
+    content += `• California is no-fault\n`;
+    content += `• Community property is generally split 50/50\n`;
+    content += `• Custody turns on the child’s best interests\n`;
+    content += `• There’s usually a 6-month minimum timeline\n\n`;
+    content += `Tell me which part you want to drill into, and I’ll keep it practical.\n`;
   }
-  
-  content += `\n**Important:** I'm an AI assistant, not a lawyer. For advice about your specific situation, please consult with a California family law attorney.\n\n`;
-  content += `What else is on your mind?`;
-  
+
+  content += `\n**Important:** I’m an AI assistant, not your lawyer. For advice about your specific facts, talk to a California family law attorney.\n\n`;
+  content += `If you want, send me the exact situation and I’ll help you sort the next step.`;
+
   return { 
     content, 
     topic,
@@ -682,12 +716,12 @@ function generateFallbackResponse(
 
 export function generateWelcomeMessage(userName?: string): string {
   const nameGreeting = userName && userName !== 'Guest' ? ` ${userName}` : '';
-  
+
   const greetings = [
-    `Hey${nameGreeting}! 👋 I'm Maria, your California divorce law specialist. I know this stuff can feel overwhelming, but I'm here to help you figure it out. What's on your mind?`,
-    `Hi${nameGreeting}! I'm Maria. I've helped a lot of people navigate California divorces, and I'm here for you too. What can I help with today?`,
-    `Hello${nameGreeting}! I'm Maria - I specialize in California divorce law. I get that this is a tough time, so let's talk through whatever you're dealing with. What's going on?`,
+    `Hey${nameGreeting}, I’m Maria. I can help you think through California divorce stuff, forms, support, custody, or just the next move if things feel messy. What are you dealing with?`,
+    `Hi${nameGreeting}, I’m Maria. Tell me what’s going on, and I’ll help you sort the California divorce side of it without making it more confusing.`,
+    `Hello${nameGreeting}, I’m Maria. If you’re stuck on forms, custody, support, deadlines, or just trying to figure out where to start, send me the situation and I’ll help you break it down.`,
   ];
-  
+
   return greetings[Math.floor(Math.random() * greetings.length)];
 }

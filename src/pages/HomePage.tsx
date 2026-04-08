@@ -284,7 +284,7 @@ export function HomePage() {
                 County concierge + filings
               </p>
               <h2 className="text-3xl font-bold text-gray-900 mb-4 dark:text-white">
-                In-house filings for the counties you actually need
+                In-house Court filings for over 40 Counties
               </h2>
               <p className="text-lg text-gray-600 mb-6 dark:text-gray-300">
                 Our concierge team now covers the entire Central Valley, Sacramento corridor, and the north-state circuit. 

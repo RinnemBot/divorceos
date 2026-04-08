@@ -273,7 +273,7 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
         const errorMessage: ChatMessage = {
           id: uuidv4(),
           role: 'assistant',
-          content: `I apologize, but ${canChat.reason}`,
+          content: `${canChat.reason}`,
           timestamp: new Date().toISOString(),
         };
         shouldAutoScrollRef.current = true;
@@ -344,7 +344,7 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
       const errorMessage: ChatMessage = {
         id: uuidv4(),
         role: 'assistant',
-        content: 'I apologize, but I encountered an error. Please try again in a moment.',
+        content: 'Something glitched on my end. Try again in a sec, and if it keeps happening I can help you narrow down what is triggering it.',
         timestamp: new Date().toISOString(),
       };
       shouldAutoScrollRef.current = true;
@@ -393,7 +393,7 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
               Chat with Maria
             </CardTitle>
             <p className="mt-2 text-sm text-emerald-50 max-w-2xl leading-6">
-              Warm, sharp California divorce guidance, plus clear next steps when things feel messy.
+              Strategic guidance for California divorce, custody, support, and related family law issues.
             </p>
           </div>
           <div className="flex items-center gap-2">
@@ -484,9 +484,9 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
             <h3 className="text-lg font-semibold text-gray-700 mb-2">
               Maria
             </h3>
-            <p className="text-gray-500 mb-2">California divorce guide with a practical streak</p>
+            <p className="text-gray-500 mb-2">California divorce guide, practical and human</p>
             <p className="text-sm text-slate-500 mb-6 max-w-lg mx-auto leading-6">
-              Ask a question, upload paperwork, or start with one of the topics below. I’ll help you figure out the cleanest next move.
+              Ask a question, upload paperwork, or start with one of the topics below. I’ll help you sort the next move without making it more overwhelming.
             </p>
             
             <div className="grid grid-cols-2 gap-2 max-w-md mx-auto">
@@ -693,7 +693,7 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
           </Button>
         </div>
         <p className="text-xs text-gray-400 mt-2 text-center">
-          Maria is an AI assistant. Not legal advice. Consult an attorney for your specific situation.
+          Maria gives California divorce information, not legal advice. For advice about your specific facts, talk to an attorney.
         </p>
       </div>
     </Card>
