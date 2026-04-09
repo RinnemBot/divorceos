@@ -53,7 +53,7 @@ export function SupportToolsPage() {
               }}>
                 Launch estimator
               </Button>
-              <Button asChild variant="outline" size="lg" className="border-white text-white hover:bg-white/10">
+              <Button asChild variant="outline" size="lg" className="border-white bg-white text-emerald-800 hover:bg-emerald-50 hover:text-emerald-900">
                 <Link to="/pricing">Upgrade for saved scenarios</Link>
               </Button>
             </div>

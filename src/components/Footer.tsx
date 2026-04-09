@@ -56,7 +56,7 @@ export function Footer() {
                 href="mailto:divorceos@agentmail.to" 
                 className="text-blue-400 hover:text-blue-300 transition-colors"
               >
-                Contact an Agent
+                Contact Us
               </a>
             </div>
           </div>

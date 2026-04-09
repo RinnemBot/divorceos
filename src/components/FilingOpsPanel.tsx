@@ -44,11 +44,25 @@ export function FilingOpsPanel() {
 
     try {
       const response = await fetch(`/api/ops-filing?matterId=${encodeURIComponent(matterId)}`);
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to load filing ops snapshot');
+      const raw = await response.text();
+
+      let data: OpsSnapshot | { error?: string } | null = null;
+      if (raw) {
+        try {
+          data = JSON.parse(raw);
+        } catch {
+          throw new Error(raw.length > 180 ? `${raw.slice(0, 180)}…` : raw);
+        }
       }
-      setSnapshot(data);
+
+      if (!response.ok) {
+        const message = data && typeof data === 'object' && 'error' in data && typeof data.error === 'string'
+          ? data.error
+          : `Request failed with status ${response.status}`;
+        throw new Error(message);
+      }
+
+      setSnapshot((data as OpsSnapshot) ?? null);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unknown error');
       setSnapshot(null);
@@ -72,6 +86,9 @@ export function FilingOpsPanel() {
         </div>
 
         {error && <p className="text-sm text-red-600">{error}</p>}
+        <p className="text-xs text-slate-500">
+          Internal staff debug panel. If this shows a server error, the filing ops API or Supabase filing tables are not ready yet.
+        </p>
 
         {snapshot?.matter && (
           <div className="grid gap-4 lg:grid-cols-2">

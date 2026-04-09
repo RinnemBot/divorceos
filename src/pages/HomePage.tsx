@@ -455,7 +455,7 @@ export function HomePage() {
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle className="h-4 w-4 text-emerald-500" />
-                      Empathetic guidance
+                      Strategic Guidance
                     </li>
                   </ul>
                 </CardContent>
@@ -509,7 +509,7 @@ export function HomePage() {
                 <Button asChild size="lg" className="bg-white text-slate-900 hover:bg-slate-100">
                   <Link to="/support-tools">Open Support Tools</Link>
                 </Button>
-                <Button asChild variant="outline" size="lg" className="border-white text-white hover:bg-white/10">
+                <Button asChild variant="outline" size="lg" className="border-white bg-white text-slate-900 hover:bg-slate-100 hover:text-slate-900">
                   <Link to="/forms">Prep the FL-342 packet</Link>
                 </Button>
               </div>
@@ -553,7 +553,7 @@ export function HomePage() {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="border-white text-white hover:bg-white/10"
+                  className="border-white bg-white text-emerald-800 hover:bg-emerald-50 hover:text-emerald-900"
                 >
                   Browse Forms
                 </Button>

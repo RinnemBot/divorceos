@@ -79,7 +79,7 @@ export function CountyConciergePage() {
               <Button asChild size="lg" className="bg-white text-emerald-900 hover:bg-emerald-100">
                 <a href="#county-roadmap">Browse concierge counties</a>
               </Button>
-              <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+              <Button asChild size="lg" variant="outline" className="border-white bg-white text-emerald-900 hover:bg-emerald-50 hover:text-emerald-950">
                 <Link to="/pricing">See plan coverage</Link>
               </Button>
             </div>

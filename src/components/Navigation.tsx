@@ -35,6 +35,12 @@ const navLinks = [
   { path: '/pricing', label: 'Pricing' },
 ];
 
+const scrollToPageTop = () => {
+  if (typeof window !== 'undefined') {
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+  }
+};
+
 export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
@@ -75,6 +81,11 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
               <Link
                 key={link.path}
                 to={link.path}
+                onClick={() => {
+                  if (link.path === '/' && location.pathname === '/') {
+                    scrollToPageTop();
+                  }
+                }}
                 className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                   (link.path === '/' ? location.pathname === '/' : location.pathname.startsWith(link.path))
                     ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-200'
@@ -176,7 +187,12 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
               <Link
                 key={link.path}
                 to={link.path}
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={() => {
+                  if (link.path === '/' && location.pathname === '/') {
+                    scrollToPageTop();
+                  }
+                  setIsMobileMenuOpen(false);
+                }}
                 className={`block px-3 py-2 rounded-md text-base font-medium ${
                   (link.path === '/' ? location.pathname === '/' : location.pathname.startsWith(link.path))
                     ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-200'
