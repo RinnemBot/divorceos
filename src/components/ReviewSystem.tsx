@@ -270,7 +270,7 @@ export function ReviewSystem({ user }: ReviewSystemProps) {
             <Star
               className={`h-5 w-5 ${
                 star <= (interactive ? (hoverRating || rating) : count)
-                  ? 'fill-amber-400 text-amber-400'
+                  ? 'fill-emerald-400 text-emerald-400'
                   : 'text-slate-300'
               }`}
             />
@@ -323,7 +323,7 @@ export function ReviewSystem({ user }: ReviewSystemProps) {
                     <Star className="h-4 w-4 text-slate-400" />
                     <div className="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-amber-400 rounded-full transition-all"
+                        className="h-full bg-emerald-400 rounded-full transition-all"
                         style={{ width: `${percentage}%` }}
                       />
                     </div>

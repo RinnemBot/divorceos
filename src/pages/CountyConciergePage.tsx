@@ -63,11 +63,11 @@ export function CountyConciergePage() {
 
   if (!county) {
     return (
-      <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(251,191,36,0.1),_transparent_24%),linear-gradient(180deg,#f8fafc_0%,#fffdf8_45%,#f8fafc_100%)] dark:bg-[radial-gradient(circle_at_top,_rgba(245,158,11,0.1),_transparent_24%),linear-gradient(180deg,#020617_0%,#020617_100%)]">
+      <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(16,185,129,0.1),_transparent_24%),linear-gradient(180deg,#f8fafc_0%,#f7fdf9_45%,#f8fafc_100%)] dark:bg-[radial-gradient(circle_at_top,_rgba(5,150,105,0.12),_transparent_24%),linear-gradient(180deg,#020617_0%,#020617_100%)]">
         <section className="py-16">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="rounded-[2rem] border border-white/80 bg-white/80 p-8 text-center shadow-[0_28px_90px_-42px_rgba(15,23,42,0.4)] backdrop-blur dark:border-white/10 dark:bg-white/5 md:p-12">
-              <Badge className="mb-5 border border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-400/20 dark:bg-amber-400/10 dark:text-amber-200">
+              <Badge className="mb-5 border border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-200">
                 County Filing Concierge
               </Badge>
               <h1 className="text-4xl font-semibold tracking-tight text-slate-950 dark:text-white md:text-6xl md:leading-[1.02]">
@@ -77,7 +77,7 @@ export function CountyConciergePage() {
                 We cover 40+ California counties with filing methods, packet checklists, local quirks, and courthouse links, with deeper workflows still expanding.
               </p>
               <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-                <Button asChild size="lg" className="rounded-full bg-slate-950 text-white hover:bg-slate-800 dark:bg-amber-400 dark:text-slate-950 dark:hover:bg-amber-300">
+                <Button asChild size="lg" className="rounded-full bg-slate-950 text-white hover:bg-slate-800 dark:bg-emerald-400 dark:text-slate-950 dark:hover:bg-emerald-300">
                   <a href="#county-roadmap">Browse concierge counties</a>
                 </Button>
                 <Button asChild size="lg" variant="outline" className="rounded-full border-slate-300 bg-white text-slate-950 hover:bg-slate-50 dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10">
@@ -122,12 +122,12 @@ export function CountyConciergePage() {
   }
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(251,191,36,0.1),_transparent_24%),linear-gradient(180deg,#f8fafc_0%,#fffdf8_45%,#f8fafc_100%)] dark:bg-[radial-gradient(circle_at_top,_rgba(245,158,11,0.1),_transparent_24%),linear-gradient(180deg,#020617_0%,#020617_100%)]">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(16,185,129,0.1),_transparent_24%),linear-gradient(180deg,#f8fafc_0%,#f7fdf9_45%,#f8fafc_100%)] dark:bg-[radial-gradient(circle_at_top,_rgba(5,150,105,0.12),_transparent_24%),linear-gradient(180deg,#020617_0%,#020617_100%)]">
       <section className="py-12">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="rounded-[2rem] border border-white/80 bg-white/80 p-8 shadow-[0_28px_90px_-42px_rgba(15,23,42,0.4)] backdrop-blur dark:border-white/10 dark:bg-white/5">
             <div className="flex items-center gap-2">
-              <Badge className="border border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-400/20 dark:bg-amber-400/10 dark:text-amber-200">
+              <Badge className="border border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-200">
                 County Filing Concierge
               </Badge>
               {countyId && countyId !== county.id && (
@@ -156,7 +156,7 @@ export function CountyConciergePage() {
                     </a>
                   </Button>
                 )}
-                <Button onClick={handleCopyLink} className="rounded-full bg-slate-950 text-white hover:bg-slate-800 dark:bg-amber-400 dark:text-slate-950 dark:hover:bg-amber-300">
+                <Button onClick={handleCopyLink} className="rounded-full bg-slate-950 text-white hover:bg-slate-800 dark:bg-emerald-400 dark:text-slate-950 dark:hover:bg-emerald-300">
                   <Share2 className="mr-2 h-4 w-4" /> Copy share link
                 </Button>
               </div>
@@ -206,7 +206,7 @@ export function CountyConciergePage() {
                   <div className="space-y-2">
                     {county.resources.map((resource) => (
                       <div key={resource.url} className="text-sm text-slate-600 dark:text-slate-300">
-                        <Button asChild variant="link" className="px-0 text-amber-700 dark:text-amber-200">
+                        <Button asChild variant="link" className="px-0 text-emerald-700 dark:text-emerald-200">
                           <a href={resource.url} target="_blank" rel="noopener noreferrer">
                             <ExternalLink className="mr-1 h-4 w-4" /> {resource.label}
                           </a>
@@ -236,7 +236,7 @@ export function CountyConciergePage() {
             {packetForms.length > 0 && (
               <Card className="rounded-[1.75rem] border border-white/80 bg-white/80 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/5">
                 <CardHeader>
-                  <div className="flex items-center gap-2 text-sm font-semibold text-amber-700 dark:text-amber-200">
+                  <div className="flex items-center gap-2 text-sm font-semibold text-emerald-700 dark:text-emerald-200">
                     <Sparkles className="h-4 w-4" /> Recommended packet
                   </div>
                   <CardTitle className="text-xl text-slate-950 dark:text-white">Start with the forms most {county.name} clerks expect.</CardTitle>
@@ -247,11 +247,11 @@ export function CountyConciergePage() {
                 <CardContent className="grid gap-4 md:grid-cols-2">
                   {packetForms.map((form) => (
                     <div key={form.id} className="rounded-3xl border border-slate-200 bg-white/80 p-4 dark:border-white/10 dark:bg-white/5">
-                      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-700 dark:text-amber-200">{form.formNumber}</p>
+                      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700 dark:text-emerald-200">{form.formNumber}</p>
                       <p className="mt-1 font-semibold text-slate-900 dark:text-white">{form.title}</p>
                       <p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-300">{form.description}</p>
                       <div className="mt-3 flex gap-2">
-                        <Button asChild size="sm" className="rounded-full bg-slate-950 text-white hover:bg-slate-800 dark:bg-amber-400 dark:text-slate-950 dark:hover:bg-amber-300">
+                        <Button asChild size="sm" className="rounded-full bg-slate-950 text-white hover:bg-slate-800 dark:bg-emerald-400 dark:text-slate-950 dark:hover:bg-emerald-300">
                           <a href={form.pdfUrl} target="_blank" rel="noopener noreferrer">
                             <FileText className="mr-1 h-4 w-4" /> PDF
                           </a>

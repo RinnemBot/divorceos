@@ -72,7 +72,7 @@ function FormCard({ form, currentPlan }: { form: CourtForm; currentPlan: Subscri
             <p className="mb-4 text-sm leading-6 text-slate-600 dark:text-slate-300">{form.description}</p>
             <div className="flex flex-wrap gap-2">
               <a href={form.pdfUrl} target="_blank" rel="noopener noreferrer">
-                <Button size="sm" className="rounded-full bg-slate-950 text-white hover:bg-slate-800 dark:bg-amber-400 dark:text-slate-950 dark:hover:bg-amber-300">
+                <Button size="sm" className="rounded-full bg-slate-950 text-white hover:bg-slate-800 dark:bg-emerald-400 dark:text-slate-950 dark:hover:bg-emerald-300">
                   <Download className="mr-1 h-4 w-4" />
                   Download PDF
                 </Button>
@@ -102,7 +102,7 @@ function FormCard({ form, currentPlan }: { form: CourtForm; currentPlan: Subscri
                       Unlock Maria’s form guidance for this filing. Basic adds checklist help, and Essential+ adds deeper step-by-step support.
                     </p>
                     <Link to="/pricing">
-                      <Button size="sm" className="rounded-full bg-slate-950 text-white hover:bg-slate-800 dark:bg-amber-400 dark:text-slate-950 dark:hover:bg-amber-300">
+                      <Button size="sm" className="rounded-full bg-slate-950 text-white hover:bg-slate-800 dark:bg-emerald-400 dark:text-slate-950 dark:hover:bg-emerald-300">
                         See plans
                       </Button>
                     </Link>
@@ -115,7 +115,7 @@ function FormCard({ form, currentPlan }: { form: CourtForm; currentPlan: Subscri
               </div>
             )}
           </div>
-          <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl bg-amber-50 text-amber-700 dark:bg-amber-400/10 dark:text-amber-200">
+          <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700 dark:bg-emerald-400/10 dark:text-emerald-200">
             <FileText className="h-5 w-5" />
           </div>
         </div>
@@ -156,10 +156,10 @@ export function FormsPage() {
   const formsToDisplay = getFormsToDisplay();
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(251,191,36,0.1),_transparent_24%),linear-gradient(180deg,#f8fafc_0%,#fffdf8_45%,#f8fafc_100%)] py-12 dark:bg-[radial-gradient(circle_at_top,_rgba(245,158,11,0.1),_transparent_24%),linear-gradient(180deg,#020617_0%,#020617_100%)]">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(16,185,129,0.1),_transparent_24%),linear-gradient(180deg,#f8fafc_0%,#f7fdf9_45%,#f8fafc_100%)] py-12 dark:bg-[radial-gradient(circle_at_top,_rgba(5,150,105,0.12),_transparent_24%),linear-gradient(180deg,#020617_0%,#020617_100%)]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-12 rounded-[2rem] border border-white/80 bg-white/80 p-8 shadow-[0_28px_90px_-42px_rgba(15,23,42,0.35)] backdrop-blur dark:border-white/10 dark:bg-white/5 md:p-12">
-          <Badge className="mb-5 border border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-400/20 dark:bg-amber-400/10 dark:text-amber-200">
+          <Badge className="mb-5 border border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-200">
             California forms, Maria-backed
           </Badge>
           <h1 className="text-4xl font-semibold tracking-tight text-slate-950 dark:text-white md:text-6xl md:leading-[1.02]">
@@ -170,10 +170,10 @@ export function FormsPage() {
           </p>
         </div>
 
-        <div className="mb-8 flex items-start gap-3 rounded-3xl border border-amber-200 bg-amber-50/90 p-4 dark:border-amber-400/20 dark:bg-amber-400/10">
-          <AlertCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-amber-700 dark:text-amber-200" />
+        <div className="mb-8 flex items-start gap-3 rounded-3xl border border-emerald-200 bg-emerald-50/90 p-4 dark:border-emerald-400/20 dark:bg-emerald-400/10">
+          <AlertCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-emerald-700 dark:text-emerald-200" />
           <div>
-            <p className="text-sm leading-6 text-amber-900 dark:text-amber-100">
+            <p className="text-sm leading-6 text-emerald-900 dark:text-emerald-100">
               <strong>Important:</strong> these are official California Judicial Council forms from courts.ca.gov. Always make sure you are using the latest version.
             </p>
           </div>
@@ -191,7 +191,7 @@ export function FormsPage() {
                 className="h-12 rounded-full border-slate-200 pl-10"
               />
             </div>
-            <Button onClick={handleSearch} className="h-12 rounded-full bg-slate-950 px-6 text-white hover:bg-slate-800 dark:bg-amber-400 dark:text-slate-950 dark:hover:bg-amber-300">
+            <Button onClick={handleSearch} className="h-12 rounded-full bg-slate-950 px-6 text-white hover:bg-slate-800 dark:bg-emerald-400 dark:text-slate-950 dark:hover:bg-emerald-300">
               Search
             </Button>
           </div>
@@ -199,7 +199,7 @@ export function FormsPage() {
 
         <Tabs value={activeCategory} onValueChange={setActiveCategory} className="mb-8">
           <TabsList className="flex h-auto flex-wrap justify-start gap-2 bg-transparent p-0">
-            <TabsTrigger value="all" className="rounded-full border border-white/80 bg-white/80 px-4 py-2 data-[state=active]:bg-slate-950 data-[state=active]:text-white dark:border-white/10 dark:bg-white/5 dark:data-[state=active]:bg-amber-400 dark:data-[state=active]:text-slate-950">
+            <TabsTrigger value="all" className="rounded-full border border-white/80 bg-white/80 px-4 py-2 data-[state=active]:bg-slate-950 data-[state=active]:text-white dark:border-white/10 dark:bg-white/5 dark:data-[state=active]:bg-emerald-400 dark:data-[state=active]:text-slate-950">
               All Forms ({COURT_FORMS.length})
             </TabsTrigger>
             {FORM_CATEGORIES.map((category) => {
@@ -209,7 +209,7 @@ export function FormsPage() {
                 <TabsTrigger
                   key={category.id}
                   value={category.id}
-                  className="rounded-full border border-white/80 bg-white/80 px-4 py-2 data-[state=active]:bg-slate-950 data-[state=active]:text-white dark:border-white/10 dark:bg-white/5 dark:data-[state=active]:bg-amber-400 dark:data-[state=active]:text-slate-950"
+                  className="rounded-full border border-white/80 bg-white/80 px-4 py-2 data-[state=active]:bg-slate-950 data-[state=active]:text-white dark:border-white/10 dark:bg-white/5 dark:data-[state=active]:bg-emerald-400 dark:data-[state=active]:text-slate-950"
                 >
                   <Icon className="mr-1 h-4 w-4" />
                   {category.name} ({count})
@@ -218,7 +218,7 @@ export function FormsPage() {
             })}
             <TabsTrigger
               value="search"
-              className="rounded-full border border-white/80 bg-white/80 px-4 py-2 data-[state=active]:bg-slate-950 data-[state=active]:text-white dark:border-white/10 dark:bg-white/5 dark:data-[state=active]:bg-amber-400 dark:data-[state=active]:text-slate-950"
+              className="rounded-full border border-white/80 bg-white/80 px-4 py-2 data-[state=active]:bg-slate-950 data-[state=active]:text-white dark:border-white/10 dark:bg-white/5 dark:data-[state=active]:bg-emerald-400 dark:data-[state=active]:text-slate-950"
               disabled={searchResults.length === 0}
             >
               Search Results ({searchResults.length})
@@ -246,7 +246,7 @@ export function FormsPage() {
           <Card className="rounded-[1.75rem] border border-white/80 bg-white/80 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/5">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg text-slate-950 dark:text-white">
-                <ExternalLink className="h-5 w-5 text-amber-500" />
+                <ExternalLink className="h-5 w-5 text-emerald-500" />
                 California Courts
               </CardTitle>
             </CardHeader>
@@ -302,11 +302,11 @@ export function FormsPage() {
           </Card>
         </div>
 
-        <div className="mt-12 rounded-3xl border border-amber-200 bg-amber-50/90 p-4 dark:border-amber-400/20 dark:bg-amber-400/10">
+        <div className="mt-12 rounded-3xl border border-emerald-200 bg-emerald-50/90 p-4 dark:border-emerald-400/20 dark:bg-emerald-400/10">
           <div className="flex items-start gap-3">
-            <AlertCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-amber-700 dark:text-amber-200" />
+            <AlertCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-emerald-700 dark:text-emerald-200" />
             <div>
-              <p className="text-sm leading-6 text-amber-900 dark:text-amber-100">
+              <p className="text-sm leading-6 text-emerald-900 dark:text-emerald-100">
                 <strong>Disclaimer:</strong> if a form link breaks, go directly to{' '}
                 <a href="https://www.courts.ca.gov/forms.htm" target="_blank" rel="noopener noreferrer" className="underline">
                   courts.ca.gov/forms.htm

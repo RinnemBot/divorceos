@@ -25,7 +25,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 const features = [
   {
     icon: MessageSquare,
-    title: 'Maria at the center',
+    title: 'Start with Maria',
     description: 'Ask Maria about custody, support, filings, property, and next-step strategy anytime.',
   },
   {
@@ -60,14 +60,14 @@ const FEATURED_REGION_LOGOS = [
     initials: 'BA',
     title: 'Bay Area counties',
     counties: 'San Francisco • Alameda • Contra Costa • Santa Clara • San Mateo',
-    gradient: 'from-rose-500 via-orange-400 to-amber-300',
+    gradient: 'from-emerald-500 via-teal-400 to-cyan-300',
   },
   {
     id: 'la-oc',
     initials: 'LA',
     title: 'Los Angeles + OC',
     counties: 'Los Angeles • Orange • Riverside • San Bernardino',
-    gradient: 'from-indigo-500 via-purple-500 to-pink-500',
+    gradient: 'from-emerald-600 via-teal-500 to-cyan-400',
   },
   {
     id: 'sac-corridor',
@@ -81,7 +81,7 @@ const FEATURED_REGION_LOGOS = [
     initials: 'CV',
     title: 'Central Valley spine',
     counties: 'Fresno • Kern • Tulare • Stanislaus • San Joaquin',
-    gradient: 'from-amber-500 via-orange-500 to-red-500',
+    gradient: 'from-emerald-500 via-green-400 to-teal-400',
   },
 ];
 
@@ -122,25 +122,25 @@ export function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(251,191,36,0.12),_transparent_28%),linear-gradient(180deg,#f8fafc_0%,#fffdf8_45%,#f8fafc_100%)] dark:bg-[radial-gradient(circle_at_top,_rgba(245,158,11,0.12),_transparent_26%),linear-gradient(180deg,#020617_0%,#020617_40%,#020617_100%)] transition-colors">
-      <div className="border-b border-amber-100/80 bg-white/70 backdrop-blur dark:border-white/10 dark:bg-slate-950/60">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(16,185,129,0.12),_transparent_28%),linear-gradient(180deg,#f8fafc_0%,#f7fdf9_45%,#f8fafc_100%)] dark:bg-[radial-gradient(circle_at_top,_rgba(5,150,105,0.14),_transparent_26%),linear-gradient(180deg,#020617_0%,#020617_40%,#020617_100%)] transition-colors">
+      <div className="border-b border-emerald-100/80 bg-white/70 backdrop-blur dark:border-white/10 dark:bg-slate-950/60">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col gap-2 md:flex-row md:items-center md:justify-between text-sm">
           <div className="flex items-center gap-3 text-slate-700 dark:text-slate-200">
-            <Badge className="border-0 bg-amber-100 text-amber-900 dark:bg-amber-400/20 dark:text-amber-200">Maria-first</Badge>
+            <Badge className="border-0 bg-emerald-100 text-emerald-900 dark:bg-emerald-400/20 dark:text-emerald-200">40+ counties</Badge>
             <p className="font-medium">
-              Same California divorce infrastructure, sharper DivorceAgent surface. Concierge filing support still covers 40+ counties.
+              Ask Maria, pull official forms, and get filing help in one place across 40+ California counties.
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-2">
             <Link
               to="/concierge"
-              className="inline-flex items-center justify-center rounded-full bg-slate-950 px-4 py-2 font-semibold text-white transition-colors hover:bg-slate-800 dark:bg-amber-400 dark:text-slate-950 dark:hover:bg-amber-300"
+              className="inline-flex items-center justify-center rounded-full bg-slate-950 px-4 py-2 font-semibold text-white transition-colors hover:bg-slate-800 dark:bg-emerald-400 dark:text-slate-950 dark:hover:bg-emerald-300"
             >
               View coverage map
             </Link>
             <Link
               to="/pricing"
-              className="inline-flex items-center justify-center rounded-full border border-slate-300 px-4 py-2 font-semibold text-slate-700 transition-colors hover:border-amber-300 hover:bg-amber-50 dark:border-white/20 dark:text-white dark:hover:bg-white/10"
+              className="inline-flex items-center justify-center rounded-full border border-slate-300 px-4 py-2 font-semibold text-slate-700 transition-colors hover:border-emerald-300 hover:bg-emerald-50 dark:border-white/20 dark:text-white dark:hover:bg-white/10"
             >
               Compare plans
             </Link>
@@ -149,11 +149,11 @@ export function HomePage() {
       </div>
 
       <section className="relative overflow-hidden py-16 md:py-24">
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-300 to-transparent opacity-70" />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-300 to-transparent opacity-70" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid items-center gap-12 lg:grid-cols-[1.05fr,0.95fr]">
             <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
-              <Badge className="mb-5 border border-amber-200 bg-white/70 px-4 py-1 text-[11px] uppercase tracking-[0.28em] text-slate-700 dark:border-white/10 dark:bg-white/5 dark:text-amber-200">
+              <Badge className="mb-5 border border-emerald-200 bg-white/70 px-4 py-1 text-[11px] uppercase tracking-[0.28em] text-slate-700 dark:border-white/10 dark:bg-white/5 dark:text-emerald-200">
                 DivorceAgent
               </Badge>
               <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-slate-950 md:text-6xl md:leading-[1.02] dark:text-white">
@@ -166,7 +166,7 @@ export function HomePage() {
                 {currentUser ? (
                   <a
                     href="#chat"
-                    className="inline-flex items-center justify-center rounded-full bg-slate-950 px-6 py-3 font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-slate-800 dark:bg-amber-400 dark:text-slate-950 dark:hover:bg-amber-300"
+                    className="inline-flex items-center justify-center rounded-full bg-slate-950 px-6 py-3 font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-slate-800 dark:bg-emerald-400 dark:text-slate-950 dark:hover:bg-emerald-300"
                   >
                     Ask Maria
                     <ArrowRight className="ml-2 h-5 w-5" />
@@ -175,7 +175,7 @@ export function HomePage() {
                   <Button
                     onClick={() => setShowAuthModal(true)}
                     size="lg"
-                    className="rounded-full bg-slate-950 px-6 text-white hover:bg-slate-800 dark:bg-amber-400 dark:text-slate-950 dark:hover:bg-amber-300"
+                    className="rounded-full bg-slate-950 px-6 text-white hover:bg-slate-800 dark:bg-emerald-400 dark:text-slate-950 dark:hover:bg-emerald-300"
                   >
                     Ask Maria
                     <ArrowRight className="ml-2 h-5 w-5" />
@@ -183,7 +183,7 @@ export function HomePage() {
                 )}
                 <Link
                   to="/forms"
-                  className="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white/75 px-6 py-3 font-semibold text-slate-800 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber-300 hover:bg-amber-50 dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
+                  className="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white/75 px-6 py-3 font-semibold text-slate-800 transition-all duration-200 hover:-translate-y-0.5 hover:border-emerald-300 hover:bg-emerald-50 dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
                 >
                   Explore Forms
                 </Link>
@@ -198,7 +198,7 @@ export function HomePage() {
               <div className="mt-8 flex flex-wrap items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
                 {['3 free chats', '50+ court forms', '24/7 Maria access'].map((item) => (
                   <div key={item} className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/75 px-3 py-2 shadow-sm dark:border-white/10 dark:bg-white/5">
-                    <CheckCircle className="h-4 w-4 text-amber-500" />
+                    <CheckCircle className="h-4 w-4 text-emerald-500" />
                     <span>{item}</span>
                   </div>
                 ))}
@@ -206,11 +206,11 @@ export function HomePage() {
             </div>
 
             <div className="relative hidden lg:block animate-in fade-in zoom-in-95 duration-700">
-              <div className="absolute -inset-8 rounded-[2rem] bg-gradient-to-br from-amber-200/40 via-transparent to-slate-900/10 blur-3xl dark:from-amber-400/10 dark:to-amber-200/5" />
+              <div className="absolute -inset-8 rounded-[2rem] bg-gradient-to-br from-emerald-200/40 via-transparent to-slate-900/10 blur-3xl dark:from-emerald-400/10 dark:to-emerald-200/5" />
               <div className="relative overflow-hidden rounded-[2rem] border border-white/80 bg-white/85 p-6 shadow-[0_40px_120px_-55px_rgba(15,23,42,0.45)] backdrop-blur-xl dark:border-white/10 dark:bg-slate-900/80">
                 <div className="mb-5 flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 text-slate-950 shadow-lg">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-400 to-emerald-600 text-slate-950 shadow-lg">
                       <MessageSquare className="h-5 w-5" />
                     </div>
                     <div>
@@ -218,12 +218,12 @@ export function HomePage() {
                       <p className="text-xs uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">The Divorce Agent</p>
                     </div>
                   </div>
-                  <Badge className="border-0 bg-emerald-100 text-emerald-900 dark:bg-emerald-500/20 dark:text-emerald-200">California only</Badge>
+                  <Badge className="border-0 bg-emerald-100 text-emerald-900 dark:bg-emerald-500/20 dark:text-emerald-200">California law</Badge>
                 </div>
 
                 <div className="space-y-4">
-                  <div className="rounded-3xl border border-amber-100 bg-amber-50/80 p-5 text-sm leading-7 text-slate-700 dark:border-amber-400/20 dark:bg-amber-400/10 dark:text-slate-100">
-                    “I can help you think through custody, support, property, filings, and what to do next, without generic nationwide guesswork.”
+                  <div className="rounded-3xl border border-emerald-100 bg-emerald-50/80 p-5 text-sm leading-7 text-slate-700 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-slate-100">
+                    “I can help with custody, support, property, filings, and next steps, all grounded in California law.”
                   </div>
 
                   <div className="grid gap-3 sm:grid-cols-2">
@@ -243,12 +243,6 @@ export function HomePage() {
                     ))}
                   </div>
 
-                  <div className="rounded-3xl bg-slate-950 p-5 text-white dark:bg-white dark:text-slate-950">
-                    <p className="text-xs uppercase tracking-[0.24em] text-amber-300 dark:text-amber-600">Why it feels sharper</p>
-                    <p className="mt-2 text-sm leading-6 text-slate-200 dark:text-slate-700">
-                      Maria is the focal point. Forms, concierge, and support tools now sit behind the agent instead of competing with her.
-                    </p>
-                  </div>
                 </div>
               </div>
             </div>
@@ -260,21 +254,20 @@ export function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-12 text-center">
             <h2 className="text-3xl font-semibold tracking-tight text-slate-950 dark:text-white md:text-4xl">
-              Maria is the product. Everything else helps you act on the guidance.
+              Start with Maria, then move into forms and filing help when you need them.
             </h2>
             <p className="mx-auto mt-4 max-w-3xl text-lg leading-8 text-slate-600 dark:text-slate-300">
-              DivorceAgent is built around an AI-first experience, then backed by forms, concierge filing support, and support-planning tools.
+              Get clear on your options first, then use forms, concierge filing support, and support tools to keep moving.
             </p>
           </div>
 
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-            {features.map((feature, index) => (
+            {features.map((feature) => (
               <Card key={feature.title} className="group overflow-hidden rounded-3xl border border-white/80 bg-white/80 shadow-[0_20px_60px_-35px_rgba(15,23,42,0.35)] backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_28px_90px_-42px_rgba(15,23,42,0.4)] dark:border-white/10 dark:bg-white/5">
                 <CardContent className="p-6">
-                  <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-100 to-white text-slate-900 shadow-sm transition-transform duration-300 group-hover:scale-105 dark:from-amber-400/20 dark:to-white/10 dark:text-amber-200">
+                  <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-100 to-white text-slate-900 shadow-sm transition-transform duration-300 group-hover:scale-105 dark:from-emerald-400/20 dark:to-white/10 dark:text-emerald-200">
                     <feature.icon className="h-6 w-6" />
                   </div>
-                  <div className="mb-2 text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">0{index + 1}</div>
                   <h3 className="mb-2 text-lg font-semibold text-slate-950 dark:text-white">{feature.title}</h3>
                   <p className="text-sm leading-6 text-slate-600 dark:text-slate-300">{feature.description}</p>
                 </CardContent>
@@ -293,11 +286,10 @@ export function HomePage() {
                 County concierge + filings
               </p>
               <h2 className="text-3xl font-bold text-gray-900 mb-4 dark:text-white">
-                In-house Court filings for over 40 Counties
+                Filing help across 40+ California counties
               </h2>
               <p className="text-lg text-gray-600 mb-6 dark:text-gray-300">
-                Our concierge coverage now spans the Central Valley, Sacramento corridor, and the north-state circuit.
-                Paid plans include county-specific filing guidance, human-reviewed packet support, and document workflow help, with expanded filing automation coming soon.
+                Get county-specific filing guidance, packet support, and document workflow help tailored to where you are filing.
               </p>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-6">
                 {FEATURED_REGION_LOGOS.map((region) => (
@@ -317,11 +309,11 @@ export function HomePage() {
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle className="h-5 w-5 text-emerald-600 mt-0.5" />
-                  <span className="text-gray-700 dark:text-gray-200">Essential+ tiers include concierge filing support today, with direct in-platform filing workflows and status automation coming soon.</span>
+                  <span className="text-gray-700 dark:text-gray-200">Essential+ plans include concierge filing support today, with deeper filing workflows continuing to roll out.</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle className="h-5 w-5 text-emerald-600 mt-0.5" />
-                  <span className="text-gray-700 dark:text-gray-200">Plus and Done-For-You are designed for higher-touch filing support, with process coordination and expanded follow-through features rolling out soon.</span>
+                  <span className="text-gray-700 dark:text-gray-200">Plus and Done-For-You are built for higher-touch filing support, with more process coordination and follow-through.</span>
                 </li>
               </ul>
               <div className="flex flex-col sm:flex-row gap-4">
@@ -347,12 +339,12 @@ export function HomePage() {
                   body: 'Fresno to Lake County (and every county in between) lives inside the concierge picker with clerk-ready checklists.',
                 },
                 {
-                  title: 'We click submit',
-                  body: 'Essential tier and above include concierge packet review and filing support today, with direct e-filing and paper-routing workflows expanding soon.',
+                  title: 'Filing support included',
+                  body: 'Essential plans and above include concierge packet review and filing support, with deeper e-filing workflows on the way.',
                 },
                 {
-                  title: 'Follow-through included',
-                  body: 'We are building deeper status tracking, rejection handling, and packet follow-through into the dashboard now.',
+                  title: 'Stay on top of the process',
+                  body: 'Track packet progress, catch missing steps, and stay organized as filing support expands.',
                 },
               ].map((card) => (
                 <Card key={card.title} className="border border-emerald-100 shadow-sm">
@@ -394,11 +386,11 @@ export function HomePage() {
                   }}
                   role="button"
                   tabIndex={0}
-                  className="group cursor-pointer rounded-3xl border border-white/80 bg-white/80 shadow-[0_20px_60px_-35px_rgba(15,23,42,0.35)] backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_28px_90px_-42px_rgba(15,23,42,0.4)] focus:outline-none focus:ring-2 focus:ring-amber-400 dark:border-white/10 dark:bg-white/5"
+                  className="group cursor-pointer rounded-3xl border border-white/80 bg-white/80 shadow-[0_20px_60px_-35px_rgba(15,23,42,0.35)] backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_28px_90px_-42px_rgba(15,23,42,0.4)] focus:outline-none focus:ring-2 focus:ring-emerald-400 dark:border-white/10 dark:bg-white/5"
                 >
                   <CardContent className="p-6">
                     <div className="flex items-start gap-4">
-                      <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl bg-amber-50 text-amber-700 transition-all duration-300 group-hover:scale-105 group-hover:bg-amber-100 dark:bg-amber-400/10 dark:text-amber-200">
+                      <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700 transition-all duration-300 group-hover:scale-105 group-hover:bg-emerald-100 dark:bg-emerald-400/10 dark:text-emerald-200">
                         <Icon className="h-5 w-5" />
                       </div>
                       <div>
@@ -419,7 +411,7 @@ export function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-10 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-amber-600 dark:text-amber-300">Meet Maria</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-600 dark:text-emerald-300">Meet Maria</p>
               <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950 dark:text-white md:text-4xl">
                 Maria is the Divorce Agent.
               </h2>
@@ -441,7 +433,7 @@ export function HomePage() {
                 </div>
               ) : (
                 <div className="rounded-[2rem] border border-white/80 bg-white/85 p-8 text-center shadow-[0_28px_90px_-42px_rgba(15,23,42,0.4)] backdrop-blur dark:border-white/10 dark:bg-white/5">
-                  <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 text-slate-950 shadow-lg">
+                  <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-400 to-emerald-600 text-slate-950 shadow-lg">
                     <MessageSquare className="h-6 w-6" />
                   </div>
                   <h3 className="mb-3 text-2xl font-semibold text-slate-900 dark:text-white">Sign in to ask Maria</h3>
@@ -450,7 +442,7 @@ export function HomePage() {
                   </p>
                   <Button
                     onClick={() => setShowAuthModal(true)}
-                    className="rounded-full bg-slate-950 px-6 text-white hover:bg-slate-800 dark:bg-amber-400 dark:text-slate-950 dark:hover:bg-amber-300"
+                    className="rounded-full bg-slate-950 px-6 text-white hover:bg-slate-800 dark:bg-emerald-400 dark:text-slate-950 dark:hover:bg-emerald-300"
                   >
                     Sign In to Continue
                   </Button>
@@ -462,7 +454,7 @@ export function HomePage() {
               <Card className="rounded-3xl border border-white/80 bg-white/80 shadow-[0_20px_60px_-35px_rgba(15,23,42,0.35)] backdrop-blur dark:border-white/10 dark:bg-white/5">
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2 text-slate-950 dark:text-white">
-                    <Clock className="h-5 w-5 text-amber-500" />
+                    <Clock className="h-5 w-5 text-emerald-500" />
                     Always-on strategic support
                   </CardTitle>
                 </CardHeader>
@@ -471,9 +463,9 @@ export function HomePage() {
                     Maria is available whenever you need to sort through process questions, next steps, or filing confusion.
                   </p>
                   <ul className="space-y-2">
-                    <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-amber-500" />Instant responses</li>
-                    <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-amber-500" />California-specific guidance</li>
-                    <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-amber-500" />Strategy before guesswork</li>
+                    <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-emerald-500" />Instant responses</li>
+                    <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-emerald-500" />California-specific guidance</li>
+                    <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-emerald-500" />Strategy before guesswork</li>
                   </ul>
                 </CardContent>
               </Card>
@@ -481,7 +473,7 @@ export function HomePage() {
               <Card className="rounded-3xl border border-white/80 bg-white/80 shadow-[0_20px_60px_-35px_rgba(15,23,42,0.35)] backdrop-blur dark:border-white/10 dark:bg-white/5">
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2 text-slate-950 dark:text-white">
-                    <Heart className="h-5 w-5 text-rose-500" />
+                    <Heart className="h-5 w-5 text-emerald-500" />
                     Built to help, not replace counsel
                   </CardTitle>
                 </CardHeader>
@@ -490,7 +482,7 @@ export function HomePage() {
                 </CardContent>
               </Card>
 
-              <Card className="rounded-3xl border-0 bg-slate-950 text-white shadow-[0_32px_90px_-40px_rgba(15,23,42,0.9)] dark:bg-amber-400 dark:text-slate-950">
+              <Card className="rounded-3xl border-0 bg-slate-950 text-white shadow-[0_32px_90px_-40px_rgba(15,23,42,0.9)] dark:bg-emerald-400 dark:text-slate-950">
                 <CardHeader>
                   <CardTitle className="text-lg">Turn guidance into action</CardTitle>
                 </CardHeader>
@@ -511,31 +503,31 @@ export function HomePage() {
       </section>
 
       {/* Support Tools CTA */}
-      <section className="py-16 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
+      <section className="py-16 bg-gradient-to-br from-emerald-900 via-emerald-800 to-emerald-700 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid gap-8 lg:grid-cols-[1.4fr,1fr]">
             <div>
-              <p className="text-sm uppercase tracking-[0.2em] text-slate-300 mb-3">Support planning</p>
+              <p className="text-sm uppercase tracking-[0.2em] text-emerald-100 mb-3">Support planning</p>
               <h2 className="text-3xl font-bold leading-tight mb-4">Need deeper child & spousal support modeling?</h2>
-              <p className="text-slate-200 mb-6">We carved out a full page for the estimator so you can live inside the numbers without scrolling the entire homepage. Advanced overrides, multi-child factors, and sharable summaries are all there.</p>
+              <p className="text-emerald-50/90 mb-6">Use the full support estimator when you want to spend more time in the numbers. Advanced overrides, multi-child factors, and shareable summaries are all there.</p>
               <div className="flex flex-col sm:flex-row gap-3">
-                <Button asChild size="lg" className="bg-white text-slate-900 hover:bg-slate-100">
+                <Button asChild size="lg" className="bg-white text-emerald-800 hover:bg-emerald-50">
                   <Link to="/support-tools">Open Support Tools</Link>
                 </Button>
-                <Button asChild variant="outline" size="lg" className="border-white bg-white text-slate-900 hover:bg-slate-100 hover:text-slate-900">
+                <Button asChild variant="outline" size="lg" className="border-white bg-white text-emerald-800 hover:bg-emerald-50 hover:text-emerald-900">
                   <Link to="/forms">Prep the FL-342 packet</Link>
                 </Button>
               </div>
             </div>
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-6 space-y-4">
-              <p className="text-sm text-slate-200">What's inside the Support Tools page:</p>
-              <ul className="space-y-2 text-slate-100 text-sm">
+            <div className="rounded-2xl border border-white/20 bg-white/10 p-6 space-y-4 backdrop-blur">
+              <p className="text-sm text-emerald-100">What's inside the Support Tools page:</p>
+              <ul className="space-y-2 text-emerald-50 text-sm">
                 <li>• Quick + Advanced modes with instant switching</li>
                 <li>• Parent time-share slider tied to k-factor math</li>
                 <li>• Spousal-support heuristic synced to child support</li>
                 <li>• County-specific notes + reminders</li>
               </ul>
-              <p className="text-xs text-slate-300">Done-For-You members can ask Maria to read the latest scenario before drafting messages or disclosures.</p>
+              <p className="text-xs text-emerald-100">Done-For-You members can ask Maria to review the latest scenario before drafting messages or disclosures.</p>
             </div>
           </div>
         </div>
@@ -544,12 +536,12 @@ export function HomePage() {
       {/* CTA Section */}
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="rounded-[2rem] border border-white/80 bg-gradient-to-br from-slate-950 via-slate-900 to-amber-950 p-8 text-center text-white shadow-[0_40px_120px_-55px_rgba(15,23,42,0.6)] md:p-12">
+          <div className="rounded-[2rem] border border-white/80 bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-950 p-8 text-center text-white shadow-[0_40px_120px_-55px_rgba(15,23,42,0.6)] md:p-12">
             <h2 className="text-3xl font-semibold tracking-tight mb-4 md:text-4xl">
               Ready to ask Maria?
             </h2>
             <p className="mx-auto mb-8 max-w-2xl text-lg leading-8 text-slate-200">
-              Start with the AI agent first, then move into forms, filing help, and planning tools when you are ready.
+              Start with Maria, then move into forms, filing help, and planning tools when you need them.
             </p>
             <div className="flex flex-col justify-center gap-4 sm:flex-row">
               {!currentUser && (

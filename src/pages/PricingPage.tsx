@@ -183,13 +183,13 @@ export function PricingPage() {
   const getCurrentPlan = () => currentUser?.subscription || 'free';
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(251,191,36,0.12),_transparent_28%),linear-gradient(180deg,#f8fafc_0%,#fffdf8_45%,#f8fafc_100%)] py-16 transition-colors dark:bg-[radial-gradient(circle_at_top,_rgba(245,158,11,0.12),_transparent_26%),linear-gradient(180deg,#020617_0%,#020617_100%)]">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(16,185,129,0.12),_transparent_28%),linear-gradient(180deg,#f8fafc_0%,#f7fdf9_45%,#f8fafc_100%)] py-16 transition-colors dark:bg-[radial-gradient(circle_at_top,_rgba(5,150,105,0.14),_transparent_26%),linear-gradient(180deg,#020617_0%,#020617_100%)]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-foreground">
         <div className="mb-16 overflow-hidden rounded-[2rem] border border-white/80 bg-white/80 p-8 shadow-[0_28px_90px_-42px_rgba(15,23,42,0.4)] backdrop-blur dark:border-white/10 dark:bg-white/5 md:p-12">
           <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-3xl">
-              <Badge className="mb-5 border border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-400/20 dark:bg-amber-400/10 dark:text-amber-200">
-                Maria-first plans
+              <Badge className="mb-5 border border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-200">
+                Plans for every stage
               </Badge>
               <h1 className="text-4xl font-semibold tracking-tight text-slate-950 dark:text-white md:text-6xl md:leading-[1.02]">
                 Pick the amount of Maria you want in your corner.
@@ -199,16 +199,10 @@ export function PricingPage() {
               </p>
             </div>
 
-            <div className="rounded-3xl border border-slate-200 bg-slate-950 p-5 text-white shadow-lg dark:border-white/10 dark:bg-white dark:text-slate-950">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-amber-300 dark:text-amber-600">What changed</p>
-              <p className="mt-2 max-w-sm text-sm leading-6 text-slate-200 dark:text-slate-700">
-                Pricing now reads like product access to Maria, not a generic software pricing table.
-              </p>
-            </div>
           </div>
 
           {currentUser && (
-            <div className="mt-8 inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-4 py-2 text-amber-900 dark:border-amber-400/20 dark:bg-amber-400/10 dark:text-amber-200">
+            <div className="mt-8 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-2 text-emerald-900 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-200">
               <Sparkles className="h-4 w-4" />
               <span className="font-medium">Current Plan: {SUBSCRIPTION_LIMITS[getCurrentPlan()].name}</span>
             </div>
@@ -222,7 +216,7 @@ export function PricingPage() {
               onClick={() => setBillingPeriod('monthly')}
               className={`rounded-full px-4 py-2 transition ${
                 billingPeriod === 'monthly'
-                  ? 'bg-slate-950 text-white shadow dark:bg-amber-400 dark:text-slate-950'
+                  ? 'bg-slate-950 text-white shadow dark:bg-emerald-400 dark:text-slate-950'
                   : 'text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white'
               }`}
             >
@@ -233,12 +227,12 @@ export function PricingPage() {
               onClick={() => setBillingPeriod('annual')}
               className={`rounded-full px-4 py-2 transition ${
                 billingPeriod === 'annual'
-                  ? 'bg-slate-950 text-white shadow dark:bg-amber-400 dark:text-slate-950'
+                  ? 'bg-slate-950 text-white shadow dark:bg-emerald-400 dark:text-slate-950'
                   : 'text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white'
               }`}
             >
               Annual billing
-              <span className="ml-2 rounded-full bg-amber-100 px-2 py-0.5 text-xs text-amber-800 dark:bg-amber-400/15 dark:text-amber-200">
+              <span className="ml-2 rounded-full bg-emerald-100 px-2 py-0.5 text-xs text-emerald-800 dark:bg-emerald-400/15 dark:text-emerald-200">
                 Save 2 months
               </span>
             </button>
@@ -259,13 +253,13 @@ export function PricingPage() {
                 key={tier.name}
                 className={`flex flex-col overflow-hidden rounded-[2rem] border bg-white/80 shadow-[0_20px_60px_-35px_rgba(15,23,42,0.35)] backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_28px_90px_-42px_rgba(15,23,42,0.4)] dark:bg-white/5 ${
                   tier.highlighted
-                    ? 'border-amber-300 ring-1 ring-amber-200 dark:border-amber-400/30 dark:ring-amber-400/20'
+                    ? 'border-emerald-300 ring-1 ring-emerald-200 dark:border-emerald-400/30 dark:ring-emerald-400/20'
                     : 'border-white/80 dark:border-white/10'
                 }`}
               >
                 {tier.highlighted && (
                   <div className="px-6 pt-6">
-                    <Badge className="border-0 bg-slate-950 text-white dark:bg-amber-400 dark:text-slate-950">
+                    <Badge className="border-0 bg-slate-950 text-white dark:bg-emerald-400 dark:text-slate-950">
                       Best balance
                     </Badge>
                   </div>
@@ -274,7 +268,7 @@ export function PricingPage() {
                 <CardHeader className="pb-4 text-center">
                   <div className={`mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl ${
                     tier.highlighted
-                      ? 'bg-gradient-to-br from-amber-400 to-amber-600 text-slate-950'
+                      ? 'bg-gradient-to-br from-emerald-400 to-emerald-600 text-slate-950'
                       : 'bg-slate-100 text-slate-700 dark:bg-white/10 dark:text-slate-200'
                   }`}>
                     <Icon className="h-6 w-6" />
@@ -285,7 +279,7 @@ export function PricingPage() {
                     <span className="ml-1 text-slate-500 dark:text-slate-400">{priceSuffix}</span>
                   </div>
                   {showAnnualRibbon && (
-                    <p className="mt-2 text-xs font-medium text-amber-700 dark:text-amber-200">2 months free when billed annually</p>
+                    <p className="mt-2 text-xs font-medium text-emerald-700 dark:text-emerald-200">2 months free when billed annually</p>
                   )}
                   <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">{tier.description}</p>
                 </CardHeader>
@@ -297,7 +291,7 @@ export function PricingPage() {
                       <ul className="space-y-2.5">
                         {tier.features.map((feature) => (
                           <li key={feature} className="flex items-start gap-2 text-sm leading-6">
-                            <Check className="mt-1 h-4 w-4 flex-shrink-0 text-amber-500" />
+                            <Check className="mt-1 h-4 w-4 flex-shrink-0 text-emerald-500" />
                             <span className="text-slate-600 dark:text-slate-300">{feature}</span>
                           </li>
                         ))}
@@ -325,7 +319,7 @@ export function PricingPage() {
                     variant={tier.buttonVariant}
                     className={`mt-6 w-full rounded-full ${
                       tier.highlighted
-                        ? 'bg-slate-950 text-white hover:bg-slate-800 dark:bg-amber-400 dark:text-slate-950 dark:hover:bg-amber-300'
+                        ? 'bg-slate-950 text-white hover:bg-slate-800 dark:bg-emerald-400 dark:text-slate-950 dark:hover:bg-emerald-300'
                         : 'border-slate-300 bg-white text-slate-950 hover:bg-slate-50 dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10'
                     }`}
                   >
@@ -353,10 +347,10 @@ export function PricingPage() {
           <div className="overflow-x-auto">
             <table className="w-full min-w-[780px]">
               <thead>
-                <tr className="bg-amber-50/70 dark:bg-white/5">
+                <tr className="bg-emerald-50/70 dark:bg-white/5">
                   <th className="p-4 text-left font-medium text-slate-700 dark:text-slate-200">Feature</th>
                   <th className="p-4 text-center font-medium text-slate-700 dark:text-slate-200">Free</th>
-                  <th className="bg-white/70 p-4 text-center font-medium text-slate-700 dark:bg-amber-400/10 dark:text-amber-200">Basic</th>
+                  <th className="bg-white/70 p-4 text-center font-medium text-slate-700 dark:bg-emerald-400/10 dark:text-emerald-200">Basic</th>
                   <th className="p-4 text-center font-medium text-slate-700 dark:text-slate-200">Essential</th>
                   <th className="p-4 text-center font-medium text-slate-700 dark:text-slate-200">Plus</th>
                   <th className="p-4 text-center font-medium text-slate-700 dark:text-slate-200">Done-For-You</th>
@@ -376,9 +370,9 @@ export function PricingPage() {
                     <tr key={label}>
                       <td className="p-4 text-slate-700 dark:text-slate-200">{label}</td>
                       {values.map((value, index) => (
-                        <td key={`${label}-${index}`} className={`p-4 text-center ${index === 1 ? 'bg-white/60 dark:bg-amber-400/5' : ''}`}>
+                        <td key={`${label}-${index}`} className={`p-4 text-center ${index === 1 ? 'bg-white/60 dark:bg-emerald-400/5' : ''}`}>
                           {value === 'check' ? (
-                            <Check className="mx-auto h-4 w-4 text-amber-500" />
+                            <Check className="mx-auto h-4 w-4 text-emerald-500" />
                           ) : value === 'x' ? (
                             <X className="mx-auto h-4 w-4 text-slate-300" />
                           ) : (
@@ -408,7 +402,7 @@ export function PricingPage() {
               },
               {
                 title: 'How does Maria work?',
-                body: 'Maria is trained to help with California divorce and family law questions, explain procedures, surface next steps, and connect guidance to forms and filing support.',
+                body: 'Maria helps with California divorce and family law questions, explains procedures, shows next steps, and connects guidance to forms and filing support.',
               },
               {
                 title: 'Are the court forms official?',

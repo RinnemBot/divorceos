@@ -60,12 +60,12 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
   };
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-amber-100/70 bg-white/85 backdrop-blur-xl dark:border-white/10 dark:bg-slate-950/85 transition-colors">
+    <nav className="sticky top-0 z-50 border-b border-emerald-100/70 bg-white/85 backdrop-blur-xl dark:border-white/10 dark:bg-slate-950/85 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link to="/" className="flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-slate-950 via-slate-800 to-amber-700 shadow-[0_12px_30px_-16px_rgba(15,23,42,0.9)] dark:from-amber-500 dark:via-amber-400 dark:to-slate-200">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-slate-950 via-slate-800 to-emerald-700 shadow-[0_12px_30px_-16px_rgba(15,23,42,0.9)] dark:from-emerald-500 dark:via-emerald-400 dark:to-slate-200">
                 <Sparkles className="h-4 w-4 text-white dark:text-slate-950" />
               </div>
               <div className="leading-tight">
@@ -92,7 +92,7 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
                   (link.path === '/' ? location.pathname === '/' : location.pathname.startsWith(link.path))
                     ? 'bg-slate-900 text-white shadow-sm dark:bg-white dark:text-slate-950'
-                    : 'text-slate-600 hover:bg-amber-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-900/70 dark:hover:text-white'
+                    : 'text-slate-600 hover:bg-emerald-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-900/70 dark:hover:text-white'
                 }`}
               >
                 {link.label}
@@ -104,7 +104,7 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
             <ThemeToggle />
             <Button
               variant="outline"
-              className="border-slate-300 bg-white/80 text-slate-900 hover:border-amber-300 hover:bg-amber-50 dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
+              className="border-slate-300 bg-white/80 text-slate-900 hover:border-emerald-300 hover:bg-emerald-50 dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
               onClick={handleChatCta}
             >
               Ask Maria
@@ -113,7 +113,7 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="flex items-center gap-2 text-gray-700 dark:text-slate-200">
-                    <div className="w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center">
+                    <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center">
                       <UserIcon className="h-4 w-4 text-white" />
                     </div>
                     <span className="text-sm font-medium text-gray-700 dark:text-slate-200">
@@ -158,7 +158,7 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
             ) : (
               <Button
                 onClick={onAuthClick}
-                className="bg-slate-950 text-white hover:bg-slate-800 dark:bg-amber-400 dark:text-slate-950 dark:hover:bg-amber-300"
+                className="bg-slate-950 text-white hover:bg-slate-800 dark:bg-emerald-400 dark:text-slate-950 dark:hover:bg-emerald-300"
               >
                 Sign In/Create Account
               </Button>
@@ -177,7 +177,7 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
       </div>
 
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-white/95 border-t border-amber-100 dark:bg-slate-950 dark:border-slate-800 backdrop-blur-xl">
+        <div className="md:hidden bg-white/95 border-t border-emerald-100 dark:bg-slate-950 dark:border-slate-800 backdrop-blur-xl">
           <div className="px-4 py-3 space-y-2">
             {navLinks.map((link) => (
               <Link
@@ -192,7 +192,7 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
                 className={`block px-3 py-2 rounded-xl text-base font-medium ${
                   (link.path === '/' ? location.pathname === '/' : location.pathname.startsWith(link.path))
                     ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-950'
-                    : 'text-slate-600 hover:bg-amber-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-900/70 dark:hover:text-white'
+                    : 'text-slate-600 hover:bg-emerald-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-900/70 dark:hover:text-white'
                 }`}
               >
                 {link.label}
@@ -203,7 +203,7 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
 
             <Button
               variant="outline"
-              className="w-full border-slate-300 bg-white/80 text-slate-900 hover:border-amber-300 hover:bg-amber-50 dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
+              className="w-full border-slate-300 bg-white/80 text-slate-900 hover:border-emerald-300 hover:bg-emerald-50 dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
               onClick={() => {
                 handleChatCta();
                 setIsMobileMenuOpen(false);
@@ -251,7 +251,7 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
                     onAuthClick();
                     setIsMobileMenuOpen(false);
                   }}
-                  className="w-full bg-slate-950 text-white hover:bg-slate-800 dark:bg-amber-400 dark:text-slate-950 dark:hover:bg-amber-300"
+                  className="w-full bg-slate-950 text-white hover:bg-slate-800 dark:bg-emerald-400 dark:text-slate-950 dark:hover:bg-emerald-300"
                 >
                   Sign In/Create Account
                 </Button>

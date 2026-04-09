@@ -97,7 +97,7 @@ export function CountyRoadmap({ initialCountyId, onCountyChange }: CountyRoadmap
                 <p className="text-sm text-slate-600 mt-1">{step.description}</p>
               </div>
             ))}
-            <div className="flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 p-4 text-amber-800">
+            <div className="flex items-start gap-3 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-emerald-800">
               <Info className="h-5 w-5 mt-0.5 flex-shrink-0" />
               <div className="text-sm">
                 Upgrade to Basic for saved roadmaps + checklist reminders, or Essential+ to sync deadlines with SMS/email alerts.
@@ -109,7 +109,7 @@ export function CountyRoadmap({ initialCountyId, onCountyChange }: CountyRoadmap
         <CardContent className="py-12">
           <div className="text-center space-y-3 text-slate-500">
             <p className="text-lg font-semibold text-slate-700">Choose a county to load the concierge roadmap.</p>
-            <p className="text-sm">We’ll surface filing method, clerk details, packet steps, and pro tips as soon as you pick one above.</p>
+            <p className="text-sm">We’ll show filing methods, clerk details, packet steps, and local tips as soon as you pick a county above.</p>
           </div>
         </CardContent>
       )}

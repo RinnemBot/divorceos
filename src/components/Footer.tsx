@@ -37,16 +37,16 @@ export function Footer() {
   return (
     <footer className="bg-slate-950 text-slate-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-        <div className="mb-10 rounded-3xl border border-white/10 bg-gradient-to-br from-slate-900 via-slate-900 to-amber-950/60 p-8 shadow-[0_24px_80px_-40px_rgba(245,158,11,0.35)]">
+        <div className="mb-10 rounded-3xl border border-white/10 bg-gradient-to-br from-slate-900 via-slate-900 to-emerald-950/60 p-8 shadow-[0_24px_80px_-40px_rgba(16,185,129,0.28)]">
           <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl">
               <div className="mb-4 flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 text-slate-950 shadow-lg">
+                <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-400 to-emerald-600 text-slate-950 shadow-lg">
                   <Sparkles className="h-5 w-5" />
                 </div>
                 <div>
                   <p className="text-xl font-semibold text-white">DivorceAgent</p>
-                  <p className="text-xs uppercase tracking-[0.24em] text-amber-200/80">Maria at the center</p>
+                  <p className="text-xs uppercase tracking-[0.24em] text-emerald-200/80">California divorce guidance</p>
                 </div>
               </div>
               <h2 className="text-2xl font-semibold tracking-tight text-white md:text-3xl">
@@ -56,7 +56,7 @@ export function Footer() {
                 Meet Maria, the Divorce Agent. Ask better questions, understand your options, and move from confusion to a clear next step.
               </p>
             </div>
-            <div className="flex items-center gap-2 text-sm text-amber-200">
+            <div className="flex items-center gap-2 text-sm text-emerald-200">
               <Mail className="h-4 w-4" />
               <a href="mailto:divorceos@agentmail.to" className="transition-colors hover:text-white">
                 Contact Us
@@ -68,7 +68,7 @@ export function Footer() {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-5">
           <div className="lg:col-span-2">
             <p className="max-w-sm text-sm leading-6 text-slate-400">
-              AI-first California divorce guidance, filing support, and practical tools built around Maria, your Divorce Agent.
+              California divorce guidance, filing support, and practical tools to help you move forward with Maria.
             </p>
           </div>
 

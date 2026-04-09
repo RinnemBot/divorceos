@@ -679,7 +679,7 @@ export function ChildSupportEstimator({ initialCountyId, currentUserId }: ChildS
               <div className="space-y-5">
                 {renderAdvancedForm('parentA')}
                 {renderAdvancedForm('parentB')}
-                <Alert className="border-amber-200 bg-amber-50 text-amber-900">
+                <Alert className="border-emerald-200 bg-emerald-50 text-emerald-900">
                   <AlertTitle>Approximation only</AlertTitle>
                   <AlertDescription>
                     Federal/state taxes assume a single filer using the 2024 brackets with a standard deduction and no itemized adjustments.
@@ -861,7 +861,7 @@ export function ChildSupportEstimator({ initialCountyId, currentUserId }: ChildS
               <p className="text-xs text-slate-500">Range: {formatCurrency(spousalEstimate.range.low)} – {formatCurrency(spousalEstimate.range.high)}</p>
               <p className="text-xs text-slate-500">{spousalEstimate.note}</p>
             </div>
-            <div className="rounded-xl border border-amber-200 bg-amber-50 p-3 text-xs text-amber-900">
+            <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-xs text-emerald-900">
               ATRO reminder: Neither spouse can cancel insurance, sell or borrow against property, or move children out of California without written consent or a court order.
             </div>
             <div className="space-y-2">
