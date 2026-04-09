@@ -8,15 +8,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { 
-  Scale, 
-  Menu, 
-  X, 
-  User as UserIcon, 
-  LogOut, 
+import {
+  Sparkles,
+  Menu,
+  X,
+  User as UserIcon,
+  LogOut,
   Settings,
   ChevronDown,
-  LayoutDashboard 
+  LayoutDashboard,
 } from 'lucide-react';
 import { authService, type User, SUBSCRIPTION_LIMITS } from '@/services/auth';
 import { ThemeToggle } from '@/components/ThemeToggle';
@@ -60,22 +60,25 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
   };
 
   return (
-    <nav className="bg-white border-b border-gray-200 sticky top-0 z-50 dark:bg-slate-950 dark:border-slate-800 transition-colors">
+    <nav className="sticky top-0 z-50 border-b border-amber-100/70 bg-white/85 backdrop-blur-xl dark:border-white/10 dark:bg-slate-950/85 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
-          {/* Logo */}
           <div className="flex items-center">
-            <Link to="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-emerald-700 rounded-lg flex items-center justify-center">
-                <Scale className="h-5 w-5 text-white" />
+            <Link to="/" className="flex items-center gap-3">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-slate-950 via-slate-800 to-amber-700 shadow-[0_12px_30px_-16px_rgba(15,23,42,0.9)] dark:from-amber-500 dark:via-amber-400 dark:to-slate-200">
+                <Sparkles className="h-4 w-4 text-white dark:text-slate-950" />
               </div>
-              <span className="text-xl font-bold text-gray-800 dark:text-white">
-                DivorceOS
-              </span>
+              <div className="leading-tight">
+                <span className="block text-lg font-semibold tracking-tight text-slate-900 dark:text-white">
+                  DivorceAgent
+                </span>
+                <span className="block text-[11px] font-medium uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
+                  California AI guidance
+                </span>
+              </div>
             </Link>
           </div>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-1">
             {navLinks.map((link) => (
               <Link
@@ -86,10 +89,10 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
                     scrollToPageTop();
                   }
                 }}
-                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
                   (link.path === '/' ? location.pathname === '/' : location.pathname.startsWith(link.path))
-                    ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-200'
-                    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-slate-300 dark:hover:bg-slate-900/70 dark:hover:text-white'
+                    ? 'bg-slate-900 text-white shadow-sm dark:bg-white dark:text-slate-950'
+                    : 'text-slate-600 hover:bg-amber-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-900/70 dark:hover:text-white'
                 }`}
               >
                 {link.label}
@@ -97,21 +100,20 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
             ))}
           </div>
 
-          {/* User Actions */}
           <div className="hidden md:flex items-center gap-3">
             <ThemeToggle />
             <Button
               variant="outline"
-              className="border-emerald-600 text-emerald-700 hover:bg-emerald-50 dark:text-emerald-200 dark:border-emerald-500 dark:hover:bg-emerald-950/40"
+              className="border-slate-300 bg-white/80 text-slate-900 hover:border-amber-300 hover:bg-amber-50 dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
               onClick={handleChatCta}
             >
-              Talk to Maria
+              Ask Maria
             </Button>
             {currentUser ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="flex items-center gap-2 text-gray-700 dark:text-slate-200">
-                    <div className="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center">
+                    <div className="w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center">
                       <UserIcon className="h-4 w-4 text-white" />
                     </div>
                     <span className="text-sm font-medium text-gray-700 dark:text-slate-200">
@@ -142,7 +144,7 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <Link to="/pricing" className="cursor-pointer">
-                      <Scale className="h-4 w-4 mr-2" />
+                      <Sparkles className="h-4 w-4 mr-2" />
                       Upgrade Plan
                     </Link>
                   </DropdownMenuItem>
@@ -153,35 +155,29 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-              ) : (
-                <Button 
-                  onClick={onAuthClick}
-                  className="bg-emerald-700 hover:bg-emerald-800 text-white dark:bg-emerald-600 dark:hover:bg-emerald-500"
-                >
-                  Sign In/Create Account
-                </Button>
+            ) : (
+              <Button
+                onClick={onAuthClick}
+                className="bg-slate-950 text-white hover:bg-slate-800 dark:bg-amber-400 dark:text-slate-950 dark:hover:bg-amber-300"
+              >
+                Sign In/Create Account
+              </Button>
             )}
           </div>
 
-          {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="p-2 rounded-md text-gray-600 hover:bg-gray-100 dark:text-slate-200 dark:hover:bg-slate-900/70"
             >
-              {isMobileMenuOpen ? (
-                <X className="h-6 w-6" />
-              ) : (
-                <Menu className="h-6 w-6" />
-              )}
+              {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-white border-t border-gray-200 dark:bg-slate-950 dark:border-slate-800">
+        <div className="md:hidden bg-white/95 border-t border-amber-100 dark:bg-slate-950 dark:border-slate-800 backdrop-blur-xl">
           <div className="px-4 py-3 space-y-2">
             {navLinks.map((link) => (
               <Link
@@ -193,10 +189,10 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
                   }
                   setIsMobileMenuOpen(false);
                 }}
-                className={`block px-3 py-2 rounded-md text-base font-medium ${
+                className={`block px-3 py-2 rounded-xl text-base font-medium ${
                   (link.path === '/' ? location.pathname === '/' : location.pathname.startsWith(link.path))
-                    ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-200'
-                    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-slate-300 dark:hover:bg-slate-900/70 dark:hover:text-white'
+                    ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-950'
+                    : 'text-slate-600 hover:bg-amber-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-900/70 dark:hover:text-white'
                 }`}
               >
                 {link.label}
@@ -207,13 +203,13 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
 
             <Button
               variant="outline"
-              className="w-full border-emerald-600 text-emerald-700 hover:bg-emerald-50 dark:text-emerald-200 dark:border-emerald-500 dark:hover:bg-emerald-950/40"
+              className="w-full border-slate-300 bg-white/80 text-slate-900 hover:border-amber-300 hover:bg-amber-50 dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
               onClick={() => {
                 handleChatCta();
                 setIsMobileMenuOpen(false);
               }}
             >
-              Talk to Maria
+              Ask Maria
             </Button>
 
             <div className="border-t border-gray-200 pt-3 mt-3 dark:border-slate-800">
@@ -250,12 +246,12 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
                   </button>
                 </>
               ) : (
-                <Button 
+                <Button
                   onClick={() => {
                     onAuthClick();
                     setIsMobileMenuOpen(false);
                   }}
-                  className="w-full bg-emerald-700 hover:bg-emerald-800 text-white dark:bg-emerald-600 dark:hover:bg-emerald-500"
+                  className="w-full bg-slate-950 text-white hover:bg-slate-800 dark:bg-amber-400 dark:text-slate-950 dark:hover:bg-amber-300"
                 >
                   Sign In/Create Account
                 </Button>

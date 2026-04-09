@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { MapPin, Phone, ExternalLink, Share2, FileText, ArrowLeft } from 'lucide-react';
+import { MapPin, Phone, ExternalLink, Share2, FileText, ArrowLeft, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 
 const CONTRA_COSTA_ID = 'contra-costa';
@@ -63,49 +63,51 @@ export function CountyConciergePage() {
 
   if (!county) {
     return (
-      <div className="min-h-screen bg-slate-50">
-        <section className="bg-gradient-to-br from-emerald-800 via-emerald-900 to-slate-900 text-white py-16">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 text-center">
-            <Badge variant="secondary" className="bg-white/20 text-white border-0">
-              County Filing Concierge
-            </Badge>
-            <h1 className="text-4xl sm:text-5xl font-bold leading-tight">
-              Pick your county to unlock the concierge roadmap
-            </h1>
-            <p className="text-lg text-emerald-100">
-              We now cover 40+ California counties with concierge filing support. Choose your courthouse to see filing methods, packet checklists, pro tips, and e-filing links in one place, with deeper filing workflows coming soon.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Button asChild size="lg" className="bg-white text-emerald-900 hover:bg-emerald-100">
-                <a href="#county-roadmap">Browse concierge counties</a>
-              </Button>
-              <Button asChild size="lg" variant="outline" className="border-white bg-white text-emerald-900 hover:bg-emerald-50 hover:text-emerald-950">
-                <Link to="/pricing">See plan coverage</Link>
-              </Button>
+      <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(251,191,36,0.1),_transparent_24%),linear-gradient(180deg,#f8fafc_0%,#fffdf8_45%,#f8fafc_100%)] dark:bg-[radial-gradient(circle_at_top,_rgba(245,158,11,0.1),_transparent_24%),linear-gradient(180deg,#020617_0%,#020617_100%)]">
+        <section className="py-16">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="rounded-[2rem] border border-white/80 bg-white/80 p-8 text-center shadow-[0_28px_90px_-42px_rgba(15,23,42,0.4)] backdrop-blur dark:border-white/10 dark:bg-white/5 md:p-12">
+              <Badge className="mb-5 border border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-400/20 dark:bg-amber-400/10 dark:text-amber-200">
+                County Filing Concierge
+              </Badge>
+              <h1 className="text-4xl font-semibold tracking-tight text-slate-950 dark:text-white md:text-6xl md:leading-[1.02]">
+                Pick your county and let Maria lead the filing path.
+              </h1>
+              <p className="mx-auto mt-5 max-w-3xl text-lg leading-8 text-slate-600 dark:text-slate-300">
+                We cover 40+ California counties with filing methods, packet checklists, local quirks, and courthouse links, with deeper workflows still expanding.
+              </p>
+              <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+                <Button asChild size="lg" className="rounded-full bg-slate-950 text-white hover:bg-slate-800 dark:bg-amber-400 dark:text-slate-950 dark:hover:bg-amber-300">
+                  <a href="#county-roadmap">Browse concierge counties</a>
+                </Button>
+                <Button asChild size="lg" variant="outline" className="rounded-full border-slate-300 bg-white text-slate-950 hover:bg-slate-50 dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10">
+                  <Link to="/pricing">See plan coverage</Link>
+                </Button>
+              </div>
             </div>
           </div>
         </section>
 
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 space-y-8">
           <div className="grid gap-6 md:grid-cols-3">
             {[
               {
                 title: 'Statewide research',
-                body: 'Every concierge entry cites the latest clerk pages, fees, and service quirks so you stay current.',
+                body: 'Every county entry is grounded in current clerk pages, fees, and process quirks so Maria can point you to the right next step.',
               },
               {
-                title: 'In-house filings',
-                body: 'Essential+ plans include concierge packet support today, with direct e-file and paper-routing workflows expanding soon.',
+                title: 'Concierge support',
+                body: 'Essential+ plans already include county filing support today, with more direct workflows still rolling out.',
               },
               {
-                title: 'Live monitoring',
-                body: 'We are building deeper rejection tracking, escalation workflows, and service deadline alerts now.',
+                title: 'Cleaner execution',
+                body: 'The goal is to make Maria the front door, and county operations the action layer behind her.',
               },
             ].map((card) => (
-              <Card key={card.title} className="h-full border-emerald-100">
+              <Card key={card.title} className="rounded-[1.75rem] border border-white/80 bg-white/80 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/5">
                 <CardHeader>
-                  <CardTitle className="text-lg text-slate-900">{card.title}</CardTitle>
-                  <CardDescription className="text-sm text-slate-600">{card.body}</CardDescription>
+                  <CardTitle className="text-lg text-slate-900 dark:text-white">{card.title}</CardTitle>
+                  <CardDescription className="text-sm leading-6 text-slate-600 dark:text-slate-300">{card.body}</CardDescription>
                 </CardHeader>
               </Card>
             ))}
@@ -120,91 +122,75 @@ export function CountyConciergePage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <section className="bg-gradient-to-br from-emerald-800 via-emerald-900 to-slate-900 text-white py-12">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-          <div className="flex items-center gap-2">
-            <Badge variant="secondary" className="bg-white/20 text-white border-0">
-              County Filing Concierge
-            </Badge>
-            {countyId && countyId !== county.id && (
-              <Badge variant="outline" className="bg-white/10 text-white">Fallback applied</Badge>
-            )}
-          </div>
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-            <div className="space-y-4">
-              <div className="flex items-center gap-3 text-sm text-emerald-100">
-                <MapPin className="h-4 w-4" />
-                <span>{county.name}</span>
-              </div>
-              <h1 className="text-4xl sm:text-5xl font-bold leading-tight">
-                Step-by-step filing guide for {county.name}
-              </h1>
-              <p className="text-lg text-emerald-100 max-w-3xl">
-                We pulled the latest courthouse rules, fees, and service quirks for this county so you can file with confidence. Start with the recommended packet, then follow the concierge steps.
-              </p>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-3">
-              {county.clerk.efilePortal && (
-                <Button
-                  asChild
-                  variant="outline"
-                  className="bg-white/10 text-white border-white/40 hover:bg-white/20"
-                >
-                  <a href={county.clerk.efilePortal} target="_blank" rel="noopener noreferrer">
-                    <ExternalLink className="h-4 w-4 mr-2" /> Open e-filing portal
-                  </a>
-                </Button>
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(251,191,36,0.1),_transparent_24%),linear-gradient(180deg,#f8fafc_0%,#fffdf8_45%,#f8fafc_100%)] dark:bg-[radial-gradient(circle_at_top,_rgba(245,158,11,0.1),_transparent_24%),linear-gradient(180deg,#020617_0%,#020617_100%)]">
+      <section className="py-12">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="rounded-[2rem] border border-white/80 bg-white/80 p-8 shadow-[0_28px_90px_-42px_rgba(15,23,42,0.4)] backdrop-blur dark:border-white/10 dark:bg-white/5">
+            <div className="flex items-center gap-2">
+              <Badge className="border border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-400/20 dark:bg-amber-400/10 dark:text-amber-200">
+                County Filing Concierge
+              </Badge>
+              {countyId && countyId !== county.id && (
+                <Badge variant="outline" className="bg-white/60 dark:bg-white/5">Fallback applied</Badge>
               )}
-              <Button
-                variant="secondary"
-                className="bg-white text-emerald-900 hover:bg-emerald-100"
-                onClick={handleCopyLink}
-              >
-                <Share2 className="h-4 w-4 mr-2" /> Copy share link
-              </Button>
+            </div>
+
+            <div className="mt-6 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+              <div className="space-y-4">
+                <div className="flex items-center gap-3 text-sm text-slate-500 dark:text-slate-400">
+                  <MapPin className="h-4 w-4" />
+                  <span>{county.name}</span>
+                </div>
+                <h1 className="text-4xl font-semibold tracking-tight text-slate-950 dark:text-white md:text-5xl md:leading-[1.04]">
+                  Maria’s filing guide for {county.name}
+                </h1>
+                <p className="max-w-3xl text-lg leading-8 text-slate-600 dark:text-slate-300">
+                  Start with the right packet, see the latest filing rules, and move through local courthouse quirks with more confidence.
+                </p>
+              </div>
+              <div className="flex flex-col sm:flex-row gap-3">
+                {county.clerk.efilePortal && (
+                  <Button asChild variant="outline" className="rounded-full border-slate-300 bg-white text-slate-950 hover:bg-slate-50 dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10">
+                    <a href={county.clerk.efilePortal} target="_blank" rel="noopener noreferrer">
+                      <ExternalLink className="mr-2 h-4 w-4" /> Open e-filing portal
+                    </a>
+                  </Button>
+                )}
+                <Button onClick={handleCopyLink} className="rounded-full bg-slate-950 text-white hover:bg-slate-800 dark:bg-amber-400 dark:text-slate-950 dark:hover:bg-amber-300">
+                  <Share2 className="mr-2 h-4 w-4" /> Copy share link
+                </Button>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-10 space-y-10">
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-sm text-slate-500 font-medium">Filing method</CardTitle>
-              <p className="text-lg text-slate-900 font-semibold">{county.filingMethod}</p>
-            </CardHeader>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-sm text-slate-500 font-medium">Fees</CardTitle>
-              <p className="text-lg text-slate-900 font-semibold">{county.filingFee}</p>
-              <p className="text-sm text-slate-500">Response fee: {county.responseFee}</p>
-            </CardHeader>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-sm text-slate-500 font-medium">Processing time</CardTitle>
-              <p className="text-lg text-slate-900 font-semibold">{county.processingTime}</p>
-            </CardHeader>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-sm text-slate-500 font-medium">Service notes</CardTitle>
-              <p className="text-lg text-slate-900 font-semibold">{county.serviceNotes}</p>
-            </CardHeader>
-          </Card>
+          {[
+            ['Filing method', county.filingMethod],
+            ['Fees', county.filingFee, `Response fee: ${county.responseFee}`],
+            ['Processing time', county.processingTime],
+            ['Service notes', county.serviceNotes],
+          ].map(([label, value, subvalue]) => (
+            <Card key={label} className="rounded-[1.5rem] border border-white/80 bg-white/80 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/5">
+              <CardHeader>
+                <CardTitle className="text-sm font-medium text-slate-500 dark:text-slate-400">{label}</CardTitle>
+                <p className="text-lg font-semibold text-slate-900 dark:text-white">{value}</p>
+                {subvalue && <p className="text-sm text-slate-500 dark:text-slate-400">{subvalue}</p>}
+              </CardHeader>
+            </Card>
+          ))}
         </div>
 
         <div className="grid gap-6 lg:grid-cols-[320px,1fr]">
-          <Card className="self-start">
+          <Card className="self-start rounded-[1.75rem] border border-white/80 bg-white/80 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/5">
             <CardHeader>
-              <div className="flex items-center gap-2 text-sm text-slate-500 font-semibold">
+              <div className="flex items-center gap-2 text-sm font-semibold text-slate-500 dark:text-slate-400">
                 <MapPin className="h-4 w-4" /> Clerk of Court
               </div>
-              <CardTitle className="text-xl">{county.clerk.courthouse}</CardTitle>
-              <CardDescription className="space-y-1 text-slate-600">
+              <CardTitle className="text-xl text-slate-950 dark:text-white">{county.clerk.courthouse}</CardTitle>
+              <CardDescription className="space-y-1 text-slate-600 dark:text-slate-300">
                 <p>{county.clerk.address}</p>
                 <p>{county.clerk.hours}</p>
                 <div className="flex items-center gap-2">
@@ -213,35 +199,33 @@ export function CountyConciergePage() {
                 </div>
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-3">
-              {county.resources?.length && (
+            <CardContent className="space-y-4">
+              {county.resources?.length ? (
                 <div>
-                  <p className="text-xs uppercase tracking-wide text-slate-500 font-semibold mb-2">Local resources</p>
+                  <p className="mb-2 text-xs font-semibold uppercase tracking-[0.22em] text-slate-500 dark:text-slate-400">Local resources</p>
                   <div className="space-y-2">
                     {county.resources.map((resource) => (
-                      <div key={resource.url} className="text-sm text-slate-600">
-                        <Button asChild variant="link" className="px-0 text-emerald-700">
+                      <div key={resource.url} className="text-sm text-slate-600 dark:text-slate-300">
+                        <Button asChild variant="link" className="px-0 text-amber-700 dark:text-amber-200">
                           <a href={resource.url} target="_blank" rel="noopener noreferrer">
-                            <ExternalLink className="h-4 w-4 mr-1" /> {resource.label}
+                            <ExternalLink className="mr-1 h-4 w-4" /> {resource.label}
                           </a>
                         </Button>
-                        {resource.description && (
-                          <p className="text-xs text-slate-500 ml-5">{resource.description}</p>
-                        )}
+                        {resource.description && <p className="ml-5 text-xs text-slate-500 dark:text-slate-400">{resource.description}</p>}
                       </div>
                     ))}
                   </div>
                 </div>
-              )}
+              ) : null}
               <Separator />
-              <div className="flex flex-col gap-2 text-sm text-slate-600">
+              <div className="flex flex-col gap-2 text-sm text-slate-600 dark:text-slate-300">
                 <p>Need to switch counties?</p>
-                <Button asChild variant="outline" size="sm">
+                <Button asChild variant="outline" size="sm" className="rounded-full">
                   <a href="#county-roadmap">Jump to county selector</a>
                 </Button>
-                <Button asChild variant="ghost" size="sm" className="justify-start text-slate-500">
+                <Button asChild variant="ghost" size="sm" className="justify-start rounded-full text-slate-500 dark:text-slate-300">
                   <Link to="/">
-                    <ArrowLeft className="h-4 w-4 mr-2" /> Back to Home
+                    <ArrowLeft className="mr-2 h-4 w-4" /> Back to Home
                   </Link>
                 </Button>
               </div>
@@ -250,27 +234,30 @@ export function CountyConciergePage() {
 
           <div className="space-y-6">
             {packetForms.length > 0 && (
-              <Card>
+              <Card className="rounded-[1.75rem] border border-white/80 bg-white/80 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/5">
                 <CardHeader>
-                  <CardTitle className="text-xl">Recommended packet</CardTitle>
-                  <CardDescription>
-                    These are the statewide forms most {county.name} clerks expect in the opening packet. Download blanks or pair with our generator.
+                  <div className="flex items-center gap-2 text-sm font-semibold text-amber-700 dark:text-amber-200">
+                    <Sparkles className="h-4 w-4" /> Recommended packet
+                  </div>
+                  <CardTitle className="text-xl text-slate-950 dark:text-white">Start with the forms most {county.name} clerks expect.</CardTitle>
+                  <CardDescription className="text-slate-600 dark:text-slate-300">
+                    Download the core packet here, then use Maria to work through what each form is doing and what comes after filing.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="grid gap-4 md:grid-cols-2">
                   {packetForms.map((form) => (
-                    <div key={form.id} className="border border-slate-200 rounded-lg p-4 bg-white">
-                      <p className="text-xs font-semibold text-emerald-700">{form.formNumber}</p>
-                      <p className="font-medium text-slate-900">{form.title}</p>
-                      <p className="text-sm text-slate-600 mt-1">{form.description}</p>
-                      <div className="flex gap-2 mt-3">
-                        <Button asChild size="sm">
+                    <div key={form.id} className="rounded-3xl border border-slate-200 bg-white/80 p-4 dark:border-white/10 dark:bg-white/5">
+                      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-700 dark:text-amber-200">{form.formNumber}</p>
+                      <p className="mt-1 font-semibold text-slate-900 dark:text-white">{form.title}</p>
+                      <p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-300">{form.description}</p>
+                      <div className="mt-3 flex gap-2">
+                        <Button asChild size="sm" className="rounded-full bg-slate-950 text-white hover:bg-slate-800 dark:bg-amber-400 dark:text-slate-950 dark:hover:bg-amber-300">
                           <a href={form.pdfUrl} target="_blank" rel="noopener noreferrer">
-                            <FileText className="h-4 w-4 mr-1" /> PDF
+                            <FileText className="mr-1 h-4 w-4" /> PDF
                           </a>
                         </Button>
                         {form.instructionsUrl && (
-                          <Button asChild size="sm" variant="outline">
+                          <Button asChild size="sm" variant="outline" className="rounded-full">
                             <a href={form.instructionsUrl} target="_blank" rel="noopener noreferrer">
                               Instructions
                             </a>

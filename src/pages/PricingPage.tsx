@@ -125,10 +125,10 @@ const pricingTiers: PricingTier[] = [
 ];
 
 const tierIcons: Record<string, React.ElementType> = {
-  'Free': Sparkles,
-  'Basic': Zap,
-  'Essential': Check,
-  'Plus': Crown,
+  Free: Sparkles,
+  Basic: Zap,
+  Essential: Check,
+  Plus: Crown,
   'Done-For-You': Building2,
 };
 
@@ -180,41 +180,49 @@ export function PricingPage() {
     }
   };
 
-  const getCurrentPlan = () => {
-    return currentUser?.subscription || 'free';
-  };
+  const getCurrentPlan = () => currentUser?.subscription || 'free';
 
   return (
-    <div className="min-h-screen bg-background py-16 transition-colors">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(251,191,36,0.12),_transparent_28%),linear-gradient(180deg,#f8fafc_0%,#fffdf8_45%,#f8fafc_100%)] py-16 transition-colors dark:bg-[radial-gradient(circle_at_top,_rgba(245,158,11,0.12),_transparent_26%),linear-gradient(180deg,#020617_0%,#020617_100%)]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-foreground">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-4">
-            Simple, Transparent Pricing
-          </h1>
-          <p className="text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
-            Choose the plan that fits your needs. All plans include access to our 
-            comprehensive California divorce form library, and paid tiers now add concierge filing support across 40+ counties, with deeper automation rolling out soon.
-          </p>
+        <div className="mb-16 overflow-hidden rounded-[2rem] border border-white/80 bg-white/80 p-8 shadow-[0_28px_90px_-42px_rgba(15,23,42,0.4)] backdrop-blur dark:border-white/10 dark:bg-white/5 md:p-12">
+          <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-3xl">
+              <Badge className="mb-5 border border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-400/20 dark:bg-amber-400/10 dark:text-amber-200">
+                Maria-first plans
+              </Badge>
+              <h1 className="text-4xl font-semibold tracking-tight text-slate-950 dark:text-white md:text-6xl md:leading-[1.02]">
+                Pick the amount of Maria you want in your corner.
+              </h1>
+              <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600 dark:text-slate-300">
+                Start with AI guidance, then add deeper form support and county concierge help as your case gets more real.
+              </p>
+            </div>
+
+            <div className="rounded-3xl border border-slate-200 bg-slate-950 p-5 text-white shadow-lg dark:border-white/10 dark:bg-white dark:text-slate-950">
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-amber-300 dark:text-amber-600">What changed</p>
+              <p className="mt-2 max-w-sm text-sm leading-6 text-slate-200 dark:text-slate-700">
+                Pricing now reads like product access to Maria, not a generic software pricing table.
+              </p>
+            </div>
+          </div>
 
           {currentUser && (
-            <div className="mt-6 inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-full">
+            <div className="mt-8 inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-4 py-2 text-amber-900 dark:border-amber-400/20 dark:bg-amber-400/10 dark:text-amber-200">
               <Sparkles className="h-4 w-4" />
-              <span className="font-medium">
-                Current Plan: {SUBSCRIPTION_LIMITS[getCurrentPlan()].name}
-              </span>
+              <span className="font-medium">Current Plan: {SUBSCRIPTION_LIMITS[getCurrentPlan()].name}</span>
             </div>
           )}
         </div>
 
-        <div className="flex justify-center mb-10">
-          <div className="inline-flex rounded-full border border-slate-200 bg-white p-1 text-sm font-medium">
+        <div className="mb-10 flex justify-center">
+          <div className="inline-flex rounded-full border border-white/80 bg-white/80 p-1 text-sm font-medium shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/5">
             <button
               type="button"
               onClick={() => setBillingPeriod('monthly')}
-              className={`px-4 py-2 rounded-full transition ${
+              className={`rounded-full px-4 py-2 transition ${
                 billingPeriod === 'monthly'
-                  ? 'bg-blue-600 text-white shadow'
+                  ? 'bg-slate-950 text-white shadow dark:bg-amber-400 dark:text-slate-950'
                   : 'text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white'
               }`}
             >
@@ -223,22 +231,21 @@ export function PricingPage() {
             <button
               type="button"
               onClick={() => setBillingPeriod('annual')}
-              className={`px-4 py-2 rounded-full transition ${
+              className={`rounded-full px-4 py-2 transition ${
                 billingPeriod === 'annual'
-                  ? 'bg-blue-600 text-white shadow'
+                  ? 'bg-slate-950 text-white shadow dark:bg-amber-400 dark:text-slate-950'
                   : 'text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white'
               }`}
             >
               Annual billing
-              <span className="ml-2 rounded-full bg-blue-100 px-2 py-0.5 text-xs text-blue-700">
+              <span className="ml-2 rounded-full bg-amber-100 px-2 py-0.5 text-xs text-amber-800 dark:bg-amber-400/15 dark:text-amber-200">
                 Save 2 months
               </span>
             </button>
           </div>
         </div>
 
-        {/* Pricing Cards */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mb-16">
+        <div className="mb-16 grid gap-6 md:grid-cols-2 xl:grid-cols-5">
           {pricingTiers.map((tier) => {
             const Icon = tierIcons[tier.name];
             const isCurrentPlan = getCurrentPlan() === tier.planId;
@@ -248,60 +255,62 @@ export function PricingPage() {
             const showAnnualRibbon = billingPeriod === 'annual' && tier.planId !== 'free';
 
             return (
-              <Card 
+              <Card
                 key={tier.name}
-                className={`flex flex-col ${
-                  tier.highlighted 
-                    ? 'border-2 border-blue-500 shadow-lg relative' 
-                    : 'border border-slate-200'
+                className={`flex flex-col overflow-hidden rounded-[2rem] border bg-white/80 shadow-[0_20px_60px_-35px_rgba(15,23,42,0.35)] backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_28px_90px_-42px_rgba(15,23,42,0.4)] dark:bg-white/5 ${
+                  tier.highlighted
+                    ? 'border-amber-300 ring-1 ring-amber-200 dark:border-amber-400/30 dark:ring-amber-400/20'
+                    : 'border-white/80 dark:border-white/10'
                 }`}
               >
                 {tier.highlighted && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <Badge className="bg-blue-600 text-white">
-                      Most Popular
+                  <div className="px-6 pt-6">
+                    <Badge className="border-0 bg-slate-950 text-white dark:bg-amber-400 dark:text-slate-950">
+                      Best balance
                     </Badge>
                   </div>
                 )}
-                
-                <CardHeader className="text-center pb-4">
-                  <div className={`w-12 h-12 rounded-lg mx-auto mb-4 flex items-center justify-center ${
-                    tier.highlighted ? 'bg-blue-100 dark:bg-blue-500/20' : 'bg-slate-100 dark:bg-slate-800'
+
+                <CardHeader className="pb-4 text-center">
+                  <div className={`mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl ${
+                    tier.highlighted
+                      ? 'bg-gradient-to-br from-amber-400 to-amber-600 text-slate-950'
+                      : 'bg-slate-100 text-slate-700 dark:bg-white/10 dark:text-slate-200'
                   }`}>
-                    <Icon className={`h-6 w-6 ${tier.highlighted ? 'text-blue-600 dark:text-blue-300' : 'text-slate-600 dark:text-slate-300'}`} />
+                    <Icon className="h-6 w-6" />
                   </div>
-                  <CardTitle className="text-xl font-bold">{tier.name}</CardTitle>
-                  <div className="mt-2">
-                    <span className="text-3xl font-bold">{formatCurrency(displayPrice)}</span>
-                    <span className="text-slate-500">{priceSuffix}</span>
+                  <CardTitle className="text-xl font-semibold text-slate-950 dark:text-white">{tier.name}</CardTitle>
+                  <div className="mt-3">
+                    <span className="text-4xl font-semibold tracking-tight text-slate-950 dark:text-white">{formatCurrency(displayPrice)}</span>
+                    <span className="ml-1 text-slate-500 dark:text-slate-400">{priceSuffix}</span>
                   </div>
                   {showAnnualRibbon && (
-                    <p className="text-xs text-blue-600 font-medium mt-1">2 months free when billed annually</p>
+                    <p className="mt-2 text-xs font-medium text-amber-700 dark:text-amber-200">2 months free when billed annually</p>
                   )}
-                  <p className="text-sm text-slate-500 dark:text-slate-300 mt-2">{tier.description}</p>
+                  <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">{tier.description}</p>
                 </CardHeader>
-                
-                <CardContent className="flex-1 flex flex-col">
-                  <div className="flex-1 space-y-4">
+
+                <CardContent className="flex flex-1 flex-col">
+                  <div className="flex-1 space-y-5">
                     <div>
-                      <p className="text-sm font-medium text-slate-900 mb-2">Included:</p>
-                      <ul className="space-y-2">
+                      <p className="mb-3 text-sm font-medium text-slate-900 dark:text-white">Included</p>
+                      <ul className="space-y-2.5">
                         {tier.features.map((feature) => (
-                          <li key={feature} className="flex items-start gap-2 text-sm">
-                            <Check className="h-4 w-4 text-green-500 flex-shrink-0 mt-0.5" />
+                          <li key={feature} className="flex items-start gap-2 text-sm leading-6">
+                            <Check className="mt-1 h-4 w-4 flex-shrink-0 text-amber-500" />
                             <span className="text-slate-600 dark:text-slate-300">{feature}</span>
                           </li>
                         ))}
                       </ul>
                     </div>
-                    
+
                     {tier.notIncluded && (
                       <div>
-                        <p className="text-sm font-medium text-slate-900 mb-2">Not included:</p>
-                        <ul className="space-y-2">
+                        <p className="mb-3 text-sm font-medium text-slate-900 dark:text-white">Not included</p>
+                        <ul className="space-y-2.5">
                           {tier.notIncluded.map((feature) => (
-                            <li key={feature} className="flex items-start gap-2 text-sm">
-                              <X className="h-4 w-4 text-slate-300 flex-shrink-0 mt-0.5" />
+                            <li key={feature} className="flex items-start gap-2 text-sm leading-6">
+                              <X className="mt-1 h-4 w-4 flex-shrink-0 text-slate-300" />
                               <span className="text-slate-400">{feature}</span>
                             </li>
                           ))}
@@ -309,15 +318,15 @@ export function PricingPage() {
                       </div>
                     )}
                   </div>
-                  
+
                   <Button
                     onClick={() => handleSelectPlan(tier.planId)}
                     disabled={isCurrentPlan || isProcessing !== null}
                     variant={tier.buttonVariant}
-                    className={`w-full mt-6 ${
-                      tier.highlighted 
-                        ? 'bg-blue-600 hover:bg-blue-700' 
-                        : ''
+                    className={`mt-6 w-full rounded-full ${
+                      tier.highlighted
+                        ? 'bg-slate-950 text-white hover:bg-slate-800 dark:bg-amber-400 dark:text-slate-950 dark:hover:bg-amber-300'
+                        : 'border-slate-300 bg-white text-slate-950 hover:bg-slate-50 dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10'
                     }`}
                   >
                     {isProcessingPlan ? (
@@ -337,135 +346,88 @@ export function PricingPage() {
           })}
         </div>
 
-        {/* Feature Comparison */}
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mb-16 dark:bg-slate-950 dark:border-slate-800">
-          <div className="p-6 border-b border-slate-200">
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Feature Comparison</h2>
+        <div className="mb-16 overflow-hidden rounded-[2rem] border border-white/80 bg-white/80 shadow-[0_28px_90px_-42px_rgba(15,23,42,0.35)] backdrop-blur dark:border-white/10 dark:bg-white/5">
+          <div className="border-b border-slate-200/80 p-6 dark:border-white/10">
+            <h2 className="text-2xl font-semibold tracking-tight text-slate-950 dark:text-white">Feature comparison</h2>
           </div>
           <div className="overflow-x-auto">
-            <table className="w-full">
+            <table className="w-full min-w-[780px]">
               <thead>
-                <tr className="bg-slate-50 dark:bg-slate-900/40">
-                  <th className="text-left p-4 font-medium text-slate-700 dark:text-slate-200">Feature</th>
-                  <th className="text-center p-4 font-medium text-slate-700 dark:text-slate-200">Free</th>
-                  <th className="text-center p-4 font-medium text-blue-600 bg-blue-50 dark:text-blue-200 dark:bg-blue-500/10">Basic</th>
-                  <th className="text-center p-4 font-medium text-slate-700 dark:text-slate-200">Essential</th>
-                  <th className="text-center p-4 font-medium text-slate-700 dark:text-slate-200">Plus</th>
-                  <th className="text-center p-4 font-medium text-slate-700 dark:text-slate-200">Done-For-You</th>
+                <tr className="bg-amber-50/70 dark:bg-white/5">
+                  <th className="p-4 text-left font-medium text-slate-700 dark:text-slate-200">Feature</th>
+                  <th className="p-4 text-center font-medium text-slate-700 dark:text-slate-200">Free</th>
+                  <th className="bg-white/70 p-4 text-center font-medium text-slate-700 dark:bg-amber-400/10 dark:text-amber-200">Basic</th>
+                  <th className="p-4 text-center font-medium text-slate-700 dark:text-slate-200">Essential</th>
+                  <th className="p-4 text-center font-medium text-slate-700 dark:text-slate-200">Plus</th>
+                  <th className="p-4 text-center font-medium text-slate-700 dark:text-slate-200">Done-For-You</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-200">
-                <tr>
-                  <td className="p-4 text-slate-700 dark:text-slate-200">AI Chats per Day</td>
-                  <td className="text-center p-4 text-slate-600 dark:text-slate-300">3</td>
-                  <td className="text-center p-4 text-blue-600 font-medium bg-blue-50/50 dark:text-blue-200 dark:bg-blue-500/10">20</td>
-                  <td className="text-center p-4 text-slate-600 dark:text-slate-300">Unlimited</td>
-                  <td className="text-center p-4 text-slate-600 dark:text-slate-300">Unlimited</td>
-                  <td className="text-center p-4 text-slate-600 dark:text-slate-300">Unlimited</td>
-                </tr>
-                <tr>
-                  <td className="p-4 text-slate-700 dark:text-slate-200">AI-Generated Responses</td>
-                  <td className="text-center p-4"><X className="h-4 w-4 text-slate-300 mx-auto" /></td>
-                  <td className="text-center p-4 bg-blue-50/50 dark:bg-blue-500/10"><Check className="h-4 w-4 text-green-500 mx-auto" /></td>
-                  <td className="text-center p-4"><Check className="h-4 w-4 text-green-500 mx-auto" /></td>
-                  <td className="text-center p-4"><Check className="h-4 w-4 text-green-500 mx-auto" /></td>
-                  <td className="text-center p-4"><Check className="h-4 w-4 text-green-500 mx-auto" /></td>
-                </tr>
-                <tr>
-                  <td className="p-4 text-slate-700 dark:text-slate-200">Chat History</td>
-                  <td className="text-center p-4"><X className="h-4 w-4 text-slate-300 mx-auto" /></td>
-                  <td className="text-center p-4 bg-blue-50/50 dark:bg-blue-500/10"><Check className="h-4 w-4 text-green-500 mx-auto" /></td>
-                  <td className="text-center p-4"><Check className="h-4 w-4 text-green-500 mx-auto" /></td>
-                  <td className="text-center p-4"><Check className="h-4 w-4 text-green-500 mx-auto" /></td>
-                  <td className="text-center p-4"><Check className="h-4 w-4 text-green-500 mx-auto" /></td>
-                </tr>
-                <tr>
-                  <td className="p-4 text-slate-700 dark:text-slate-200">Court Forms Access</td>
-                  <td className="text-center p-4"><Check className="h-4 w-4 text-green-500 mx-auto" /></td>
-                  <td className="text-center p-4 bg-blue-50/50 dark:bg-blue-500/10"><Check className="h-4 w-4 text-green-500 mx-auto" /></td>
-                  <td className="text-center p-4"><Check className="h-4 w-4 text-green-500 mx-auto" /></td>
-                  <td className="text-center p-4"><Check className="h-4 w-4 text-green-500 mx-auto" /></td>
-                  <td className="text-center p-4"><Check className="h-4 w-4 text-green-500 mx-auto" /></td>
-                </tr>
-                <tr>
-                  <td className="p-4 text-slate-700 dark:text-slate-200">Case Law References</td>
-                  <td className="text-center p-4"><X className="h-4 w-4 text-slate-300 mx-auto" /></td>
-                  <td className="text-center p-4 bg-blue-50/50 dark:bg-blue-500/10"><X className="h-4 w-4 text-slate-300 mx-auto" /></td>
-                  <td className="text-center p-4"><Check className="h-4 w-4 text-green-500 mx-auto" /></td>
-                  <td className="text-center p-4"><Check className="h-4 w-4 text-green-500 mx-auto" /></td>
-                  <td className="text-center p-4"><Check className="h-4 w-4 text-green-500 mx-auto" /></td>
-                </tr>
-                <tr>
-                  <td className="p-4 text-slate-700 dark:text-slate-200">Document Analysis</td>
-                  <td className="text-center p-4"><X className="h-4 w-4 text-slate-300 mx-auto" /></td>
-                  <td className="text-center p-4 bg-blue-50/50 dark:bg-blue-500/10"><X className="h-4 w-4 text-slate-300 mx-auto" /></td>
-                  <td className="text-center p-4"><X className="h-4 w-4 text-slate-300 mx-auto" /></td>
-                  <td className="text-center p-4"><Check className="h-4 w-4 text-green-500 mx-auto" /></td>
-                  <td className="text-center p-4"><Check className="h-4 w-4 text-green-500 mx-auto" /></td>
-                </tr>
+              <tbody className="divide-y divide-slate-200/80 dark:divide-white/10">
+                {[
+                  ['AI Chats per Day', '3', '20', 'Unlimited', 'Unlimited', 'Unlimited'],
+                  ['AI-Generated Responses', 'x', 'check', 'check', 'check', 'check'],
+                  ['Chat History', 'x', 'check', 'check', 'check', 'check'],
+                  ['Court Forms Access', 'check', 'check', 'check', 'check', 'check'],
+                  ['Case Law References', 'x', 'x', 'check', 'check', 'check'],
+                  ['Document Analysis', 'x', 'x', 'x', 'check', 'check'],
+                ].map(([label, free, basic, essential, plus, done]) => {
+                  const values = [free, basic, essential, plus, done];
+                  return (
+                    <tr key={label}>
+                      <td className="p-4 text-slate-700 dark:text-slate-200">{label}</td>
+                      {values.map((value, index) => (
+                        <td key={`${label}-${index}`} className={`p-4 text-center ${index === 1 ? 'bg-white/60 dark:bg-amber-400/5' : ''}`}>
+                          {value === 'check' ? (
+                            <Check className="mx-auto h-4 w-4 text-amber-500" />
+                          ) : value === 'x' ? (
+                            <X className="mx-auto h-4 w-4 text-slate-300" />
+                          ) : (
+                            <span className="text-slate-600 dark:text-slate-300">{value}</span>
+                          )}
+                        </td>
+                      ))}
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
         </div>
 
-        {/* FAQ */}
-        <div className="max-w-3xl mx-auto">
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white text-center mb-8">
-            Frequently Asked Questions
-          </h2>
+        <div className="mx-auto max-w-3xl">
+          <h2 className="mb-8 text-center text-2xl font-semibold tracking-tight text-slate-950 dark:text-white">Frequently asked questions</h2>
           <div className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Can I cancel my subscription anytime?</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-slate-600 dark:text-slate-300">
-                  Yes, you can cancel your subscription at any time. Your access will continue 
-                  until the end of your current billing period.
-                </p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Is this a substitute for a lawyer?</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-slate-600 dark:text-slate-300">
-                  No. DivorceOS provides general information and guidance, but we are not a law firm. 
-                  For legal advice specific to your situation, please consult with a qualified 
-                  California family law attorney.
-                </p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">How does the AI chat work?</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-slate-600 dark:text-slate-300">
-                  Our AI, Maria, is trained on California divorce law and can answer questions, 
-                  explain procedures, and provide information about forms and requirements. 
-                  Free users get 3 chats per day; paid plans include AI-generated responses.
-                </p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Are the court forms official?</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-slate-600 dark:text-slate-300">
-                  Yes, all forms are official California Judicial Council forms downloaded 
-                  directly from courts.ca.gov. We keep our form links updated to ensure you 
-                  always have access to the latest versions.
-                </p>
-              </CardContent>
-            </Card>
+            {[
+              {
+                title: 'Can I cancel my subscription anytime?',
+                body: 'Yes. You can cancel any time, and your access continues through the current billing period.',
+              },
+              {
+                title: 'Is this a substitute for a lawyer?',
+                body: 'No. DivorceAgent gives strategic AI guidance, not legal representation or legal advice. For case-specific legal advice, work with a qualified California family law attorney.',
+              },
+              {
+                title: 'How does Maria work?',
+                body: 'Maria is trained to help with California divorce and family law questions, explain procedures, surface next steps, and connect guidance to forms and filing support.',
+              },
+              {
+                title: 'Are the court forms official?',
+                body: 'Yes. The forms link to official California Judicial Council forms from courts.ca.gov, and we keep those links updated as closely as possible.',
+              },
+            ].map((faq) => (
+              <Card key={faq.title} className="rounded-3xl border border-white/80 bg-white/80 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/5">
+                <CardHeader>
+                  <CardTitle className="text-lg text-slate-950 dark:text-white">{faq.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="leading-6 text-slate-600 dark:text-slate-300">{faq.body}</p>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* Auth Modal */}
       <AuthModal
         isOpen={showAuthModal}
         onClose={() => setShowAuthModal(false)}

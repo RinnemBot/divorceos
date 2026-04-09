@@ -1,30 +1,30 @@
 import { Link } from 'react-router-dom';
-import { Scale, Mail, ExternalLink } from 'lucide-react';
+import { Sparkles, Mail, ExternalLink } from 'lucide-react';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
 
   const footerLinks = {
     product: [
-      { label: 'AI Chat', href: '/#chat' },
+      { label: 'Ask Maria', href: '/#chat' },
       { label: 'Forms Library', href: '/forms' },
       { label: 'Pricing', href: '/pricing' },
     ],
     resources: [
-      { 
-        label: 'California Courts', 
+      {
+        label: 'California Courts',
         href: 'https://www.courts.ca.gov/selfhelp.htm',
-        external: true 
+        external: true,
       },
-      { 
-        label: 'Find a Lawyer', 
+      {
+        label: 'Find a Lawyer',
         href: 'https://www.google.com/search?q=California+Divorce+Family+Lawyers',
-        external: true 
+        external: true,
       },
-      { 
-        label: 'CA Child Support', 
+      {
+        label: 'CA Child Support',
         href: 'https://childsupport.ca.gov/',
-        external: true 
+        external: true,
       },
     ],
     legal: [
@@ -35,42 +35,49 @@ export function Footer() {
   };
 
   return (
-    <footer className="bg-slate-900 text-slate-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
-          {/* Brand */}
-          <div className="lg:col-span-2">
-            <Link to="/" className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
-                <Scale className="h-5 w-5 text-white" />
+    <footer className="bg-slate-950 text-slate-300">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+        <div className="mb-10 rounded-3xl border border-white/10 bg-gradient-to-br from-slate-900 via-slate-900 to-amber-950/60 p-8 shadow-[0_24px_80px_-40px_rgba(245,158,11,0.35)]">
+          <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-2xl">
+              <div className="mb-4 flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 text-slate-950 shadow-lg">
+                  <Sparkles className="h-5 w-5" />
+                </div>
+                <div>
+                  <p className="text-xl font-semibold text-white">DivorceAgent</p>
+                  <p className="text-xs uppercase tracking-[0.24em] text-amber-200/80">Maria at the center</p>
+                </div>
               </div>
-              <span className="text-xl font-bold text-white">DivorceOS</span>
-            </Link>
-            <p className="text-slate-400 text-sm mb-4 max-w-sm">
-              AI-powered California divorce guidance. Get instant answers, access court forms, 
-              and navigate your divorce with confidence.
-            </p>
-            <div className="flex items-center gap-2 text-sm">
-              <Mail className="h-4 w-4 text-blue-400" />
-              <a 
-                href="mailto:divorceos@agentmail.to" 
-                className="text-blue-400 hover:text-blue-300 transition-colors"
-              >
+              <h2 className="text-2xl font-semibold tracking-tight text-white md:text-3xl">
+                Strategic AI guidance for California divorce and family law.
+              </h2>
+              <p className="mt-3 max-w-xl text-sm leading-6 text-slate-300">
+                Meet Maria, the Divorce Agent. Ask better questions, understand your options, and move from confusion to a clear next step.
+              </p>
+            </div>
+            <div className="flex items-center gap-2 text-sm text-amber-200">
+              <Mail className="h-4 w-4" />
+              <a href="mailto:divorceos@agentmail.to" className="transition-colors hover:text-white">
                 Contact Us
               </a>
             </div>
           </div>
+        </div>
 
-          {/* Product Links */}
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-5">
+          <div className="lg:col-span-2">
+            <p className="max-w-sm text-sm leading-6 text-slate-400">
+              AI-first California divorce guidance, filing support, and practical tools built around Maria, your Divorce Agent.
+            </p>
+          </div>
+
           <div>
-            <h3 className="text-white font-semibold mb-4">Product</h3>
+            <h3 className="mb-4 font-semibold text-white">Product</h3>
             <ul className="space-y-2">
               {footerLinks.product.map((link) => (
                 <li key={link.label}>
-                  <Link 
-                    to={link.href}
-                    className="text-slate-400 hover:text-white transition-colors text-sm"
-                  >
+                  <Link to={link.href} className="text-sm text-slate-400 transition-colors hover:text-white">
                     {link.label}
                   </Link>
                 </li>
@@ -78,17 +85,16 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Resources Links */}
           <div>
-            <h3 className="text-white font-semibold mb-4">Resources</h3>
+            <h3 className="mb-4 font-semibold text-white">Resources</h3>
             <ul className="space-y-2">
               {footerLinks.resources.map((link) => (
                 <li key={link.label}>
-                  <a 
+                  <a
                     href={link.href}
                     target={link.external ? '_blank' : undefined}
                     rel={link.external ? 'noopener noreferrer' : undefined}
-                    className="text-slate-400 hover:text-white transition-colors text-sm inline-flex items-center gap-1"
+                    className="inline-flex items-center gap-1 text-sm text-slate-400 transition-colors hover:text-white"
                   >
                     {link.label}
                     {link.external && <ExternalLink className="h-3 w-3" />}
@@ -98,16 +104,12 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Legal Links */}
           <div>
-            <h3 className="text-white font-semibold mb-4">Legal</h3>
+            <h3 className="mb-4 font-semibold text-white">Legal</h3>
             <ul className="space-y-2">
               {footerLinks.legal.map((link) => (
                 <li key={link.label}>
-                  <Link 
-                    to={link.href}
-                    className="text-slate-400 hover:text-white transition-colors text-sm"
-                  >
+                  <Link to={link.href} className="text-sm text-slate-400 transition-colors hover:text-white">
                     {link.label}
                   </Link>
                 </li>
@@ -116,16 +118,11 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="border-t border-slate-800 mt-12 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-slate-500 text-sm">
-              {currentYear} DivorceOS. All rights reserved.
-            </p>
-            <p className="text-slate-500 text-xs text-center md:text-right max-w-md">
-              <strong>Important:</strong> DivorceOS is an AI-powered information service. 
-              We are not a law firm and do not provide legal advice. Always consult with 
-              a qualified California family law attorney for your specific situation.
+        <div className="mt-12 border-t border-white/10 pt-8">
+          <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+            <p className="text-sm text-slate-500">{currentYear} DivorceAgent. All rights reserved.</p>
+            <p className="max-w-xl text-xs leading-5 text-slate-500 md:text-right">
+              <strong className="text-slate-400">Important:</strong> DivorceAgent provides strategic AI guidance for California divorce and family law. It is not a law firm and does not replace legal advice from a qualified California family law attorney.
             </p>
           </div>
         </div>
