@@ -73,12 +73,12 @@ export function ConfirmEmailPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center py-12 px-4">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_14%_0%,rgba(16,185,129,0.16),transparent_24%),radial-gradient(circle_at_86%_8%,rgba(34,211,238,0.14),transparent_20%),linear-gradient(180deg,#f3fff8_0%,#eefcf8_44%,#f8fafc_100%)] flex items-center justify-center py-12 px-4 dark:bg-[radial-gradient(circle_at_16%_0%,rgba(16,185,129,0.24),transparent_24%),radial-gradient(circle_at_84%_10%,rgba(34,211,238,0.16),transparent_20%),linear-gradient(180deg,#020617_0%,#03111f_50%,#020617_100%)]">
       <div className="max-w-md w-full">
-        <Card>
+        <Card className="border-white/80 bg-white/72 backdrop-blur-2xl dark:border-white/10 dark:bg-white/5">
           <CardHeader className="text-center">
-            <div className="mx-auto w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mb-4">
-              <Mail className="h-8 w-8 text-blue-600" />
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100">
+              <Mail className="h-8 w-8 text-emerald-700" />
             </div>
             <CardTitle className="text-2xl">Email Confirmation</CardTitle>
             <CardDescription>
@@ -92,7 +92,7 @@ export function ConfirmEmailPage() {
           <CardContent>
             {status === 'loading' && (
               <div className="flex flex-col items-center py-8">
-                <Loader2 className="h-12 w-12 animate-spin text-blue-600 mb-4" />
+                <Loader2 className="mb-4 h-12 w-12 animate-spin text-emerald-700" />
                 <p className="text-slate-600">Please wait while we verify your email...</p>
               </div>
             )}
@@ -109,7 +109,7 @@ export function ConfirmEmailPage() {
                 <div className="space-y-3">
                   <Button 
                     onClick={() => navigate('/')} 
-                    className="w-full bg-blue-600 hover:bg-blue-700"
+                    className="w-full bg-emerald-700 hover:bg-emerald-800"
                   >
                     Start Using DivorceOS
                     <ArrowRight className="ml-2 h-4 w-4" />
@@ -143,7 +143,7 @@ export function ConfirmEmailPage() {
                     placeholder="your@email.com"
                     value={userEmail}
                     onChange={(e) => setUserEmail(e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   />
                   
                   <Button 
@@ -196,7 +196,7 @@ export function ConfirmEmailPage() {
         
         <p className="text-center text-sm text-slate-500 mt-6">
           Need help? Contact us at{' '}
-          <a href="mailto:divorceos@agentmail.to" className="text-blue-600 hover:underline">
+          <a href="mailto:divorceos@agentmail.to" className="text-emerald-700 hover:underline">
             divorceos@agentmail.to
           </a>
         </p>

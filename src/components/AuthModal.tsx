@@ -90,7 +90,7 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-md bg-white dark:bg-slate-950">
+      <DialogContent className="sm:max-w-md border-white/80 bg-white/72 backdrop-blur-2xl dark:border-white/10 dark:bg-slate-950/90">
         <DialogHeader>
           <DialogTitle className="text-center text-2xl font-bold text-slate-900">
             Welcome to DivorceOS
@@ -98,9 +98,9 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
         </DialogHeader>
         
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2 bg-slate-100">
-            <TabsTrigger value="login" className="data-[state=active]:bg-white dark:data-[state=active]:bg-slate-900">Sign In</TabsTrigger>
-            <TabsTrigger value="signup" className="data-[state=active]:bg-white dark:data-[state=active]:bg-slate-900">Create Account</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 border border-white/80 bg-white/72 backdrop-blur-xl dark:border-white/10 dark:bg-white/5">
+            <TabsTrigger value="login" className="data-[state=active]:bg-emerald-700 data-[state=active]:text-white dark:data-[state=active]:bg-emerald-700">Sign In</TabsTrigger>
+            <TabsTrigger value="signup" className="data-[state=active]:bg-emerald-700 data-[state=active]:text-white dark:data-[state=active]:bg-emerald-700">Create Account</TabsTrigger>
           </TabsList>
           
           {error && (
@@ -152,7 +152,7 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
               
               <Button
                 type="submit"
-                className="w-full bg-blue-600 hover:bg-blue-700"
+                className="w-full bg-emerald-700 hover:bg-emerald-800"
                 disabled={isLoading}
               >
                 {isLoading ? (
@@ -243,7 +243,7 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
               
               <Button
                 type="submit"
-                className="w-full bg-blue-600 hover:bg-blue-700"
+                className="w-full bg-emerald-700 hover:bg-emerald-800"
                 disabled={isLoading}
               >
                 {isLoading ? (

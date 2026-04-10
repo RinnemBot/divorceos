@@ -165,7 +165,7 @@ export function ProfilePage() {
     : Math.max(0, planInfo.maxChats - currentUser.chatCount);
 
   return (
-    <div className="min-h-screen bg-slate-50 py-12">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_14%_0%,rgba(16,185,129,0.16),transparent_24%),radial-gradient(circle_at_86%_8%,rgba(34,211,238,0.14),transparent_20%),linear-gradient(180deg,#f3fff8_0%,#eefcf8_44%,#f8fafc_100%)] py-12 dark:bg-[radial-gradient(circle_at_16%_0%,rgba(16,185,129,0.24),transparent_24%),radial-gradient(circle_at_84%_10%,rgba(34,211,238,0.16),transparent_20%),linear-gradient(180deg,#020617_0%,#03111f_50%,#020617_100%)]">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Back Button */}
         <button 
@@ -186,20 +186,20 @@ export function ProfilePage() {
 
         {/* Main Content with Tabs */}
         <Tabs defaultValue="profile" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 bg-slate-200">
-            <TabsTrigger value="profile" className="data-[state=active]:bg-white">
+          <TabsList className="grid w-full grid-cols-4 rounded-xl border border-white/80 bg-white/72 backdrop-blur-xl dark:border-white/10 dark:bg-white/5">
+            <TabsTrigger value="profile" className="data-[state=active]:bg-emerald-700 data-[state=active]:text-white">
               <UserIcon className="h-4 w-4 mr-2" />
               Profile
             </TabsTrigger>
-            <TabsTrigger value="referrals" className="data-[state=active]:bg-white">
+            <TabsTrigger value="referrals" className="data-[state=active]:bg-emerald-700 data-[state=active]:text-white">
               <Gift className="h-4 w-4 mr-2" />
               Referrals
             </TabsTrigger>
-            <TabsTrigger value="saved" className="data-[state=active]:bg-white">
+            <TabsTrigger value="saved" className="data-[state=active]:bg-emerald-700 data-[state=active]:text-white">
               <FileText className="h-4 w-4 mr-2" />
               Saved Files
             </TabsTrigger>
-            <TabsTrigger value="reviews" className="data-[state=active]:bg-white">
+            <TabsTrigger value="reviews" className="data-[state=active]:bg-emerald-700 data-[state=active]:text-white">
               <Star className="h-4 w-4 mr-2" />
               Reviews
             </TabsTrigger>
@@ -211,7 +211,7 @@ export function ProfilePage() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <UserIcon className="h-5 w-5 text-blue-600" />
+                  <UserIcon className="h-5 w-5 text-emerald-700" />
                   Account Information
                 </CardTitle>
               </CardHeader>
@@ -227,7 +227,7 @@ export function ProfilePage() {
                   <div>
                     <Label className="text-slate-500">Current Plan</Label>
                     <div className="flex items-center gap-2 mt-1">
-                      <Sparkles className="h-4 w-4 text-blue-500" />
+                      <Sparkles className="h-4 w-4 text-emerald-500" />
                       <Badge variant="secondary">{planInfo.name}</Badge>
                     </div>
                   </div>
@@ -251,7 +251,7 @@ export function ProfilePage() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Save className="h-5 w-5 text-blue-600" />
+                  <Save className="h-5 w-5 text-emerald-700" />
                   Case Information (Optional)
                 </CardTitle>
                 <CardDescription>
@@ -302,7 +302,7 @@ export function ProfilePage() {
                       id="county"
                       value={county}
                       onChange={(e) => setCounty(e.target.value)}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     >
                       <option value="">Select your county</option>
                       {CALIFORNIA_COUNTIES.map(c => (
@@ -387,7 +387,7 @@ export function ProfilePage() {
                     <Button
                       onClick={handleSaveProfile}
                       disabled={isLoading}
-                      className="w-full md:w-auto bg-blue-600 hover:bg-blue-700"
+                      className="w-full md:w-auto bg-emerald-700 hover:bg-emerald-800"
                     >
                       {isLoading ? (
                         <>
@@ -408,12 +408,12 @@ export function ProfilePage() {
 
             {/* Upgrade Card for Free Users */}
             {currentUser.subscription === 'free' && (
-              <Card className="bg-gradient-to-br from-blue-600 to-indigo-600 text-white">
+              <Card className="bg-[radial-gradient(circle_at_top_left,rgba(16,185,129,0.28),transparent_24%),radial-gradient(circle_at_bottom_right,rgba(34,211,238,0.18),transparent_22%),linear-gradient(135deg,#064e3b_0%,#065f46_42%,#083344_100%)] text-white">
                 <CardContent className="p-6">
                   <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                     <div>
                       <h3 className="text-lg font-semibold">Upgrade Your Plan</h3>
-                      <p className="text-blue-100 text-sm mt-1">
+                      <p className="text-emerald-100 text-sm mt-1">
                         Get more AI chats and premium features with our paid plans.
                       </p>
                     </div>

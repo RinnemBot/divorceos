@@ -63,10 +63,10 @@ export function CountyConciergePage() {
 
   if (!county) {
     return (
-      <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(16,185,129,0.1),_transparent_24%),linear-gradient(180deg,#f8fafc_0%,#f7fdf9_45%,#f8fafc_100%)] dark:bg-[radial-gradient(circle_at_top,_rgba(5,150,105,0.12),_transparent_24%),linear-gradient(180deg,#020617_0%,#020617_100%)]">
+      <div className="min-h-screen bg-[radial-gradient(circle_at_14%_0%,rgba(5,150,105,0.3),transparent_24%),radial-gradient(circle_at_86%_8%,rgba(16,185,129,0.18),transparent_20%),linear-gradient(180deg,#e7fbef_0%,#def7e8_44%,#f1faf5_100%)] dark:bg-[radial-gradient(circle_at_16%_0%,rgba(16,185,129,0.24),transparent_24%),radial-gradient(circle_at_84%_10%,rgba(34,211,238,0.16),transparent_20%),linear-gradient(180deg,#020617_0%,#03111f_50%,#020617_100%)]">
         <section className="py-16">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="rounded-[2rem] border border-white/80 bg-white/80 p-8 text-center shadow-[0_28px_90px_-42px_rgba(15,23,42,0.4)] backdrop-blur dark:border-white/10 dark:bg-white/5 md:p-12">
+            <div className="rounded-[2rem] border border-white/80 bg-white/72 p-8 text-center shadow-[0_28px_90px_-42px_rgba(15,23,42,0.4)] backdrop-blur-2xl dark:border-white/10 dark:bg-white/5 md:p-12">
               <Badge className="mb-5 border border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-200">
                 County Filing Concierge
               </Badge>
@@ -77,7 +77,7 @@ export function CountyConciergePage() {
                 We cover 40+ California counties with filing methods, packet checklists, local quirks, and courthouse links, with deeper workflows still expanding.
               </p>
               <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-                <Button asChild size="lg" className="rounded-full bg-slate-950 text-white hover:bg-slate-800 dark:bg-emerald-400 dark:text-slate-950 dark:hover:bg-emerald-300">
+                <Button asChild size="lg" className="rounded-full bg-emerald-700 text-white hover:bg-emerald-800 dark:bg-emerald-700 dark:text-white dark:hover:bg-emerald-600">
                   <a href="#county-roadmap">Browse concierge counties</a>
                 </Button>
                 <Button asChild size="lg" variant="outline" className="rounded-full border-slate-300 bg-white text-slate-950 hover:bg-slate-50 dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10">
@@ -104,7 +104,7 @@ export function CountyConciergePage() {
                 body: 'The goal is to make Maria the front door, and county operations the action layer behind her.',
               },
             ].map((card) => (
-              <Card key={card.title} className="rounded-[1.75rem] border border-white/80 bg-white/80 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/5">
+              <Card key={card.title} className="rounded-[1.75rem] border border-white/80 bg-white/72 shadow-sm backdrop-blur-xl dark:border-white/10 dark:bg-white/5">
                 <CardHeader>
                   <CardTitle className="text-lg text-slate-900 dark:text-white">{card.title}</CardTitle>
                   <CardDescription className="text-sm leading-6 text-slate-600 dark:text-slate-300">{card.body}</CardDescription>
@@ -122,10 +122,10 @@ export function CountyConciergePage() {
   }
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(16,185,129,0.1),_transparent_24%),linear-gradient(180deg,#f8fafc_0%,#f7fdf9_45%,#f8fafc_100%)] dark:bg-[radial-gradient(circle_at_top,_rgba(5,150,105,0.12),_transparent_24%),linear-gradient(180deg,#020617_0%,#020617_100%)]">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_14%_0%,rgba(5,150,105,0.3),transparent_24%),radial-gradient(circle_at_86%_8%,rgba(16,185,129,0.18),transparent_20%),linear-gradient(180deg,#e7fbef_0%,#def7e8_44%,#f1faf5_100%)] dark:bg-[radial-gradient(circle_at_16%_0%,rgba(16,185,129,0.24),transparent_24%),radial-gradient(circle_at_84%_10%,rgba(34,211,238,0.16),transparent_20%),linear-gradient(180deg,#020617_0%,#03111f_50%,#020617_100%)]">
       <section className="py-12">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="rounded-[2rem] border border-white/80 bg-white/80 p-8 shadow-[0_28px_90px_-42px_rgba(15,23,42,0.4)] backdrop-blur dark:border-white/10 dark:bg-white/5">
+          <div className="rounded-[2rem] border border-white/80 bg-white/72 p-8 shadow-[0_28px_90px_-42px_rgba(15,23,42,0.4)] backdrop-blur-2xl dark:border-white/10 dark:bg-white/5">
             <div className="flex items-center gap-2">
               <Badge className="border border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-200">
                 County Filing Concierge
@@ -156,7 +156,7 @@ export function CountyConciergePage() {
                     </a>
                   </Button>
                 )}
-                <Button onClick={handleCopyLink} className="rounded-full bg-slate-950 text-white hover:bg-slate-800 dark:bg-emerald-400 dark:text-slate-950 dark:hover:bg-emerald-300">
+                <Button onClick={handleCopyLink} className="rounded-full bg-emerald-700 text-white hover:bg-emerald-800 dark:bg-emerald-700 dark:text-white dark:hover:bg-emerald-600">
                   <Share2 className="mr-2 h-4 w-4" /> Copy share link
                 </Button>
               </div>
@@ -173,7 +173,7 @@ export function CountyConciergePage() {
             ['Processing time', county.processingTime],
             ['Service notes', county.serviceNotes],
           ].map(([label, value, subvalue]) => (
-            <Card key={label} className="rounded-[1.5rem] border border-white/80 bg-white/80 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/5">
+            <Card key={label} className="rounded-[1.5rem] border border-white/80 bg-white/72 shadow-sm backdrop-blur-xl dark:border-white/10 dark:bg-white/5">
               <CardHeader>
                 <CardTitle className="text-sm font-medium text-slate-500 dark:text-slate-400">{label}</CardTitle>
                 <p className="text-lg font-semibold text-slate-900 dark:text-white">{value}</p>
@@ -184,7 +184,7 @@ export function CountyConciergePage() {
         </div>
 
         <div className="grid gap-6 lg:grid-cols-[320px,1fr]">
-          <Card className="self-start rounded-[1.75rem] border border-white/80 bg-white/80 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/5">
+          <Card className="self-start rounded-[1.75rem] border border-white/80 bg-white/72 shadow-sm backdrop-blur-xl dark:border-white/10 dark:bg-white/5">
             <CardHeader>
               <div className="flex items-center gap-2 text-sm font-semibold text-slate-500 dark:text-slate-400">
                 <MapPin className="h-4 w-4" /> Clerk of Court
@@ -234,7 +234,7 @@ export function CountyConciergePage() {
 
           <div className="space-y-6">
             {packetForms.length > 0 && (
-              <Card className="rounded-[1.75rem] border border-white/80 bg-white/80 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/5">
+              <Card className="rounded-[1.75rem] border border-white/80 bg-white/72 shadow-sm backdrop-blur-xl dark:border-white/10 dark:bg-white/5">
                 <CardHeader>
                   <div className="flex items-center gap-2 text-sm font-semibold text-emerald-700 dark:text-emerald-200">
                     <Sparkles className="h-4 w-4" /> Recommended packet
@@ -251,7 +251,7 @@ export function CountyConciergePage() {
                       <p className="mt-1 font-semibold text-slate-900 dark:text-white">{form.title}</p>
                       <p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-300">{form.description}</p>
                       <div className="mt-3 flex gap-2">
-                        <Button asChild size="sm" className="rounded-full bg-slate-950 text-white hover:bg-slate-800 dark:bg-emerald-400 dark:text-slate-950 dark:hover:bg-emerald-300">
+                        <Button asChild size="sm" className="rounded-full bg-emerald-700 text-white hover:bg-emerald-800 dark:bg-emerald-700 dark:text-white dark:hover:bg-emerald-600">
                           <a href={form.pdfUrl} target="_blank" rel="noopener noreferrer">
                             <FileText className="mr-1 h-4 w-4" /> PDF
                           </a>

@@ -53,7 +53,7 @@ function FormCard({ form, currentPlan }: { form: CourtForm; currentPlan: Subscri
   const shouldUpsell = guidance && currentPlan === 'free';
 
   return (
-    <Card className="group rounded-[1.75rem] border border-white/80 bg-white/85 shadow-[0_20px_60px_-35px_rgba(15,23,42,0.3)] backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_28px_90px_-42px_rgba(15,23,42,0.4)] dark:border-white/10 dark:bg-white/5">
+    <Card className="group rounded-[1.75rem] border border-white/80 bg-white/72 shadow-[0_20px_60px_-35px_rgba(15,23,42,0.3)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-cyan-200 hover:shadow-[0_28px_90px_-42px_rgba(6,182,212,0.2)] dark:border-white/10 dark:bg-white/5">
       <CardContent className="p-5">
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1">
@@ -72,7 +72,7 @@ function FormCard({ form, currentPlan }: { form: CourtForm; currentPlan: Subscri
             <p className="mb-4 text-sm leading-6 text-slate-600 dark:text-slate-300">{form.description}</p>
             <div className="flex flex-wrap gap-2">
               <a href={form.pdfUrl} target="_blank" rel="noopener noreferrer">
-                <Button size="sm" className="rounded-full bg-slate-950 text-white hover:bg-slate-800 dark:bg-emerald-400 dark:text-slate-950 dark:hover:bg-emerald-300">
+                <Button size="sm" className="rounded-full bg-emerald-700 text-white hover:bg-emerald-800 dark:bg-emerald-700 dark:text-white dark:hover:bg-emerald-600">
                   <Download className="mr-1 h-4 w-4" />
                   Download PDF
                 </Button>
@@ -102,7 +102,7 @@ function FormCard({ form, currentPlan }: { form: CourtForm; currentPlan: Subscri
                       Unlock Maria’s form guidance for this filing. Basic adds checklist help, and Essential+ adds deeper step-by-step support.
                     </p>
                     <Link to="/pricing">
-                      <Button size="sm" className="rounded-full bg-slate-950 text-white hover:bg-slate-800 dark:bg-emerald-400 dark:text-slate-950 dark:hover:bg-emerald-300">
+                      <Button size="sm" className="rounded-full bg-emerald-700 text-white hover:bg-emerald-800 dark:bg-emerald-700 dark:text-white dark:hover:bg-emerald-600">
                         See plans
                       </Button>
                     </Link>
@@ -115,7 +115,7 @@ function FormCard({ form, currentPlan }: { form: CourtForm; currentPlan: Subscri
               </div>
             )}
           </div>
-          <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700 dark:bg-emerald-400/10 dark:text-emerald-200">
+          <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-100 via-white to-cyan-50 text-emerald-700 dark:bg-emerald-400/10 dark:text-emerald-200">
             <FileText className="h-5 w-5" />
           </div>
         </div>
@@ -156,9 +156,9 @@ export function FormsPage() {
   const formsToDisplay = getFormsToDisplay();
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(16,185,129,0.1),_transparent_24%),linear-gradient(180deg,#f8fafc_0%,#f7fdf9_45%,#f8fafc_100%)] py-12 dark:bg-[radial-gradient(circle_at_top,_rgba(5,150,105,0.12),_transparent_24%),linear-gradient(180deg,#020617_0%,#020617_100%)]">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_14%_0%,rgba(5,150,105,0.3),transparent_24%),radial-gradient(circle_at_86%_8%,rgba(16,185,129,0.18),transparent_20%),linear-gradient(180deg,#e7fbef_0%,#def7e8_44%,#f1faf5_100%)] py-12 dark:bg-[radial-gradient(circle_at_16%_0%,rgba(16,185,129,0.24),transparent_24%),radial-gradient(circle_at_84%_10%,rgba(34,211,238,0.16),transparent_20%),linear-gradient(180deg,#020617_0%,#03111f_50%,#020617_100%)]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-12 rounded-[2rem] border border-white/80 bg-white/80 p-8 shadow-[0_28px_90px_-42px_rgba(15,23,42,0.35)] backdrop-blur dark:border-white/10 dark:bg-white/5 md:p-12">
+        <div className="mb-12 rounded-[2rem] border border-white/80 bg-white/72 p-8 shadow-[0_28px_90px_-42px_rgba(15,23,42,0.35)] backdrop-blur-2xl dark:border-white/10 dark:bg-white/5 md:p-12">
           <Badge className="mb-5 border border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-200">
             California forms, Maria-backed
           </Badge>
@@ -179,7 +179,7 @@ export function FormsPage() {
           </div>
         </div>
 
-        <div className="mx-auto mb-8 max-w-3xl rounded-[1.75rem] border border-white/80 bg-white/80 p-3 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/5">
+        <div className="mx-auto mb-8 max-w-3xl rounded-[1.75rem] border border-white/80 bg-white/72 p-3 shadow-sm backdrop-blur-xl dark:border-white/10 dark:bg-white/5">
           <div className="flex flex-col gap-2 sm:flex-row">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
@@ -191,7 +191,7 @@ export function FormsPage() {
                 className="h-12 rounded-full border-slate-200 pl-10"
               />
             </div>
-            <Button onClick={handleSearch} className="h-12 rounded-full bg-slate-950 px-6 text-white hover:bg-slate-800 dark:bg-emerald-400 dark:text-slate-950 dark:hover:bg-emerald-300">
+            <Button onClick={handleSearch} className="h-12 rounded-full bg-emerald-700 px-6 text-white hover:bg-emerald-800 dark:bg-emerald-700 dark:text-white dark:hover:bg-emerald-600">
               Search
             </Button>
           </div>
@@ -199,7 +199,7 @@ export function FormsPage() {
 
         <Tabs value={activeCategory} onValueChange={setActiveCategory} className="mb-8">
           <TabsList className="flex h-auto flex-wrap justify-start gap-2 bg-transparent p-0">
-            <TabsTrigger value="all" className="rounded-full border border-white/80 bg-white/80 px-4 py-2 data-[state=active]:bg-slate-950 data-[state=active]:text-white dark:border-white/10 dark:bg-white/5 dark:data-[state=active]:bg-emerald-400 dark:data-[state=active]:text-slate-950">
+            <TabsTrigger value="all" className="rounded-full border border-white/80 bg-white/72 px-4 py-2 data-[state=active]:bg-emerald-700 data-[state=active]:text-white dark:border-white/10 dark:bg-white/5 dark:data-[state=active]:bg-emerald-700 dark:data-[state=active]:text-white">
               All Forms ({COURT_FORMS.length})
             </TabsTrigger>
             {FORM_CATEGORIES.map((category) => {
@@ -209,7 +209,7 @@ export function FormsPage() {
                 <TabsTrigger
                   key={category.id}
                   value={category.id}
-                  className="rounded-full border border-white/80 bg-white/80 px-4 py-2 data-[state=active]:bg-slate-950 data-[state=active]:text-white dark:border-white/10 dark:bg-white/5 dark:data-[state=active]:bg-emerald-400 dark:data-[state=active]:text-slate-950"
+                  className="rounded-full border border-white/80 bg-white/72 px-4 py-2 data-[state=active]:bg-emerald-700 data-[state=active]:text-white dark:border-white/10 dark:bg-white/5 dark:data-[state=active]:bg-emerald-700 dark:data-[state=active]:text-white"
                 >
                   <Icon className="mr-1 h-4 w-4" />
                   {category.name} ({count})
@@ -218,7 +218,7 @@ export function FormsPage() {
             })}
             <TabsTrigger
               value="search"
-              className="rounded-full border border-white/80 bg-white/80 px-4 py-2 data-[state=active]:bg-slate-950 data-[state=active]:text-white dark:border-white/10 dark:bg-white/5 dark:data-[state=active]:bg-emerald-400 dark:data-[state=active]:text-slate-950"
+              className="rounded-full border border-white/80 bg-white/72 px-4 py-2 data-[state=active]:bg-emerald-700 data-[state=active]:text-white dark:border-white/10 dark:bg-white/5 dark:data-[state=active]:bg-emerald-700 dark:data-[state=active]:text-white"
               disabled={searchResults.length === 0}
             >
               Search Results ({searchResults.length})
@@ -243,7 +243,7 @@ export function FormsPage() {
         </Tabs>
 
         <div className="mt-12 grid gap-6 md:grid-cols-3">
-          <Card className="rounded-[1.75rem] border border-white/80 bg-white/80 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/5">
+          <Card className="rounded-[1.75rem] border border-white/80 bg-white/72 shadow-sm backdrop-blur-xl dark:border-white/10 dark:bg-white/5">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg text-slate-950 dark:text-white">
                 <ExternalLink className="h-5 w-5 text-emerald-500" />
@@ -263,7 +263,7 @@ export function FormsPage() {
             </CardContent>
           </Card>
 
-          <Card className="rounded-[1.75rem] border border-white/80 bg-white/80 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/5">
+          <Card className="rounded-[1.75rem] border border-white/80 bg-white/72 shadow-sm backdrop-blur-xl dark:border-white/10 dark:bg-white/5">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg text-slate-950 dark:text-white">
                 <DollarSign className="h-5 w-5 text-emerald-500" />
@@ -283,7 +283,7 @@ export function FormsPage() {
             </CardContent>
           </Card>
 
-          <Card className="rounded-[1.75rem] border border-white/80 bg-white/80 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/5">
+          <Card className="rounded-[1.75rem] border border-white/80 bg-white/72 shadow-sm backdrop-blur-xl dark:border-white/10 dark:bg-white/5">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg text-slate-950 dark:text-white">
                 <Sparkles className="h-5 w-5 text-violet-500" />

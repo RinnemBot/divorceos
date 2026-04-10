@@ -562,10 +562,10 @@ export function ChildSupportEstimator({ initialCountyId, currentUserId }: ChildS
   };
 
   return (
-    <Card className="shadow-sm border-blue-100">
+    <Card className="border-white/80 bg-white/72 shadow-[0_20px_60px_-35px_rgba(15,23,42,0.35)] backdrop-blur-xl dark:border-white/10 dark:bg-white/5">
       <CardHeader className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <p className="text-xs uppercase tracking-wide text-blue-600 font-semibold">Child Support Estimator</p>
+          <p className="text-xs font-semibold uppercase tracking-wide text-emerald-700">Child Support Estimator</p>
           <CardTitle className="text-2xl text-slate-900 dark:text-white">Model California guideline support</CardTitle>
           <p className="text-sm text-slate-500 dark:text-slate-300">Toggle between quick net-income entry or the advanced gross-income workflow. The outputs mirror the statewide guideline formula.</p>
         </div>
@@ -624,29 +624,29 @@ export function ChildSupportEstimator({ initialCountyId, currentUserId }: ChildS
                 onClick={() => setMode('advanced')}
                 className={`relative flex flex-col items-center gap-2 rounded-xl border-2 p-4 text-left transition-all duration-200 ${
                   mode === 'advanced'
-                    ? 'border-blue-500 bg-blue-50 shadow-md'
-                    : 'border-slate-200 bg-white hover:border-blue-300 hover:bg-blue-50/50 dark:border-slate-700 dark:bg-slate-900 dark:hover:bg-slate-800'
+                    ? 'border-cyan-500 bg-cyan-50 shadow-md'
+                    : 'border-slate-200 bg-white hover:border-cyan-300 hover:bg-cyan-50/50 dark:border-slate-700 dark:bg-slate-900 dark:hover:bg-slate-800'
                 }`}
               >
                 <div className={`flex h-10 w-10 items-center justify-center rounded-full ${
-                  mode === 'advanced' ? 'bg-blue-500 text-white' : 'bg-blue-100 text-blue-600'
+                  mode === 'advanced' ? 'bg-cyan-500 text-white' : 'bg-cyan-100 text-cyan-700'
                 }`}>
                   <Settings2 className="h-5 w-5" />
                 </div>
                 <div className="text-center">
-                  <p className={`font-semibold ${mode === 'advanced' ? 'text-blue-900' : 'text-slate-700'}`}>
+                  <p className={`font-semibold ${mode === 'advanced' ? 'text-cyan-900' : 'text-slate-700'}`}>
                     Advanced Calculation
                   </p>
-                  <p className={`text-xs mt-1 ${mode === 'advanced' ? 'text-blue-700' : 'text-slate-500'}`}>
+                  <p className={`text-xs mt-1 ${mode === 'advanced' ? 'text-cyan-700' : 'text-slate-500'}`}>
                     Gross Income Mode
                   </p>
-                  <p className={`text-xs mt-1 ${mode === 'advanced' ? 'text-blue-600' : 'text-slate-400'}`}>
+                  <p className={`text-xs mt-1 ${mode === 'advanced' ? 'text-cyan-600' : 'text-slate-400'}`}>
                     Detailed & Precise
                   </p>
                 </div>
                 {mode === 'advanced' && (
                   <div className="absolute -top-2 -right-2">
-                    <Badge className="bg-blue-500 text-white border-0">Active</Badge>
+                    <Badge className="border-0 bg-cyan-500 text-white">Active</Badge>
                   </div>
                 )}
               </button>
@@ -746,13 +746,13 @@ export function ChildSupportEstimator({ initialCountyId, currentUserId }: ChildS
           </div>
         </div>
         <div className="space-y-4">
-          <div className="p-5 rounded-2xl border border-blue-100 bg-gradient-to-br from-blue-50 to-white dark:from-slate-900 dark:to-black dark:border-blue-500/30">
-            <div className="flex flex-col gap-3 text-sm text-blue-700 mb-2 sm:flex-row sm:items-center sm:justify-between dark:text-blue-200">
+          <div className="rounded-2xl border border-emerald-100 bg-gradient-to-br from-emerald-50 via-white to-cyan-50 p-5 dark:border-emerald-500/30 dark:from-slate-900 dark:to-black">
+            <div className="mb-2 flex flex-col gap-3 text-sm text-emerald-700 sm:flex-row sm:items-center sm:justify-between dark:text-emerald-200">
               <span className="flex items-center gap-2 font-semibold">
                 <Calculator className="h-4 w-4" /> Guideline estimate
               </span>
               <div className="flex items-center gap-2">
-                <Badge variant="outline" className="dark:border-blue-400 dark:text-blue-100">{mode === 'advanced' ? 'Advanced gross mode' : 'Quick net mode'}</Badge>
+                <Badge variant="outline" className="border-emerald-200 text-emerald-700 dark:border-emerald-400 dark:text-emerald-100">{mode === 'advanced' ? 'Advanced gross mode' : 'Quick net mode'}</Badge>
                 <Button
                   type="button"
                   variant="outline"
@@ -760,14 +760,14 @@ export function ChildSupportEstimator({ initialCountyId, currentUserId }: ChildS
                   onClick={handleSaveScenario}
                   disabled={!currentUserId}
                   title={currentUserId ? 'Save this run to your case file' : 'Sign in to save scenarios'}
-                  className="border-blue-200 text-blue-700 hover:bg-blue-50 dark:border-blue-400 dark:text-blue-100 dark:hover:bg-blue-500/20"
+                  className="border-emerald-200 text-emerald-700 hover:bg-emerald-50 dark:border-emerald-400 dark:text-emerald-100 dark:hover:bg-emerald-500/20"
                 >
                   <Save className="h-3.5 w-3.5 mr-1" /> Save run
                 </Button>
               </div>
             </div>
-            <p className="text-4xl font-bold text-blue-900 dark:text-blue-100">{formatCurrency(estimate.guideline)}</p>
-            <p className="text-sm text-blue-600 dark:text-blue-200">{estimate.payer} would pay this amount each month (before arrears or credits).</p>
+            <p className="text-4xl font-bold text-emerald-900 dark:text-emerald-100">{formatCurrency(estimate.guideline)}</p>
+            <p className="text-sm text-emerald-700 dark:text-emerald-200">{estimate.payer} would pay this amount each month (before arrears or credits).</p>
             <div className="mt-4 text-sm text-slate-600 space-y-1 dark:text-slate-200">
               <p>Base support (w/ factor): {formatCurrency(estimate.baseSupport)}</p>
               <p>Raw base (1 child): {formatCurrency(estimate.rawBase)}</p>

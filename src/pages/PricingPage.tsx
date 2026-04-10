@@ -62,16 +62,16 @@ const pricingTiers: PricingTier[] = [
     name: 'Essential',
     monthlyPrice: 49,
     annualPrice: 490,
-    description: 'Comprehensive support with concierge filing help',
+    description: 'Core Maria access plus filing support for one active case',
     features: [
       'Unlimited AI chats',
-      'AI-generated responses 24/7',
       'Private conversation history',
       'Access to all blank court forms',
       'Detailed form guidance',
       'Priority AI responses',
       'Case law references',
-      'Concierge filing support for supported counties (1 active case), with direct e-filing workflows coming soon',
+      'Concierge filing support for supported counties (1 active case)',
+      'Saved support scenarios + planning tools',
     ],
     buttonText: 'Start Essential Plan',
     buttonVariant: 'default',
@@ -82,18 +82,14 @@ const pricingTiers: PricingTier[] = [
     name: 'Plus',
     monthlyPrice: 99,
     annualPrice: 990,
-    description: 'Advanced strategy with higher-touch concierge filing support',
+    description: 'Everything in Essential, plus deeper strategy and faster concierge handling',
     features: [
-      'Unlimited AI chats',
-      'AI-generated responses 24/7',
-      'Private conversation history',
-      'Access to all blank court forms',
-      'Detailed form guidance',
-      'Priority AI responses',
-      'Case law references',
+      'Everything in Essential',
       'Document analysis',
-      'Strategy suggestions',
-      'Priority concierge filing support + process coordination features coming soon',
+      'Strategy suggestions for next steps',
+      'Priority concierge queue',
+      'More hands-on filing coordination',
+      'Higher-touch planning for negotiations and disclosures',
     ],
     buttonText: 'Start Plus Plan',
     buttonVariant: 'outline',
@@ -103,20 +99,14 @@ const pricingTiers: PricingTier[] = [
     name: 'Done-For-You',
     monthlyPrice: 299,
     annualPrice: 2990,
-    description: 'Maximum support with full-service concierge guidance',
+    description: 'Everything in Plus, with the most hands-on concierge workflow support',
     features: [
-      'Unlimited AI chats',
-      'AI-generated responses 24/7',
-      'Private conversation history',
-      'Access to all blank court forms',
-      'Detailed form guidance',
-      'Priority AI responses',
-      'Case law references',
-      'Document analysis',
-      'Strategy suggestions',
+      'Everything in Plus',
       'Priority support queue',
       'Custom document templates',
-      'Full-service concierge guidance, with service-of-process and follow-up workflows expanding soon',
+      'Service-of-process coordination help',
+      'Follow-up workflow support',
+      'Highest-touch concierge guidance across the process',
     ],
     buttonText: 'Start Done-For-You',
     buttonVariant: 'outline',
@@ -183,9 +173,9 @@ export function PricingPage() {
   const getCurrentPlan = () => currentUser?.subscription || 'free';
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(16,185,129,0.12),_transparent_28%),linear-gradient(180deg,#f8fafc_0%,#f7fdf9_45%,#f8fafc_100%)] py-16 transition-colors dark:bg-[radial-gradient(circle_at_top,_rgba(5,150,105,0.14),_transparent_26%),linear-gradient(180deg,#020617_0%,#020617_100%)]">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_14%_0%,rgba(5,150,105,0.3),transparent_24%),radial-gradient(circle_at_86%_8%,rgba(16,185,129,0.18),transparent_20%),linear-gradient(180deg,#e7fbef_0%,#def7e8_44%,#f1faf5_100%)] py-16 transition-colors dark:bg-[radial-gradient(circle_at_16%_0%,rgba(16,185,129,0.24),transparent_24%),radial-gradient(circle_at_84%_10%,rgba(34,211,238,0.16),transparent_20%),linear-gradient(180deg,#020617_0%,#03111f_50%,#020617_100%)]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-foreground">
-        <div className="mb-16 overflow-hidden rounded-[2rem] border border-white/80 bg-white/80 p-8 shadow-[0_28px_90px_-42px_rgba(15,23,42,0.4)] backdrop-blur dark:border-white/10 dark:bg-white/5 md:p-12">
+        <div className="mb-16 overflow-hidden rounded-[2rem] border border-white/80 bg-white/72 p-8 shadow-[0_28px_90px_-42px_rgba(15,23,42,0.4)] backdrop-blur-2xl dark:border-white/10 dark:bg-white/5 md:p-12">
           <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-3xl">
               <Badge className="mb-5 border border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-200">
@@ -210,13 +200,13 @@ export function PricingPage() {
         </div>
 
         <div className="mb-10 flex justify-center">
-          <div className="inline-flex rounded-full border border-white/80 bg-white/80 p-1 text-sm font-medium shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/5">
+          <div className="inline-flex rounded-full border border-white/80 bg-white/72 p-1 text-sm font-medium shadow-sm backdrop-blur-xl dark:border-white/10 dark:bg-white/5">
             <button
               type="button"
               onClick={() => setBillingPeriod('monthly')}
               className={`rounded-full px-4 py-2 transition ${
                 billingPeriod === 'monthly'
-                  ? 'bg-slate-950 text-white shadow dark:bg-emerald-400 dark:text-slate-950'
+                  ? 'bg-emerald-700 text-white shadow hover:bg-emerald-800 dark:bg-emerald-700 dark:text-white'
                   : 'text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white'
               }`}
             >
@@ -227,7 +217,7 @@ export function PricingPage() {
               onClick={() => setBillingPeriod('annual')}
               className={`rounded-full px-4 py-2 transition ${
                 billingPeriod === 'annual'
-                  ? 'bg-slate-950 text-white shadow dark:bg-emerald-400 dark:text-slate-950'
+                  ? 'bg-emerald-700 text-white shadow hover:bg-emerald-800 dark:bg-emerald-700 dark:text-white'
                   : 'text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white'
               }`}
             >
@@ -251,7 +241,7 @@ export function PricingPage() {
             return (
               <Card
                 key={tier.name}
-                className={`flex flex-col overflow-hidden rounded-[2rem] border bg-white/80 shadow-[0_20px_60px_-35px_rgba(15,23,42,0.35)] backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_28px_90px_-42px_rgba(15,23,42,0.4)] dark:bg-white/5 ${
+                className={`flex flex-col overflow-hidden rounded-[2rem] border bg-white/72 shadow-[0_20px_60px_-35px_rgba(15,23,42,0.35)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-cyan-200 hover:shadow-[0_28px_90px_-42px_rgba(6,182,212,0.2)] dark:bg-white/5 ${
                   tier.highlighted
                     ? 'border-emerald-300 ring-1 ring-emerald-200 dark:border-emerald-400/30 dark:ring-emerald-400/20'
                     : 'border-white/80 dark:border-white/10'
@@ -259,7 +249,7 @@ export function PricingPage() {
               >
                 {tier.highlighted && (
                   <div className="px-6 pt-6">
-                    <Badge className="border-0 bg-slate-950 text-white dark:bg-emerald-400 dark:text-slate-950">
+                    <Badge className="border-0 bg-emerald-700 text-white dark:bg-emerald-700 dark:text-white">
                       Best balance
                     </Badge>
                   </div>
@@ -319,7 +309,7 @@ export function PricingPage() {
                     variant={tier.buttonVariant}
                     className={`mt-6 w-full rounded-full ${
                       tier.highlighted
-                        ? 'bg-slate-950 text-white hover:bg-slate-800 dark:bg-emerald-400 dark:text-slate-950 dark:hover:bg-emerald-300'
+                        ? 'bg-emerald-700 text-white hover:bg-emerald-800 dark:bg-emerald-700 dark:text-white dark:hover:bg-emerald-600'
                         : 'border-slate-300 bg-white text-slate-950 hover:bg-slate-50 dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10'
                     }`}
                   >
@@ -340,7 +330,7 @@ export function PricingPage() {
           })}
         </div>
 
-        <div className="mb-16 overflow-hidden rounded-[2rem] border border-white/80 bg-white/80 shadow-[0_28px_90px_-42px_rgba(15,23,42,0.35)] backdrop-blur dark:border-white/10 dark:bg-white/5">
+        <div className="mb-16 overflow-hidden rounded-[2rem] border border-white/80 bg-white/72 shadow-[0_28px_90px_-42px_rgba(15,23,42,0.35)] backdrop-blur-xl dark:border-white/10 dark:bg-white/5">
           <div className="border-b border-slate-200/80 p-6 dark:border-white/10">
             <h2 className="text-2xl font-semibold tracking-tight text-slate-950 dark:text-white">Feature comparison</h2>
           </div>
@@ -362,8 +352,15 @@ export function PricingPage() {
                   ['AI-Generated Responses', 'x', 'check', 'check', 'check', 'check'],
                   ['Chat History', 'x', 'check', 'check', 'check', 'check'],
                   ['Court Forms Access', 'check', 'check', 'check', 'check', 'check'],
+                  ['County Concierge Roadmaps', 'x', 'check', 'check', 'check', 'check'],
+                  ['Detailed Form Guidance', 'x', 'Basic', 'check', 'check', 'check'],
                   ['Case Law References', 'x', 'x', 'check', 'check', 'check'],
+                  ['Saved Support Scenarios', 'x', 'x', 'check', 'check', 'check'],
+                  ['Concierge Filing Support', 'x', 'x', '1 active case', 'Priority queue', 'Highest touch'],
                   ['Document Analysis', 'x', 'x', 'x', 'check', 'check'],
+                  ['Strategy Suggestions', 'x', 'x', 'x', 'check', 'check'],
+                  ['Service / Follow-Up Coordination', 'x', 'x', 'x', 'x', 'check'],
+                  ['Custom Document Templates', 'x', 'x', 'x', 'x', 'check'],
                 ].map(([label, free, basic, essential, plus, done]) => {
                   const values = [free, basic, essential, plus, done];
                   return (
@@ -409,7 +406,7 @@ export function PricingPage() {
                 body: 'Yes. The forms link to official California Judicial Council forms from courts.ca.gov, and we keep those links updated as closely as possible.',
               },
             ].map((faq) => (
-              <Card key={faq.title} className="rounded-3xl border border-white/80 bg-white/80 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/5">
+              <Card key={faq.title} className="rounded-3xl border border-white/80 bg-white/72 shadow-sm backdrop-blur-xl dark:border-white/10 dark:bg-white/5">
                 <CardHeader>
                   <CardTitle className="text-lg text-slate-950 dark:text-white">{faq.title}</CardTitle>
                 </CardHeader>

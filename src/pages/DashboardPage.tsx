@@ -221,7 +221,7 @@ export function DashboardPage() {
   );
 
   return (
-    <div className="min-h-screen bg-slate-50 py-10">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_14%_0%,rgba(16,185,129,0.16),transparent_24%),radial-gradient(circle_at_86%_8%,rgba(34,211,238,0.14),transparent_20%),linear-gradient(180deg,#f3fff8_0%,#eefcf8_44%,#f8fafc_100%)] py-10 dark:bg-[radial-gradient(circle_at_16%_0%,rgba(16,185,129,0.24),transparent_24%),radial-gradient(circle_at_84%_10%,rgba(34,211,238,0.16),transparent_20%),linear-gradient(180deg,#020617_0%,#03111f_50%,#020617_100%)]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="flex flex-col gap-2">
           <p className="text-sm uppercase tracking-wide text-emerald-600 font-semibold flex items-center gap-2">
@@ -233,7 +233,7 @@ export function DashboardPage() {
               <h1 className="text-3xl font-bold text-slate-900">Welcome back, {user.name || user.email.split('@')[0]}</h1>
               <p className="text-slate-600">Monitor filings, documents, service attempts, referrals, and reviews from one workspace.</p>
             </div>
-            <Badge variant="secondary" className="text-emerald-700 self-start lg:self-auto">
+            <Badge variant="secondary" className="bg-emerald-100 text-emerald-800 self-start lg:self-auto dark:bg-emerald-400/15 dark:text-emerald-200">
               {planInfo.name} Plan
             </Badge>
           </div>
@@ -242,17 +242,17 @@ export function DashboardPage() {
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList
             className={cn(
-              'grid w-full grid-cols-2 sm:grid-cols-3 bg-white border rounded-xl',
+              'grid w-full grid-cols-2 sm:grid-cols-3 rounded-xl border border-white/80 bg-white/72 backdrop-blur-xl dark:border-white/10 dark:bg-white/5',
               isStaffUser ? 'lg:grid-cols-7' : 'lg:grid-cols-6'
             )}
           >
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="documents">Documents</TabsTrigger>
-            <TabsTrigger value="county">County Filing</TabsTrigger>
-            <TabsTrigger value="service">Service</TabsTrigger>
-            <TabsTrigger value="referral">Referral</TabsTrigger>
-            <TabsTrigger value="review">Review</TabsTrigger>
-            {isStaffUser && <TabsTrigger value="staff">Staff</TabsTrigger>}
+            <TabsTrigger value="overview" className="data-[state=active]:bg-emerald-700 data-[state=active]:text-white">Overview</TabsTrigger>
+            <TabsTrigger value="documents" className="data-[state=active]:bg-emerald-700 data-[state=active]:text-white">Documents</TabsTrigger>
+            <TabsTrigger value="county" className="data-[state=active]:bg-emerald-700 data-[state=active]:text-white">County Filing</TabsTrigger>
+            <TabsTrigger value="service" className="data-[state=active]:bg-emerald-700 data-[state=active]:text-white">Service</TabsTrigger>
+            <TabsTrigger value="referral" className="data-[state=active]:bg-emerald-700 data-[state=active]:text-white">Referral</TabsTrigger>
+            <TabsTrigger value="review" className="data-[state=active]:bg-emerald-700 data-[state=active]:text-white">Review</TabsTrigger>
+            {isStaffUser && <TabsTrigger value="staff" className="data-[state=active]:bg-emerald-700 data-[state=active]:text-white">Staff</TabsTrigger>}
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">

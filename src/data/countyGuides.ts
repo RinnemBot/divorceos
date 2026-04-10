@@ -306,7 +306,7 @@ export const COUNTY_GUIDES: CountyGuide[] = [
       address: '3501 Civic Center Dr., San Rafael, CA 94903',
       hours: 'Mon–Fri, 8:00am – 4:00pm',
       phone: '(415) 444-7040',
-      efilePortal: 'https://www.marincourt.org/online_services_efiling.htm',
+      efilePortal: 'https://www.marin.courts.ca.gov/online-services/efiling',
     },
     processingTime: 'Odyssey filings are reviewed in 1–2 days; paper packets filed before 4:00 p.m. receive same-day stamps.',
     serviceNotes: 'Personal service within 60 days is required. Marin Sheriff Civil typically needs 10–14 days—use a registered server for faster turnaround.',

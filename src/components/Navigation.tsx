@@ -91,7 +91,7 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
                 }}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
                   (link.path === '/' ? location.pathname === '/' : location.pathname.startsWith(link.path))
-                    ? 'bg-slate-900 text-white shadow-sm dark:bg-white dark:text-slate-950'
+                    ? 'border border-emerald-300 bg-emerald-200 text-emerald-950 shadow-sm dark:border-emerald-400/40 dark:bg-emerald-300 dark:text-slate-950'
                     : 'text-slate-600 hover:bg-emerald-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-900/70 dark:hover:text-white'
                 }`}
               >
@@ -158,7 +158,7 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
             ) : (
               <Button
                 onClick={onAuthClick}
-                className="bg-slate-950 text-white hover:bg-slate-800 dark:bg-emerald-400 dark:text-slate-950 dark:hover:bg-emerald-300"
+                className="bg-emerald-700 text-white hover:bg-emerald-800 dark:bg-emerald-700 dark:text-white dark:hover:bg-emerald-600"
               >
                 Sign In/Create Account
               </Button>
@@ -191,7 +191,7 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
                 }}
                 className={`block px-3 py-2 rounded-xl text-base font-medium ${
                   (link.path === '/' ? location.pathname === '/' : location.pathname.startsWith(link.path))
-                    ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-950'
+                    ? 'border border-emerald-300 bg-emerald-200 text-emerald-950 dark:border-emerald-400/40 dark:bg-emerald-300 dark:text-slate-950'
                     : 'text-slate-600 hover:bg-emerald-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-900/70 dark:hover:text-white'
                 }`}
               >
@@ -251,7 +251,7 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
                     onAuthClick();
                     setIsMobileMenuOpen(false);
                   }}
-                  className="w-full bg-slate-950 text-white hover:bg-slate-800 dark:bg-emerald-400 dark:text-slate-950 dark:hover:bg-emerald-300"
+                  className="w-full bg-emerald-700 text-white hover:bg-emerald-800 dark:bg-emerald-700 dark:text-white dark:hover:bg-emerald-600"
                 >
                   Sign In/Create Account
                 </Button>
