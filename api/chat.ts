@@ -3,7 +3,7 @@ import { enforceBrowserOrigin, enforceRateLimit } from './_security.js';
 
 // Prefer OpenAI GPT-5.1 when available; fall back to Kimi (Moonshot) otherwise.
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-const OPENAI_MODEL = process.env.OPENAI_MODEL || 'gpt-5.1';
+const OPENAI_MODEL = process.env.OPENAI_MODEL || 'gpt-4.1-mini';
 const OPENAI_API_URL = process.env.OPENAI_API_URL || 'https://api.openai.com/v1/chat/completions';
 
 const KIMI_API_KEY = process.env.MOONSHOT_API_KEY || process.env.KIMI_API_KEY;
@@ -79,6 +79,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       }
 
       const data = await response.json();
+      const content = data.choices?.[0]?.message?.content;
+
+      if (typeof content !== 'string' || !content.trim()) {
+        console.error('OpenAI returned empty content payload');
+        if (KIMI_API_KEY) {
+          console.warn('Falling back to Kimi provider due to empty OpenAI content.');
+          return proxyKimi(messages, safeTemperature, safeMaxTokens, res);
+        }
+        return res.status(502).json({ error: 'OpenAI returned an empty response' });
+      }
+
       return res.status(200).json({ ...data, provider: 'openai' });
     }
 
