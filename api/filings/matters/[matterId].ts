@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { enforceBrowserOrigin, enforceSensitiveApiEnabled } from './_security';
+import { enforceBrowserOrigin, enforceSensitiveApiEnabled } from '../../_security';
 import { getFilingProvider } from '@/services/filing/providers';
-import { ensureFilingTables, getFilingMatter, getLatestSubmissionForMatter, listDocumentsForMatter } from '@/services/filing/supabase';
+import { ensureFilingTables, getFilingMatter, getLatestSubmissionForMatter } from '@/services/filing/supabase';
 import type { FilingProviderKey } from '@/types/filing';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -29,7 +29,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const latestSubmission = await getLatestSubmissionForMatter(matterId);
-  const documents = await listDocumentsForMatter(matterId);
   const provider = getFilingProvider((matter.provider || providerKey) as FilingProviderKey);
   const result = await provider.getFilingStatus({
     internalMatterId: matterId,
@@ -39,7 +38,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   return res.status(200).json({
     matter,
     latestSubmission,
-    documents,
     status: result,
   });
 }

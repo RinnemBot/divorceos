@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
+import { enforceBrowserOrigin, enforceSensitiveApiEnabled } from './_security';
 
 const SIGNED_URL_TTL_SECONDS = 60 * 5; // 5 minutes
 const MAX_RESULTS = 100;
@@ -55,6 +56,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
+
+  if (!enforceSensitiveApiEnabled(res)) return;
+  if (!enforceBrowserOrigin(req, res)) return;
 
   if (!supabaseServerClient) {
     return res.status(500).json({ error: 'Supabase environment variables are not configured' });

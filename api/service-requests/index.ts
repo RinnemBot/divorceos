@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { enforceBrowserOrigin, enforceSensitiveApiEnabled } from './_security';
+import { enforceBrowserOrigin, enforceSensitiveApiEnabled } from '../_security';
 import { getFilingProvider } from '@/services/filing/providers';
 import { parseJsonBody } from '@/services/filing/http';
 import { buildServiceRequest, ensureFilingTables, getFilingMatter, upsertServiceRequest } from '@/services/filing/supabase';

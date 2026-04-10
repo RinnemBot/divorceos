@@ -2,6 +2,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import formidable, { type Fields, type Files } from 'formidable';
 import { promises as fs } from 'fs';
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
+import { enforceBrowserOrigin, enforceSensitiveApiEnabled } from './_security';
 
 export const config = {
   api: {
@@ -87,6 +88,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
+
+  if (!enforceSensitiveApiEnabled(res)) return;
+  if (!enforceBrowserOrigin(req, res)) return;
 
   if (!supabaseServerClient) {
     return res.status(500).json({ error: 'Supabase environment variables are not configured' });

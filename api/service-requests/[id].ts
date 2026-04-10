@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { enforceBrowserOrigin, enforceSensitiveApiEnabled } from './_security';
+import { enforceBrowserOrigin, enforceSensitiveApiEnabled } from '../_security';
 import { getFilingProvider } from '@/services/filing/providers';
 import { ensureFilingTables, getServiceRequest } from '@/services/filing/supabase';
 import type { FilingProviderKey } from '@/types/filing';

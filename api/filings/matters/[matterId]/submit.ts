@@ -1,15 +1,8 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { enforceBrowserOrigin, enforceSensitiveApiEnabled } from './_security';
+import { enforceBrowserOrigin, enforceSensitiveApiEnabled } from '../../../_security';
 import { getFilingProvider } from '@/services/filing/providers';
 import { parseJsonBody } from '@/services/filing/http';
-import {
-  buildDocument,
-  buildSubmission,
-  ensureFilingTables,
-  getFilingMatter,
-  upsertFilingDocument,
-  upsertFilingSubmission,
-} from '@/services/filing/supabase';
+import { buildSubmission, ensureFilingTables, getFilingMatter, upsertFilingSubmission } from '@/services/filing/supabase';
 import type { FilingProviderKey, SubmitFilingInput } from '@/types/filing';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -21,8 +14,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (!enforceSensitiveApiEnabled(res)) return;
   if (!enforceBrowserOrigin(req, res)) return;
 
-  const body = parseJsonBody<SubmitFilingInput & { provider?: FilingProviderKey; matterId?: string }>(req);
-  const matterId = String(body?.matterId || '').trim();
+  const matterId = String(req.query.matterId || '').trim();
+  const body = parseJsonBody<SubmitFilingInput & { provider?: FilingProviderKey }>(req);
 
   if (!matterId) {
     return res.status(400).json({ error: 'matterId is required' });
@@ -59,27 +52,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     })
   );
 
-  const documents = await Promise.all(
-    body.documents.map((doc) =>
-      upsertFilingDocument(
-        buildDocument({
-          id: doc.internalDocumentId,
-          matterId,
-          submissionId: submission.id,
-          title: doc.title,
-          fileUrl: doc.fileUrl,
-          mimeType: 'application/pdf',
-          courtFormCode: doc.courtFormCode,
-        })
-      )
-    )
-  );
-
   return res.status(200).json({
     matter,
     provider: providerKey,
     submission,
-    documents,
     result,
   });
 }

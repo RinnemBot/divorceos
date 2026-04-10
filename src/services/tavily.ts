@@ -1,5 +1,4 @@
-const TAVILY_API_KEY = import.meta.env.VITE_TAVILY_API_KEY || '';
-const TAVILY_API_URL = 'https://api.tavily.com/search';
+const TAVILY_API_URL = '/api/research';
 
 export interface TavilySearchResult {
   title: string;
@@ -24,7 +23,6 @@ export async function searchCaliforniaDivorceInfo(query: string): Promise<Tavily
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        api_key: TAVILY_API_KEY,
         query: enhancedQuery,
         search_depth: 'advanced',
         include_answer: true,
@@ -69,7 +67,6 @@ export async function searchCourtForms(formType: string): Promise<TavilySearchRe
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        api_key: TAVILY_API_KEY,
         query,
         search_depth: 'basic',
         max_results: 10,
@@ -99,7 +96,6 @@ export async function getLatestCaseLaw(topic: string): Promise<TavilySearchResul
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        api_key: TAVILY_API_KEY,
         query,
         search_depth: 'advanced',
         max_results: 5,

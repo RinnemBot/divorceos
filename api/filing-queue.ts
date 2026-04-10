@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
+import { enforceBrowserOrigin, enforceSensitiveApiEnabled } from './_security';
 import type {
   FilingQueueItem,
   FilingQueueSummary,
@@ -370,6 +371,9 @@ async function handlePatch(req: VercelRequest, res: VercelResponse) {
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  if (!enforceSensitiveApiEnabled(res)) return;
+  if (!enforceBrowserOrigin(req, res)) return;
+
   if (req.method === 'OPTIONS') {
     res.setHeader('Allow', 'GET,POST,PATCH,OPTIONS');
     return res.status(204).end();

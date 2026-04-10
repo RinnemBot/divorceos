@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import Stripe from 'stripe';
+import { enforceBrowserOrigin, enforceRateLimit, sanitizeReturnUrl } from './_security';
 
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 
@@ -31,6 +32,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
+  if (!enforceBrowserOrigin(req, res)) return;
+  if (!enforceRateLimit(req, res, 'checkout', 10, 60_000)) return;
+
   if (!stripe) {
     return res.status(500).json({ error: 'Stripe is not configured' });
   }
@@ -60,6 +64,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(400).json({ error: `Price not configured for plan ${planId}` });
     }
 
+    const baseAppUrl = process.env.APP_URL || process.env.VITE_APP_URL || 'https://www.divorce-os.com';
+    const safeSuccessUrl = sanitizeReturnUrl(successUrl, `${baseAppUrl}/pricing?status=success`);
+    const safeCancelUrl = sanitizeReturnUrl(cancelUrl, `${baseAppUrl}/pricing?status=cancelled`);
+
     const session = await stripe.checkout.sessions.create({
       mode: 'subscription',
       payment_method_types: ['card'],
@@ -69,10 +77,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           quantity: 1,
         },
       ],
-      success_url:
-        successUrl || `${process.env.VITE_APP_URL || 'https://www.divorce-os.com'}/pricing?status=success`,
-      cancel_url:
-        cancelUrl || `${process.env.VITE_APP_URL || 'https://www.divorce-os.com'}/pricing?status=cancelled`,
+      success_url: safeSuccessUrl,
+      cancel_url: safeCancelUrl,
       customer_email: customerEmail,
       metadata: {
         planId,

@@ -1,4 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
+import { enforceBrowserOrigin, enforceSensitiveApiEnabled } from './_security';
 import { ensureFilingTables, getOpsSnapshot } from '@/services/filing/supabase';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -6,6 +7,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     res.setHeader('Allow', 'GET');
     return res.status(405).json({ error: 'Method not allowed' });
   }
+
+  if (!enforceSensitiveApiEnabled(res)) return;
+  if (!enforceBrowserOrigin(req, res)) return;
 
   const matterId = String(req.query.matterId || '').trim();
   if (!matterId) {
