@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { enforceBrowserOrigin, enforceRateLimit } from './_security';
+import { enforceBrowserOrigin, enforceRateLimit } from './_security.js';
 
 // Prefer OpenAI GPT-5.1 when available; fall back to Kimi (Moonshot) otherwise.
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;

@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { enforceBrowserOrigin, enforceRateLimit } from './_security';
+import { enforceBrowserOrigin, enforceRateLimit } from './_security.js';
 
 const TAVILY_API_KEY = process.env.TAVILY_API_KEY;
 const TAVILY_API_URL = 'https://api.tavily.com/search';

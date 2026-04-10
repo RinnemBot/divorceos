@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import Stripe from 'stripe';
-import { enforceBrowserOrigin, enforceRateLimit, sanitizeReturnUrl } from './_security';
+import { enforceBrowserOrigin, enforceRateLimit, sanitizeReturnUrl } from './_security.js';
 
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 

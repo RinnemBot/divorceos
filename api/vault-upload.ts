@@ -2,7 +2,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import formidable, { type Fields, type Files } from 'formidable';
 import { promises as fs } from 'fs';
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
-import { enforceBrowserOrigin, enforceSensitiveApiEnabled } from './_security';
+import { enforceBrowserOrigin, enforceSensitiveApiEnabled } from './_security.js';
 
 export const config = {
   api: {

@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
-import { enforceBrowserOrigin, enforceSensitiveApiEnabled } from './_security';
+import { enforceBrowserOrigin, enforceSensitiveApiEnabled } from './_security.js';
 
 const SIGNED_URL_TTL_SECONDS = 60 * 5; // 5 minutes
 const MAX_RESULTS = 100;
