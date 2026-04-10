@@ -112,10 +112,10 @@ interface IntentResult {
 function detectIntent(message: string): IntentResult {
   const lower = message.toLowerCase();
 
-  if (/(abuse|domestic violence|restraining order|emergency custody|ex parte|kidnap|abduction|unsafe|threat)/.test(lower)) {
+  if (/(abuse|domestic violence|restraining order|emergency custody|ex parte|kidnap|abduction|unsafe|threat|dv hearing|protective order)/.test(lower)) {
     return { intent: 'urgent_risk', urgency: 'urgent' };
   }
-  if (/(lawyer|attorney|represent me|trial|hearing|high asset|business|complex case)/.test(lower)) {
+  if (/(lawyer|attorney|represent me|trial|high asset|business|complex case)/.test(lower)) {
     return { intent: 'lawyer_referral', urgency: 'normal' };
   }
   if (/(price|pricing|plan|subscription|cost)/.test(lower)) {
@@ -152,9 +152,9 @@ function getIntentGuidance(intent: ChatIntent): string {
     case 'filing_concierge':
       return 'Explain how concierge reduces paperwork burden and direct them toward the concierge workflow.';
     case 'lawyer_referral':
-      return 'Explain briefly why this looks lawyer-worthy and recommend a California family-law attorney without sounding alarmist.';
+      return 'Still answer the user’s practical question first. Then explain briefly why a lawyer could help on top of that. Do not turn the whole reply into a referral pitch.';
     case 'urgent_risk':
-      return 'Be explicit that this may be urgent. Recommend immediate attorney, court, or emergency support where appropriate.';
+      return 'Be explicit that this may be urgent, but still give concrete practical guidance first. If the user asks how to prepare, plan, document, or show up at court, answer that directly before suggesting attorney, court, or emergency support.';
     case 'pricing_sales':
       return 'Answer pricing simply and steer to the plan that matches the user intent.';
     default:
