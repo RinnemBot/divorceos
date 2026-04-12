@@ -4,7 +4,8 @@ import { enforceBrowserOrigin, enforceRateLimit } from './_security.js';
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const OPENAI_TTS_MODEL = process.env.OPENAI_TTS_MODEL || 'gpt-4o-mini-tts';
 const OPENAI_TTS_VOICE = process.env.OPENAI_TTS_VOICE || 'sage';
-const OPENAI_TTS_SPEED = Number(process.env.OPENAI_TTS_SPEED || '1.15');
+const OPENAI_TTS_SPEED = Number(process.env.OPENAI_TTS_SPEED || '1.22');
+const OPENAI_TTS_INSTRUCTIONS = process.env.OPENAI_TTS_INSTRUCTIONS || 'Speak in a professional, kind, charismatic, and confident tone. Sound warm, clear, reassuring, and naturally conversational.';
 const OPENAI_TTS_URL = 'https://api.openai.com/v1/audio/speech';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -39,7 +40,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       voice: OPENAI_TTS_VOICE,
       input: clippedInput,
       format: 'mp3',
-      speed: Number.isFinite(OPENAI_TTS_SPEED) ? OPENAI_TTS_SPEED : 1.15,
+      speed: Number.isFinite(OPENAI_TTS_SPEED) ? OPENAI_TTS_SPEED : 1.22,
+      instructions: OPENAI_TTS_INSTRUCTIONS,
     }),
   });
 
