@@ -116,9 +116,28 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
   const shouldSpeakNextReplyRef = useRef(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const speechRequestIdRef = useRef(0);
+  const speechAbortControllerRef = useRef<AbortController | null>(null);
+  const currentSpeechTextRef = useRef('');
   const maxAttachments = 4;
 
   const speechRecognitionSupported = typeof window !== 'undefined' && Boolean((window as any).SpeechRecognition || (window as any).webkitSpeechRecognition);
+
+  const stopSpeaking = () => {
+    speechRequestIdRef.current += 1;
+    speechAbortControllerRef.current?.abort();
+    speechAbortControllerRef.current = null;
+    currentSpeechTextRef.current = '';
+
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      audioRef.current.src = '';
+      audioRef.current.load();
+      audioRef.current = null;
+    }
+
+    setIsSpeaking(false);
+  };
 
   const formatFileSize = (bytes: number) => {
     if (!bytes) return '0 KB';
@@ -227,11 +246,7 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
   }, [prefillPrompt, onPrefillConsumed]);
 
   const startNewChat = () => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current = null;
-      setIsSpeaking(false);
-    }
+    stopSpeaking();
     const userName = currentUser?.name || currentUser?.email?.split('@')[0] || 'Guest';
     const welcomeMessage: ChatMessage = {
       id: uuidv4(),
@@ -297,13 +312,25 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
     const safeText = text.trim();
     if (!safeText) return;
 
+    if (isSpeaking && currentSpeechTextRef.current === safeText) {
+      stopSpeaking();
+      return;
+    }
+
     const requestId = speechRequestIdRef.current + 1;
     speechRequestIdRef.current = requestId;
+    currentSpeechTextRef.current = safeText;
 
     try {
+      speechAbortControllerRef.current?.abort();
+      const abortController = new AbortController();
+      speechAbortControllerRef.current = abortController;
+
       if (audioRef.current) {
         audioRef.current.pause();
         audioRef.current.currentTime = 0;
+        audioRef.current.src = '';
+        audioRef.current.load();
         audioRef.current = null;
       }
 
@@ -314,6 +341,7 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ input: safeText }),
+        signal: abortController.signal,
       });
 
       if (!response.ok) {
@@ -335,6 +363,7 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
           audioRef.current = null;
         }
         if (speechRequestIdRef.current === requestId) {
+          currentSpeechTextRef.current = '';
           setIsSpeaking(false);
         }
       };
@@ -344,13 +373,18 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
           audioRef.current = null;
         }
         if (speechRequestIdRef.current === requestId) {
+          currentSpeechTextRef.current = '';
           setIsSpeaking(false);
         }
       };
       await audio.play();
     } catch (error) {
+      if ((error as Error).name === 'AbortError') {
+        return;
+      }
       console.error('TTS playback error:', error);
       if (speechRequestIdRef.current === requestId) {
+        currentSpeechTextRef.current = '';
         setIsSpeaking(false);
       }
     }
@@ -468,11 +502,7 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
       return;
     }
 
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current = null;
-      setIsSpeaking(false);
-    }
+    stopSpeaking();
 
     transcriptRef.current = '';
     voiceSubmitPendingRef.current = false;
@@ -527,9 +557,7 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
   useEffect(() => {
     return () => {
       recognitionRef.current?.stop();
-      if (audioRef.current) {
-        audioRef.current.pause();
-      }
+      stopSpeaking();
     };
   }, []);
 
@@ -713,7 +741,7 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
                       className="inline-flex items-center gap-1 text-[11px] text-emerald-600 hover:text-emerald-700 font-medium"
                     >
                       <Volume2 className="h-3.5 w-3.5" />
-                      Play voice
+                      {isSpeaking && currentSpeechTextRef.current === message.content ? 'Stop voice' : 'Play voice'}
                     </button>
                   </div>
                 )}
