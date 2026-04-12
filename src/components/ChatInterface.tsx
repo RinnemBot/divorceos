@@ -115,6 +115,7 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
   const voiceSubmitPendingRef = useRef(false);
   const shouldSpeakNextReplyRef = useRef(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const speechRequestIdRef = useRef(0);
   const maxAttachments = 4;
 
   const speechRecognitionSupported = typeof window !== 'undefined' && Boolean((window as any).SpeechRecognition || (window as any).webkitSpeechRecognition);
@@ -296,9 +297,13 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
     const safeText = text.trim();
     if (!safeText) return;
 
+    const requestId = speechRequestIdRef.current + 1;
+    speechRequestIdRef.current = requestId;
+
     try {
       if (audioRef.current) {
         audioRef.current.pause();
+        audioRef.current.currentTime = 0;
         audioRef.current = null;
       }
 
@@ -316,6 +321,11 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
       }
 
       const blob = await response.blob();
+      if (speechRequestIdRef.current !== requestId) {
+        setIsSpeaking(false);
+        return;
+      }
+
       const audioUrl = URL.createObjectURL(blob);
       const audio = new Audio(audioUrl);
       audioRef.current = audio;
@@ -324,19 +334,25 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
         if (audioRef.current === audio) {
           audioRef.current = null;
         }
-        setIsSpeaking(false);
+        if (speechRequestIdRef.current === requestId) {
+          setIsSpeaking(false);
+        }
       };
       audio.onerror = () => {
         URL.revokeObjectURL(audioUrl);
         if (audioRef.current === audio) {
           audioRef.current = null;
         }
-        setIsSpeaking(false);
+        if (speechRequestIdRef.current === requestId) {
+          setIsSpeaking(false);
+        }
       };
       await audio.play();
     } catch (error) {
       console.error('TTS playback error:', error);
-      setIsSpeaking(false);
+      if (speechRequestIdRef.current === requestId) {
+        setIsSpeaking(false);
+      }
     }
   };
 
