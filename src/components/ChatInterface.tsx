@@ -9,6 +9,9 @@ import {
   Send, 
   User as UserIcon, 
   Bot, 
+  Mic,
+  Square,
+  Volume2,
   Loader2, 
   History,
   Plus,
@@ -79,6 +82,17 @@ interface ChatInterfaceProps {
   onPrefillConsumed?: () => void;
 }
 
+type BrowserSpeechRecognition = {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  onresult: ((event: any) => void) | null;
+  onerror: ((event: any) => void) | null;
+  onend: (() => void) | null;
+  start: () => void;
+  stop: () => void;
+};
+
 export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }: ChatInterfaceProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
@@ -86,6 +100,8 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
   const [sessions, setSessions] = useState<ChatSession[]>([]);
   const [currentSessionId, setCurrentSessionId] = useState<string | null>(null);
   const [showHistory, setShowHistory] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const shouldAutoScrollRef = useRef(false);
@@ -94,7 +110,14 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
 
   const [attachments, setAttachments] = useState<ComposerAttachment[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const recognitionRef = useRef<BrowserSpeechRecognition | null>(null);
+  const transcriptRef = useRef('');
+  const voiceSubmitPendingRef = useRef(false);
+  const shouldSpeakNextReplyRef = useRef(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const maxAttachments = 4;
+
+  const speechRecognitionSupported = typeof window !== 'undefined' && Boolean((window as any).SpeechRecognition || (window as any).webkitSpeechRecognition);
 
   const formatFileSize = (bytes: number) => {
     if (!bytes) return '0 KB';
@@ -203,6 +226,11 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
   }, [prefillPrompt, onPrefillConsumed]);
 
   const startNewChat = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+      setIsSpeaking(false);
+    }
     const userName = currentUser?.name || currentUser?.email?.split('@')[0] || 'Guest';
     const welcomeMessage: ChatMessage = {
       id: uuidv4(),
@@ -264,8 +292,57 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
     }
   };
 
-  const handleSend = async () => {
-    if ((input.trim().length === 0 && attachments.length === 0) || isLoading) return;
+  const speakText = async (text: string) => {
+    const safeText = text.trim();
+    if (!safeText) return;
+
+    try {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+
+      setIsSpeaking(true);
+      const response = await fetch('/api/tts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ input: safeText }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`TTS error: ${response.status}`);
+      }
+
+      const blob = await response.blob();
+      const audioUrl = URL.createObjectURL(blob);
+      const audio = new Audio(audioUrl);
+      audioRef.current = audio;
+      audio.onended = () => {
+        URL.revokeObjectURL(audioUrl);
+        if (audioRef.current === audio) {
+          audioRef.current = null;
+        }
+        setIsSpeaking(false);
+      };
+      audio.onerror = () => {
+        URL.revokeObjectURL(audioUrl);
+        if (audioRef.current === audio) {
+          audioRef.current = null;
+        }
+        setIsSpeaking(false);
+      };
+      await audio.play();
+    } catch (error) {
+      console.error('TTS playback error:', error);
+      setIsSpeaking(false);
+    }
+  };
+
+  const handleSend = async (overrideInput?: string, fromVoice: boolean = false) => {
+    const draftInput = overrideInput ?? input;
+    if ((draftInput.trim().length === 0 && attachments.length === 0) || isLoading) return;
     
     if (currentUser) {
       const canChat = authService.canUserChat(currentUser);
@@ -287,7 +364,7 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
           .map((file, index) => `Attachment ${index + 1}: ${file.name}${file.sizeLabel ? ` (${file.sizeLabel})` : ''} [${file.type === 'image' ? 'Image' : 'Document'}]`)
           .join('\n')
       : '';
-    const baseContent = input.trim();
+    const baseContent = draftInput.trim();
     const composedContent = attachmentSummary
       ? [baseContent, `[Attachments]\n${attachmentSummary}`].filter(Boolean).join('\n\n')
       : baseContent;
@@ -309,6 +386,7 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
     setInput('');
     clearAttachments();
     setIsLoading(true);
+    shouldSpeakNextReplyRef.current = fromVoice;
     
     try {
       // Increment chat count for logged in users
@@ -339,6 +417,11 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
       shouldAutoScrollRef.current = true;
       setMessages(finalMessages);
       saveCurrentSession(finalMessages);
+
+      if (shouldSpeakNextReplyRef.current && aiResponse.content.trim()) {
+        shouldSpeakNextReplyRef.current = false;
+        void speakText(aiResponse.content);
+      }
     } catch (error) {
       console.error('Chat error:', error);
       const errorMessage: ChatMessage = {
@@ -349,10 +432,90 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
       };
       shouldAutoScrollRef.current = true;
       setMessages([...updatedMessages, errorMessage]);
+      shouldSpeakNextReplyRef.current = false;
     } finally {
       setIsLoading(false);
     }
   };
+
+  const toggleVoiceInput = () => {
+    if (isLoading) return;
+
+    if (isListening) {
+      voiceSubmitPendingRef.current = true;
+      recognitionRef.current?.stop();
+      return;
+    }
+
+    const SpeechRecognitionConstructor = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognitionConstructor) {
+      return;
+    }
+
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+      setIsSpeaking(false);
+    }
+
+    transcriptRef.current = '';
+    voiceSubmitPendingRef.current = false;
+
+    const recognition: BrowserSpeechRecognition = new SpeechRecognitionConstructor();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = 'en-US';
+    recognition.onresult = (event: any) => {
+      let finalTranscript = '';
+      let interimTranscript = '';
+
+      for (let i = 0; i < event.results.length; i += 1) {
+        const text = event.results[i][0]?.transcript || '';
+        if (event.results[i].isFinal) {
+          finalTranscript += text;
+        } else {
+          interimTranscript += text;
+        }
+      }
+
+      const combinedTranscript = [finalTranscript.trim(), interimTranscript.trim()].filter(Boolean).join(' ');
+      transcriptRef.current = combinedTranscript;
+      setInput(combinedTranscript);
+    };
+    recognition.onerror = (event: any) => {
+      console.error('Speech recognition error:', event);
+      setIsListening(false);
+      recognitionRef.current = null;
+    };
+    recognition.onend = () => {
+      setIsListening(false);
+      recognitionRef.current = null;
+      const finalText = transcriptRef.current.trim() || input.trim();
+
+      if (voiceSubmitPendingRef.current && finalText) {
+        transcriptRef.current = '';
+        voiceSubmitPendingRef.current = false;
+        void handleSend(finalText, true);
+        setInput('');
+        return;
+      }
+
+      voiceSubmitPendingRef.current = false;
+    };
+
+    recognitionRef.current = recognition;
+    setIsListening(true);
+    recognition.start();
+  };
+
+  useEffect(() => {
+    return () => {
+      recognitionRef.current?.stop();
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+    };
+  }, []);
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -524,8 +687,18 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
                   {renderMessageContent(message.content)}
                 </div>
                 {message.role === 'assistant' && (
-                  <div className="text-[11px] uppercase tracking-wide text-emerald-600/80 mt-3 font-medium">
-                    Maria
+                  <div className="flex items-center justify-between gap-3 mt-3">
+                    <div className="text-[11px] uppercase tracking-wide text-emerald-600/80 font-medium">
+                      Maria
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => void speakText(message.content)}
+                      className="inline-flex items-center gap-1 text-[11px] text-emerald-600 hover:text-emerald-700 font-medium"
+                    >
+                      <Volume2 className="h-3.5 w-3.5" />
+                      Play voice
+                    </button>
                   </div>
                 )}
                 {message.attachments && message.attachments.length > 0 && (
@@ -681,7 +854,16 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
             disabled={isLoading}
           />
           <Button
-            onClick={handleSend}
+            type="button"
+            onClick={toggleVoiceInput}
+            disabled={isLoading || !speechRecognitionSupported}
+            variant="outline"
+            className={`rounded-2xl h-12 px-4 border-slate-200 ${isListening ? 'bg-rose-50 border-rose-300 text-rose-700 hover:bg-rose-100' : 'text-slate-600 hover:text-emerald-700'}`}
+          >
+            {isListening ? <Square className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+          </Button>
+          <Button
+            onClick={() => void handleSend()}
             disabled={((!input.trim() && attachments.length === 0) || isLoading)}
             className="bg-emerald-700 hover:bg-emerald-800 rounded-2xl h-12 px-4 shadow-sm"
           >
@@ -692,6 +874,15 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
             )}
           </Button>
         </div>
+        <p className="text-xs text-slate-400 mt-2 text-center">
+          {speechRecognitionSupported
+            ? isListening
+              ? 'Listening... tap stop when you’re done, and Maria will answer out loud.'
+              : isSpeaking
+                ? 'Maria is speaking.'
+                : 'Tap the mic to start, tap stop when you’re done.'
+            : 'Voice input depends on browser support. Text chat still works normally.'}
+        </p>
         <p className="text-xs text-gray-400 mt-2 text-center">
           Maria gives California divorce information, not legal advice. For advice about your specific facts, talk to an attorney.
         </p>
