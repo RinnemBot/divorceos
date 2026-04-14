@@ -356,7 +356,7 @@ export function ChildSupportEstimator({ initialCountyId, currentUserId }: ChildS
 
   const combinedSupport = Math.max(0, estimate.guideline + spousalEstimate.amount);
 
-  const handleSaveScenario = () => {
+  const handleSaveScenario = async () => {
     if (!currentUserId) {
       toast.error('Sign in to save scenarios', {
         description: 'Create an account or sign in to store runs in your case file.',
@@ -366,27 +366,34 @@ export function ChildSupportEstimator({ initialCountyId, currentUserId }: ChildS
     const defaultTitle = `Support run ${new Date().toLocaleDateString()}`;
     const title = window.prompt('Name this support scenario', defaultTitle);
     if (!title) return;
-    saveSupportScenario(currentUserId, {
-      title: title.trim(),
-      childSupport: Number(estimate.guideline.toFixed(2)),
-      spousalSupport: Number(spousalEstimate.amount.toFixed(2)),
-      combinedSupport: Number(combinedSupport.toFixed(2)),
-      estimatePayer: estimate.payer,
-      snapshot: {
-        parentAIncome,
-        parentBIncome,
-        parentATimeShare,
-        childrenCount,
-        childcare,
-        medical,
-        countyId,
-        countyName: countyId ? COUNTY_GUIDES.find((guide) => guide.id === countyId)?.name : undefined,
-        mode,
-      },
-    });
-    toast.success('Scenario saved', {
-      description: 'Profile → Saved Files has the print-ready version.',
-    });
+
+    try {
+      await saveSupportScenario(currentUserId, {
+        title: title.trim(),
+        childSupport: Number(estimate.guideline.toFixed(2)),
+        spousalSupport: Number(spousalEstimate.amount.toFixed(2)),
+        combinedSupport: Number(combinedSupport.toFixed(2)),
+        estimatePayer: estimate.payer,
+        snapshot: {
+          parentAIncome,
+          parentBIncome,
+          parentATimeShare,
+          childrenCount,
+          childcare,
+          medical,
+          countyId,
+          countyName: countyId ? COUNTY_GUIDES.find((guide) => guide.id === countyId)?.name : undefined,
+          mode,
+        },
+      });
+      toast.success('Scenario saved', {
+        description: 'Profile → Saved Files has the print-ready version.',
+      });
+    } catch (error) {
+      toast.error('Unable to save scenario', {
+        description: error instanceof Error ? error.message : 'Please try again.',
+      });
+    }
   };
 
   const handleGrossFieldChange = (parent: ParentKey, field: GrossField, rawValue: string) => {

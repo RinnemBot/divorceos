@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { enforceBrowserOrigin, enforceRateLimit } from './_security.js';
+import { incrementChatCount, isAdminEmail, requireAuthenticatedUser, type AuthUser } from './_auth.js';
 
 // Prefer OpenAI GPT-5.1 when available; fall back to Kimi (Moonshot) otherwise.
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
@@ -11,6 +12,85 @@ const KIMI_MODEL = process.env.KIMI_MODEL || 'kimi-k2.5';
 const KIMI_API_URL = process.env.KIMI_API_URL || 'https://api.moonshot.cn/v1/chat/completions';
 
 const DEFAULT_PROVIDER = process.env.AI_PROVIDER || (OPENAI_API_KEY ? 'openai' : 'kimi');
+const MAX_MESSAGE_COUNT = 40;
+const MAX_MESSAGE_CHARS = 4_000;
+const MAX_TOTAL_CHARS = 40_000;
+const CHAT_LIMITS: Record<string, number> = {
+  free: 3,
+  basic: 20,
+  essential: Number.POSITIVE_INFINITY,
+  plus: Number.POSITIVE_INFINITY,
+  'done-for-you': Number.POSITIVE_INFINITY,
+};
+
+function formatProfileContext(user: AuthUser) {
+  const profile = user.profile;
+  if (!profile) return null;
+
+  const lines = [
+    'Known user profile and case context from DivorceOS account settings. Use this to personalize guidance, but do not pretend the user said it in this message.',
+  ];
+
+  const displayName = [profile.firstName, profile.lastName].filter(Boolean).join(' ').trim();
+  if (displayName) lines.push(`- Name: ${displayName}`);
+  if (profile.county) lines.push(`- County: ${profile.county}`);
+  if (profile.caseStage) lines.push(`- Case stage: ${profile.caseStage}`);
+  if (profile.caseNumber) lines.push(`- Case number: ${profile.caseNumber}`);
+  if (profile.marriageDate) lines.push(`- Marriage date: ${profile.marriageDate}`);
+  if (profile.separationDate) lines.push(`- Separation date: ${profile.separationDate}`);
+  if (profile.filingDate) lines.push(`- Filing date: ${profile.filingDate}`);
+  if (profile.serviceDate) lines.push(`- Service date: ${profile.serviceDate}`);
+  if (profile.nextHearingDate) lines.push(`- Next hearing date: ${profile.nextHearingDate}`);
+  if (profile.representationStatus) lines.push(`- Representation status: ${profile.representationStatus}`);
+  if (typeof profile.hasChildren === 'boolean') lines.push(`- Has children: ${profile.hasChildren ? 'yes' : 'no'}`);
+  if (typeof profile.childrenCount === 'number' && profile.childrenCount > 0) lines.push(`- Children count: ${profile.childrenCount}`);
+  if (Array.isArray(profile.childrenAges) && profile.childrenAges.length) lines.push(`- Children ages: ${profile.childrenAges.join(', ')}`);
+  if (Array.isArray(profile.primaryGoals) && profile.primaryGoals.length) lines.push(`- Primary goals: ${profile.primaryGoals.join(', ')}`);
+
+  return lines.length > 1 ? lines.join('\n') : null;
+}
+
+function injectProfileContext(messages: { role: string; content: string }[], user: AuthUser) {
+  const profileContext = formatProfileContext(user);
+  if (!profileContext) return messages;
+
+  const profileMessage = { role: 'system' as const, content: profileContext };
+  const firstSystemIndex = messages.findIndex((message) => message.role === 'system');
+
+  if (firstSystemIndex >= 0) {
+    const next = [...messages];
+    next.splice(firstSystemIndex + 1, 0, profileMessage);
+    return next;
+  }
+
+  return [profileMessage, ...messages];
+}
+
+function sanitizeMessages(input: unknown) {
+  if (!Array.isArray(input)) return null;
+  if (input.length === 0 || input.length > MAX_MESSAGE_COUNT) return null;
+
+  let totalChars = 0;
+  const sanitized = input.map((item) => {
+    if (!item || typeof item !== 'object') return null;
+    const role = typeof (item as { role?: unknown }).role === 'string' ? (item as { role: string }).role : '';
+    const content = typeof (item as { content?: unknown }).content === 'string' ? (item as { content: string }).content.trim() : '';
+
+    if (!['system', 'user', 'assistant'].includes(role) || !content) {
+      return null;
+    }
+
+    const clippedContent = content.slice(0, MAX_MESSAGE_CHARS);
+    totalChars += clippedContent.length;
+    return { role, content: clippedContent };
+  });
+
+  if (sanitized.some((entry) => !entry) || totalChars > MAX_TOTAL_CHARS) {
+    return null;
+  }
+
+  return sanitized as { role: string; content: string }[];
+}
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
@@ -18,7 +98,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   if (!enforceBrowserOrigin(req, res)) return;
-  if (!enforceRateLimit(req, res, 'chat', 20, 60_000)) return;
+  if (!enforceRateLimit(req, res, 'chat', 12, 60_000)) return;
+
+  const currentUser = await requireAuthenticatedUser(req, res);
+  if (!currentUser) return;
+
+  const chatLimit = CHAT_LIMITS[currentUser.subscription] ?? 0;
+  if (!isAdminEmail(currentUser.email) && Number.isFinite(chatLimit) && currentUser.chatCount >= chatLimit) {
+    return res.status(403).json({ error: 'Daily chat limit reached for this account' });
+  }
 
   const provider = (req.query.provider as string) || DEFAULT_PROVIDER;
 
@@ -39,19 +127,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const { messages, temperature = 0.8, max_tokens = 2000 } = req.body;
+    const { messages, temperature = 0.8, max_tokens = 2000 } = req.body ?? {};
+    const sanitizedMessages = sanitizeMessages(messages);
 
-    if (!messages || !Array.isArray(messages)) {
-      return res.status(400).json({ error: 'Messages array required' });
-    }
-
-    if (messages.length > 40) {
-      return res.status(400).json({ error: 'Too many messages in request' });
+    if (!sanitizedMessages) {
+      return res.status(400).json({ error: 'Invalid messages payload' });
     }
 
     const requestedMaxTokens = Number(max_tokens);
     const safeMaxTokens = Number.isFinite(requestedMaxTokens) ? Math.min(Math.max(requestedMaxTokens, 1), 1200) : 1200;
     const safeTemperature = Math.min(Math.max(Number(temperature) || 0.8, 0), 1.2);
+    const contextMessages = injectProfileContext(sanitizedMessages, currentUser);
 
     if (provider === 'openai') {
       const response = await fetch(OPENAI_API_URL, {
@@ -62,7 +148,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         },
         body: JSON.stringify({
           model: OPENAI_MODEL,
-          messages,
+          messages: contextMessages,
           temperature: safeTemperature,
           max_completion_tokens: safeMaxTokens,
         }),
@@ -73,7 +159,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         console.error('OpenAI API error:', response.status, errorText);
         if (KIMI_API_KEY) {
           console.warn('Falling back to Kimi provider due to OpenAI failure.');
-          return proxyKimi(messages, safeTemperature, safeMaxTokens, res);
+          return proxyKimi(contextMessages, safeTemperature, safeMaxTokens, res, currentUser.id);
         }
         return res.status(response.status).json({ error: 'Upstream AI provider error' });
       }
@@ -85,15 +171,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         console.error('OpenAI returned empty content payload');
         if (KIMI_API_KEY) {
           console.warn('Falling back to Kimi provider due to empty OpenAI content.');
-          return proxyKimi(messages, safeTemperature, safeMaxTokens, res);
+          return proxyKimi(contextMessages, safeTemperature, safeMaxTokens, res, currentUser.id);
         }
         return res.status(502).json({ error: 'OpenAI returned an empty response' });
       }
 
+      await incrementChatCount(currentUser.id);
       return res.status(200).json({ ...data, provider: 'openai' });
     }
 
-    return proxyKimi(messages, safeTemperature, safeMaxTokens, res);
+    return proxyKimi(contextMessages, safeTemperature, safeMaxTokens, res, currentUser.id);
   } catch (error) {
     console.error('API route error:', error);
     return res.status(500).json({
@@ -107,7 +194,8 @@ async function proxyKimi(
   messages: { role: string; content: string }[],
   temperature: number,
   max_tokens: number,
-  res: VercelResponse
+  res: VercelResponse,
+  userId: string
 ) {
   if (!KIMI_API_KEY) {
     return res.status(500).json({
@@ -137,5 +225,6 @@ async function proxyKimi(
   }
 
   const data = await response.json();
+  await incrementChatCount(userId);
   return res.status(200).json({ ...data, provider: 'kimi' });
 }

@@ -139,21 +139,23 @@ export const FORM_GUIDANCE: Record<string, FormGuidanceEntry> = {
   },
   'fl-300': {
     basic: `• Use FL-300 whenever you want the court to make or change temporary orders (custody, visitation, support, property, fees).
+• Use the current courts.ca.gov version. FL-300 was revised in mid-2025, so old saved PDFs may be stale.
 • Check every box that applies and reference attachments (FL-311 for parenting time, FL-150 for support, FL-105 for UCCJEA info).
 • Attach a declaration (FL-300(A)) that explains the facts supporting your request. Courts won’t rule on vague or unsupported boxes.
 • Serve the other party and file proofs on time—16 court days before the hearing for mailed service (longer if out of state).`,
     detailed: `**FL-300 (Request for Order) walkthrough**
-1. **Caption & hearing info** – match the case caption exactly. If you already have a hearing date from the clerk, fill it in; otherwise leave blank.
-2. **Orders requested (Items 1–5)** – check every type of relief you want (custody, visitation, child support, spousal support, attorney fees, property control). Use the “Other orders” line for unique requests (travel restrictions, therapy, etc.).
-3. **Emergency (ex parte) orders** – only check Item 6 if there’s immediate harm; be prepared to attach FL-305 and a notice declaration per local rule.
-4. **Supporting declaration (FL-300(A))** – tell the story in plain language: What changed? Why is the current order unworkable? Tie every fact to the box you checked.
-5. **Attachments** –
+1. **Use the current version** – FL-300 was revised in 2025, so tell users to confirm the latest Judicial Council PDF before filing.
+2. **Caption & hearing info** – match the case caption exactly. If you already have a hearing date from the clerk, fill it in; otherwise leave blank.
+3. **Orders requested (Items 1–5)** – check every type of relief you want (custody, visitation, child support, spousal support, attorney fees, property control). Use the “Other orders” line for unique requests (travel restrictions, therapy, etc.).
+4. **Emergency (ex parte) orders** – only check Item 6 if there’s immediate harm; be prepared to attach FL-305 and a notice declaration per local rule.
+5. **Supporting declaration (FL-300(A))** – tell the story in plain language: What changed? Why is the current order unworkable? Tie every fact to the box you checked.
+6. **Attachments** –
    • Custody/visitation → add FL-311 (parenting schedule) and FL-105 if minors were not listed before.
    • Support → attach FL-150 plus guideline numbers (DissoMaster) if available.
    • Property/fees → explain the assets, debts, or § 2030 fee factors.
-6. **Sign + copy** – sign under penalty of perjury, make two copies, and file with the clerk (fee is $60 unless a waiver is on file).
-7. **Service** – personal service is safest; if mailing, count backward 16 court days (add 5 calendar days for in-state mail, 10 for out-of-state). Always file FL-330/FL-335 proofs.
-8. **Hearing prep** – bring originals + copies of exhibits and the proof of service. If the other party doesn’t respond, you can ask the judge to adopt your proposed order (FL-340/FL-341/FL-342/FL-343).`,
+7. **Sign + copy** – sign under penalty of perjury, make two copies, and file with the clerk (fee is $60 unless a waiver is on file).
+8. **Service** – personal service is safest; if mailing, count backward 16 court days (add 5 calendar days for in-state mail, 10 for out-of-state). Always file FL-330/FL-335 proofs.
+9. **Hearing prep** – bring originals + copies of exhibits and the proof of service. If the other party doesn’t respond, you can ask the judge to adopt your proposed order (FL-340/FL-341/FL-342/FL-343).`,
   },
   'fl-115': {
     basic: `• Proof of Service of Summons—file after the Respondent is personally served.
@@ -176,6 +178,17 @@ export const FORM_GUIDANCE: Record<string, FormGuidanceEntry> = {
 - Include two copies and a self-addressed stamped envelope so the Respondent can sign the “Acknowledgment” and return it.
 - Once returned, attach the signed acknowledgment to FL-117 and file it with the clerk; it has the same legal effect as personal service and starts the 30-day response period.
 - If the Respondent fails to return it, you must revert to traditional service and cannot recover the filing fee for this attempt.`,
+  },
+  'fl-700': {
+    basic: `• Joint Petition path for couples who want to file together.
+• Best fit when both spouses or partners expect agreement on all major issues.
+• Use the current courts.ca.gov version because this is a newer form and workflow.`,
+    detailed: `**FL-700 (Joint Petition)**
+- This newer California form is for married spouses or registered domestic partners who want to proceed together instead of using the standard petitioner/respondent setup.
+- It is strongest when both sides are already aligned, or close to aligned, on custody, support, property, and judgment terms.
+- There is no strategic advantage to being Petitioner 1 or Petitioner 2, but the labels need to stay consistent across the packet.
+- Maria should flag this as a smoother uncontested path, not as the right choice for high-conflict, coercive, or domestic-violence situations.
+- Always confirm the latest instructions and companion information sheet on courts.ca.gov before the user files.`,
   },
   'fl-272': {
     basic: `• Default/Uncontested Judgment declaration.
@@ -211,10 +224,13 @@ export const FORM_GUIDANCE: Record<string, FormGuidanceEntry> = {
   },
   'fl-341': {
     basic: `• FL-341 (and sub-attachments A-D) outline legal/physical custody and visitation details.
+• Use the current courts.ca.gov version. The FL-341 series was refreshed for 2026.
 • Attach the subforms that apply to your case (e.g., Attachment A for Supervised Visitation).`,
     detailed: `**FL-341 series**
+- Use the current version. The FL-341 series was refreshed for 2026, so older local packets may lag.
 - Use the main FL-341 page to state who has legal custody, physical custody, and a general visitation schedule.
 - Attachment (A) is for Supervised Visitation, (B) for Child Abduction Prevention, (C) for Children’s Holiday Schedule, (D) for Order for Joint Legal Custody.
+- Be precise about exchange times, locations, transportation, travel limits, and virtual-contact terms so the order is enforceable.
 - Check only the attachments you are filing so the clerk/judge knows which provisions to review.
 - If you’re stipulating, initial every page. If you’re submitting for a hearing, highlight the key clauses in your declaration so the judicial officer understands why you need them.`,
   },

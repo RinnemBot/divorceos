@@ -97,6 +97,9 @@ type ChatIntent =
   | 'education'
   | 'workflow_start_divorce'
   | 'workflow_respond_divorce'
+  | 'joint_petition'
+  | 'missed_notice'
+  | 'hearing_prep'
   | 'forms_help'
   | 'support_tools'
   | 'filing_concierge'
@@ -117,6 +120,15 @@ function detectIntent(message: string): IntentResult {
   }
   if (/(lawyer|attorney|represent me|trial|high asset|business|complex case)/.test(lower)) {
     return { intent: 'lawyer_referral', urgency: 'normal' };
+  }
+  if (/(joint petition|file together|filing together|both agree|amicable divorce|uncontested and agree|agree on everything)/.test(lower)) {
+    return { intent: 'joint_petition', urgency: 'normal' };
+  }
+  if (/(missed hearing|missed my hearing|missed notice|never got notice|didn.t get notice|didn't get notice|did not get notice|didn.t receive notice|didn't receive notice|email notice|spam folder)/.test(lower)) {
+    return { intent: 'missed_notice', urgency: 'normal' };
+  }
+  if (/(hearing tomorrow|hearing next week|hearing prep|court hearing|rfo hearing|what do i bring to court|how do i prepare for hearing|upcoming hearing|court date)/.test(lower)) {
+    return { intent: 'hearing_prep', urgency: 'normal' };
   }
   if (/(price|pricing|plan|subscription|cost)/.test(lower)) {
     return { intent: 'pricing_sales', urgency: 'normal' };
@@ -144,9 +156,15 @@ function getIntentGuidance(intent: ChatIntent): string {
     case 'workflow_start_divorce':
       return 'Focus on the first filing steps, the first forms, and getting them unstuck fast. End with a clear invitation to start now.';
     case 'workflow_respond_divorce':
-      return 'Emphasize response timing, not ignoring service, and the next immediate step.';
+      return 'Emphasize response timing, not ignoring service, and the next immediate step. Quote the 30-day response deadline plainly when it fits. Name the likely forms when clear, especially FL-120 and related response paperwork.';
+    case 'joint_petition':
+      return 'If both sides are aligned, explain when FL-700 joint petition may fit, when it is a bad fit, and the cleanest next filing step.';
+    case 'missed_notice':
+      return 'Lead with deadline recovery and notice-check steps: email, spam, court e-notice, case docket, clerk, and whether a hearing already passed. Be concrete and calm.';
+    case 'hearing_prep':
+      return 'Give the short answer first. If it helps, add a clean hearing-prep checklist, but keep it sounding like Maria talking to one person, not a courtroom handout. Quote relevant deadlines clearly when known.';
     case 'forms_help':
-      return 'Explain the form plainly and orient the user to the right packet or forms library.';
+      return 'Explain the form plainly, use exact Judicial Council form numbers and titles, and orient the user to the right packet or forms library.';
     case 'support_tools':
       return 'Keep math concise, explain limits of estimates, and steer them into the support tools.';
     case 'filing_concierge':
@@ -158,7 +176,7 @@ function getIntentGuidance(intent: ChatIntent): string {
     case 'pricing_sales':
       return 'Answer pricing simply and steer to the plan that matches the user intent.';
     default:
-      return 'Answer directly, explain why it matters, and recommend the best next step.';
+      return 'Answer directly, explain why it matters, recommend the best next step, and be specific about exact forms or county-dependent procedure when that would reduce confusion.';
   }
 }
 
@@ -173,6 +191,21 @@ function getSuggestedActions(intent: ChatIntent): { label: string; href: string 
       return [
         { label: 'Open forms', href: '/forms' },
         { label: 'View county concierge', href: '/concierge' },
+      ];
+    case 'joint_petition':
+      return [
+        { label: 'Browse forms', href: '/forms' },
+        { label: 'Open concierge', href: '/concierge' },
+      ];
+    case 'missed_notice':
+      return [
+        { label: 'View county concierge', href: '/concierge' },
+        { label: 'Browse forms', href: '/forms' },
+      ];
+    case 'hearing_prep':
+      return [
+        { label: 'Browse forms', href: '/forms' },
+        { label: 'Open concierge', href: '/concierge' },
       ];
     case 'support_tools':
       return [{ label: 'Open support tools', href: '/support-tools' }];
@@ -204,12 +237,20 @@ function buildVoiceGuidance(userMessage: string, intent: ChatIntent): string {
     'Avoid filler like "I apologize," "great question," or "I understand this can be difficult."',
     'Use plain English. Prefer short paragraphs, natural cadence, and concrete next steps.',
     'It is okay to sound human: brief empathy, mild opinion, or a plainspoken reaction is good when it fits.',
+    'Keep the answer feeling spoken, not machine-assembled. Even checklists should sound like Maria talking.',
+    'Avoid sounding like a courtroom memo, issue-spotting outline, or sterile legal article.',
     'Do not overuse exclamation points or emoji. At most one emoji, and only if it feels natural.',
     'If the user sounds stressed, acknowledge it briefly and plainly before helping.',
     'If the answer is simple, keep it short. If the situation is complex, organize it cleanly.',
     'Do not force product mentions or workflow links into every answer. Only bring them in when they genuinely help.',
     'Avoid repetitive legal disclaimers. Give the real answer first, then add limits only where they actually matter.',
     'End by offering one useful next move, not a generic "let me know if you have questions."',
+    'If a form clearly applies, name it precisely by number and title.',
+    'If county-specific procedure may matter and the county is unknown, say that and ask for the county without turning the whole answer into questions.',
+    'Do not stack dry bullets unless the situation really needs them. Prefer 1 to 3 sharp action items over a wall of legal trivia.',
+    'When a real deadline matters, quote it early and in plain language.',
+    'If the user is asking about a hearing, use a short checklist only when it feels helpful and natural.',
+    'Only separate process versus strategy when it improves clarity. Do not force explicit labels into every answer.',
   ];
 
   if (upsetSignals) {
@@ -222,6 +263,18 @@ function buildVoiceGuidance(userMessage: string, intent: ChatIntent): string {
 
   if (intent === 'pricing_sales') {
     baseRules.push('Do not sound like a salesperson. Recommend the right plan plainly if it genuinely helps.');
+  }
+
+  if (intent === 'joint_petition') {
+    baseRules.push('When the user sounds aligned with the other side, explain fit for joint petition clearly, but name the bad-fit cases too: coercion, domestic violence, hidden assets, or real conflict.');
+  }
+
+  if (intent === 'missed_notice') {
+    baseRules.push('For missed-notice or missed-hearing situations, lead with the immediate recovery steps and what to check today. Do not bury the action items under background law.');
+  }
+
+  if (intent === 'hearing_prep') {
+    baseRules.push('For hearing-prep questions, mention what to bring and surface any timing rules early if you know them, but keep the checklist light and human.');
   }
 
   return baseRules.map((rule) => `- ${rule}`).join('\n');
@@ -583,6 +636,7 @@ Core behavior:
 4. Ask the fewest questions needed to unlock progress.
 5. Move users into the right workflow when appropriate.
 6. Be calm, sharp, warm, and practical.
+7. Sound like Maria, a real guide with judgment, not a sterile legal summary engine.
 
 Important rules:
 - Distinguish legal information from legal advice.
@@ -599,6 +653,15 @@ ${voiceGuidance}
 
 ${formGuidanceContext ? `${formGuidanceContext}\n` : ''}${topicKnowledge}
 
+Current California family law reference updates (favor these over stale habits):
+- Treat Judicial Council form versions as current-sensitive. If a user is using an old PDF or copied checklist, tell them to confirm the latest version on courts.ca.gov.
+- FL-300 (Request for Order) was revised July 1, 2025. When discussing temporary orders or modifications, assume the newer form set and attachments.
+- FL-341 and FL-341(A) were revised January 1, 2026. For custody/visitation, emphasize precise exchange terms, supervised visitation details, and virtual visitation only when it fits the child’s best interests.
+- California added FL-700 Joint Petition effective January 1, 2026 for spouses or domestic partners who are filing jointly and expect agreement on all issues. Mention it when both sides are aligned and want a smoother uncontested path.
+- Child support calculator guidance changes over time. When users ask for exact court-filed numbers, remind them certified California calculators and low-income-adjustment thresholds update and should be checked against current Judicial Council references.
+- Since July 1, 2025, some California courts can serve notices by email in family matters. If a user is worried about a missed notice or hearing, tell them to check email, spam, and any court e-notice enrollment.
+- Do not overclaim that a recent form revision changed substantive law unless you are sure. Often the safest update is procedural, practical, or form-specific.
+
 Current intent: ${intentResult.intent}
 Urgency: ${intentResult.urgency}
 Intent guidance: ${getIntentGuidance(intentResult.intent)}
@@ -608,8 +671,16 @@ Preferred response shape:
 - why it matters
 - next best step
 - optional closing offer like: "I can help you do that now."
+- When the user sounds stressed, heavy, ashamed, or stuck, open with one grounded human sentence before the mechanics.
+- It is fine to say things like "Here’s what I’d do next," "The cleanest move is," or "What worries me here is" when that helps Maria feel personal and useful.
 - Do not include section labels every time unless they genuinely help readability.
 - Do not sound like a template. Vary phrasing so replies feel alive, specific, and responsive to the exact user.
+- When a specific Judicial Council form is clearly implicated, name the exact form number and title instead of saying only "the form" or "the paperwork."
+- When county-specific procedure could change the answer, prefer county-specific next steps. If the county is unknown, say that briefly and ask for it or direct them to the county workflow.
+- If the user seems to want immediate action, give the first concrete action item in the first 2 to 3 sentences.
+- When a deadline is relevant and reasonably clear, state it plainly and early instead of burying it.
+- When the question is about a hearing, add a short checklist only if it genuinely improves clarity.
+- When legal information and strategy are different, you may separate them briefly, but do it naturally instead of sounding like a memo.
 
 When suitable, steer users into DivorceOS workflows:
 - /forms
@@ -648,6 +719,12 @@ User name: ${userName || 'there'}`;
     if (!response.ok) {
       const errorText = await response.text();
       console.error('[Maria] API error:', response.status, errorText);
+      if (response.status === 401) {
+        throw new Error('AUTH_REQUIRED');
+      }
+      if (response.status === 403) {
+        throw new Error('CHAT_LIMIT');
+      }
       throw new Error(`API error: ${response.status}`);
     }
 
@@ -663,6 +740,28 @@ User name: ${userName || 'there'}`;
     };
   } catch (error) {
     console.error('AI API error:', error);
+
+    if (error instanceof Error && error.message === 'AUTH_REQUIRED') {
+      return {
+        content: 'Please sign in again to keep chatting with Maria.',
+        topic,
+        error: true,
+        intent: intentResult.intent,
+        urgency: intentResult.urgency,
+        suggestedActions: [{ label: 'View pricing', href: '/pricing' }],
+      };
+    }
+
+    if (error instanceof Error && error.message === 'CHAT_LIMIT') {
+      return {
+        content: 'You’ve hit today’s chat limit for this account. Upgrade or try again after your daily reset.',
+        topic,
+        error: true,
+        intent: intentResult.intent,
+        urgency: intentResult.urgency,
+        suggestedActions: [{ label: 'View pricing', href: '/pricing' }],
+      };
+    }
     
     // Fallback response with error flag
     return {

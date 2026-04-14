@@ -10,8 +10,9 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Progress } from '@/components/ui/progress';
 import { CountyRoadmap } from '@/components/CountyRoadmap';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { ReferralProgram, getReferralStats } from '@/components/ReferralProgram';
+import { ReferralProgram, fetchReferralSnapshot } from '@/components/ReferralProgram';
 import { ReviewSystem } from '@/components/ReviewSystem';
+import { SavedScenariosPanel } from '@/components/SavedScenariosPanel';
 import { ConciergeQueuePanel } from '@/components/ConciergeQueuePanel';
 import { FilingOpsPanel } from '@/components/FilingOpsPanel';
 import { COURT_FORMS } from '@/data/forms';
@@ -85,9 +86,13 @@ export function DashboardPage() {
   const [user, setUser] = useState<User | null>(() => authService.getCurrentUser());
   const [activeTab, setActiveTab] = useState('overview');
   const [completedTasks, setCompletedTasks] = useState<string[]>([]);
-  const [referralStats, setReferralStats] = useState(() =>
-    user ? getReferralStats(user.id) : null
-  );
+  const [referralStats, setReferralStats] = useState<{
+    totalReferrals: number;
+    completedReferrals: number;
+    pendingReferrals: number;
+    totalRewardsEarned: number;
+    availableCredit: number;
+  } | null>(null);
   const [vaultDocs, setVaultDocs] = useState<VaultDocument[]>([]);
   const [isVaultLoading, setIsVaultLoading] = useState(false);
   const [vaultError, setVaultError] = useState<string | null>(null);
@@ -102,7 +107,12 @@ export function DashboardPage() {
       return;
     }
     setUser(session);
-    setReferralStats(getReferralStats(session.id));
+    void fetchReferralSnapshot()
+      .then((snapshot) => setReferralStats(snapshot.stats))
+      .catch((error) => {
+        console.error('Failed to load referral stats', error);
+        setReferralStats(null);
+      });
   }, [navigate]);
 
   const fetchVaultDocuments = useCallback(async () => {
@@ -115,7 +125,7 @@ export function DashboardPage() {
     setVaultError(null);
 
     try {
-      const response = await fetch(`/api/vault-documents?userId=${encodeURIComponent(user.id)}`);
+      const response = await fetch('/api/vault-documents');
       if (!response.ok) {
         const message = await response.text();
         throw new Error(message || 'Unable to load documents');
@@ -158,7 +168,6 @@ export function DashboardPage() {
     }
 
     const formData = new FormData();
-    formData.append('userId', user.id);
     formData.append('file', file);
 
     setIsVaultUploading(true);
@@ -243,13 +252,14 @@ export function DashboardPage() {
           <TabsList
             className={cn(
               'grid w-full grid-cols-2 sm:grid-cols-3 rounded-xl border border-white/80 bg-white/72 backdrop-blur-xl dark:border-white/10 dark:bg-white/5',
-              isStaffUser ? 'lg:grid-cols-7' : 'lg:grid-cols-6'
+              isStaffUser ? 'lg:grid-cols-8' : 'lg:grid-cols-7'
             )}
           >
             <TabsTrigger value="overview" className="data-[state=active]:bg-emerald-700 data-[state=active]:text-white">Overview</TabsTrigger>
             <TabsTrigger value="documents" className="data-[state=active]:bg-emerald-700 data-[state=active]:text-white">Documents</TabsTrigger>
             <TabsTrigger value="county" className="data-[state=active]:bg-emerald-700 data-[state=active]:text-white">County Filing</TabsTrigger>
             <TabsTrigger value="service" className="data-[state=active]:bg-emerald-700 data-[state=active]:text-white">Service</TabsTrigger>
+            <TabsTrigger value="saved" className="data-[state=active]:bg-emerald-700 data-[state=active]:text-white">Saved Files</TabsTrigger>
             <TabsTrigger value="referral" className="data-[state=active]:bg-emerald-700 data-[state=active]:text-white">Referral</TabsTrigger>
             <TabsTrigger value="review" className="data-[state=active]:bg-emerald-700 data-[state=active]:text-white">Review</TabsTrigger>
             {isStaffUser && <TabsTrigger value="staff" className="data-[state=active]:bg-emerald-700 data-[state=active]:text-white">Staff</TabsTrigger>}
@@ -307,6 +317,10 @@ export function DashboardPage() {
                   <Button variant="ghost" className="justify-start" onClick={() => setActiveTab('county')}>
                     <MapPinned className="h-4 w-4 mr-2 text-slate-500" />
                     Check county filing steps
+                  </Button>
+                  <Button variant="ghost" className="justify-start" onClick={() => setActiveTab('saved')}>
+                    <FileText className="h-4 w-4 mr-2 text-slate-500" />
+                    Open saved files
                   </Button>
                   <Button variant="ghost" className="justify-start" onClick={() => setActiveTab('referral')}>
                     <Gift className="h-4 w-4 mr-2 text-slate-500" />
@@ -412,7 +426,6 @@ export function DashboardPage() {
                     <AlertDescription>{vaultError}</AlertDescription>
                   </Alert>
                 )}
-                <FilingOpsPanel />
                 <div className="rounded-2xl border border-slate-200 overflow-hidden">
                   {isVaultLoading ? (
                     <div className="p-6 text-sm text-slate-500">Loading vault…</div>
@@ -557,6 +570,10 @@ export function DashboardPage() {
             </Card>
           </TabsContent>
 
+          <TabsContent value="saved">
+            <SavedScenariosPanel user={user} />
+          </TabsContent>
+
           <TabsContent value="referral">
             <ReferralProgram user={user} />
           </TabsContent>
@@ -566,7 +583,8 @@ export function DashboardPage() {
           </TabsContent>
 
           {isStaffUser && (
-            <TabsContent value="staff">
+            <TabsContent value="staff" className="space-y-6">
+              <FilingOpsPanel />
               <ConciergeQueuePanel currentUser={user} />
             </TabsContent>
           )}

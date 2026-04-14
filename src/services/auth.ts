@@ -1,6 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { sendConfirmationEmail, sendAdminSignupNotification, isTokenValid, getConfirmationByToken, removeConfirmation } from './email';
-import { trackReferralSignup, getPendingReferralCode, clearPendingReferralCode } from '@/components/ReferralProgram';
+import { getPendingReferralCode, clearPendingReferralCode } from '@/components/ReferralProgram';
 
 export interface UserProfile {
   firstName?: string;
@@ -11,19 +10,24 @@ export interface UserProfile {
   hasChildren?: boolean;
   childrenCount?: number;
   childrenAges?: number[];
+  caseStage?: string;
+  caseNumber?: string;
+  filingDate?: string;
+  serviceDate?: string;
+  nextHearingDate?: string;
+  representationStatus?: string;
+  primaryGoals?: string[];
 }
 
 export interface User {
   id: string;
   email: string;
-  password: string;
   name?: string;
   subscription: 'free' | 'basic' | 'essential' | 'plus' | 'done-for-you';
   chatCount: number;
   chatCountResetDate: string;
   profile?: UserProfile;
   emailVerified: boolean;
-  emailVerificationToken?: string;
 }
 
 export interface ChatAttachment {
@@ -59,30 +63,126 @@ export const SUBSCRIPTION_LIMITS = {
   'done-for-you': { maxChats: Infinity, aiResponses: true, price: 299, name: 'Done-For-You' },
 };
 
-const STORAGE_KEY = 'divorceos_users';
+const LEGACY_USERS_KEY = 'divorceos_users';
 const SESSIONS_KEY = 'divorceos_chat_sessions';
 const CURRENT_USER_KEY = 'divorceos_current_user';
 
+interface AuthResponse {
+  user?: User | null;
+  error?: string;
+  success?: boolean;
+}
+
 class AuthService {
-  private getUsers(): User[] {
-    const data = localStorage.getItem(STORAGE_KEY);
-    if (!data) return [];
+  constructor() {
+    this.migrateLegacyStorage();
+  }
+
+  private getStorage(): Storage | null {
+    if (typeof window === 'undefined') return null;
 
     try {
-      return JSON.parse(data);
-    } catch (error) {
-      console.error('Failed to parse stored users, clearing corrupt data.', error);
-      localStorage.removeItem(STORAGE_KEY);
-      return [];
+      const storage = window.sessionStorage;
+      const probeKey = '__divorceos_auth_probe__';
+      storage.setItem(probeKey, '1');
+      storage.removeItem(probeKey);
+      return storage;
+    } catch {
+      try {
+        return window.localStorage;
+      } catch {
+        return null;
+      }
     }
   }
 
-  private saveUsers(users: User[]): void {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
+  private readStorage(key: string): string | null {
+    return this.getStorage()?.getItem(key) ?? null;
+  }
+
+  private writeStorage(key: string, value: string) {
+    this.getStorage()?.setItem(key, value);
+  }
+
+  private removeStorage(key: string) {
+    this.getStorage()?.removeItem(key);
+  }
+
+  private migrateLegacyStorage() {
+    if (typeof window === 'undefined') return;
+
+    try {
+      const storage = this.getStorage();
+      const legacyCurrentUser = window.localStorage.getItem(CURRENT_USER_KEY);
+      const legacyChatSessions = window.localStorage.getItem(SESSIONS_KEY);
+
+      if (storage && storage !== window.localStorage) {
+        if (legacyCurrentUser && !storage.getItem(CURRENT_USER_KEY)) {
+          storage.setItem(CURRENT_USER_KEY, legacyCurrentUser);
+        }
+
+        if (legacyChatSessions && !storage.getItem(SESSIONS_KEY)) {
+          storage.setItem(SESSIONS_KEY, legacyChatSessions);
+        }
+
+        window.localStorage.removeItem(CURRENT_USER_KEY);
+        window.localStorage.removeItem(SESSIONS_KEY);
+      }
+
+      window.localStorage.removeItem(LEGACY_USERS_KEY);
+    } catch (error) {
+      console.error('Failed to migrate legacy auth storage.', error);
+      try {
+        window.localStorage.removeItem(LEGACY_USERS_KEY);
+      } catch {
+        // Ignore cleanup failures.
+      }
+    }
+  }
+
+  private sanitizeUser(user: unknown): User | null {
+    if (!user || typeof user !== 'object') return null;
+
+    const candidate = user as Partial<User>;
+
+    return {
+      id: String(candidate.id || ''),
+      email: String(candidate.email || ''),
+      name: typeof candidate.name === 'string' ? candidate.name : undefined,
+      subscription: candidate.subscription || 'free',
+      chatCount: typeof candidate.chatCount === 'number' ? candidate.chatCount : 0,
+      chatCountResetDate: typeof candidate.chatCountResetDate === 'string' ? candidate.chatCountResetDate : new Date().toISOString(),
+      profile: typeof candidate.profile === 'object' && candidate.profile ? candidate.profile : undefined,
+      emailVerified: Boolean(candidate.emailVerified),
+    };
+  }
+
+  private async request<T = AuthResponse>(method: 'GET' | 'POST' | 'PATCH', body?: Record<string, unknown>): Promise<T> {
+    const response = await fetch('/api/auth', {
+      method,
+      headers: method === 'GET' ? undefined : { 'Content-Type': 'application/json' },
+      body: method === 'GET' ? undefined : JSON.stringify(body || {}),
+      credentials: 'same-origin',
+    });
+
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      throw new Error(payload.error || 'Authentication request failed');
+    }
+
+    return payload as T;
+  }
+
+  private setCurrentUser(user: User | null) {
+    if (!user) {
+      this.removeStorage(CURRENT_USER_KEY);
+      return;
+    }
+    this.writeStorage(CURRENT_USER_KEY, JSON.stringify(user));
   }
 
   getChatSessions(userId: string): ChatSession[] {
-    const data = localStorage.getItem(SESSIONS_KEY);
+    const data = this.readStorage(SESSIONS_KEY);
     let allSessions: ChatSession[] = [];
 
     if (data) {
@@ -90,17 +190,17 @@ class AuthService {
         allSessions = JSON.parse(data);
       } catch (error) {
         console.error('Failed to parse stored chat sessions, clearing corrupt data.', error);
-        localStorage.removeItem(SESSIONS_KEY);
+        this.removeStorage(SESSIONS_KEY);
       }
     }
 
-    return allSessions.filter(s => s.userId === userId).sort((a, b) => 
+    return allSessions.filter((s) => s.userId === userId).sort((a, b) =>
       new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
     );
   }
 
   saveChatSession(session: ChatSession): void {
-    const data = localStorage.getItem(SESSIONS_KEY);
+    const data = this.readStorage(SESSIONS_KEY);
     let allSessions: ChatSession[] = [];
 
     if (data) {
@@ -108,23 +208,23 @@ class AuthService {
         allSessions = JSON.parse(data);
       } catch (error) {
         console.error('Failed to parse stored chat sessions, resetting list.', error);
-        localStorage.removeItem(SESSIONS_KEY);
+        this.removeStorage(SESSIONS_KEY);
       }
     }
 
-    const existingIndex = allSessions.findIndex(s => s.id === session.id);
-    
+    const existingIndex = allSessions.findIndex((s) => s.id === session.id);
+
     if (existingIndex >= 0) {
       allSessions[existingIndex] = session;
     } else {
       allSessions.push(session);
     }
-    
-    localStorage.setItem(SESSIONS_KEY, JSON.stringify(allSessions));
+
+    this.writeStorage(SESSIONS_KEY, JSON.stringify(allSessions));
   }
 
   deleteChatSession(sessionId: string): void {
-    const data = localStorage.getItem(SESSIONS_KEY);
+    const data = this.readStorage(SESSIONS_KEY);
     let allSessions: ChatSession[] = [];
 
     if (data) {
@@ -132,236 +232,168 @@ class AuthService {
         allSessions = JSON.parse(data);
       } catch (error) {
         console.error('Failed to parse stored chat sessions during delete, resetting list.', error);
-        localStorage.removeItem(SESSIONS_KEY);
+        this.removeStorage(SESSIONS_KEY);
       }
     }
 
-    const filtered = allSessions.filter(s => s.id !== sessionId);
-    localStorage.setItem(SESSIONS_KEY, JSON.stringify(filtered));
+    const filtered = allSessions.filter((s) => s.id !== sessionId);
+    this.writeStorage(SESSIONS_KEY, JSON.stringify(filtered));
   }
 
   async register(email: string, password: string, name?: string, referralCode?: string): Promise<User> {
-    const users = this.getUsers();
-    
-    if (users.find(u => u.email.toLowerCase() === email.toLowerCase())) {
-      throw new Error('An account with this email already exists');
-    }
-
-    // Send confirmation email first
-    const confirmationResult = await sendConfirmationEmail(email, uuidv4(), name);
-    
-    // Admin users get premium subscription
-    const isAdmin = this.isAdminEmail(email);
-    const isPremium = this.isPremiumEmail(email);
-    
-    const newUser: User = {
-      id: uuidv4(),
-      email: email.toLowerCase(),
+    const payload = await this.request<AuthResponse>('POST', {
+      action: 'register',
+      email,
       password,
       name,
-      subscription: isAdmin || isPremium ? 'done-for-you' : 'free',
-      chatCount: 0,
-      chatCountResetDate: new Date().toISOString(),
-      emailVerified: isAdmin, // Auto-verify admin emails
-      emailVerificationToken: isAdmin ? undefined : confirmationResult.token,
-    };
+      referralCode,
+    });
 
-    users.push(newUser);
-    this.saveUsers(users);
-    this.setCurrentUser(newUser);
-    
-    // Check for pending referral code from session storage
+    const user = this.sanitizeUser(payload.user);
+    if (!user) {
+      throw new Error('Registration failed');
+    }
+
+    this.setCurrentUser(user);
+
     const pendingReferralCode = referralCode || getPendingReferralCode();
     if (pendingReferralCode) {
-      trackReferralSignup(pendingReferralCode, newUser);
       clearPendingReferralCode();
     }
-    
-    // Send admin notification
-    await sendAdminSignupNotification(email, name, false);
-    
-    return newUser;
+
+    return user;
   }
 
-  verifyEmail(token: string): boolean {
-    if (!isTokenValid(token)) {
-      return false;
+  async verifyEmail(token: string): Promise<boolean> {
+    const payload = await this.request<AuthResponse>('POST', {
+      action: 'verify-email',
+      token,
+    });
+
+    const updatedUser = this.sanitizeUser(payload.user);
+    const currentUser = this.getCurrentUser();
+    if (updatedUser && currentUser?.id === updatedUser.id) {
+      this.setCurrentUser(updatedUser);
     }
-    
-    const confirmation = getConfirmationByToken(token);
-    if (!confirmation) return false;
-    
-    const users = this.getUsers();
-    const user = users.find(u => u.id === confirmation.userId);
-    
-    if (user) {
-      user.emailVerified = true;
-      user.emailVerificationToken = undefined;
-      this.saveUsers(users);
-      
-      const current = this.getCurrentUser();
-      if (current?.id === user.id) {
-        this.setCurrentUser(user);
-      }
-      
-      removeConfirmation(token);
-      return true;
-    }
-    
-    return false;
+
+    return Boolean(updatedUser);
   }
 
-  resendConfirmationEmail(email: string): Promise<{ success: boolean; error?: string }> {
-    const users = this.getUsers();
-    const user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
-    
+  async resendConfirmationEmail(email: string): Promise<{ success: boolean; error?: string }> {
+    try {
+      await this.request<AuthResponse>('POST', {
+        action: 'resend-confirmation',
+        email,
+      });
+      return { success: true };
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Failed to send confirmation email' };
+    }
+  }
+
+  async login(email: string, password: string): Promise<User> {
+    const payload = await this.request<AuthResponse>('POST', {
+      action: 'login',
+      email,
+      password,
+    });
+
+    const user = this.sanitizeUser(payload.user);
     if (!user) {
-      return Promise.resolve({ success: false, error: 'User not found' });
-    }
-    
-    if (user.emailVerified) {
-      return Promise.resolve({ success: false, error: 'Email already verified' });
-    }
-    
-    return sendConfirmationEmail(user.email, user.id, user.name);
-  }
-
-  login(email: string, password: string): User {
-    const users = this.getUsers();
-    const user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
-    
-    if (!user || user.password !== password) {
-      throw new Error('Invalid email or password');
+      throw new Error('Login failed');
     }
 
-    // Auto-upgrade admin users to premium tier
-    const isAdmin = this.isAdminEmail(user.email);
-    const isPremium = this.isPremiumEmail(user.email);
-    if ((isAdmin || isPremium) && user.subscription !== 'done-for-you') {
-      user.subscription = 'done-for-you';
-      this.updateUser(user);
-    }
-
-    this.resetChatCountIfNeeded(user);
     this.setCurrentUser(user);
-    
     return user;
   }
 
   logout(): void {
-    localStorage.removeItem(CURRENT_USER_KEY);
+    this.setCurrentUser(null);
+    void this.request<AuthResponse>('POST', { action: 'logout' }).catch((error) => {
+      console.error('Logout request failed.', error);
+    });
   }
 
   getCurrentUser(): User | null {
-    const data = localStorage.getItem(CURRENT_USER_KEY);
+    const data = this.readStorage(CURRENT_USER_KEY);
     if (!data) return null;
-    
+
     try {
-      const user: User = JSON.parse(data);
-      return this.resetChatCountIfNeeded(user);
+      return this.sanitizeUser(JSON.parse(data));
     } catch (error) {
       console.error('Failed to parse current user, clearing corrupt data.', error);
-      localStorage.removeItem(CURRENT_USER_KEY);
+      this.removeStorage(CURRENT_USER_KEY);
       return null;
     }
   }
 
-  private resetChatCountIfNeeded(user: User): User {
-    const resetDate = new Date(user.chatCountResetDate);
-    const now = new Date();
-    
-    if (resetDate.getDate() !== now.getDate() || 
-        resetDate.getMonth() !== now.getMonth() || 
-        resetDate.getFullYear() !== now.getFullYear()) {
-      user.chatCount = 0;
-      user.chatCountResetDate = now.toISOString();
-      this.updateUser(user);
-    }
-    
-    return user;
-  }
-
-  updateUser(user: User): void {
-    const users = this.getUsers();
-    const index = users.findIndex(u => u.id === user.id);
-    
-    if (index >= 0) {
-      users[index] = user;
-      this.saveUsers(users);
-
-      const currentData = localStorage.getItem(CURRENT_USER_KEY);
-      if (currentData) {
-        try {
-          const currentUser: User = JSON.parse(currentData);
-          if (currentUser.id === user.id) {
-            this.setCurrentUser(user);
-          }
-        } catch (error) {
-          console.error('Failed to parse current user while updating, clearing corrupt data.', error);
-          localStorage.removeItem(CURRENT_USER_KEY);
-        }
-      }
+  async refreshCurrentUser(): Promise<User | null> {
+    try {
+      const payload = await this.request<AuthResponse>('GET');
+      const user = this.sanitizeUser(payload.user);
+      this.setCurrentUser(user);
+      return user;
+    } catch (error) {
+      console.error('Failed to refresh current user.', error);
+      this.setCurrentUser(null);
+      return null;
     }
   }
 
-  private setCurrentUser(user: User): void {
-    localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
-  }
+  async updateUser(user: User): Promise<void> {
+    const payload = await this.request<AuthResponse>('PATCH', {
+      action: 'update-user',
+      name: user.name,
+      subscription: user.subscription,
+      chatCount: user.chatCount,
+      chatCountResetDate: user.chatCountResetDate,
+      emailVerified: user.emailVerified,
+    });
 
-  // Admin emails with unlimited access
-  private isAdminEmail(email: string): boolean {
-    const adminEmails = ['rmalaspina19@icloud.com'];
-    return adminEmails.includes(email.toLowerCase());
-  }
-
-  private isPremiumEmail(email: string): boolean {
-    const premiumEmails = ['huezostan@gmail.com', 'marialeon1@aol.com'];
-    return premiumEmails.includes(email.toLowerCase());
+    const nextUser = this.sanitizeUser(payload.user) || user;
+    this.setCurrentUser(nextUser);
   }
 
   canUserChat(user: User): { allowed: boolean; reason?: string } {
-    // Admin users get unlimited chats
     if (this.isAdminEmail(user.email)) {
       return { allowed: true };
     }
-    
+
     const limits = SUBSCRIPTION_LIMITS[user.subscription];
-    
+
     if (!limits.aiResponses) {
-      return { 
-        allowed: false, 
-        reason: 'AI responses are not included in the Free plan. Please upgrade to Basic ($10/month) for 24/7 AI support.' 
+      return {
+        allowed: false,
+        reason: 'AI responses are not included in the Free plan. Please upgrade to Basic ($10/month) for 24/7 AI support.'
       };
     }
-    
+
     if (user.chatCount >= limits.maxChats) {
-      return { 
-        allowed: false, 
-        reason: `You've reached your daily limit of ${limits.maxChats} chats. Upgrade for unlimited access.` 
+      return {
+        allowed: false,
+        reason: `You've reached your daily limit of ${limits.maxChats} chats. Upgrade for unlimited access.`
       };
     }
-    
+
     return { allowed: true };
   }
 
-  incrementChatCount(user: User): void {
-    user.chatCount++;
-    this.updateUser(user);
+  async updateProfile(userId: string, profile: UserProfile): Promise<void> {
+    const payload = await this.request<AuthResponse>('PATCH', {
+      action: 'profile',
+      userId,
+      profile,
+    });
+
+    const updatedUser = this.sanitizeUser(payload.user);
+    if (updatedUser) {
+      this.setCurrentUser(updatedUser);
+    }
   }
 
-  updateProfile(userId: string, profile: UserProfile): void {
-    const users = this.getUsers();
-    const user = users.find(u => u.id === userId);
-    
-    if (user) {
-      user.profile = { ...user.profile, ...profile };
-      this.saveUsers(users);
-      
-      const current = this.getCurrentUser();
-      if (current?.id === userId) {
-        this.setCurrentUser(user);
-      }
-    }
+  private isAdminEmail(email: string): boolean {
+    const adminEmails = ['rmalaspina19@icloud.com'];
+    return adminEmails.includes(email.toLowerCase());
   }
 
   isConciergeStaff(user: Pick<User, 'email'> | null | undefined): boolean {
@@ -373,3 +405,4 @@ class AuthService {
 }
 
 export const authService = new AuthService();
+export { uuidv4 };

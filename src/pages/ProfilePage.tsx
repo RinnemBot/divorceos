@@ -18,17 +18,9 @@ import {
   Loader2, 
   CheckCircle,
   ArrowLeft,
-  Sparkles,
-  Gift,
-  Star,
-  Printer,
-  Trash2,
-  FileText
+  Sparkles
 } from 'lucide-react';
 import { authService, SUBSCRIPTION_LIMITS, type UserProfile, type User } from '@/services/auth';
-import { getSupportScenarios, deleteSupportScenario, type SupportScenario } from '@/services/savedFiles';
-import { ReferralProgram } from '@/components/ReferralProgram';
-import { ReviewSystem } from '@/components/ReviewSystem';
 
 const CALIFORNIA_COUNTIES = [
   'Alameda', 'Alpine', 'Amador', 'Butte', 'Calaveras', 'Colusa', 'Contra Costa',
@@ -42,12 +34,37 @@ const CALIFORNIA_COUNTIES = [
   'Tuolumne', 'Ventura', 'Yolo', 'Yuba'
 ];
 
+const CASE_STAGES = [
+  'Pre-filing',
+  'Filed, not served',
+  'Served',
+  'Response filed',
+  'Temporary orders pending',
+  'Judgment / settlement phase',
+];
+
+const REPRESENTATION_OPTIONS = [
+  'I am self-represented',
+  'I have an attorney',
+  'The other side is self-represented',
+  'The other side has an attorney',
+  'Both sides have attorneys',
+];
+
+const PRIMARY_GOALS = [
+  'Move the case forward',
+  'Custody / parenting plan',
+  'Child support',
+  'Spousal support',
+  'Property division',
+  'Finalize judgment',
+];
+
 export function ProfilePage() {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
-  const [savedScenarios, setSavedScenarios] = useState<SupportScenario[]>([]);
   
   // Profile form state
   const [firstName, setFirstName] = useState('');
@@ -58,6 +75,13 @@ export function ProfilePage() {
   const [hasChildren, setHasChildren] = useState(false);
   const [childrenCount, setChildrenCount] = useState(0);
   const [childrenAges, setChildrenAges] = useState('');
+  const [caseStage, setCaseStage] = useState('');
+  const [caseNumber, setCaseNumber] = useState('');
+  const [filingDate, setFilingDate] = useState('');
+  const [serviceDate, setServiceDate] = useState('');
+  const [nextHearingDate, setNextHearingDate] = useState('');
+  const [representationStatus, setRepresentationStatus] = useState('');
+  const [primaryGoals, setPrimaryGoals] = useState<string[]>([]);
 
   useEffect(() => {
     const user = authService.getCurrentUser();
@@ -66,7 +90,6 @@ export function ProfilePage() {
       return;
     }
     setCurrentUser(user);
-    setSavedScenarios(getSupportScenarios(user.id));
     
     // Load existing profile data
     if (user.profile) {
@@ -78,6 +101,13 @@ export function ProfilePage() {
       setHasChildren(user.profile.hasChildren || false);
       setChildrenCount(user.profile.childrenCount || 0);
       setChildrenAges(user.profile.childrenAges?.join(', ') || '');
+      setCaseStage(user.profile.caseStage || '');
+      setCaseNumber(user.profile.caseNumber || '');
+      setFilingDate(user.profile.filingDate || '');
+      setServiceDate(user.profile.serviceDate || '');
+      setNextHearingDate(user.profile.nextHearingDate || '');
+      setRepresentationStatus(user.profile.representationStatus || '');
+      setPrimaryGoals(user.profile.primaryGoals || []);
     }
   }, [navigate]);
 
@@ -98,9 +128,16 @@ export function ProfilePage() {
       childrenAges: hasChildren && childrenAges 
         ? childrenAges.split(',').map(age => parseInt(age.trim())).filter(n => !isNaN(n))
         : undefined,
+      caseStage: caseStage || undefined,
+      caseNumber: caseNumber || undefined,
+      filingDate: filingDate || undefined,
+      serviceDate: serviceDate || undefined,
+      nextHearingDate: nextHearingDate || undefined,
+      representationStatus: representationStatus || undefined,
+      primaryGoals: primaryGoals.length ? primaryGoals : undefined,
     };
     
-    authService.updateProfile(currentUser.id, profile);
+    await authService.updateProfile(currentUser.id, profile);
     
     // Update local user state
     const updatedUser = authService.getCurrentUser();
@@ -112,48 +149,6 @@ export function ProfilePage() {
     setTimeout(() => setSuccessMessage(''), 3000);
   };
 
-  const refreshSavedScenarios = () => {
-    if (!currentUser) return;
-    setSavedScenarios(getSupportScenarios(currentUser.id));
-  };
-
-  const handleDeleteScenario = (scenarioId: string) => {
-    if (!currentUser) return;
-    const confirmDelete = window.confirm('Delete this saved file? This cannot be undone.');
-    if (!confirmDelete) return;
-    deleteSupportScenario(currentUser.id, scenarioId);
-    refreshSavedScenarios();
-  };
-
-  const handlePrintScenario = (scenario: SupportScenario) => {
-    if (typeof window === 'undefined') return;
-    const printWindow = window.open('', '_blank', 'width=900,height=700');
-    if (!printWindow) return;
-    const snapshot = scenario.snapshot;
-    printWindow.document.write(`<!doctype html>
-<html><head><title>${scenario.title}</title><style>body{font-family:Inter,Arial,sans-serif;padding:32px;color:#0f172a;}h1{margin-bottom:4px;}table{width:100%;border-collapse:collapse;margin-top:24px;}td{padding:8px;border:1px solid #e2e8f0;}th{text-align:left;padding:8px;background:#f1f5f9;border:1px solid #e2e8f0;}small{color:#475569;}</style></head><body>`);
-    printWindow.document.write(`<h1>${scenario.title}</h1>`);
-    printWindow.document.write(`<p><small>Saved ${new Date(scenario.createdAt).toLocaleString()}</small></p>`);
-    printWindow.document.write('<table>');
-    printWindow.document.write(`<tr><th>Child support</th><td>${displayCurrency(scenario.childSupport)}</td></tr>`);
-    printWindow.document.write(`<tr><th>Spousal support</th><td>${displayCurrency(scenario.spousalSupport)}</td></tr>`);
-    printWindow.document.write(`<tr><th>Combined</th><td>${displayCurrency(scenario.combinedSupport)}</td></tr>`);
-    printWindow.document.write(`<tr><th>Payer</th><td>${scenario.estimatePayer}</td></tr>`);
-    printWindow.document.write(`<tr><th>County</th><td>${snapshot.countyName || snapshot.countyId || 'Not specified'}</td></tr>`);
-    printWindow.document.write(`<tr><th>Parent A time</th><td>${snapshot.parentATimeShare}%</td></tr>`);
-    printWindow.document.write(`<tr><th>Children covered</th><td>${snapshot.childrenCount}</td></tr>`);
-    printWindow.document.write(`<tr><th>Child care add-on</th><td>${displayCurrency(snapshot.childcare)}</td></tr>`);
-    printWindow.document.write(`<tr><th>Medical add-on</th><td>${displayCurrency(snapshot.medical)}</td></tr>`);
-    printWindow.document.write(`<tr><th>Mode</th><td>${snapshot.mode === 'advanced' ? 'Advanced (gross capture)' : 'Quick net mode'}</td></tr>`);
-    printWindow.document.write('</table>');
-    printWindow.document.write('<p style="margin-top:24px;font-size:12px;color:#475569;">Use this sheet when discussing settlement, prepping FL-342/343, or sharing with Maria for context.</p>');
-    printWindow.document.write('</body></html>');
-    printWindow.document.close();
-    printWindow.focus();
-    printWindow.print();
-  };
-
-  const displayCurrency = (value: number) => value.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
 
   if (!currentUser) {
     return null;
@@ -180,28 +175,16 @@ export function ProfilePage() {
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-slate-900">Your Profile</h1>
           <p className="text-slate-600 mt-1">
-            Manage your account, referrals, and reviews
+            Manage your account details and saved preferences
           </p>
         </div>
 
         {/* Main Content with Tabs */}
         <Tabs defaultValue="profile" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 rounded-xl border border-white/80 bg-white/72 backdrop-blur-xl dark:border-white/10 dark:bg-white/5">
+          <TabsList className="grid w-full grid-cols-1 rounded-xl border border-white/80 bg-white/72 backdrop-blur-xl dark:border-white/10 dark:bg-white/5">
             <TabsTrigger value="profile" className="data-[state=active]:bg-emerald-700 data-[state=active]:text-white">
               <UserIcon className="h-4 w-4 mr-2" />
               Profile
-            </TabsTrigger>
-            <TabsTrigger value="referrals" className="data-[state=active]:bg-emerald-700 data-[state=active]:text-white">
-              <Gift className="h-4 w-4 mr-2" />
-              Referrals
-            </TabsTrigger>
-            <TabsTrigger value="saved" className="data-[state=active]:bg-emerald-700 data-[state=active]:text-white">
-              <FileText className="h-4 w-4 mr-2" />
-              Saved Files
-            </TabsTrigger>
-            <TabsTrigger value="reviews" className="data-[state=active]:bg-emerald-700 data-[state=active]:text-white">
-              <Star className="h-4 w-4 mr-2" />
-              Reviews
             </TabsTrigger>
           </TabsList>
 
@@ -342,6 +325,93 @@ export function ProfilePage() {
                     </div>
                   </div>
 
+                  {/* Case Information */}
+                  <div className="space-y-4 border-t border-slate-200 pt-4">
+                    <div>
+                      <h3 className="font-semibold text-slate-900">Case information</h3>
+                      <p className="text-sm text-slate-500">Only the details that help Maria give better case-specific guidance.</p>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="caseStage">Case Stage</Label>
+                        <select
+                          id="caseStage"
+                          value={caseStage}
+                          onChange={(e) => setCaseStage(e.target.value)}
+                          className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                        >
+                          <option value="">Select case stage</option>
+                          {CASE_STAGES.map((stage) => (
+                            <option key={stage} value={stage}>{stage}</option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="caseNumber">Case Number</Label>
+                        <Input
+                          id="caseNumber"
+                          value={caseNumber}
+                          onChange={(e) => setCaseNumber(e.target.value)}
+                          placeholder="e.g., 24FL000123"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid md:grid-cols-3 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="filingDate">Filing Date</Label>
+                        <Input id="filingDate" type="date" value={filingDate} onChange={(e) => setFilingDate(e.target.value)} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="serviceDate">Service Date</Label>
+                        <Input id="serviceDate" type="date" value={serviceDate} onChange={(e) => setServiceDate(e.target.value)} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="nextHearingDate">Next Hearing Date</Label>
+                        <Input id="nextHearingDate" type="date" value={nextHearingDate} onChange={(e) => setNextHearingDate(e.target.value)} />
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="representationStatus">Representation Status</Label>
+                      <select
+                        id="representationStatus"
+                        value={representationStatus}
+                        onChange={(e) => setRepresentationStatus(e.target.value)}
+                        className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                      >
+                        <option value="">Select representation status</option>
+                        {REPRESENTATION_OPTIONS.map((option) => (
+                          <option key={option} value={option}>{option}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label>Top Goals</Label>
+                      <div className="grid gap-2 md:grid-cols-2">
+                        {PRIMARY_GOALS.map((goal) => {
+                          const checked = primaryGoals.includes(goal);
+                          return (
+                            <label key={goal} className="flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm">
+                              <input
+                                type="checkbox"
+                                checked={checked}
+                                onChange={() =>
+                                  setPrimaryGoals((prev) =>
+                                    checked ? prev.filter((item) => item !== goal) : [...prev, goal]
+                                  )
+                                }
+                              />
+                              <span>{goal}</span>
+                            </label>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+
                   {/* Children */}
                   <div className="space-y-4 border-t border-slate-200 pt-4">
                     <div className="flex items-center justify-between">
@@ -427,79 +497,6 @@ export function ProfilePage() {
                 </CardContent>
               </Card>
             )}
-          </TabsContent>
-
-          {/* Referrals Tab */}
-          <TabsContent value="referrals">
-            <ReferralProgram user={currentUser} />
-          </TabsContent>
-
-          {/* Saved Files Tab */}
-          <TabsContent value="saved">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <FileText className="h-5 w-5 text-emerald-600" />
-                  My Saved Files
-                </CardTitle>
-                <CardDescription>Exports from the support estimator live here. Print or delete them anytime.</CardDescription>
-              </CardHeader>
-              <CardContent>
-                {savedScenarios.length === 0 ? (
-                  <div className="text-center py-8 text-slate-500">
-                    <p className="font-medium">No saved files yet</p>
-                    <p className="text-sm">Run the Support Tools estimator and click "Save run" to capture a snapshot.</p>
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    {savedScenarios.map((scenario) => (
-                      <div
-                        key={scenario.id}
-                        className="border border-slate-200 rounded-2xl p-4 bg-white shadow-sm"
-                      >
-                        <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
-                          <div>
-                            <h3 className="text-lg font-semibold text-slate-900">{scenario.title}</h3>
-                            <p className="text-xs text-slate-500">Saved {new Date(scenario.createdAt).toLocaleString()}</p>
-                            <p className="text-xs text-slate-400">County: {scenario.snapshot.countyName || scenario.snapshot.countyId || 'Not specified'}</p>
-                            <p className="text-xs text-slate-400">Parent A time share: {scenario.snapshot.parentATimeShare}% | Children: {scenario.snapshot.childrenCount}</p>
-                          </div>
-                          <div className="text-sm text-slate-600 space-y-1 text-left md:text-right">
-                            <p>Child support: <span className="font-semibold text-slate-900">{displayCurrency(scenario.childSupport)}</span></p>
-                            <p>Spousal support: <span className="font-semibold text-slate-900">{displayCurrency(scenario.spousalSupport)}</span></p>
-                            <p>Combined: <span className="font-semibold text-emerald-700">{displayCurrency(scenario.combinedSupport)}</span></p>
-                            <p className="text-xs text-slate-400">Payer: {scenario.estimatePayer}</p>
-                          </div>
-                        </div>
-                        <div className="flex flex-col gap-2 pt-4 sm:flex-row">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handlePrintScenario(scenario)}
-                            className="border-slate-300 text-slate-700"
-                          >
-                            <Printer className="h-4 w-4 mr-1" /> Print / Save PDF
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleDeleteScenario(scenario.id)}
-                            className="text-red-600"
-                          >
-                            <Trash2 className="h-4 w-4 mr-1" /> Delete
-                          </Button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* Reviews Tab */}
-          <TabsContent value="reviews">
-            <ReviewSystem user={currentUser} />
           </TabsContent>
         </Tabs>
       </div>

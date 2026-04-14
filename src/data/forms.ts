@@ -62,6 +62,15 @@ export const COURT_FORMS: CourtForm[] = [
     category: 'petition',
     pdfUrl: '/forms/fl-117.pdf',
   },
+  {
+    id: 'fl-700',
+    formNumber: 'FL-700',
+    title: 'Joint Petition, Marriage or Domestic Partnership',
+    description: 'Newer joint filing path for couples who are aligned and expect agreement on all issues.',
+    category: 'petition',
+    pdfUrl: 'https://courts.ca.gov/system/files/2025-12/fl700.pdf',
+    instructionsUrl: 'https://courts.ca.gov/system/files/2025-12/fl700info.pdf',
+  },
   
   // Responding to Divorce
   {
@@ -129,7 +138,7 @@ export const COURT_FORMS: CourtForm[] = [
     id: 'fl-300',
     formNumber: 'FL-300',
     title: 'Request for Order',
-    description: 'Ask the court to make or change temporary orders about custody, visitation, or support.',
+    description: 'Ask the court to make or change temporary orders about custody, visitation, support, fees, or property control.',
     category: 'custody',
     pdfUrl: '/forms/fl-300.pdf',
     instructionsUrl: 'https://www.courts.ca.gov/documents/fl300info.pdf',
@@ -153,16 +162,16 @@ export const COURT_FORMS: CourtForm[] = [
   {
     id: 'fl-341',
     formNumber: 'FL-341(A-D)',
-    title: 'Child Custody Information Forms',
-    description: 'Various forms for child custody matters including visitation details.',
+    title: 'Child Custody and Visitation Order Forms',
+    description: 'Custody, parenting-time, supervised visitation, holiday, and related custody order attachments.',
     category: 'custody',
     pdfUrl: '/forms/fl-341.pdf',
   },
   {
     id: 'fl-342',
     formNumber: 'FL-342',
-    title: 'Supervised Visitation Order',
-    description: 'For cases requiring supervised visitation.',
+    title: 'Child Support Information and Order Attachment',
+    description: 'Used to state guideline support, add-ons, payment terms, and health insurance provisions.',
     category: 'custody',
     pdfUrl: '/forms/fl-342.pdf',
   },
