@@ -31,6 +31,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { SUBSCRIPTION_LIMITS } from '@/services/auth';
 
 const URL_REGEX = /(https?:\/\/[^\s]+)/g;
+const MAX_TTS_CHARS = 900;
 
 function renderMessageContent(content: string): string | (string | JSX.Element)[] {
   const matches = [...content.matchAll(URL_REGEX)];
@@ -74,6 +75,31 @@ function renderMessageContent(content: string): string | (string | JSX.Element)[
   }
 
   return segments;
+}
+
+function getSpeechFriendlyText(content: string): string {
+  const cleaned = content
+    .replace(URL_REGEX, '')
+    .replace(/\[(Attachments?)\][\s\S]*$/i, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  if (cleaned.length <= MAX_TTS_CHARS) {
+    return cleaned;
+  }
+
+  const truncated = cleaned.slice(0, MAX_TTS_CHARS);
+  const lastSentenceBreak = Math.max(
+    truncated.lastIndexOf('. '),
+    truncated.lastIndexOf('? '),
+    truncated.lastIndexOf('! ')
+  );
+
+  if (lastSentenceBreak > 280) {
+    return `${truncated.slice(0, lastSentenceBreak + 1).trim()} ...`;
+  }
+
+  return `${truncated.trim()} ...`;
 }
 
 interface ChatInterfaceProps {
@@ -325,7 +351,8 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
 
   const speakText = async (text: string) => {
     const safeText = text.trim();
-    if (!safeText) return;
+    const speechText = getSpeechFriendlyText(safeText);
+    if (!safeText || !speechText) return;
 
     if (isSpeaking && currentSpeechTextRef.current === safeText) {
       stopSpeaking();
@@ -356,7 +383,7 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ input: safeText }),
+        body: JSON.stringify({ input: speechText }),
         signal: abortController.signal,
       });
 
