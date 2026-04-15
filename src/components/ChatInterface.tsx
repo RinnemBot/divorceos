@@ -102,6 +102,7 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
   const [showHistory, setShowHistory] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [autoVoiceReplies, setAutoVoiceReplies] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const shouldAutoScrollRef = useRef(false);
@@ -247,6 +248,7 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
 
   const startNewChat = () => {
     stopSpeaking();
+    setAutoVoiceReplies(false);
     const userName = currentUser?.name || currentUser?.email?.split('@')[0] || 'Guest';
     const welcomeMessage: ChatMessage = {
       id: uuidv4(),
@@ -265,6 +267,8 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
   const loadSession = (sessionId: string) => {
     const session = sessions.find(s => s.id === sessionId);
     if (session) {
+      stopSpeaking();
+      setAutoVoiceReplies(false);
       setMessages(session.messages);
       setCurrentSessionId(sessionId);
       shouldAutoScrollRef.current = false;
@@ -436,14 +440,16 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
     setInput('');
     clearAttachments();
     setIsLoading(true);
-    shouldSpeakNextReplyRef.current = fromVoice;
+
+    if (fromVoice) {
+      setAutoVoiceReplies(true);
+      shouldSpeakNextReplyRef.current = true;
+    } else {
+      setAutoVoiceReplies(false);
+      shouldSpeakNextReplyRef.current = false;
+    }
     
     try {
-      // Increment chat count for logged in users
-      if (currentUser) {
-        authService.incrementChatCount(currentUser);
-      }
-      
       // Prepare conversation history for AI
       const conversationHistory = updatedMessages.slice(-6).map(m => ({
         role: m.role,
@@ -924,7 +930,9 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
               ? 'Listening... tap stop when you’re done, and Maria will answer out loud.'
               : isSpeaking
                 ? 'Maria is speaking.'
-                : 'Tap the mic to start, tap stop when you’re done.'
+                : autoVoiceReplies
+                  ? 'Voice replies are on for this conversation. Send a typed message to switch Maria back to text-only replies.'
+                  : 'Tap the mic to start, tap stop when you’re done.'
             : 'Voice input depends on browser support. Text chat still works normally.'}
         </p>
         <p className="text-xs text-gray-400 mt-2 text-center">

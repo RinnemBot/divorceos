@@ -64,7 +64,15 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
-            <Link to="/" className="flex items-center gap-3">
+            <Link
+              to="/"
+              onClick={() => {
+                if (location.pathname === '/') {
+                  scrollToPageTop();
+                }
+              }}
+              className="flex items-center gap-3"
+            >
               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-slate-950 via-slate-800 to-emerald-700 shadow-[0_12px_30px_-16px_rgba(15,23,42,0.9)] dark:from-emerald-500 dark:via-emerald-400 dark:to-slate-200">
                 <Sparkles className="h-4 w-4 text-white dark:text-slate-950" />
               </div>

@@ -1,11 +1,12 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { enforceBrowserOrigin, enforceRateLimit } from './_security.js';
+import { requireAuthenticatedUser } from './_auth.js';
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const OPENAI_TTS_MODEL = process.env.OPENAI_TTS_MODEL || 'gpt-4o-mini-tts';
-const OPENAI_TTS_VOICE = process.env.OPENAI_TTS_VOICE || 'sage';
-const OPENAI_TTS_SPEED = Number(process.env.OPENAI_TTS_SPEED || '1.22');
-const OPENAI_TTS_INSTRUCTIONS = process.env.OPENAI_TTS_INSTRUCTIONS || 'Speak in a professional, kind, charismatic, and confident tone. Sound warm, clear, reassuring, and naturally conversational.';
+const OPENAI_TTS_VOICE = process.env.OPENAI_TTS_VOICE || 'coral';
+const OPENAI_TTS_SPEED = Number(process.env.OPENAI_TTS_SPEED || '1.08');
+const OPENAI_TTS_INSTRUCTIONS = process.env.OPENAI_TTS_INSTRUCTIONS || 'Speak like Maria, warm, grounded, and confident. Sound calm, human, and reassuring, with clean pacing and a natural conversational tone. Avoid sounding robotic, overly chipper, or salesy.';
 const OPENAI_TTS_URL = 'https://api.openai.com/v1/audio/speech';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -14,7 +15,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   if (!enforceBrowserOrigin(req, res)) return;
-  if (!enforceRateLimit(req, res, 'tts', 20, 60_000)) return;
+  if (!enforceRateLimit(req, res, 'tts', 8, 60_000)) return;
+
+  const currentUser = await requireAuthenticatedUser(req, res);
+  if (!currentUser) return;
 
   if (!OPENAI_API_KEY) {
     return res.status(500).json({ error: 'TTS is not configured' });
