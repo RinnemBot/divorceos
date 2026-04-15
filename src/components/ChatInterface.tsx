@@ -146,17 +146,49 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
   const speechRequestIdRef = useRef(0);
   const speechAbortControllerRef = useRef<AbortController | null>(null);
   const currentSpeechTextRef = useRef('');
+  const speechCacheRef = useRef<Map<string, string>>(new Map());
+  const speechPrefetchRef = useRef<Set<string>>(new Set());
   const maxAttachments = 4;
 
   const speechRecognitionSupported = typeof window !== 'undefined' && Boolean((window as any).SpeechRecognition || (window as any).webkitSpeechRecognition);
 
   const clearFallbackAudio = () => {
     setFallbackAudio((current) => {
-      if (current?.url) {
+      if (current?.url && !Array.from(speechCacheRef.current.values()).includes(current.url)) {
         URL.revokeObjectURL(current.url);
       }
       return null;
     });
+  };
+
+  const primeSpeechAudio = async (text: string) => {
+    const safeText = text.trim();
+    const speechText = getSpeechFriendlyText(safeText);
+    if (!safeText || !speechText) return;
+    if (speechCacheRef.current.has(safeText) || speechPrefetchRef.current.has(safeText)) return;
+
+    speechPrefetchRef.current.add(safeText);
+    try {
+      const response = await fetch('/api/tts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ input: speechText }),
+      });
+
+      if (!response.ok) {
+        return;
+      }
+
+      const blob = await response.blob();
+      const audioUrl = URL.createObjectURL(blob);
+      speechCacheRef.current.set(safeText, audioUrl);
+    } catch (error) {
+      console.error('TTS prefetch error:', error);
+    } finally {
+      speechPrefetchRef.current.delete(safeText);
+    }
   };
 
   const stopSpeaking = () => {
@@ -378,26 +410,32 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
       }
 
       setIsSpeaking(true);
-      const response = await fetch('/api/tts', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ input: speechText }),
-        signal: abortController.signal,
-      });
 
-      if (!response.ok) {
-        throw new Error(`TTS error: ${response.status}`);
+      let audioUrl = speechCacheRef.current.get(safeText);
+      if (!audioUrl) {
+        const response = await fetch('/api/tts', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ input: speechText }),
+          signal: abortController.signal,
+        });
+
+        if (!response.ok) {
+          throw new Error(`TTS error: ${response.status}`);
+        }
+
+        const blob = await response.blob();
+        if (speechRequestIdRef.current !== requestId) {
+          setIsSpeaking(false);
+          return;
+        }
+
+        audioUrl = URL.createObjectURL(blob);
+        speechCacheRef.current.set(safeText, audioUrl);
       }
 
-      const blob = await response.blob();
-      if (speechRequestIdRef.current !== requestId) {
-        setIsSpeaking(false);
-        return;
-      }
-
-      const audioUrl = URL.createObjectURL(blob);
       const audio = new Audio(audioUrl);
       audioRef.current = audio;
       audio.onended = () => {
@@ -616,9 +654,18 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
   };
 
   useEffect(() => {
+    const latestAssistantMessage = [...messages].reverse().find((message) => message.role === 'assistant');
+    if (latestAssistantMessage?.content) {
+      void primeSpeechAudio(latestAssistantMessage.content);
+    }
+  }, [messages]);
+
+  useEffect(() => {
     return () => {
       recognitionRef.current?.stop();
       stopSpeaking();
+      speechCacheRef.current.forEach((url) => URL.revokeObjectURL(url));
+      speechCacheRef.current.clear();
     };
   }, []);
 
