@@ -103,6 +103,7 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [autoVoiceReplies, setAutoVoiceReplies] = useState(false);
+  const [fallbackAudio, setFallbackAudio] = useState<{ url: string; text: string } | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const shouldAutoScrollRef = useRef(false);
@@ -123,6 +124,15 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
 
   const speechRecognitionSupported = typeof window !== 'undefined' && Boolean((window as any).SpeechRecognition || (window as any).webkitSpeechRecognition);
 
+  const clearFallbackAudio = () => {
+    setFallbackAudio((current) => {
+      if (current?.url) {
+        URL.revokeObjectURL(current.url);
+      }
+      return null;
+    });
+  };
+
   const stopSpeaking = () => {
     speechRequestIdRef.current += 1;
     speechAbortControllerRef.current?.abort();
@@ -137,6 +147,7 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
       audioRef.current = null;
     }
 
+    clearFallbackAudio();
     setIsSpeaking(false);
   };
 
@@ -324,6 +335,7 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
     const requestId = speechRequestIdRef.current + 1;
     speechRequestIdRef.current = requestId;
     currentSpeechTextRef.current = safeText;
+    clearFallbackAudio();
 
     try {
       speechAbortControllerRef.current?.abort();
@@ -381,7 +393,23 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
           setIsSpeaking(false);
         }
       };
-      await audio.play();
+
+      try {
+        await audio.play();
+      } catch (playError) {
+        if ((playError as Error).name === 'AbortError') {
+          URL.revokeObjectURL(audioUrl);
+          return;
+        }
+
+        if (audioRef.current === audio) {
+          audioRef.current = null;
+        }
+        setFallbackAudio({ url: audioUrl, text: safeText });
+        currentSpeechTextRef.current = '';
+        setIsSpeaking(false);
+        return;
+      }
     } catch (error) {
       if ((error as Error).name === 'AbortError') {
         return;
@@ -737,19 +765,29 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
                   {renderMessageContent(message.content)}
                 </div>
                 {message.role === 'assistant' && (
-                  <div className="flex items-center justify-between gap-3 mt-3">
-                    <div className="text-[11px] uppercase tracking-wide text-emerald-600/80 font-medium">
-                      Maria
+                  <>
+                    <div className="flex items-center justify-between gap-3 mt-3">
+                      <div className="text-[11px] uppercase tracking-wide text-emerald-600/80 font-medium">
+                        Maria
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => void speakText(message.content)}
+                        className="inline-flex items-center gap-1 text-[11px] text-emerald-600 hover:text-emerald-700 font-medium"
+                      >
+                        <Volume2 className="h-3.5 w-3.5" />
+                        {isSpeaking && currentSpeechTextRef.current === message.content ? 'Stop voice' : 'Play voice'}
+                      </button>
                     </div>
-                    <button
-                      type="button"
-                      onClick={() => void speakText(message.content)}
-                      className="inline-flex items-center gap-1 text-[11px] text-emerald-600 hover:text-emerald-700 font-medium"
-                    >
-                      <Volume2 className="h-3.5 w-3.5" />
-                      {isSpeaking && currentSpeechTextRef.current === message.content ? 'Stop voice' : 'Play voice'}
-                    </button>
-                  </div>
+                    {fallbackAudio?.text === message.content && (
+                      <div className="mt-3 rounded-2xl border border-emerald-100 bg-emerald-50/70 p-3">
+                        <p className="mb-2 text-xs font-medium text-emerald-700">
+                          Tap play below if your browser blocked Maria from auto-playing audio.
+                        </p>
+                        <audio controls preload="auto" src={fallbackAudio.url} className="w-full" />
+                      </div>
+                    )}
+                  </>
                 )}
                 {message.attachments && message.attachments.length > 0 && (
                   <div className="flex flex-wrap gap-2 mt-2">
