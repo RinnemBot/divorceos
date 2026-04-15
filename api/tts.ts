@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { enforceBrowserOrigin, enforceRateLimit } from './_security.js';
-import { requireAuthenticatedUser } from './_auth.js';
+import { getAuthenticatedUser } from './_auth.js';
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const OPENAI_TTS_MODEL = process.env.OPENAI_TTS_MODEL || 'gpt-4o-mini-tts';
@@ -17,8 +17,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (!enforceBrowserOrigin(req, res)) return;
   if (!enforceRateLimit(req, res, 'tts', 8, 60_000)) return;
 
-  const currentUser = await requireAuthenticatedUser(req, res);
-  if (!currentUser) return;
+  await getAuthenticatedUser(req);
 
   if (!OPENAI_API_KEY) {
     return res.status(500).json({ error: 'TTS is not configured' });
