@@ -148,6 +148,7 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
   const currentSpeechTextRef = useRef('');
   const speechCacheRef = useRef<Map<string, string>>(new Map());
   const speechPrefetchRef = useRef<Set<string>>(new Set());
+  const audioContextRef = useRef<AudioContext | null>(null);
   const maxAttachments = 4;
 
   const speechRecognitionSupported = typeof window !== 'undefined' && Boolean((window as any).SpeechRecognition || (window as any).webkitSpeechRecognition);
@@ -159,6 +160,30 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
       }
       return null;
     });
+  };
+
+  const unlockAudioPlayback = async () => {
+    if (typeof window === 'undefined') return;
+
+    const AudioContextConstructor = window.AudioContext || (window as typeof window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+    if (!AudioContextConstructor) return;
+
+    if (!audioContextRef.current) {
+      audioContextRef.current = new AudioContextConstructor();
+    }
+
+    const context = audioContextRef.current;
+    if (context.state === 'suspended') {
+      await context.resume();
+    }
+
+    const source = context.createBufferSource();
+    source.buffer = context.createBuffer(1, 1, 22050);
+    const gainNode = context.createGain();
+    gainNode.gain.value = 0;
+    source.connect(gainNode);
+    gainNode.connect(context.destination);
+    source.start(0);
   };
 
   const primeSpeechAudio = async (text: string) => {
@@ -591,6 +616,7 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
     if (isLoading) return;
 
     if (isListening) {
+      void unlockAudioPlayback();
       voiceSubmitPendingRef.current = true;
       recognitionRef.current?.stop();
       return;
@@ -666,6 +692,9 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
       stopSpeaking();
       speechCacheRef.current.forEach((url) => URL.revokeObjectURL(url));
       speechCacheRef.current.clear();
+      if (audioContextRef.current && audioContextRef.current.state !== 'closed') {
+        void audioContextRef.current.close();
+      }
     };
   }, []);
 
