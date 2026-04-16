@@ -117,6 +117,13 @@ export interface CaseReminder {
   updatedAt: string;
 }
 
+export interface DueReminderDelivery {
+  userId: string;
+  userEmail: string;
+  userName?: string;
+  reminder: CaseReminder;
+}
+
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const USERS_TABLE = 'site_users';
@@ -926,6 +933,47 @@ export async function markCaseReminderEmailed(userId: string, reminderId: string
   if (error) {
     throw new Error(`Unable to update reminder email timestamp: ${error.message}`);
   }
+}
+
+export async function listDueReminderDeliveries(windowHours = 24): Promise<DueReminderDelivery[]> {
+  const supabase = requireSupabase();
+  const now = new Date();
+  const windowEnd = new Date(now.getTime() + windowHours * 60 * 60 * 1000).toISOString();
+  const windowStart = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString();
+  const resendCutoff = new Date(now.getTime() - 20 * 60 * 60 * 1000).toISOString();
+
+  const { data, error } = await supabase
+    .from(CASE_REMINDERS_TABLE)
+    .select('*')
+    .eq('email_enabled', true)
+    .gte('due_at', windowStart)
+    .lte('due_at', windowEnd)
+    .order('due_at', { ascending: true })
+    .returns<SiteCaseReminderRow[]>();
+
+  if (error) {
+    if (isMissingTableError(error.message, CASE_REMINDERS_TABLE)) {
+      return [];
+    }
+    throw new Error(`Unable to load due reminder deliveries: ${error.message}`);
+  }
+
+  const dueRows = (data || []).filter((row) => !row.last_emailed_at || row.last_emailed_at < resendCutoff);
+  const deliveries: DueReminderDelivery[] = [];
+
+  for (const row of dueRows) {
+    const user = await loadUserById(row.user_id);
+    if (!user?.email) continue;
+
+    deliveries.push({
+      userId: row.user_id,
+      userEmail: user.email,
+      userName: user.name || undefined,
+      reminder: toCaseReminder(row),
+    });
+  }
+
+  return deliveries;
 }
 
 export async function deleteChatSessionRecord(userId: string, sessionId: string) {
