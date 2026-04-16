@@ -123,7 +123,11 @@ function sanitizeStoredMessages(input: unknown): StoredChatSession['messages'] {
     .map((entry) => {
       if (!entry || typeof entry !== 'object') return null;
       const source = entry as Record<string, unknown>;
-      const role = source.role === 'assistant' ? 'assistant' : source.role === 'user' ? 'user' : null;
+      const role: 'user' | 'assistant' | null = source.role === 'assistant'
+        ? 'assistant'
+        : source.role === 'user'
+          ? 'user'
+          : null;
       const content = typeof source.content === 'string' ? source.content : '';
       const id = typeof source.id === 'string' ? source.id : randomBytes(8).toString('hex');
       const timestamp = typeof source.timestamp === 'string' ? source.timestamp : new Date().toISOString();
@@ -134,10 +138,14 @@ function sanitizeStoredMessages(input: unknown): StoredChatSession['messages'] {
 
       const attachments = Array.isArray(source.attachments)
         ? source.attachments
-            .map((attachment) => {
+            .map((attachment): StoredChatSession['messages'][number]['attachments'][number] | null => {
               if (!attachment || typeof attachment !== 'object') return null;
               const file = attachment as Record<string, unknown>;
-              const type = file.type === 'image' ? 'image' : file.type === 'document' ? 'document' : null;
+              const type: 'image' | 'document' | null = file.type === 'image'
+                ? 'image'
+                : file.type === 'document'
+                  ? 'document'
+                  : null;
               if (!type || typeof file.id !== 'string' || typeof file.name !== 'string') {
                 return null;
               }
@@ -164,7 +172,7 @@ function sanitizeStoredMessages(input: unknown): StoredChatSession['messages'] {
             .filter((action): action is NonNullable<typeof action> => Boolean(action))
         : undefined;
 
-      return {
+      const normalizedMessage: StoredChatSession['messages'][number] = {
         id,
         role,
         content: content.slice(0, 4000),
@@ -172,6 +180,8 @@ function sanitizeStoredMessages(input: unknown): StoredChatSession['messages'] {
         attachments: attachments?.length ? attachments : undefined,
         suggestedActions: suggestedActions?.length ? suggestedActions : undefined,
       };
+
+      return normalizedMessage;
     })
     .filter((entry): entry is NonNullable<typeof entry> => Boolean(entry));
 }
@@ -451,7 +461,7 @@ export async function listChatSessions(userId: string): Promise<StoredChatSessio
 
 export async function upsertChatSession(
   userId: string,
-  session: Pick<StoredChatSession, 'id' | 'title' | 'messages'> & Partial<Pick<StoredChatSession, 'createdAt' | 'updatedAt'>>
+  session: Pick<StoredChatSession, 'id' | 'title'> & { messages: unknown } & Partial<Pick<StoredChatSession, 'createdAt' | 'updatedAt'>>
 ): Promise<StoredChatSession> {
   const supabase = requireSupabase();
   const createdAt = session.createdAt || new Date().toISOString();
