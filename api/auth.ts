@@ -14,6 +14,7 @@ import {
   requireAuthenticatedUser,
   requireSupabase,
   toAuthUser,
+  updateUserDurableMemoryFromChatSession,
   updateUserProfile,
   updateUserRecord,
   upsertChatSession,
@@ -438,6 +439,10 @@ async function handleSaveChatSession(req: VercelRequest, res: VercelResponse, bo
     messages: Array.isArray(body.messages) ? body.messages : [],
     createdAt: typeof body.createdAt === 'string' ? body.createdAt : undefined,
     updatedAt: typeof body.updatedAt === 'string' ? body.updatedAt : undefined,
+  });
+
+  await updateUserDurableMemoryFromChatSession(user.id, saved).catch((error) => {
+    console.error('Failed to refresh Maria durable memory', error);
   });
 
   return res.status(200).json({ session: saved });

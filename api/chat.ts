@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { enforceBrowserOrigin, enforceRateLimit } from './_security.js';
-import { incrementChatCount, isAdminEmail, listRecentChatSessions, requireAuthenticatedUser, type AuthUser } from './_auth.js';
+import { getDurableUserMemory, incrementChatCount, isAdminEmail, listRecentChatSessions, requireAuthenticatedUser, type AuthUser } from './_auth.js';
 
 // Prefer OpenAI GPT-5.1 when available; fall back to Kimi (Moonshot) otherwise.
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
@@ -91,6 +91,24 @@ function formatRecentChatMemory(sessions: Awaited<ReturnType<typeof listRecentCh
   ].join('\n');
 }
 
+function formatDurableMemoryContext(memory: Awaited<ReturnType<typeof getDurableUserMemory>>) {
+  if (!memory) return null;
+
+  const lines = [
+    'Durable remembered user and case facts from prior Maria chats. Use this to stay consistent over time, but never claim the user repeated these facts in the current message.',
+  ];
+
+  if (memory.summary.trim()) {
+    lines.push(memory.summary.trim());
+  }
+
+  if (memory.memoryItems.length) {
+    lines.push(...memory.memoryItems.slice(-6).map((item) => `- ${item}`));
+  }
+
+  return lines.length > 1 ? lines.join('\n') : null;
+}
+
 function sanitizeMessages(input: unknown) {
   if (!Array.isArray(input)) return null;
   if (input.length === 0 || input.length > MAX_MESSAGE_COUNT) return null;
@@ -166,10 +184,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       console.error('Failed to load recent Maria chat memory', error);
       return [];
     });
+    const durableMemory = await getDurableUserMemory(currentUser.id).catch((error) => {
+      console.error('Failed to load durable Maria memory', error);
+      return null;
+    });
     const recentMemory = formatRecentChatMemory(recentSessions);
+    const durableMemoryContext = formatDurableMemoryContext(durableMemory);
     const contextMessages = injectProfileContext(sanitizedMessages, currentUser);
-    const messagesWithMemory = recentMemory
-      ? [{ role: 'system' as const, content: recentMemory }, ...contextMessages]
+    const memorySystemMessages = [durableMemoryContext, recentMemory]
+      .filter((value): value is string => Boolean(value))
+      .map((content) => ({ role: 'system' as const, content }));
+    const messagesWithMemory = memorySystemMessages.length
+      ? [...memorySystemMessages, ...contextMessages]
       : contextMessages;
 
     if (provider === 'openai') {

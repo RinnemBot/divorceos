@@ -54,6 +54,15 @@ interface SiteChatSessionRow {
   updated_at: string;
 }
 
+interface SiteUserMemoryRow {
+  user_id: string;
+  summary: string | null;
+  facts: UserProfile | null;
+  memory_items: string[] | null;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface StoredChatSession {
   id: string;
   userId: string;
@@ -70,11 +79,21 @@ export interface StoredChatSession {
   updatedAt: string;
 }
 
+export interface DurableUserMemory {
+  userId: string;
+  summary: string;
+  facts: Partial<UserProfile>;
+  memoryItems: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const USERS_TABLE = 'site_users';
 const SESSIONS_TABLE = 'site_sessions';
 const CHAT_SESSIONS_TABLE = 'site_chat_sessions';
+const USER_MEMORY_TABLE = 'site_user_memory';
 const SESSION_COOKIE = 'divorceos_session';
 const SESSION_TTL_MS = 30 * 24 * 60 * 60 * 1000;
 const EMAIL_TOKEN_TTL_MS = 24 * 60 * 60 * 1000;
@@ -201,6 +220,22 @@ function toStoredChatSession(row: SiteChatSessionRow): StoredChatSession {
   };
 }
 
+function sanitizeMemoryItems(input: unknown): string[] {
+  if (!Array.isArray(input)) return [];
+  return input.filter((value): value is string => typeof value === 'string' && value.trim().length > 0).map((value) => value.trim());
+}
+
+function toDurableUserMemory(row: SiteUserMemoryRow): DurableUserMemory {
+  return {
+    userId: row.user_id,
+    summary: typeof row.summary === 'string' ? row.summary : '',
+    facts: sanitizeProfile(row.facts) || {},
+    memoryItems: sanitizeMemoryItems(row.memory_items),
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  };
+}
+
 function sanitizeProfile(profile: unknown): UserProfile | undefined {
   if (!profile || typeof profile !== 'object') return undefined;
   const source = profile as Record<string, unknown>;
@@ -227,6 +262,190 @@ function sanitizeProfile(profile: unknown): UserProfile | undefined {
   }
 
   return Object.keys(next).length ? next : undefined;
+}
+
+function normalizeMemoryText(content: string) {
+  return content.replace(/\[attachments\][\s\S]*$/i, '').replace(/\s+/g, ' ').trim();
+}
+
+function remember(items: string[], item: string | null | undefined) {
+  const next = item?.trim();
+  if (!next) return;
+  if (items.some((entry) => entry.toLowerCase() === next.toLowerCase())) return;
+  items.push(next);
+}
+
+function capturePhrase(text: string, patterns: RegExp[]) {
+  for (const pattern of patterns) {
+    const match = text.match(pattern);
+    if (match?.[1]) {
+      return match[1].trim().replace(/[.,;:!?]+$/, '');
+    }
+  }
+  return undefined;
+}
+
+function detectPrimaryGoals(text: string) {
+  const goals = new Set<string>();
+  const lower = text.toLowerCase();
+  if (/(custody|visitation|parenting time)/.test(lower)) goals.add('custody');
+  if (/child support/.test(lower)) goals.add('child support');
+  if (/(spousal support|alimony)/.test(lower)) goals.add('spousal support');
+  if (/(property|asset|house|home|retirement|401k|pension)/.test(lower)) goals.add('property division');
+  if (/(file for divorce|start divorce|respond to divorce|petition)/.test(lower)) goals.add('divorce process');
+  if (/(domestic violence|restraining order|dvro|protective order)/.test(lower)) goals.add('protection orders');
+  if (/(settlement|mediate|mediation|agreement)/.test(lower)) goals.add('settlement');
+  return [...goals];
+}
+
+function inferCaseStage(text: string) {
+  const lower = text.toLowerCase();
+  if (/(judgment|finalized|final order|post-judgment)/.test(lower)) return 'post-judgment';
+  if (/(hearing|trial|court date|appearance|mediation next week)/.test(lower)) return 'hearing pending';
+  if (/(served me|was served|service completed|served on)/.test(lower)) return 'served';
+  if (/(i filed|filed on|petition filed|already filed)/.test(lower)) return 'filed';
+  if (/(starting divorce|about to file|preparing to file|want to file)/.test(lower)) return 'pre-filing';
+  return undefined;
+}
+
+function extractDurableFactsFromMessages(messages: StoredChatSession['messages']) {
+  const facts: Partial<UserProfile> = {};
+  const memoryItems: string[] = [];
+
+  for (const message of messages) {
+    if (message.role !== 'user') continue;
+
+    const text = normalizeMemoryText(message.content);
+    if (!text) continue;
+    const lower = text.toLowerCase();
+
+    const countyMatch = text.match(/\b([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)\s+County\b/);
+    if (countyMatch) {
+      facts.county = `${countyMatch[1]} County`;
+      remember(memoryItems, `User's case is in ${facts.county}.`);
+    }
+
+    const caseNumberMatch = text.match(/(?:case number|case no\.?|case #)\s*[:#-]?\s*([A-Z0-9-]+)/i);
+    if (caseNumberMatch) {
+      facts.caseNumber = caseNumberMatch[1];
+      remember(memoryItems, `Case number mentioned: ${facts.caseNumber}.`);
+    }
+
+    const marriageDate = capturePhrase(text, [/(?:married on|marriage date is|we got married on)\s+([^.,;\n]+)/i]);
+    if (marriageDate) {
+      facts.marriageDate = marriageDate;
+      remember(memoryItems, `Marriage date mentioned: ${marriageDate}.`);
+    }
+
+    const separationDate = capturePhrase(text, [/(?:separated on|separation date is|we separated on)\s+([^.,;\n]+)/i]);
+    if (separationDate) {
+      facts.separationDate = separationDate;
+      remember(memoryItems, `Separation date mentioned: ${separationDate}.`);
+    }
+
+    const filingDate = capturePhrase(text, [/(?:filed on|filing date is|i filed on)\s+([^.,;\n]+)/i]);
+    if (filingDate) {
+      facts.filingDate = filingDate;
+      remember(memoryItems, `Filing date mentioned: ${filingDate}.`);
+    }
+
+    const serviceDate = capturePhrase(text, [/(?:served on|service date is|i was served on|they served me on)\s+([^.,;\n]+)/i]);
+    if (serviceDate) {
+      facts.serviceDate = serviceDate;
+      remember(memoryItems, `Service date mentioned: ${serviceDate}.`);
+    }
+
+    const hearingDate = capturePhrase(text, [/(?:hearing on|hearing date is|next hearing is|court date is)\s+([^.,;\n]+)/i]);
+    if (hearingDate) {
+      facts.nextHearingDate = hearingDate;
+      remember(memoryItems, `Next hearing mentioned: ${hearingDate}.`);
+    }
+
+    const childrenCountMatch = text.match(/(?:have|with)\s+(\d+)\s+(?:kids|children|child)\b/i) || text.match(/(\d+)\s+(?:kids|children|child)\b/i);
+    if (childrenCountMatch) {
+      const count = Number(childrenCountMatch[1]);
+      if (Number.isFinite(count)) {
+        facts.hasChildren = count > 0;
+        facts.childrenCount = count;
+        remember(memoryItems, `User mentioned ${count} child${count === 1 ? '' : 'ren'}.`);
+      }
+    } else if (/(my kids|my children|our kids|our children)/i.test(text)) {
+      facts.hasChildren = true;
+    }
+
+    const childAgesMatch = text.match(/(?:ages?|aged)\s+((?:\d{1,2}\s*(?:,|and)?\s*){1,6})/i);
+    if (childAgesMatch) {
+      const ages = childAgesMatch[1].match(/\d{1,2}/g)?.map(Number).filter((age) => Number.isFinite(age));
+      if (ages?.length) {
+        facts.childrenAges = ages;
+        facts.hasChildren = true;
+        if (!facts.childrenCount) facts.childrenCount = ages.length;
+        remember(memoryItems, `Children ages mentioned: ${ages.join(', ')}.`);
+      }
+    }
+
+    if (/(self-represented|pro se|without a lawyer|don't have a lawyer|do not have a lawyer)/i.test(lower)) {
+      facts.representationStatus = 'self-represented';
+      remember(memoryItems, 'User said they are self-represented.');
+    } else if (/(my lawyer|my attorney|i have a lawyer|i have an attorney|represented by counsel)/i.test(lower)) {
+      facts.representationStatus = 'represented';
+      remember(memoryItems, 'User said they have a lawyer.');
+    }
+
+    const caseStage = inferCaseStage(text);
+    if (caseStage) {
+      facts.caseStage = caseStage;
+      remember(memoryItems, `Case stage suggests: ${caseStage}.`);
+    }
+
+    const primaryGoals = detectPrimaryGoals(text);
+    if (primaryGoals.length) {
+      facts.primaryGoals = [...new Set([...(facts.primaryGoals || []), ...primaryGoals])];
+      remember(memoryItems, `Primary goals mentioned: ${primaryGoals.join(', ')}.`);
+    }
+  }
+
+  return {
+    facts,
+    memoryItems: memoryItems.slice(-12),
+  };
+}
+
+function mergeDurableFacts(previous: Partial<UserProfile>, next: Partial<UserProfile>): Partial<UserProfile> {
+  const merged: Partial<UserProfile> = { ...previous, ...next };
+
+  const previousGoals = previous.primaryGoals || [];
+  const nextGoals = next.primaryGoals || [];
+  const combinedGoals = [...new Set([...previousGoals, ...nextGoals])];
+  if (combinedGoals.length) merged.primaryGoals = combinedGoals;
+
+  const previousAges = previous.childrenAges || [];
+  const nextAges = next.childrenAges || [];
+  const combinedAges = [...new Set([...previousAges, ...nextAges])].sort((a, b) => a - b);
+  if (combinedAges.length) merged.childrenAges = combinedAges;
+
+  if (typeof merged.childrenCount !== 'number' && combinedAges.length) {
+    merged.childrenCount = combinedAges.length;
+  }
+
+  if (typeof merged.hasChildren !== 'boolean' && (typeof merged.childrenCount === 'number' || combinedAges.length)) {
+    merged.hasChildren = true;
+  }
+
+  return merged;
+}
+
+function buildDurableMemorySummary(facts: Partial<UserProfile>, memoryItems: string[]) {
+  const lines: string[] = [];
+  if (facts.county) lines.push(`County: ${facts.county}`);
+  if (facts.caseStage) lines.push(`Case stage: ${facts.caseStage}`);
+  if (facts.representationStatus) lines.push(`Representation: ${facts.representationStatus}`);
+  if (typeof facts.childrenCount === 'number') lines.push(`Children count: ${facts.childrenCount}`);
+  if (facts.nextHearingDate) lines.push(`Next hearing: ${facts.nextHearingDate}`);
+  if (facts.primaryGoals?.length) lines.push(`Goals: ${facts.primaryGoals.join(', ')}`);
+
+  const notes = memoryItems.slice(-4).map((item) => `- ${item}`);
+  return [...lines, ...notes].join('\n').trim();
 }
 
 export function toAuthUser(row: SiteUserRow): AuthUser {
@@ -466,6 +685,24 @@ export async function listChatSessions(userId: string): Promise<StoredChatSessio
   return (data || []).map(toStoredChatSession);
 }
 
+export async function getDurableUserMemory(userId: string): Promise<DurableUserMemory | null> {
+  const supabase = requireSupabase();
+  const { data, error } = await supabase
+    .from(USER_MEMORY_TABLE)
+    .select('*')
+    .eq('user_id', userId)
+    .maybeSingle<SiteUserMemoryRow>();
+
+  if (error) {
+    if (isMissingTableError(error.message, USER_MEMORY_TABLE)) {
+      return null;
+    }
+    throw new Error(`Unable to load user memory: ${error.message}`);
+  }
+
+  return data ? toDurableUserMemory(data) : null;
+}
+
 export async function upsertChatSession(
   userId: string,
   session: Pick<StoredChatSession, 'id' | 'title'> & { messages: unknown } & Partial<Pick<StoredChatSession, 'createdAt' | 'updatedAt'>>
@@ -497,6 +734,46 @@ export async function upsertChatSession(
   }
 
   return toStoredChatSession(data);
+}
+
+export async function updateUserDurableMemoryFromChatSession(userId: string, session: Pick<StoredChatSession, 'messages'>) {
+  const supabase = requireSupabase();
+  const existingMemory = await getDurableUserMemory(userId);
+  const extracted = extractDurableFactsFromMessages(session.messages);
+
+  if (!Object.keys(extracted.facts).length && extracted.memoryItems.length === 0) {
+    return existingMemory;
+  }
+
+  const mergedFacts = mergeDurableFacts(existingMemory?.facts || {}, extracted.facts);
+  const mergedItems = [...new Set([...(existingMemory?.memoryItems || []), ...extracted.memoryItems])].slice(-12);
+  const summary = buildDurableMemorySummary(mergedFacts, mergedItems);
+  const now = new Date().toISOString();
+
+  const { data, error } = await supabase
+    .from(USER_MEMORY_TABLE)
+    .upsert(
+      {
+        user_id: userId,
+        summary,
+        facts: mergedFacts,
+        memory_items: mergedItems,
+        created_at: existingMemory?.createdAt || now,
+        updated_at: now,
+      },
+      { onConflict: 'user_id' }
+    )
+    .select('*')
+    .single<SiteUserMemoryRow>();
+
+  if (error) {
+    if (isMissingTableError(error.message, USER_MEMORY_TABLE)) {
+      return existingMemory;
+    }
+    throw new Error(`Unable to update user memory: ${error.message}`);
+  }
+
+  return toDurableUserMemory(data);
 }
 
 export async function deleteChatSessionRecord(userId: string, sessionId: string) {
