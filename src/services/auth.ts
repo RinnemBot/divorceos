@@ -56,6 +56,20 @@ export interface ChatSession {
   updatedAt: string;
 }
 
+export interface CaseReminder {
+  id: string;
+  userId: string;
+  title: string;
+  description?: string;
+  dueAt: string;
+  forms: string[];
+  actionTab?: string;
+  emailEnabled: boolean;
+  lastEmailedAt?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export const SUBSCRIPTION_LIMITS = {
   free: { maxChats: 3, aiResponses: true, price: 0, name: 'Free' },
   basic: { maxChats: 20, aiResponses: true, price: 20, name: 'Basic' },
@@ -72,6 +86,8 @@ interface AuthResponse {
   user?: User | null;
   sessions?: ChatSession[];
   session?: ChatSession;
+  reminders?: CaseReminder[];
+  reminder?: CaseReminder;
   error?: string;
   success?: boolean;
 }
@@ -200,6 +216,27 @@ class AuthService {
     };
   }
 
+  private sanitizeCaseReminder(reminder: unknown): CaseReminder | null {
+    if (!reminder || typeof reminder !== 'object') return null;
+    const candidate = reminder as Partial<CaseReminder>;
+    if (typeof candidate.id !== 'string' || typeof candidate.userId !== 'string') return null;
+    if (typeof candidate.title !== 'string' || typeof candidate.dueAt !== 'string') return null;
+
+    return {
+      id: candidate.id,
+      userId: candidate.userId,
+      title: candidate.title,
+      description: typeof candidate.description === 'string' ? candidate.description : undefined,
+      dueAt: candidate.dueAt,
+      forms: Array.isArray(candidate.forms) ? candidate.forms.filter((value): value is string => typeof value === 'string') : [],
+      actionTab: typeof candidate.actionTab === 'string' ? candidate.actionTab : undefined,
+      emailEnabled: Boolean(candidate.emailEnabled),
+      lastEmailedAt: typeof candidate.lastEmailedAt === 'string' ? candidate.lastEmailedAt : undefined,
+      createdAt: typeof candidate.createdAt === 'string' ? candidate.createdAt : new Date().toISOString(),
+      updatedAt: typeof candidate.updatedAt === 'string' ? candidate.updatedAt : new Date().toISOString(),
+    };
+  }
+
   private readLocalChatSessions(): ChatSession[] {
     const data = this.readStorage(SESSIONS_KEY);
     if (!data) return [];
@@ -294,6 +331,50 @@ class AuthService {
     } catch (error) {
       console.error('Failed to delete chat session on server.', error);
     }
+  }
+
+  async getReminders(): Promise<CaseReminder[]> {
+    const payload = await this.request<AuthResponse>('POST', { action: 'reminders-list' });
+    return Array.isArray(payload.reminders)
+      ? payload.reminders
+          .map((reminder) => this.sanitizeCaseReminder(reminder))
+          .filter((reminder): reminder is CaseReminder => Boolean(reminder))
+      : [];
+  }
+
+  async saveReminder(reminder: {
+    id: string;
+    title: string;
+    description?: string;
+    dueAt: string;
+    forms?: string[];
+    actionTab?: string;
+    emailEnabled?: boolean;
+  }): Promise<CaseReminder> {
+    const payload = await this.request<AuthResponse>('POST', {
+      action: 'reminders-save',
+      reminderId: reminder.id,
+      title: reminder.title,
+      description: reminder.description,
+      dueAt: reminder.dueAt,
+      forms: reminder.forms || [],
+      actionTab: reminder.actionTab,
+      emailEnabled: Boolean(reminder.emailEnabled),
+    });
+
+    const saved = this.sanitizeCaseReminder(payload.reminder);
+    if (!saved) {
+      throw new Error('Failed to save reminder');
+    }
+    return saved;
+  }
+
+  async deleteReminder(reminderId: string): Promise<void> {
+    await this.request<AuthResponse>('POST', { action: 'reminders-delete', reminderId });
+  }
+
+  async sendReminderTestEmail(reminderId: string): Promise<void> {
+    await this.request<AuthResponse>('POST', { action: 'reminders-send-test', reminderId });
   }
 
   async register(email: string, password: string, name?: string, referralCode?: string): Promise<User> {

@@ -64,6 +64,20 @@ interface SiteUserMemoryRow {
   updated_at: string;
 }
 
+interface SiteCaseReminderRow {
+  id: string;
+  user_id: string;
+  title: string;
+  description: string | null;
+  due_at: string;
+  forms: string[] | null;
+  action_tab: string | null;
+  email_enabled: boolean | null;
+  last_emailed_at: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface StoredChatSession {
   id: string;
   userId: string;
@@ -89,12 +103,27 @@ export interface DurableUserMemory {
   updatedAt: string;
 }
 
+export interface CaseReminder {
+  id: string;
+  userId: string;
+  title: string;
+  description?: string;
+  dueAt: string;
+  forms: string[];
+  actionTab?: string;
+  emailEnabled: boolean;
+  lastEmailedAt?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const USERS_TABLE = 'site_users';
 const SESSIONS_TABLE = 'site_sessions';
 const CHAT_SESSIONS_TABLE = 'site_chat_sessions';
 const USER_MEMORY_TABLE = 'site_user_memory';
+const CASE_REMINDERS_TABLE = 'site_case_reminders';
 const SESSION_COOKIE = 'divorceos_session';
 const SESSION_TTL_MS = 30 * 24 * 60 * 60 * 1000;
 const EMAIL_TOKEN_TTL_MS = 24 * 60 * 60 * 1000;
@@ -226,12 +255,33 @@ function sanitizeMemoryItems(input: unknown): string[] {
   return input.filter((value): value is string => typeof value === 'string' && value.trim().length > 0).map((value) => value.trim());
 }
 
+function sanitizeStringArray(input: unknown): string[] {
+  if (!Array.isArray(input)) return [];
+  return input.filter((value): value is string => typeof value === 'string' && value.trim().length > 0).map((value) => value.trim());
+}
+
 function toDurableUserMemory(row: SiteUserMemoryRow): DurableUserMemory {
   return {
     userId: row.user_id,
     summary: typeof row.summary === 'string' ? row.summary : '',
     facts: sanitizeProfile(row.facts) || {},
     memoryItems: sanitizeMemoryItems(row.memory_items),
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  };
+}
+
+function toCaseReminder(row: SiteCaseReminderRow): CaseReminder {
+  return {
+    id: row.id,
+    userId: row.user_id,
+    title: row.title,
+    description: row.description || undefined,
+    dueAt: row.due_at,
+    forms: sanitizeStringArray(row.forms),
+    actionTab: row.action_tab || undefined,
+    emailEnabled: Boolean(row.email_enabled),
+    lastEmailedAt: row.last_emailed_at || undefined,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };
@@ -707,6 +757,44 @@ export async function getDurableUserMemory(userId: string): Promise<DurableUserM
   return data ? toDurableUserMemory(data) : null;
 }
 
+export async function listCaseReminders(userId: string): Promise<CaseReminder[]> {
+  const supabase = requireSupabase();
+  const { data, error } = await supabase
+    .from(CASE_REMINDERS_TABLE)
+    .select('*')
+    .eq('user_id', userId)
+    .order('due_at', { ascending: true })
+    .returns<SiteCaseReminderRow[]>();
+
+  if (error) {
+    if (isMissingTableError(error.message, CASE_REMINDERS_TABLE)) {
+      return [];
+    }
+    throw new Error(`Unable to list reminders: ${error.message}`);
+  }
+
+  return (data || []).map(toCaseReminder);
+}
+
+export async function getCaseReminder(userId: string, reminderId: string): Promise<CaseReminder | null> {
+  const supabase = requireSupabase();
+  const { data, error } = await supabase
+    .from(CASE_REMINDERS_TABLE)
+    .select('*')
+    .eq('user_id', userId)
+    .eq('id', reminderId)
+    .maybeSingle<SiteCaseReminderRow>();
+
+  if (error) {
+    if (isMissingTableError(error.message, CASE_REMINDERS_TABLE)) {
+      return null;
+    }
+    throw new Error(`Unable to load reminder: ${error.message}`);
+  }
+
+  return data ? toCaseReminder(data) : null;
+}
+
 export async function upsertChatSession(
   userId: string,
   session: Pick<StoredChatSession, 'id' | 'title'> & { messages: unknown } & Partial<Pick<StoredChatSession, 'createdAt' | 'updatedAt'>>
@@ -778,6 +866,66 @@ export async function updateUserDurableMemoryFromChatSession(userId: string, ses
   }
 
   return toDurableUserMemory(data);
+}
+
+export async function upsertCaseReminder(
+  userId: string,
+  reminder: Pick<CaseReminder, 'id' | 'title' | 'dueAt'> & Partial<Pick<CaseReminder, 'description' | 'forms' | 'actionTab' | 'emailEnabled' | 'createdAt'>>
+): Promise<CaseReminder> {
+  const supabase = requireSupabase();
+  const now = new Date().toISOString();
+
+  const { data, error } = await supabase
+    .from(CASE_REMINDERS_TABLE)
+    .upsert(
+      {
+        id: reminder.id,
+        user_id: userId,
+        title: reminder.title.trim().slice(0, 120),
+        description: reminder.description?.trim() || null,
+        due_at: reminder.dueAt,
+        forms: sanitizeStringArray(reminder.forms || []),
+        action_tab: reminder.actionTab || null,
+        email_enabled: Boolean(reminder.emailEnabled),
+        updated_at: now,
+        created_at: reminder.createdAt || now,
+      },
+      { onConflict: 'id' }
+    )
+    .select('*')
+    .single<SiteCaseReminderRow>();
+
+  if (error) {
+    throw new Error(`Unable to save reminder: ${error.message}`);
+  }
+
+  return toCaseReminder(data);
+}
+
+export async function deleteCaseReminder(userId: string, reminderId: string) {
+  const supabase = requireSupabase();
+  const { error } = await supabase
+    .from(CASE_REMINDERS_TABLE)
+    .delete()
+    .eq('user_id', userId)
+    .eq('id', reminderId);
+
+  if (error) {
+    throw new Error(`Unable to delete reminder: ${error.message}`);
+  }
+}
+
+export async function markCaseReminderEmailed(userId: string, reminderId: string) {
+  const supabase = requireSupabase();
+  const { error } = await supabase
+    .from(CASE_REMINDERS_TABLE)
+    .update({ last_emailed_at: new Date().toISOString(), updated_at: new Date().toISOString() })
+    .eq('user_id', userId)
+    .eq('id', reminderId);
+
+  if (error) {
+    throw new Error(`Unable to update reminder email timestamp: ${error.message}`);
+  }
 }
 
 export async function deleteChatSessionRecord(userId: string, sessionId: string) {

@@ -5,15 +5,20 @@ import {
   buildNewUserRecord,
   createEmailVerificationToken,
   createSessionForUser,
+  deleteCaseReminder,
   deleteChatSessionRecord,
   destroySession,
+  getCaseReminder,
   getAuthenticatedUser,
   isAdminEmail,
+  listCaseReminders,
   listChatSessions,
+  markCaseReminderEmailed,
   loadUserByEmail,
   requireAuthenticatedUser,
   requireSupabase,
   toAuthUser,
+  upsertCaseReminder,
   updateUserDurableMemoryFromChatSession,
   updateUserProfile,
   updateUserRecord,
@@ -60,6 +65,12 @@ interface AuthActionBody {
   messages?: unknown[];
   createdAt?: string;
   updatedAt?: string;
+  description?: string;
+  dueAt?: string;
+  forms?: string[];
+  actionTab?: string;
+  emailEnabled?: boolean;
+  reminderId?: string;
 }
 
 function parseJsonBody<T>(req: VercelRequest): T {
@@ -460,6 +471,99 @@ async function handleDeleteChatSession(req: VercelRequest, res: VercelResponse, 
   return res.status(200).json({ success: true });
 }
 
+async function handleListReminders(req: VercelRequest, res: VercelResponse) {
+  const user = await requireAuthenticatedUser(req, res);
+  if (!user) return;
+
+  const reminders = await listCaseReminders(user.id);
+  return res.status(200).json({ reminders });
+}
+
+async function handleSaveReminder(req: VercelRequest, res: VercelResponse, body: AuthActionBody) {
+  const user = await requireAuthenticatedUser(req, res);
+  if (!user) return;
+
+  if (typeof body.reminderId !== 'string' || !body.reminderId.trim()) {
+    return res.status(400).json({ error: 'reminderId is required' });
+  }
+
+  if (typeof body.title !== 'string' || !body.title.trim()) {
+    return res.status(400).json({ error: 'title is required' });
+  }
+
+  if (typeof body.dueAt !== 'string' || !body.dueAt.trim()) {
+    return res.status(400).json({ error: 'dueAt is required' });
+  }
+
+  const reminder = await upsertCaseReminder(user.id, {
+    id: body.reminderId,
+    title: body.title,
+    description: typeof body.description === 'string' ? body.description : undefined,
+    dueAt: body.dueAt,
+    forms: Array.isArray(body.forms) ? body.forms : [],
+    actionTab: typeof body.actionTab === 'string' ? body.actionTab : undefined,
+    emailEnabled: Boolean(body.emailEnabled),
+  });
+
+  return res.status(200).json({ reminder });
+}
+
+async function handleDeleteReminder(req: VercelRequest, res: VercelResponse, body: AuthActionBody) {
+  const user = await requireAuthenticatedUser(req, res);
+  if (!user) return;
+
+  if (typeof body.reminderId !== 'string' || !body.reminderId.trim()) {
+    return res.status(400).json({ error: 'reminderId is required' });
+  }
+
+  await deleteCaseReminder(user.id, body.reminderId);
+  return res.status(200).json({ success: true });
+}
+
+async function handleSendReminderTestEmail(req: VercelRequest, res: VercelResponse, body: AuthActionBody) {
+  const user = await requireAuthenticatedUser(req, res);
+  if (!user) return;
+
+  if (typeof body.reminderId !== 'string' || !body.reminderId.trim()) {
+    return res.status(400).json({ error: 'reminderId is required' });
+  }
+
+  const reminder = await getCaseReminder(user.id, body.reminderId);
+  if (!reminder) {
+    return res.status(404).json({ error: 'Reminder not found' });
+  }
+
+  await sendAgentMail({
+    to: user.email,
+    from: AGENTMAIL_INBOX_ID,
+    subject: `DivorceOS reminder: ${reminder.title}`,
+    body: [
+      `Hi ${user.name || user.email.split('@')[0]},`,
+      '',
+      'This is a test reminder email from DivorceOS.',
+      '',
+      `Reminder: ${reminder.title}`,
+      reminder.description ? `Details: ${reminder.description}` : null,
+      `Due: ${new Date(reminder.dueAt).toLocaleString()}`,
+      reminder.forms.length ? `Suggested forms: ${reminder.forms.join(', ')}` : null,
+      '',
+      'Automatic reminder sends are still meant to stay paused until the site is live.',
+    ].filter(Boolean).join('\n'),
+    name: user.name || user.email,
+    metadata: {
+      type: 'case-reminder-test',
+      reminderId: reminder.id,
+      userId: user.id,
+    },
+  });
+
+  await markCaseReminderEmailed(user.id, reminder.id).catch((error) => {
+    console.error('Failed to stamp reminder email send', error);
+  });
+
+  return res.status(200).json({ success: true });
+}
+
 async function handleUpdateProfile(req: VercelRequest, res: VercelResponse, body: AuthActionBody) {
   const user = await requireAuthenticatedUser(req, res);
   if (!user) return;
@@ -510,6 +614,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       if (action === 'chat-sessions-list') return handleListChatSessions(req, res);
       if (action === 'chat-sessions-save') return handleSaveChatSession(req, res, body);
       if (action === 'chat-sessions-delete') return handleDeleteChatSession(req, res, body);
+      if (action === 'reminders-list') return handleListReminders(req, res);
+      if (action === 'reminders-save') return handleSaveReminder(req, res, body);
+      if (action === 'reminders-delete') return handleDeleteReminder(req, res, body);
+      if (action === 'reminders-send-test') return handleSendReminderTestEmail(req, res, body);
     }
 
     if (req.method === 'PATCH') {

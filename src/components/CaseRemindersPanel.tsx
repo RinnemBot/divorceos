@@ -1,12 +1,18 @@
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { AlertTriangle, BellRing, CalendarClock, ChevronRight, Clock3, Heart, MapPinned } from 'lucide-react';
+import { AlertTriangle, BellRing, CalendarClock, ChevronRight, Clock3, Heart, Loader2, Mail, MapPinned, Plus, Trash2 } from 'lucide-react';
 import { COUNTY_GUIDES } from '@/data/countyGuides';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import type { User, UserProfile } from '@/services/auth';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { authService, type CaseReminder, type User, type UserProfile } from '@/services/auth';
 
 type ReminderTone = 'urgent' | 'upcoming' | 'planning';
+type ReminderActionTab = 'documents' | 'county' | 'service';
 
 interface ReminderItem {
   id: string;
@@ -15,16 +21,41 @@ interface ReminderItem {
   detail: string;
   dueLabel?: string;
   forms: string[];
-  actionTab?: 'documents' | 'county' | 'service';
+  actionTab?: ReminderActionTab;
   actionLabel?: string;
 }
 
 interface CaseRemindersPanelProps {
   currentUser: User;
-  onJumpToTab?: (tab: 'documents' | 'county' | 'service') => void;
+  onJumpToTab?: (tab: ReminderActionTab) => void;
+}
+
+interface ReminderFormState {
+  title: string;
+  description: string;
+  dueAt: string;
+  forms: string;
+  actionTab: ReminderActionTab;
+  emailEnabled: boolean;
 }
 
 const DAY_MS = 24 * 60 * 60 * 1000;
+
+const EMPTY_FORM: ReminderFormState = {
+  title: '',
+  description: '',
+  dueAt: '',
+  forms: '',
+  actionTab: 'documents',
+  emailEnabled: false,
+};
+
+function createReminderId() {
+  if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) {
+    return crypto.randomUUID();
+  }
+  return `reminder_${Date.now()}_${Math.random().toString(16).slice(2)}`;
+}
 
 function parseDateInput(value?: string) {
   if (!value) return null;
@@ -108,7 +139,7 @@ function buildReminderItems(user: User): ReminderItem[] {
       title: 'Service and proof-of-service follow-up',
       detail: remainingDays < 0
         ? 'Your filing-based service window looks overdue. Double-check whether service was completed and get FL-115 filed fast.'
-        : `Service usually needs attention soon after filing. Keep the server lined up and file proof of service once it is done.` ,
+        : 'Service usually needs attention soon after filing. Keep the server lined up and file proof of service once it is done.',
       dueLabel: `${formatDueLabel(serviceDueDate)}${remainingDays >= 0 ? ` (${remainingDays} day${remainingDays === 1 ? '' : 's'} left)` : ' (past due)'}`,
       forms: ['FL-115'],
       actionTab: 'service',
@@ -174,9 +205,98 @@ function toneClasses(tone: ReminderTone) {
   };
 }
 
+function formsStringToArray(value: string) {
+  return value
+    .split(',')
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
 export function CaseRemindersPanel({ currentUser, onJumpToTab }: CaseRemindersPanelProps) {
   const reminders = buildReminderItems(currentUser);
-  const favoriteCounties = COUNTY_GUIDES.filter((guide) => currentUser.profile?.favoriteCountyIds?.includes(guide.id));
+  const favoriteCounties = useMemo(
+    () => COUNTY_GUIDES.filter((guide) => currentUser.profile?.favoriteCountyIds?.includes(guide.id)),
+    [currentUser.profile?.favoriteCountyIds]
+  );
+  const [savedReminders, setSavedReminders] = useState<CaseReminder[]>([]);
+  const [isLoadingSavedReminders, setIsLoadingSavedReminders] = useState(true);
+  const [isSavingReminder, setIsSavingReminder] = useState(false);
+  const [sendingReminderId, setSendingReminderId] = useState<string | null>(null);
+  const [form, setForm] = useState<ReminderFormState>(EMPTY_FORM);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadReminders = async () => {
+      setIsLoadingSavedReminders(true);
+      try {
+        const nextReminders = await authService.getReminders();
+        if (!cancelled) {
+          setSavedReminders(nextReminders);
+        }
+      } catch (error) {
+        console.error('Failed to load reminders', error);
+        if (!cancelled) {
+          setSavedReminders([]);
+        }
+      } finally {
+        if (!cancelled) {
+          setIsLoadingSavedReminders(false);
+        }
+      }
+    };
+
+    void loadReminders();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [currentUser.id]);
+
+  const handleCreateReminder = async () => {
+    if (!form.title.trim() || !form.dueAt) return;
+
+    setIsSavingReminder(true);
+    try {
+      const saved = await authService.saveReminder({
+        id: createReminderId(),
+        title: form.title.trim(),
+        description: form.description.trim() || undefined,
+        dueAt: form.dueAt,
+        forms: formsStringToArray(form.forms),
+        actionTab: form.actionTab,
+        emailEnabled: form.emailEnabled,
+      });
+      setSavedReminders((prev) => [...prev, saved].sort((a, b) => new Date(a.dueAt).getTime() - new Date(b.dueAt).getTime()));
+      setForm(EMPTY_FORM);
+    } catch (error) {
+      console.error('Failed to save reminder', error);
+    } finally {
+      setIsSavingReminder(false);
+    }
+  };
+
+  const handleDeleteReminder = async (reminderId: string) => {
+    try {
+      await authService.deleteReminder(reminderId);
+      setSavedReminders((prev) => prev.filter((reminder) => reminder.id !== reminderId));
+    } catch (error) {
+      console.error('Failed to delete reminder', error);
+    }
+  };
+
+  const handleSendTestEmail = async (reminderId: string) => {
+    setSendingReminderId(reminderId);
+    try {
+      await authService.sendReminderTestEmail(reminderId);
+      const refreshed = await authService.getReminders();
+      setSavedReminders(refreshed);
+    } catch (error) {
+      console.error('Failed to send reminder test email', error);
+    } finally {
+      setSendingReminderId(null);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -187,7 +307,7 @@ export function CaseRemindersPanel({ currentUser, onJumpToTab }: CaseRemindersPa
             Reminder center
           </CardTitle>
           <CardDescription>
-            Use this as the first version of deadline nudges, next-form reminders, and county follow-through.
+            This is the new reminder layer: automatic in-app deadline nudges, editable custom reminders, and optional email tests.
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
@@ -204,16 +324,14 @@ export function CaseRemindersPanel({ currentUser, onJumpToTab }: CaseRemindersPa
                     </Badge>
                     <p className="mt-3 font-semibold text-slate-900">{reminder.title}</p>
                   </div>
-                  {reminder.dueLabel ? (
-                    <div className="text-right text-xs text-slate-500">{reminder.dueLabel}</div>
-                  ) : null}
+                  {reminder.dueLabel ? <div className="text-right text-xs text-slate-500">{reminder.dueLabel}</div> : null}
                 </div>
                 <p className="mt-3 text-sm text-slate-600">{reminder.detail}</p>
                 {reminder.forms.length ? (
                   <div className="mt-4 flex flex-wrap gap-2">
-                    {reminder.forms.map((form) => (
-                      <Badge key={form} variant="secondary" className="bg-white/80 text-slate-700">
-                        {form}
+                    {reminder.forms.map((formNumber) => (
+                      <Badge key={formNumber} variant="secondary" className="bg-white/80 text-slate-700">
+                        {formNumber}
                       </Badge>
                     ))}
                   </div>
@@ -227,6 +345,125 @@ export function CaseRemindersPanel({ currentUser, onJumpToTab }: CaseRemindersPa
               </div>
             );
           })}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Plus className="h-4 w-4 text-emerald-600" />
+            Add a custom reminder
+          </CardTitle>
+          <CardDescription>
+            Save your own deadline, note the next forms, and optionally mark it for email reminders later.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="grid gap-4 md:grid-cols-2">
+          <div className="space-y-2">
+            <Label htmlFor="reminder-title">Reminder title</Label>
+            <Input id="reminder-title" value={form.title} onChange={(event) => setForm((prev) => ({ ...prev, title: event.target.value }))} placeholder="File response packet" />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="reminder-due">Due date / time</Label>
+            <Input id="reminder-due" type="datetime-local" value={form.dueAt} onChange={(event) => setForm((prev) => ({ ...prev, dueAt: event.target.value }))} />
+          </div>
+          <div className="space-y-2 md:col-span-2">
+            <Label htmlFor="reminder-description">Details</Label>
+            <Textarea id="reminder-description" value={form.description} onChange={(event) => setForm((prev) => ({ ...prev, description: event.target.value }))} placeholder="What needs to happen, who it affects, or what to bring." rows={3} />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="reminder-forms">Forms to remember</Label>
+            <Input id="reminder-forms" value={form.forms} onChange={(event) => setForm((prev) => ({ ...prev, forms: event.target.value }))} placeholder="FL-120, FL-150" />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="reminder-tab">Jump tab</Label>
+            <select
+              id="reminder-tab"
+              value={form.actionTab}
+              onChange={(event) => setForm((prev) => ({ ...prev, actionTab: event.target.value as ReminderActionTab }))}
+              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+            >
+              <option value="documents">Documents</option>
+              <option value="county">County Filing</option>
+              <option value="service">Service</option>
+            </select>
+          </div>
+          <div className="md:col-span-2 flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 p-3">
+            <Checkbox checked={form.emailEnabled} onCheckedChange={(checked) => setForm((prev) => ({ ...prev, emailEnabled: Boolean(checked) }))} />
+            <div>
+              <p className="text-sm font-medium text-slate-900">Optional email reminder</p>
+              <p className="text-xs text-slate-500">We can save this preference now and send test emails, while keeping automatic cron sends paused until go-live.</p>
+            </div>
+          </div>
+          <div className="md:col-span-2 flex justify-end">
+            <Button onClick={() => void handleCreateReminder()} disabled={isSavingReminder || !form.title.trim() || !form.dueAt}>
+              {isSavingReminder ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Plus className="mr-2 h-4 w-4" />}
+              Save reminder
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Mail className="h-4 w-4 text-blue-600" />
+            Saved reminder queue
+          </CardTitle>
+          <CardDescription>
+            Custom reminders live here. Email-enabled reminders can send a test email now, and the automatic send layer can stay paused until launch.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {isLoadingSavedReminders ? (
+            <div className="text-sm text-slate-500">Loading reminders…</div>
+          ) : savedReminders.length === 0 ? (
+            <div className="rounded-xl border border-dashed border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
+              No custom reminders yet. Add one above to start testing editable reminders and optional email nudges.
+            </div>
+          ) : (
+            savedReminders.map((reminder) => (
+              <div key={reminder.id} className="rounded-2xl border border-slate-200 bg-white p-4">
+                <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+                  <div>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <p className="font-semibold text-slate-900">{reminder.title}</p>
+                      {reminder.emailEnabled ? <Badge variant="outline" className="border-blue-200 bg-blue-50 text-blue-700">Email enabled</Badge> : null}
+                    </div>
+                    <p className="mt-1 text-sm text-slate-600">Due {new Date(reminder.dueAt).toLocaleString()}</p>
+                    {reminder.description ? <p className="mt-2 text-sm text-slate-600">{reminder.description}</p> : null}
+                    {reminder.forms.length ? (
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {reminder.forms.map((formNumber) => (
+                          <Badge key={formNumber} variant="secondary">{formNumber}</Badge>
+                        ))}
+                      </div>
+                    ) : null}
+                    {reminder.lastEmailedAt ? (
+                      <p className="mt-2 text-xs text-slate-500">Last test email: {new Date(reminder.lastEmailedAt).toLocaleString()}</p>
+                    ) : null}
+                  </div>
+                  <div className="flex flex-col gap-2 lg:w-52">
+                    {reminder.actionTab ? (
+                      <Button variant="outline" onClick={() => onJumpToTab?.(reminder.actionTab as ReminderActionTab)}>
+                        Jump to {reminder.actionTab}
+                      </Button>
+                    ) : null}
+                    {reminder.emailEnabled ? (
+                      <Button variant="outline" onClick={() => void handleSendTestEmail(reminder.id)} disabled={sendingReminderId === reminder.id}>
+                        {sendingReminderId === reminder.id ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Mail className="mr-2 h-4 w-4" />}
+                        Send test email
+                      </Button>
+                    ) : null}
+                    <Button variant="ghost" className="text-rose-600 hover:text-rose-700" onClick={() => void handleDeleteReminder(reminder.id)}>
+                      <Trash2 className="mr-2 h-4 w-4" />
+                      Delete
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
         </CardContent>
       </Card>
 
@@ -273,7 +510,7 @@ export function CaseRemindersPanel({ currentUser, onJumpToTab }: CaseRemindersPa
           <p>• hearing coming up with next-form suggestions</p>
           <p>• county-specific packet nudges</p>
           <p>• filing prep if the user has not started yet</p>
-          <p>• future email/SMS notifications once you want outbound alerts</p>
+          <p>• automatic email sends once the live cron is re-enabled</p>
         </CardContent>
       </Card>
     </div>
