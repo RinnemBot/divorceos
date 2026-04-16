@@ -13,6 +13,7 @@ import {
   isAdminEmail,
   listCaseReminders,
   listChatSessions,
+  listDueReminderDeliveries,
   markCaseReminderEmailed,
   loadUserByEmail,
   requireAuthenticatedUser,
@@ -31,6 +32,7 @@ import {
 const USERS_TABLE = 'site_users';
 const REFERRALS_TABLE = 'site_referrals';
 const SUPPORT_SCENARIOS_TABLE = 'site_support_scenarios';
+const REMINDER_DISPATCH_TOKEN = process.env.REMINDER_DISPATCH_TOKEN;
 
 interface AuthActionBody {
   action?: string;
@@ -71,6 +73,7 @@ interface AuthActionBody {
   actionTab?: string;
   emailEnabled?: boolean;
   reminderId?: string;
+  dispatchToken?: string;
 }
 
 function parseJsonBody<T>(req: VercelRequest): T {
@@ -107,6 +110,14 @@ function normalizeSupportScenario(row: Record<string, any>) {
     estimatePayer: row.estimate_payer,
     snapshot: row.snapshot,
   };
+}
+
+function getReminderDispatchToken(req: VercelRequest, body?: AuthActionBody) {
+  const headerToken = req.headers['x-reminder-dispatch-token'];
+  if (Array.isArray(headerToken) && headerToken[0]) return headerToken[0];
+  if (typeof headerToken === 'string' && headerToken) return headerToken;
+  if (typeof body?.dispatchToken === 'string' && body.dispatchToken) return body.dispatchToken;
+  return '';
 }
 
 async function sendVerificationEmail(email: string, name: string | null | undefined, token: string) {
@@ -564,6 +575,54 @@ async function handleSendReminderTestEmail(req: VercelRequest, res: VercelRespon
   return res.status(200).json({ success: true });
 }
 
+async function handleDispatchDueReminders(req: VercelRequest, res: VercelResponse, body: AuthActionBody) {
+  const token = getReminderDispatchToken(req, body);
+  if (!REMINDER_DISPATCH_TOKEN || token !== REMINDER_DISPATCH_TOKEN) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
+  const deliveries = await listDueReminderDeliveries(24);
+  let sent = 0;
+  const failures: Array<{ reminderId: string; error: string }> = [];
+
+  for (const delivery of deliveries) {
+    try {
+      await sendAgentMail({
+        to: delivery.userEmail,
+        from: AGENTMAIL_INBOX_ID,
+        subject: `DivorceOS reminder: ${delivery.reminder.title}`,
+        body: [
+          `Hi ${delivery.userName || 'there'},`,
+          '',
+          'DivorceOS reminder:',
+          `• ${delivery.reminder.title}`,
+          delivery.reminder.description ? `• ${delivery.reminder.description}` : null,
+          `• Due: ${new Date(delivery.reminder.dueAt).toLocaleString()}`,
+          delivery.reminder.forms.length ? `• Suggested forms: ${delivery.reminder.forms.join(', ')}` : null,
+          '',
+          'Log in to DivorceOS to review the reminder, update dates, and jump back into forms or county filing guidance.',
+        ].filter(Boolean).join('\n'),
+        name: delivery.userName || delivery.userEmail,
+        metadata: {
+          type: 'case-reminder-live',
+          reminderId: delivery.reminder.id,
+          userId: delivery.userId,
+        },
+      });
+      await markCaseReminderEmailed(delivery.userId, delivery.reminder.id);
+      sent += 1;
+    } catch (error) {
+      console.error('Failed to send due reminder email', error);
+      failures.push({
+        reminderId: delivery.reminder.id,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      });
+    }
+  }
+
+  return res.status(200).json({ ok: true, dueCount: deliveries.length, sent, failures });
+}
+
 async function handleUpdateProfile(req: VercelRequest, res: VercelResponse, body: AuthActionBody) {
   const user = await requireAuthenticatedUser(req, res);
   if (!user) return;
@@ -588,15 +647,17 @@ async function handleUpdateUser(req: VercelRequest, res: VercelResponse, body: A
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (!enforceBrowserOrigin(req, res)) return;
-
   try {
+    const preParsedBody = req.method === 'POST' ? parseJsonBody<AuthActionBody>(req) : undefined;
+    const preAction = String(preParsedBody?.action || '').trim();
+    if (preAction !== 'reminders-dispatch-due' && !enforceBrowserOrigin(req, res)) return;
+
     if (req.method === 'GET') {
       const user = await getAuthenticatedUser(req);
       return res.status(200).json({ user });
     }
 
-    const body = parseJsonBody<AuthActionBody>(req);
+    const body = preParsedBody || parseJsonBody<AuthActionBody>(req);
     const action = String(body.action || '').trim();
 
     if (req.method === 'POST') {
@@ -618,6 +679,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       if (action === 'reminders-save') return handleSaveReminder(req, res, body);
       if (action === 'reminders-delete') return handleDeleteReminder(req, res, body);
       if (action === 'reminders-send-test') return handleSendReminderTestEmail(req, res, body);
+      if (action === 'reminders-dispatch-due') return handleDispatchDueReminders(req, res, body);
     }
 
     if (req.method === 'PATCH') {
