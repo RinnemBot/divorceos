@@ -17,6 +17,7 @@ export interface UserProfile {
   nextHearingDate?: string;
   representationStatus?: string;
   primaryGoals?: string[];
+  favoriteCountyIds?: string[];
 }
 
 export interface User {

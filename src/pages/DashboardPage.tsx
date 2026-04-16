@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Progress } from '@/components/ui/progress';
+import { CaseRemindersPanel } from '@/components/CaseRemindersPanel';
 import { CountyRoadmap } from '@/components/CountyRoadmap';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { ReferralProgram, fetchReferralSnapshot } from '@/components/ReferralProgram';
@@ -252,10 +253,11 @@ export function DashboardPage() {
           <TabsList
             className={cn(
               'grid w-full grid-cols-2 sm:grid-cols-3 rounded-xl border border-white/80 bg-white/72 backdrop-blur-xl dark:border-white/10 dark:bg-white/5',
-              isStaffUser ? 'lg:grid-cols-8' : 'lg:grid-cols-7'
+              isStaffUser ? 'lg:grid-cols-9' : 'lg:grid-cols-8'
             )}
           >
             <TabsTrigger value="overview" className="data-[state=active]:bg-emerald-700 data-[state=active]:text-white">Overview</TabsTrigger>
+            <TabsTrigger value="reminders" className="data-[state=active]:bg-emerald-700 data-[state=active]:text-white">Reminders</TabsTrigger>
             <TabsTrigger value="documents" className="data-[state=active]:bg-emerald-700 data-[state=active]:text-white">Documents</TabsTrigger>
             <TabsTrigger value="county" className="data-[state=active]:bg-emerald-700 data-[state=active]:text-white">County Filing</TabsTrigger>
             <TabsTrigger value="service" className="data-[state=active]:bg-emerald-700 data-[state=active]:text-white">Service</TabsTrigger>
@@ -313,6 +315,10 @@ export function DashboardPage() {
                   <Button variant="ghost" className="justify-start" onClick={() => setActiveTab('documents')}>
                     <FileText className="h-4 w-4 mr-2 text-slate-500" />
                     Open court forms
+                  </Button>
+                  <Button variant="ghost" className="justify-start" onClick={() => setActiveTab('reminders')}>
+                    <BellRing className="h-4 w-4 mr-2 text-slate-500" />
+                    Review reminders
                   </Button>
                   <Button variant="ghost" className="justify-start" onClick={() => setActiveTab('county')}>
                     <MapPinned className="h-4 w-4 mr-2 text-slate-500" />
@@ -378,6 +384,10 @@ export function DashboardPage() {
                 </CardContent>
               </Card>
             </div>
+          </TabsContent>
+
+          <TabsContent value="reminders">
+            <CaseRemindersPanel currentUser={user} onJumpToTab={setActiveTab} />
           </TabsContent>
 
           <TabsContent value="documents" className="space-y-6">
@@ -524,7 +534,7 @@ export function DashboardPage() {
           </TabsContent>
 
           <TabsContent value="county">
-            <CountyRoadmap initialCountyId={preferredCountyId} />
+            <CountyRoadmap initialCountyId={preferredCountyId} currentUser={user} onProfileUpdated={setUser} />
           </TabsContent>
 
           <TabsContent value="service" className="space-y-6">

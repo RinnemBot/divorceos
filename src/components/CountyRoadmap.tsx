@@ -5,16 +5,22 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { MapPin, Clock, FileCheck2, Info } from 'lucide-react';
+import { authService, type User } from '@/services/auth';
+import { MapPin, Clock, FileCheck2, Heart, Info, Loader2 } from 'lucide-react';
 
 interface CountyRoadmapProps {
   initialCountyId?: string;
   onCountyChange?: (countyId: string) => void;
+  currentUser?: User | null;
+  onProfileUpdated?: (user: User) => void;
 }
 
-export function CountyRoadmap({ initialCountyId, onCountyChange }: CountyRoadmapProps) {
+export function CountyRoadmap({ initialCountyId, onCountyChange, currentUser, onProfileUpdated }: CountyRoadmapProps) {
   const [selectedCountyId, setSelectedCountyId] = useState(initialCountyId ?? '');
+  const [isSavingCounty, setIsSavingCounty] = useState(false);
   const county = COUNTY_GUIDES.find((c) => c.id === selectedCountyId) as CountyGuide | undefined;
+  const savedCountyIds = currentUser?.profile?.favoriteCountyIds || [];
+  const isSavedCounty = county ? savedCountyIds.includes(county.id) : false;
 
   useEffect(() => {
     if (initialCountyId) {
@@ -27,6 +33,33 @@ export function CountyRoadmap({ initialCountyId, onCountyChange }: CountyRoadmap
     onCountyChange?.(value);
   };
 
+  const handleToggleFavoriteCounty = async () => {
+    if (!currentUser || !county || isSavingCounty) return;
+
+    setIsSavingCounty(true);
+
+    try {
+      const nextFavoriteCountyIds = isSavedCounty
+        ? savedCountyIds.filter((id) => id !== county.id)
+        : [...new Set([...savedCountyIds, county.id])];
+
+      await authService.updateProfile(currentUser.id, {
+        ...currentUser.profile,
+        county: county.name,
+        favoriteCountyIds: nextFavoriteCountyIds,
+      });
+
+      const refreshedUser = authService.getCurrentUser();
+      if (refreshedUser) {
+        onProfileUpdated?.(refreshedUser);
+      }
+    } catch (error) {
+      console.error('Failed to save county preference', error);
+    } finally {
+      setIsSavingCounty(false);
+    }
+  };
+
   return (
     <Card className="border-emerald-100 shadow-sm">
       <CardHeader className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
@@ -35,18 +68,26 @@ export function CountyRoadmap({ initialCountyId, onCountyChange }: CountyRoadmap
           <CardTitle className="text-2xl text-slate-900">Customized roadmap for your courthouse</CardTitle>
           <p className="text-sm text-slate-500">Choose your county and we’ll lay out the filing method, addresses, fees, and next steps.</p>
         </div>
-        <Select value={selectedCountyId || undefined} onValueChange={handleCountySelect}>
-          <SelectTrigger className="w-full lg:w-64">
-            <SelectValue placeholder="Select county" />
-          </SelectTrigger>
-          <SelectContent>
-            {COUNTY_GUIDES.map((guide) => (
-              <SelectItem key={guide.id} value={guide.id}>
-                {guide.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <div className="flex w-full flex-col gap-3 lg:w-auto lg:flex-row lg:items-center">
+          <Select value={selectedCountyId || undefined} onValueChange={handleCountySelect}>
+            <SelectTrigger className="w-full lg:w-64">
+              <SelectValue placeholder="Select county" />
+            </SelectTrigger>
+            <SelectContent>
+              {COUNTY_GUIDES.map((guide) => (
+                <SelectItem key={guide.id} value={guide.id}>
+                  {guide.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {county && currentUser ? (
+            <Button variant={isSavedCounty ? 'default' : 'outline'} onClick={() => void handleToggleFavoriteCounty()} disabled={isSavingCounty}>
+              {isSavingCounty ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Heart className="mr-2 h-4 w-4" />}
+              {isSavedCounty ? 'Saved county' : 'Save county'}
+            </Button>
+          ) : null}
+        </div>
       </CardHeader>
       {county ? (
         <CardContent className="grid gap-8 lg:grid-cols-[300px,1fr]">

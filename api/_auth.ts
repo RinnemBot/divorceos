@@ -18,6 +18,7 @@ export interface UserProfile {
   nextHearingDate?: string;
   representationStatus?: string;
   primaryGoals?: string[];
+  favoriteCountyIds?: string[];
 }
 
 export interface AuthUser {
@@ -259,6 +260,9 @@ function sanitizeProfile(profile: unknown): UserProfile | undefined {
   if (typeof source.representationStatus === 'string') next.representationStatus = source.representationStatus;
   if (Array.isArray(source.primaryGoals)) {
     next.primaryGoals = source.primaryGoals.filter((value): value is string => typeof value === 'string');
+  }
+  if (Array.isArray(source.favoriteCountyIds)) {
+    next.favoriteCountyIds = source.favoriteCountyIds.filter((value): value is string => typeof value === 'string');
   }
 
   return Object.keys(next).length ? next : undefined;
