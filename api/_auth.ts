@@ -116,6 +116,10 @@ export function isPremiumEmail(email: string) {
   return PREMIUM_EMAILS.includes(normalizeEmail(email));
 }
 
+function isMissingTableError(message: string | undefined, tableName: string) {
+  return typeof message === 'string' && message.toLowerCase().includes(`relation \"${tableName}\" does not exist`);
+}
+
 function sanitizeStoredMessages(input: unknown): StoredChatSession['messages'] {
   if (!Array.isArray(input)) return [];
 
@@ -453,6 +457,9 @@ export async function listChatSessions(userId: string): Promise<StoredChatSessio
     .returns<SiteChatSessionRow[]>();
 
   if (error) {
+    if (isMissingTableError(error.message, CHAT_SESSIONS_TABLE)) {
+      return [];
+    }
     throw new Error(`Unable to list chat sessions: ${error.message}`);
   }
 
@@ -516,6 +523,9 @@ export async function listRecentChatSessions(userId: string, limit = 3): Promise
     .returns<SiteChatSessionRow[]>();
 
   if (error) {
+    if (isMissingTableError(error.message, CHAT_SESSIONS_TABLE)) {
+      return [];
+    }
     throw new Error(`Unable to load recent chat sessions: ${error.message}`);
   }
 
