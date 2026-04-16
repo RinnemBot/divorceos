@@ -5,15 +5,18 @@ import {
   buildNewUserRecord,
   createEmailVerificationToken,
   createSessionForUser,
+  deleteChatSessionRecord,
   destroySession,
   getAuthenticatedUser,
   isAdminEmail,
+  listChatSessions,
   loadUserByEmail,
   requireAuthenticatedUser,
   requireSupabase,
   toAuthUser,
   updateUserProfile,
   updateUserRecord,
+  upsertChatSession,
   verifyPassword,
   hashToken,
   type UserProfile,
@@ -52,6 +55,10 @@ interface AuthActionBody {
     countyName?: string;
     mode: 'quick' | 'advanced';
   };
+  sessionId?: string;
+  messages?: unknown[];
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 function parseJsonBody<T>(req: VercelRequest): T {
@@ -409,6 +416,45 @@ async function handleDeleteSupportScenario(req: VercelRequest, res: VercelRespon
   return res.status(200).json({ success: true });
 }
 
+async function handleListChatSessions(req: VercelRequest, res: VercelResponse) {
+  const user = await requireAuthenticatedUser(req, res);
+  if (!user) return;
+
+  const sessions = await listChatSessions(user.id);
+  return res.status(200).json({ sessions });
+}
+
+async function handleSaveChatSession(req: VercelRequest, res: VercelResponse, body: AuthActionBody) {
+  const user = await requireAuthenticatedUser(req, res);
+  if (!user) return;
+
+  if (typeof body.sessionId !== 'string' || !body.sessionId.trim()) {
+    return res.status(400).json({ error: 'sessionId is required' });
+  }
+
+  const saved = await upsertChatSession(user.id, {
+    id: body.sessionId,
+    title: typeof body.title === 'string' && body.title.trim() ? body.title.trim() : 'New Chat',
+    messages: Array.isArray(body.messages) ? body.messages : [],
+    createdAt: typeof body.createdAt === 'string' ? body.createdAt : undefined,
+    updatedAt: typeof body.updatedAt === 'string' ? body.updatedAt : undefined,
+  });
+
+  return res.status(200).json({ session: saved });
+}
+
+async function handleDeleteChatSession(req: VercelRequest, res: VercelResponse, body: AuthActionBody) {
+  const user = await requireAuthenticatedUser(req, res);
+  if (!user) return;
+
+  if (typeof body.sessionId !== 'string' || !body.sessionId.trim()) {
+    return res.status(400).json({ error: 'sessionId is required' });
+  }
+
+  await deleteChatSessionRecord(user.id, body.sessionId);
+  return res.status(200).json({ success: true });
+}
+
 async function handleUpdateProfile(req: VercelRequest, res: VercelResponse, body: AuthActionBody) {
   const user = await requireAuthenticatedUser(req, res);
   if (!user) return;
@@ -456,6 +502,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       if (action === 'support-scenarios-list') return handleListSupportScenarios(req, res);
       if (action === 'support-scenarios-save') return handleSaveSupportScenario(req, res, body);
       if (action === 'support-scenarios-delete') return handleDeleteSupportScenario(req, res, body);
+      if (action === 'chat-sessions-list') return handleListChatSessions(req, res);
+      if (action === 'chat-sessions-save') return handleSaveChatSession(req, res, body);
+      if (action === 'chat-sessions-delete') return handleDeleteChatSession(req, res, body);
     }
 
     if (req.method === 'PATCH') {

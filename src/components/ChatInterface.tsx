@@ -295,22 +295,40 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
 
   // Load chat sessions when user changes
   useEffect(() => {
-    if (currentUser) {
-      const userSessions = authService.getChatSessions(currentUser.id);
-      setSessions(userSessions);
-      
-      if (userSessions.length > 0 && !currentSessionId) {
-        loadSession(userSessions[0].id);
-      } else if (userSessions.length === 0) {
-        startNewChat();
+    let cancelled = false;
+
+    const loadUserSessions = async () => {
+      if (currentUser) {
+        const userSessions = await authService.getChatSessions(currentUser.id);
+        if (cancelled) return;
+
+        setSessions(userSessions);
+
+        if (userSessions.length > 0 && !currentSessionId) {
+          const nextSession = userSessions[0];
+          stopSpeaking();
+          setAutoVoiceReplies(false);
+          setMessages(nextSession.messages);
+          setCurrentSessionId(nextSession.id);
+          shouldAutoScrollRef.current = false;
+          scrollContainerRef.current?.scrollTo({ top: 0 });
+        } else if (userSessions.length === 0) {
+          startNewChat();
+        }
+        return;
       }
-    } else {
-      // For guest users, start fresh
+
       setSessions([]);
       if (messages.length === 0) {
         startNewChat();
       }
-    }
+    };
+
+    void loadUserSessions();
+
+    return () => {
+      cancelled = true;
+    };
   }, [currentUser]);
 
   const isNearBottom = () => {
@@ -370,33 +388,34 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
     }
   };
 
-  const saveCurrentSession = (newMessages: ChatMessage[]) => {
+  const saveCurrentSession = async (newMessages: ChatMessage[]) => {
     if (!currentUser || newMessages.length === 0) return;
-    
+
+    const titleSource = newMessages.find((message) => message.role === 'user')?.content || newMessages[0]?.content || 'New Chat';
+
     const session: ChatSession = {
       id: currentSessionId || uuidv4(),
       userId: currentUser.id,
-      title: newMessages[0]?.content.slice(0, 50) + '...' || 'New Chat',
+      title: titleSource.slice(0, 50) + '...' || 'New Chat',
       messages: newMessages,
       createdAt: currentSessionId ? sessions.find(s => s.id === currentSessionId)?.createdAt || new Date().toISOString() : new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
-    
-    authService.saveChatSession(session);
-    setCurrentSessionId(session.id);
-    
-    // Refresh sessions list
-    const updatedSessions = authService.getChatSessions(currentUser.id);
+
+    const savedSession = await authService.saveChatSession(session);
+    setCurrentSessionId(savedSession.id);
+
+    const updatedSessions = await authService.getChatSessions(currentUser.id);
     setSessions(updatedSessions);
   };
 
-  const deleteSession = (e: React.MouseEvent, sessionId: string) => {
+  const deleteSession = async (e: React.MouseEvent, sessionId: string) => {
     e.stopPropagation();
-    authService.deleteChatSession(sessionId);
-    
+    await authService.deleteChatSession(sessionId);
+
     const updatedSessions = sessions.filter(s => s.id !== sessionId);
     setSessions(updatedSessions);
-    
+
     if (currentSessionId === sessionId) {
       if (updatedSessions.length > 0) {
         loadSession(updatedSessions[0].id);
@@ -590,7 +609,7 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
       const finalMessages = [...updatedMessages, assistantMessage];
       shouldAutoScrollRef.current = true;
       setMessages(finalMessages);
-      saveCurrentSession(finalMessages);
+      void saveCurrentSession(finalMessages);
 
       if (shouldSpeakNextReplyRef.current && aiResponse.content.trim()) {
         shouldSpeakNextReplyRef.current = false;

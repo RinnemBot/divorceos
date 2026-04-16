@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { enforceBrowserOrigin, enforceRateLimit } from './_security.js';
-import { incrementChatCount, isAdminEmail, requireAuthenticatedUser, type AuthUser } from './_auth.js';
+import { incrementChatCount, isAdminEmail, listRecentChatSessions, requireAuthenticatedUser, type AuthUser } from './_auth.js';
 
 // Prefer OpenAI GPT-5.1 when available; fall back to Kimi (Moonshot) otherwise.
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
@@ -64,6 +64,31 @@ function injectProfileContext(messages: { role: string; content: string }[], use
   }
 
   return [profileMessage, ...messages];
+}
+
+function formatRecentChatMemory(sessions: Awaited<ReturnType<typeof listRecentChatSessions>>) {
+  const relevantSessions = sessions
+    .map((session) => {
+      const lastUserMessage = [...session.messages].reverse().find((message) => message.role === 'user')?.content?.trim();
+      const lastAssistantMessage = [...session.messages].reverse().find((message) => message.role === 'assistant')?.content?.trim();
+      if (!lastUserMessage && !lastAssistantMessage) return null;
+
+      return [
+        `- Session: ${session.title || 'Untitled chat'}`,
+        lastUserMessage ? `  Last user question: ${lastUserMessage.slice(0, 260)}` : null,
+        lastAssistantMessage ? `  Maria last answered: ${lastAssistantMessage.slice(0, 260)}` : null,
+      ]
+        .filter(Boolean)
+        .join('\n');
+    })
+    .filter((entry): entry is string => Boolean(entry));
+
+  if (!relevantSessions.length) return null;
+
+  return [
+    'Recent prior Maria chat memory for this user. Use it to stay consistent and remember ongoing context, but prioritize the current message if anything conflicts.',
+    ...relevantSessions.slice(0, 3),
+  ].join('\n');
 }
 
 function sanitizeMessages(input: unknown) {
@@ -137,7 +162,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const requestedMaxTokens = Number(max_tokens);
     const safeMaxTokens = Number.isFinite(requestedMaxTokens) ? Math.min(Math.max(requestedMaxTokens, 1), 1200) : 1200;
     const safeTemperature = Math.min(Math.max(Number(temperature) || 0.8, 0), 1.2);
+    const recentSessions = await listRecentChatSessions(currentUser.id, 3).catch((error) => {
+      console.error('Failed to load recent Maria chat memory', error);
+      return [];
+    });
+    const recentMemory = formatRecentChatMemory(recentSessions);
     const contextMessages = injectProfileContext(sanitizedMessages, currentUser);
+    const messagesWithMemory = recentMemory
+      ? [{ role: 'system' as const, content: recentMemory }, ...contextMessages]
+      : contextMessages;
 
     if (provider === 'openai') {
       const response = await fetch(OPENAI_API_URL, {
@@ -148,7 +181,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         },
         body: JSON.stringify({
           model: OPENAI_MODEL,
-          messages: contextMessages,
+          messages: messagesWithMemory,
           temperature: safeTemperature,
           max_completion_tokens: safeMaxTokens,
         }),
@@ -159,7 +192,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         console.error('OpenAI API error:', response.status, errorText);
         if (KIMI_API_KEY) {
           console.warn('Falling back to Kimi provider due to OpenAI failure.');
-          return proxyKimi(contextMessages, safeTemperature, safeMaxTokens, res, currentUser.id);
+          return proxyKimi(messagesWithMemory, safeTemperature, safeMaxTokens, res, currentUser.id);
         }
         return res.status(response.status).json({ error: 'Upstream AI provider error' });
       }
@@ -171,7 +204,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         console.error('OpenAI returned empty content payload');
         if (KIMI_API_KEY) {
           console.warn('Falling back to Kimi provider due to empty OpenAI content.');
-          return proxyKimi(contextMessages, safeTemperature, safeMaxTokens, res, currentUser.id);
+          return proxyKimi(messagesWithMemory, safeTemperature, safeMaxTokens, res, currentUser.id);
         }
         return res.status(502).json({ error: 'OpenAI returned an empty response' });
       }
@@ -180,7 +213,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(200).json({ ...data, provider: 'openai' });
     }
 
-    return proxyKimi(contextMessages, safeTemperature, safeMaxTokens, res, currentUser.id);
+    return proxyKimi(messagesWithMemory, safeTemperature, safeMaxTokens, res, currentUser.id);
   } catch (error) {
     console.error('API route error:', error);
     return res.status(500).json({

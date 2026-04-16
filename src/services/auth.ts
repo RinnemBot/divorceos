@@ -69,6 +69,8 @@ const CURRENT_USER_KEY = 'divorceos_current_user';
 
 interface AuthResponse {
   user?: User | null;
+  sessions?: ChatSession[];
+  session?: ChatSession;
   error?: string;
   success?: boolean;
 }
@@ -181,63 +183,116 @@ class AuthService {
     this.writeStorage(CURRENT_USER_KEY, JSON.stringify(user));
   }
 
-  getChatSessions(userId: string): ChatSession[] {
-    const data = this.readStorage(SESSIONS_KEY);
-    let allSessions: ChatSession[] = [];
+  private sanitizeChatSession(session: unknown): ChatSession | null {
+    if (!session || typeof session !== 'object') return null;
+    const candidate = session as Partial<ChatSession>;
+    if (typeof candidate.id !== 'string' || typeof candidate.userId !== 'string') return null;
+    if (!Array.isArray(candidate.messages)) return null;
 
-    if (data) {
-      try {
-        allSessions = JSON.parse(data);
-      } catch (error) {
-        console.error('Failed to parse stored chat sessions, clearing corrupt data.', error);
-        this.removeStorage(SESSIONS_KEY);
-      }
-    }
-
-    return allSessions.filter((s) => s.userId === userId).sort((a, b) =>
-      new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-    );
+    return {
+      id: candidate.id,
+      userId: candidate.userId,
+      title: typeof candidate.title === 'string' && candidate.title.trim() ? candidate.title : 'New Chat',
+      messages: candidate.messages.filter(Boolean) as ChatMessage[],
+      createdAt: typeof candidate.createdAt === 'string' ? candidate.createdAt : new Date().toISOString(),
+      updatedAt: typeof candidate.updatedAt === 'string' ? candidate.updatedAt : new Date().toISOString(),
+    };
   }
 
-  saveChatSession(session: ChatSession): void {
+  private readLocalChatSessions(): ChatSession[] {
     const data = this.readStorage(SESSIONS_KEY);
-    let allSessions: ChatSession[] = [];
+    if (!data) return [];
 
-    if (data) {
+    try {
+      const parsed = JSON.parse(data);
+      return Array.isArray(parsed)
+        ? parsed
+            .map((session) => this.sanitizeChatSession(session))
+            .filter((session): session is ChatSession => Boolean(session))
+        : [];
+    } catch (error) {
+      console.error('Failed to parse stored chat sessions, clearing corrupt data.', error);
+      this.removeStorage(SESSIONS_KEY);
+      return [];
+    }
+  }
+
+  private writeLocalChatSessions(sessions: ChatSession[]) {
+    this.writeStorage(SESSIONS_KEY, JSON.stringify(sessions));
+  }
+
+  async getChatSessions(userId: string): Promise<ChatSession[]> {
+    const currentUser = this.getCurrentUser();
+
+    if (currentUser?.id === userId) {
       try {
-        allSessions = JSON.parse(data);
+        const payload = await this.request<AuthResponse>('POST', { action: 'chat-sessions-list' });
+        const sessions = Array.isArray(payload.sessions)
+          ? payload.sessions
+              .map((session) => this.sanitizeChatSession(session))
+              .filter((session): session is ChatSession => Boolean(session))
+          : [];
+
+        this.writeLocalChatSessions(sessions);
+        return sessions;
       } catch (error) {
-        console.error('Failed to parse stored chat sessions, resetting list.', error);
-        this.removeStorage(SESSIONS_KEY);
+        console.error('Failed to load server chat sessions, falling back to local cache.', error);
       }
     }
 
-    const existingIndex = allSessions.findIndex((s) => s.id === session.id);
+    return this.readLocalChatSessions()
+      .filter((session) => session.userId === userId)
+      .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
+  }
 
+  async saveChatSession(session: ChatSession): Promise<ChatSession> {
+    const localSessions = this.readLocalChatSessions();
+    const existingIndex = localSessions.findIndex((entry) => entry.id === session.id);
     if (existingIndex >= 0) {
-      allSessions[existingIndex] = session;
+      localSessions[existingIndex] = session;
     } else {
-      allSessions.push(session);
+      localSessions.push(session);
+    }
+    this.writeLocalChatSessions(localSessions);
+
+    const currentUser = this.getCurrentUser();
+    if (currentUser?.id !== session.userId) {
+      return session;
     }
 
-    this.writeStorage(SESSIONS_KEY, JSON.stringify(allSessions));
+    try {
+      const payload = await this.request<AuthResponse>('POST', {
+        action: 'chat-sessions-save',
+        sessionId: session.id,
+        title: session.title,
+        messages: session.messages,
+        createdAt: session.createdAt,
+        updatedAt: session.updatedAt,
+      });
+
+      const savedSession = this.sanitizeChatSession(payload.session);
+      if (savedSession) {
+        const refreshed = this.readLocalChatSessions().filter((entry) => entry.id !== savedSession.id);
+        refreshed.push(savedSession);
+        this.writeLocalChatSessions(refreshed);
+        return savedSession;
+      }
+    } catch (error) {
+      console.error('Failed to save chat session to server, keeping local cache.', error);
+    }
+
+    return session;
   }
 
-  deleteChatSession(sessionId: string): void {
-    const data = this.readStorage(SESSIONS_KEY);
-    let allSessions: ChatSession[] = [];
+  async deleteChatSession(sessionId: string): Promise<void> {
+    const filtered = this.readLocalChatSessions().filter((session) => session.id !== sessionId);
+    this.writeLocalChatSessions(filtered);
 
-    if (data) {
-      try {
-        allSessions = JSON.parse(data);
-      } catch (error) {
-        console.error('Failed to parse stored chat sessions during delete, resetting list.', error);
-        this.removeStorage(SESSIONS_KEY);
-      }
+    try {
+      await this.request<AuthResponse>('POST', { action: 'chat-sessions-delete', sessionId });
+    } catch (error) {
+      console.error('Failed to delete chat session on server.', error);
     }
-
-    const filtered = allSessions.filter((s) => s.id !== sessionId);
-    this.writeStorage(SESSIONS_KEY, JSON.stringify(filtered));
   }
 
   async register(email: string, password: string, name?: string, referralCode?: string): Promise<User> {

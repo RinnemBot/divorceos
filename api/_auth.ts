@@ -45,10 +45,36 @@ interface SiteUserRow {
   email_verification_expires_at: string | null;
 }
 
+interface SiteChatSessionRow {
+  id: string;
+  user_id: string;
+  title: string;
+  messages: unknown;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface StoredChatSession {
+  id: string;
+  userId: string;
+  title: string;
+  messages: Array<{
+    id: string;
+    role: 'user' | 'assistant';
+    content: string;
+    timestamp: string;
+    attachments?: Array<{ id: string; name: string; type: 'image' | 'document'; sizeLabel?: string }>;
+    suggestedActions?: Array<{ label: string; href: string }>;
+  }>;
+  createdAt: string;
+  updatedAt: string;
+}
+
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const USERS_TABLE = 'site_users';
 const SESSIONS_TABLE = 'site_sessions';
+const CHAT_SESSIONS_TABLE = 'site_chat_sessions';
 const SESSION_COOKIE = 'divorceos_session';
 const SESSION_TTL_MS = 30 * 24 * 60 * 60 * 1000;
 const EMAIL_TOKEN_TTL_MS = 24 * 60 * 60 * 1000;
@@ -88,6 +114,77 @@ export function isAdminEmail(email: string) {
 
 export function isPremiumEmail(email: string) {
   return PREMIUM_EMAILS.includes(normalizeEmail(email));
+}
+
+function sanitizeStoredMessages(input: unknown): StoredChatSession['messages'] {
+  if (!Array.isArray(input)) return [];
+
+  return input
+    .map((entry) => {
+      if (!entry || typeof entry !== 'object') return null;
+      const source = entry as Record<string, unknown>;
+      const role = source.role === 'assistant' ? 'assistant' : source.role === 'user' ? 'user' : null;
+      const content = typeof source.content === 'string' ? source.content : '';
+      const id = typeof source.id === 'string' ? source.id : randomBytes(8).toString('hex');
+      const timestamp = typeof source.timestamp === 'string' ? source.timestamp : new Date().toISOString();
+
+      if (!role || !content.trim()) {
+        return null;
+      }
+
+      const attachments = Array.isArray(source.attachments)
+        ? source.attachments
+            .map((attachment) => {
+              if (!attachment || typeof attachment !== 'object') return null;
+              const file = attachment as Record<string, unknown>;
+              const type = file.type === 'image' ? 'image' : file.type === 'document' ? 'document' : null;
+              if (!type || typeof file.id !== 'string' || typeof file.name !== 'string') {
+                return null;
+              }
+              return {
+                id: file.id,
+                name: file.name,
+                type,
+                sizeLabel: typeof file.sizeLabel === 'string' ? file.sizeLabel : undefined,
+              };
+            })
+            .filter((attachment): attachment is NonNullable<typeof attachment> => Boolean(attachment))
+        : undefined;
+
+      const suggestedActions = Array.isArray(source.suggestedActions)
+        ? source.suggestedActions
+            .map((action) => {
+              if (!action || typeof action !== 'object') return null;
+              const item = action as Record<string, unknown>;
+              if (typeof item.label !== 'string' || typeof item.href !== 'string') {
+                return null;
+              }
+              return { label: item.label, href: item.href };
+            })
+            .filter((action): action is NonNullable<typeof action> => Boolean(action))
+        : undefined;
+
+      return {
+        id,
+        role,
+        content: content.slice(0, 4000),
+        timestamp,
+        attachments: attachments?.length ? attachments : undefined,
+        suggestedActions: suggestedActions?.length ? suggestedActions : undefined,
+      };
+    })
+    .filter((entry): entry is NonNullable<typeof entry> => Boolean(entry));
+}
+
+function toStoredChatSession(row: SiteChatSessionRow): StoredChatSession {
+  return {
+    id: row.id,
+    userId: row.user_id,
+    title: row.title,
+    messages: sanitizeStoredMessages(row.messages),
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  };
 }
 
 function sanitizeProfile(profile: unknown): UserProfile | undefined {
@@ -334,6 +431,85 @@ export async function requireStaffUser(req: VercelRequest, res: VercelResponse) 
     return null;
   }
   return user;
+}
+
+export async function listChatSessions(userId: string): Promise<StoredChatSession[]> {
+  const supabase = requireSupabase();
+  const { data, error } = await supabase
+    .from(CHAT_SESSIONS_TABLE)
+    .select('*')
+    .eq('user_id', userId)
+    .order('updated_at', { ascending: false })
+    .returns<SiteChatSessionRow[]>();
+
+  if (error) {
+    throw new Error(`Unable to list chat sessions: ${error.message}`);
+  }
+
+  return (data || []).map(toStoredChatSession);
+}
+
+export async function upsertChatSession(
+  userId: string,
+  session: Pick<StoredChatSession, 'id' | 'title' | 'messages'> & Partial<Pick<StoredChatSession, 'createdAt' | 'updatedAt'>>
+): Promise<StoredChatSession> {
+  const supabase = requireSupabase();
+  const createdAt = session.createdAt || new Date().toISOString();
+  const updatedAt = session.updatedAt || new Date().toISOString();
+  const title = (session.title || 'New Chat').slice(0, 120);
+  const messages = sanitizeStoredMessages(session.messages);
+
+  const { data, error } = await supabase
+    .from(CHAT_SESSIONS_TABLE)
+    .upsert(
+      {
+        id: session.id,
+        user_id: userId,
+        title,
+        messages,
+        created_at: createdAt,
+        updated_at: updatedAt,
+      },
+      { onConflict: 'id' }
+    )
+    .select('*')
+    .single<SiteChatSessionRow>();
+
+  if (error) {
+    throw new Error(`Unable to save chat session: ${error.message}`);
+  }
+
+  return toStoredChatSession(data);
+}
+
+export async function deleteChatSessionRecord(userId: string, sessionId: string) {
+  const supabase = requireSupabase();
+  const { error } = await supabase
+    .from(CHAT_SESSIONS_TABLE)
+    .delete()
+    .eq('id', sessionId)
+    .eq('user_id', userId);
+
+  if (error) {
+    throw new Error(`Unable to delete chat session: ${error.message}`);
+  }
+}
+
+export async function listRecentChatSessions(userId: string, limit = 3): Promise<StoredChatSession[]> {
+  const supabase = requireSupabase();
+  const { data, error } = await supabase
+    .from(CHAT_SESSIONS_TABLE)
+    .select('*')
+    .eq('user_id', userId)
+    .order('updated_at', { ascending: false })
+    .limit(limit)
+    .returns<SiteChatSessionRow[]>();
+
+  if (error) {
+    throw new Error(`Unable to load recent chat sessions: ${error.message}`);
+  }
+
+  return (data || []).map(toStoredChatSession);
 }
 
 export async function incrementChatCount(userId: string) {
