@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Sparkles, Mail, ExternalLink } from 'lucide-react';
+import { Scale, Mail, ExternalLink } from 'lucide-react';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -42,7 +42,7 @@ export function Footer() {
             <div className="max-w-2xl">
               <div className="mb-4 flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-400 to-emerald-600 text-slate-950 shadow-lg">
-                  <Sparkles className="h-5 w-5" />
+                  <Scale className="h-5 w-5" />
                 </div>
                 <div>
                   <p className="text-xl font-semibold text-white">Divorce Agent</p>
