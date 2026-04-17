@@ -12,7 +12,6 @@ import {
   RefreshCw
 } from 'lucide-react';
 import { authService } from '@/services/auth';
-import { isTokenValid } from '@/services/email';
 
 export function ConfirmEmailPage() {
   const [searchParams] = useSearchParams();
@@ -30,20 +29,18 @@ export function ConfirmEmailPage() {
       return;
     }
 
-    // Check if token is valid and not expired
-    if (!isTokenValid(token)) {
-      setStatus('error');
-      return;
+    if (typeof window !== 'undefined') {
+      const cleanUrl = `${window.location.pathname}${window.location.hash}`;
+      window.history.replaceState({}, document.title, cleanUrl);
     }
 
-    // Verify the email
-    const success = authService.verifyEmail(token);
-    
-    if (success) {
-      setStatus('success');
-    } else {
-      setStatus('error');
-    }
+    void authService.verifyEmail(token)
+      .then((success) => {
+        setStatus(success ? 'success' : 'error');
+      })
+      .catch(() => {
+        setStatus('error');
+      });
   }, [token]);
 
   const handleResend = async () => {
@@ -61,7 +58,7 @@ export function ConfirmEmailPage() {
     try {
       const result = await authService.resendConfirmationEmail(email);
       if (result.success) {
-        setResendMessage('Confirmation email sent! Please check your inbox.');
+        setResendMessage('If that address is eligible, a fresh confirmation email is on the way.');
       } else {
         setResendMessage(result.error || 'Failed to send email. Please try again.');
       }

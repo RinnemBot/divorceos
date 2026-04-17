@@ -36,7 +36,7 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
     setIsLoading(true);
     
     try {
-      const user = authService.login(loginEmail, loginPassword);
+      const user = await authService.login(loginEmail, loginPassword);
       onSuccess(user);
       resetForms();
     } catch (err) {
@@ -55,8 +55,8 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
       return;
     }
     
-    if (signupPassword.length < 6) {
-      setError('Password must be at least 6 characters');
+    if (signupPassword.length < 8) {
+      setError('Password must be at least 8 characters');
       return;
     }
     
@@ -212,7 +212,7 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
                     onChange={(e) => setSignupPassword(e.target.value)}
                     className="pl-10 pr-10"
                     required
-                    minLength={6}
+                    minLength={8}
                   />
                   <button
                     type="button"

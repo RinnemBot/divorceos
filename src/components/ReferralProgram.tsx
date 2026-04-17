@@ -14,7 +14,6 @@ import {
   UserPlus
 } from 'lucide-react';
 import { type User } from '@/services/auth';
-import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'sonner';
 
 export interface Referral {
@@ -37,14 +36,12 @@ export interface ReferralStats {
   availableCredit: number;
 }
 
-const REFERRALS_KEY = 'divorceos_referrals';
-const REFERRAL_REWARDS_KEY = 'divorceos_referral_rewards';
-
-// Reward configuration
-const REFERRAL_REWARD_AMOUNT = 10; // $10 credit per successful referral
+function getReferralOwnerKey(value: string): string {
+  return value.replace(/^DIV/i, '').trim().toLowerCase().slice(0, 6);
+}
 
 export function getReferralCode(userId: string): string {
-  return `DIV${userId.substring(0, 6).toUpperCase()}`;
+  return `DIV${getReferralOwnerKey(userId).toUpperCase()}`;
 }
 
 export function generateReferralLink(referralCode: string): string {
@@ -55,123 +52,24 @@ export function generateReferralLink(referralCode: string): string {
   return `${baseUrl}/?ref=${referralCode}`;
 }
 
-export function getReferralsByUser(userId: string): Referral[] {
-  const data = localStorage.getItem(REFERRALS_KEY);
-  if (!data) return [];
-  
-  try {
-    const allReferrals: Referral[] = JSON.parse(data);
-    return allReferrals.filter(r => r.referrerId === userId);
-  } catch {
-    return [];
-  }
-}
+export async function fetchReferralSnapshot(): Promise<{ referrals: Referral[]; stats: ReferralStats }> {
+  const response = await fetch('/api/referrals');
+  const payload = await response.json().catch(() => ({}));
 
-export function getReferralStats(userId: string): ReferralStats {
-  const referrals = getReferralsByUser(userId);
-  
-  const completed = referrals.filter(r => r.status === 'completed');
-  const pending = referrals.filter(r => r.status === 'pending');
-  
-  // Get available credit from storage
-  const rewardsData = localStorage.getItem(REFERRAL_REWARDS_KEY);
-  let availableCredit = 0;
-  
-  if (rewardsData) {
-    try {
-      const rewards = JSON.parse(rewardsData);
-      availableCredit = rewards[userId] || 0;
-    } catch {
-      availableCredit = 0;
-    }
+  if (!response.ok) {
+    throw new Error(payload.error || 'Unable to load referrals');
   }
-  
+
   return {
-    totalReferrals: referrals.length,
-    completedReferrals: completed.length,
-    pendingReferrals: pending.length,
-    totalRewardsEarned: completed.length * REFERRAL_REWARD_AMOUNT,
-    availableCredit
+    referrals: Array.isArray(payload.referrals) ? payload.referrals : [],
+    stats: payload.stats || {
+      totalReferrals: 0,
+      completedReferrals: 0,
+      pendingReferrals: 0,
+      totalRewardsEarned: 0,
+      availableCredit: 0,
+    },
   };
-}
-
-export function trackReferralSignup(referralCode: string, newUser: User): boolean {
-  // Extract userId from referral code (removing 'DIV' prefix)
-  const referrerId = referralCode.substring(3).toLowerCase();
-  
-  // Find referrer
-  const users = JSON.parse(localStorage.getItem('divorceos_users') || '[]');
-  const referrer = users.find((u: User) => u.id.toLowerCase().startsWith(referrerId));
-  
-  if (!referrer || referrer.id === newUser.id) {
-    return false; // Invalid referral or self-referral
-  }
-  
-  const data = localStorage.getItem(REFERRALS_KEY);
-  let allReferrals: Referral[] = [];
-  
-  if (data) {
-    try {
-      allReferrals = JSON.parse(data);
-    } catch {
-      allReferrals = [];
-    }
-  }
-  
-  // Check if this user was already referred
-  const existingReferral = allReferrals.find(r => r.referredUserId === newUser.id);
-  if (existingReferral) {
-    return false; // Already referred
-  }
-  
-  const newReferral: Referral = {
-    id: uuidv4(),
-    referrerId: referrer.id,
-    referredUserId: newUser.id,
-    referredUserEmail: newUser.email,
-    referredUserName: newUser.name,
-    status: 'pending',
-    rewardAmount: REFERRAL_REWARD_AMOUNT,
-    createdAt: new Date().toISOString()
-  };
-  
-  allReferrals.push(newReferral);
-  localStorage.setItem(REFERRALS_KEY, JSON.stringify(allReferrals));
-  
-  return true;
-}
-
-export function completeReferralReward(referredUserId: string): void {
-  const data = localStorage.getItem(REFERRALS_KEY);
-  if (!data) return;
-  
-  try {
-    const allReferrals: Referral[] = JSON.parse(data);
-    const referral = allReferrals.find(r => r.referredUserId === referredUserId && r.status === 'pending');
-    
-    if (!referral) return;
-    
-    referral.status = 'completed';
-    referral.completedAt = new Date().toISOString();
-    localStorage.setItem(REFERRALS_KEY, JSON.stringify(allReferrals));
-    
-    // Add credit to referrer's account
-    const rewardsData = localStorage.getItem(REFERRAL_REWARDS_KEY);
-    let rewards: Record<string, number> = {};
-    
-    if (rewardsData) {
-      try {
-        rewards = JSON.parse(rewardsData);
-      } catch {
-        rewards = {};
-      }
-    }
-    
-    rewards[referral.referrerId] = (rewards[referral.referrerId] || 0) + REFERRAL_REWARD_AMOUNT;
-    localStorage.setItem(REFERRAL_REWARDS_KEY, JSON.stringify(rewards));
-  } catch {
-    // Silent fail
-  }
 }
 
 export function useReferralCode(): string | null {
@@ -224,8 +122,30 @@ export function ReferralProgram({ user }: ReferralProgramProps) {
   const referralLink = generateReferralLink(referralCode);
   
   useEffect(() => {
-    setReferrals(getReferralsByUser(user.id));
-    setStats(getReferralStats(user.id));
+    let cancelled = false;
+
+    void fetchReferralSnapshot()
+      .then((snapshot) => {
+        if (cancelled) return;
+        setReferrals(snapshot.referrals);
+        setStats(snapshot.stats);
+      })
+      .catch((error) => {
+        if (cancelled) return;
+        console.error('Failed to load referrals', error);
+        setReferrals([]);
+        setStats({
+          totalReferrals: 0,
+          completedReferrals: 0,
+          pendingReferrals: 0,
+          totalRewardsEarned: 0,
+          availableCredit: 0,
+        });
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, [user.id]);
   
   const copyToClipboard = async (text: string, label: string) => {
