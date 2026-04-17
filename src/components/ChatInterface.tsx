@@ -163,19 +163,19 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
     });
   };
 
-  const getAudioElement = () => {
-    if (typeof window === 'undefined') return null;
-
-    if (!audioRef.current) {
-      const audio = new Audio();
-      audio.preload = 'auto';
-      audio.setAttribute('playsinline', 'true');
-      audio.setAttribute('webkit-playsinline', 'true');
-      audioRef.current = audio;
+  const setPersistentAudioRef = (node: HTMLAudioElement | null) => {
+    if (!node) {
+      audioRef.current = null;
+      return;
     }
 
-    return audioRef.current;
+    node.preload = 'auto';
+    node.setAttribute('playsinline', 'true');
+    node.setAttribute('webkit-playsinline', 'true');
+    audioRef.current = node;
   };
+
+  const getAudioElement = () => audioRef.current;
 
   const unlockAudioPlayback = async () => {
     if (typeof window === 'undefined') return;
@@ -529,6 +529,9 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
       }
 
       audio.src = audioUrl;
+      audio.muted = false;
+      audio.volume = 1;
+      audio.load();
       audio.onended = () => {
         if (speechRequestIdRef.current === requestId) {
           currentSpeechTextRef.current = '';
@@ -856,6 +859,8 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
         </div>
       </CardHeader>
       
+      <audio ref={setPersistentAudioRef} preload="auto" playsInline className="hidden" aria-hidden="true" />
+
       {showHistory && currentUser && (
         <div className="border-b bg-gray-50 p-3 max-h-40 overflow-y-auto">
           <h4 className="text-xs font-semibold text-gray-500 uppercase mb-2">Previous Conversations</h4>
