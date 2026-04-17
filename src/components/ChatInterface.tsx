@@ -666,11 +666,13 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
     }
   };
 
-  const toggleVoiceInput = async () => {
+  const toggleVoiceInput = () => {
     if (isLoading) return;
 
     if (isListening) {
-      await unlockAudioPlayback();
+      void unlockAudioPlayback().catch((error) => {
+        console.warn('Audio unlock failed while stopping voice input:', error);
+      });
       voiceSubmitPendingRef.current = true;
       recognitionRef.current?.stop();
       return;
@@ -682,7 +684,9 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
     }
 
     stopSpeaking();
-    await unlockAudioPlayback();
+    void unlockAudioPlayback().catch((error) => {
+      console.warn('Audio unlock failed before starting voice input:', error);
+    });
 
     transcriptRef.current = '';
     voiceSubmitPendingRef.current = false;
@@ -731,7 +735,14 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
 
     recognitionRef.current = recognition;
     setIsListening(true);
-    recognition.start();
+
+    try {
+      recognition.start();
+    } catch (error) {
+      console.error('Speech recognition failed to start:', error);
+      setIsListening(false);
+      recognitionRef.current = null;
+    }
   };
 
   useEffect(() => {
