@@ -32,6 +32,7 @@ import { SUBSCRIPTION_LIMITS } from '@/services/auth';
 
 const URL_REGEX = /(https?:\/\/[^\s]+)/g;
 const MAX_TTS_CHARS = 900;
+const SILENT_AUDIO_DATA_URI = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABAAZGF0YQAAAAA=';
 
 function renderMessageContent(content: string): string | (string | JSX.Element)[] {
   const matches = [...content.matchAll(URL_REGEX)];
@@ -162,28 +163,70 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
     });
   };
 
+  const getAudioElement = () => {
+    if (typeof window === 'undefined') return null;
+
+    if (!audioRef.current) {
+      const audio = new Audio();
+      audio.preload = 'auto';
+      audio.setAttribute('playsinline', 'true');
+      audio.setAttribute('webkit-playsinline', 'true');
+      audioRef.current = audio;
+    }
+
+    return audioRef.current;
+  };
+
   const unlockAudioPlayback = async () => {
     if (typeof window === 'undefined') return;
 
     const AudioContextConstructor = window.AudioContext || (window as typeof window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
-    if (!AudioContextConstructor) return;
+    if (AudioContextConstructor) {
+      if (!audioContextRef.current) {
+        audioContextRef.current = new AudioContextConstructor();
+      }
 
-    if (!audioContextRef.current) {
-      audioContextRef.current = new AudioContextConstructor();
+      const context = audioContextRef.current;
+      if (context.state === 'suspended') {
+        await context.resume();
+      }
+
+      const source = context.createBufferSource();
+      source.buffer = context.createBuffer(1, 1, 22050);
+      const gainNode = context.createGain();
+      gainNode.gain.value = 0;
+      source.connect(gainNode);
+      gainNode.connect(context.destination);
+      source.start(0);
     }
 
-    const context = audioContextRef.current;
-    if (context.state === 'suspended') {
-      await context.resume();
-    }
+    const audio = getAudioElement();
+    if (!audio) return;
 
-    const source = context.createBufferSource();
-    source.buffer = context.createBuffer(1, 1, 22050);
-    const gainNode = context.createGain();
-    gainNode.gain.value = 0;
-    source.connect(gainNode);
-    gainNode.connect(context.destination);
-    source.start(0);
+    const previousMuted = audio.muted;
+    const previousVolume = audio.volume;
+    const previousSrc = audio.currentSrc || audio.src;
+
+    audio.pause();
+    audio.currentTime = 0;
+    audio.src = SILENT_AUDIO_DATA_URI;
+    audio.muted = true;
+    audio.volume = 0;
+
+    try {
+      await audio.play();
+    } finally {
+      audio.pause();
+      audio.currentTime = 0;
+      audio.muted = previousMuted;
+      audio.volume = previousVolume;
+      if (previousSrc) {
+        audio.src = previousSrc;
+      } else {
+        audio.removeAttribute('src');
+      }
+      audio.load();
+    }
   };
 
   const primeSpeechAudio = async (text: string) => {
@@ -223,11 +266,12 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
     currentSpeechTextRef.current = '';
 
     if (audioRef.current) {
+      audioRef.current.onended = null;
+      audioRef.current.onerror = null;
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
-      audioRef.current.src = '';
+      audioRef.current.removeAttribute('src');
       audioRef.current.load();
-      audioRef.current = null;
     }
 
     clearFallbackAudio();
@@ -445,13 +489,17 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
       const abortController = new AbortController();
       speechAbortControllerRef.current = abortController;
 
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0;
-        audioRef.current.src = '';
-        audioRef.current.load();
-        audioRef.current = null;
+      const audio = getAudioElement();
+      if (!audio) {
+        throw new Error('Audio playback is not available in this browser.');
       }
+
+      audio.pause();
+      audio.currentTime = 0;
+      audio.onended = null;
+      audio.onerror = null;
+      audio.removeAttribute('src');
+      audio.load();
 
       setIsSpeaking(true);
 
@@ -480,23 +528,14 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
         speechCacheRef.current.set(safeText, audioUrl);
       }
 
-      const audio = new Audio(audioUrl);
-      audioRef.current = audio;
+      audio.src = audioUrl;
       audio.onended = () => {
-        URL.revokeObjectURL(audioUrl);
-        if (audioRef.current === audio) {
-          audioRef.current = null;
-        }
         if (speechRequestIdRef.current === requestId) {
           currentSpeechTextRef.current = '';
           setIsSpeaking(false);
         }
       };
       audio.onerror = () => {
-        URL.revokeObjectURL(audioUrl);
-        if (audioRef.current === audio) {
-          audioRef.current = null;
-        }
         if (speechRequestIdRef.current === requestId) {
           currentSpeechTextRef.current = '';
           setIsSpeaking(false);
@@ -507,13 +546,9 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
         await audio.play();
       } catch (playError) {
         if ((playError as Error).name === 'AbortError') {
-          URL.revokeObjectURL(audioUrl);
           return;
         }
 
-        if (audioRef.current === audio) {
-          audioRef.current = null;
-        }
         setFallbackAudio({ url: audioUrl, text: safeText });
         currentSpeechTextRef.current = '';
         setIsSpeaking(false);
@@ -631,11 +666,11 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
     }
   };
 
-  const toggleVoiceInput = () => {
+  const toggleVoiceInput = async () => {
     if (isLoading) return;
 
     if (isListening) {
-      void unlockAudioPlayback();
+      await unlockAudioPlayback();
       voiceSubmitPendingRef.current = true;
       recognitionRef.current?.stop();
       return;
@@ -647,6 +682,7 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
     }
 
     stopSpeaking();
+    await unlockAudioPlayback();
 
     transcriptRef.current = '';
     voiceSubmitPendingRef.current = false;
@@ -711,6 +747,12 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
       stopSpeaking();
       speechCacheRef.current.forEach((url) => URL.revokeObjectURL(url));
       speechCacheRef.current.clear();
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.removeAttribute('src');
+        audioRef.current.load();
+        audioRef.current = null;
+      }
       if (audioContextRef.current && audioContextRef.current.state !== 'closed') {
         void audioContextRef.current.close();
       }
@@ -1065,7 +1107,7 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
           />
           <Button
             type="button"
-            onClick={toggleVoiceInput}
+            onClick={() => void toggleVoiceInput()}
             disabled={isLoading || !speechRecognitionSupported}
             variant="outline"
             className={`rounded-2xl h-12 px-4 border-slate-200 ${isListening ? 'bg-rose-50 border-rose-300 text-rose-700 hover:bg-rose-100' : 'text-slate-600 hover:text-emerald-700'}`}
