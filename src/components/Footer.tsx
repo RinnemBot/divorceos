@@ -45,7 +45,7 @@ export function Footer() {
                   <Sparkles className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="text-xl font-semibold text-white">DivorceAgent</p>
+                  <p className="text-xl font-semibold text-white">Divorce Agent</p>
                   <p className="text-xs uppercase tracking-[0.24em] text-emerald-200/80">California divorce guidance</p>
                 </div>
               </div>
@@ -120,9 +120,9 @@ export function Footer() {
 
         <div className="mt-12 border-t border-white/10 pt-8">
           <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-            <p className="text-sm text-slate-500">{currentYear} DivorceAgent. All rights reserved.</p>
+            <p className="text-sm text-slate-500">{currentYear} Divorce Agent. All rights reserved.</p>
             <p className="max-w-xl text-xs leading-5 text-slate-500 md:text-right">
-              <strong className="text-slate-400">Important:</strong> DivorceAgent provides strategic AI guidance for California divorce and family law. It is not a law firm and does not replace legal advice from a qualified California family law attorney.
+              <strong className="text-slate-400">Important:</strong> Divorce Agent provides strategic AI guidance for California divorce and family law. It is not a law firm and does not replace legal advice from a qualified California family law attorney.
             </p>
           </div>
         </div>

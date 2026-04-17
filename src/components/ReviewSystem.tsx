@@ -7,7 +7,6 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Star, MessageSquare, ThumbsUp, Calendar } from 'lucide-react';
 import { toast } from 'sonner';
 import { type User } from '@/services/auth';
-import { v4 as uuidv4 } from 'uuid';
 
 export interface Review {
   id: string;
@@ -23,9 +22,6 @@ export interface Review {
   verified: boolean;
 }
 
-const REVIEWS_KEY = 'divorceos_reviews';
-const USER_REVIEWS_KEY = 'divorceos_user_reviews';
-
 // Paid subscription tiers that can leave reviews
 const PAID_TIERS = ['basic', 'essential', 'plus', 'done-for-you'];
 
@@ -33,151 +29,81 @@ export function isPaidUser(user: User): boolean {
   return PAID_TIERS.includes(user.subscription);
 }
 
-export function hasUserReviewed(userId: string): boolean {
-  const data = localStorage.getItem(USER_REVIEWS_KEY);
-  if (!data) return false;
-  
-  try {
-    const userReviews: string[] = JSON.parse(data);
-    return userReviews.includes(userId);
-  } catch {
-    return false;
-  }
-}
+async function fetchReviewsSnapshot(userId?: string): Promise<{
+  reviews: Review[];
+  averageRating: { average: number; total: number };
+  userReview: Review | null;
+}> {
+  const response = await fetch('/api/reviews');
+  const payload = await response.json().catch(() => ({}));
 
-export function getAllReviews(): Review[] {
-  const data = localStorage.getItem(REVIEWS_KEY);
-  if (!data) return [];
-  
-  try {
-    const reviews: Review[] = JSON.parse(data);
-    return reviews.sort((a, b) => 
-      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    );
-  } catch {
-    return [];
+  if (!response.ok) {
+    throw new Error(payload.error || 'Unable to load reviews');
   }
-}
 
-export function getAverageRating(): { average: number; total: number } {
-  const reviews = getAllReviews();
-  if (reviews.length === 0) return { average: 0, total: 0 };
-  
-  const sum = reviews.reduce((acc, r) => acc + r.rating, 0);
+  const reviews: Review[] = Array.isArray(payload.reviews) ? payload.reviews : [];
+  const sum = reviews.reduce((acc, review) => acc + review.rating, 0);
+  const averageRating = reviews.length
+    ? { average: Math.round((sum / reviews.length) * 10) / 10, total: reviews.length }
+    : { average: 0, total: 0 };
+
   return {
-    average: Math.round((sum / reviews.length) * 10) / 10,
-    total: reviews.length
+    reviews,
+    averageRating,
+    userReview: userId ? reviews.find((review) => review.userId === userId) || null : null,
   };
 }
 
-export function submitReview(
-  user: User,
-  rating: number,
-  content: string
-): { success: boolean; error?: string } {
+async function submitReview(user: User, rating: number, content: string) {
   if (!isPaidUser(user)) {
-    return { 
-      success: false, 
-      error: 'Only paid subscribers can leave reviews. Please upgrade to share your experience.' 
+    return {
+      success: false,
+      error: 'Only paid subscribers can leave reviews. Please upgrade to share your experience.',
     };
   }
-  
-  if (hasUserReviewed(user.id)) {
-    return { 
-      success: false, 
-      error: 'You have already submitted a review. You can edit your existing review.' 
-    };
+
+  const response = await fetch('/api/reviews', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ rating, content }),
+  });
+  const payload = await response.json().catch(() => ({}));
+
+  if (!response.ok) {
+    return { success: false, error: payload.error || 'Unable to submit review' };
   }
-  
-  if (rating < 1 || rating > 5) {
-    return { success: false, error: 'Please select a rating between 1 and 5 stars' };
-  }
-  
-  if (content.trim().length < 10) {
-    return { success: false, error: 'Review must be at least 10 characters long' };
-  }
-  
-  const newReview: Review = {
-    id: uuidv4(),
-    userId: user.id,
-    userName: user.name,
-    userEmail: user.email,
-    rating,
-    content: content.trim(),
-    subscriptionTier: user.subscription,
-    helpfulCount: 0,
-    createdAt: new Date().toISOString(),
-    verified: true
-  };
-  
-  // Save review
-  const reviews = getAllReviews();
-  reviews.unshift(newReview);
-  localStorage.setItem(REVIEWS_KEY, JSON.stringify(reviews));
-  
-  // Mark user as reviewed
-  const userReviewsData = localStorage.getItem(USER_REVIEWS_KEY);
-  let userReviews: string[] = [];
-  
-  if (userReviewsData) {
-    try {
-      userReviews = JSON.parse(userReviewsData);
-    } catch {
-      userReviews = [];
-    }
-  }
-  
-  userReviews.push(user.id);
-  localStorage.setItem(USER_REVIEWS_KEY, JSON.stringify(userReviews));
-  
-  return { success: true };
+
+  return { success: true, review: payload.review as Review };
 }
 
-export function updateReview(
-  reviewId: string,
-  userId: string,
-  rating: number,
-  content: string
-): { success: boolean; error?: string } {
-  const reviews = getAllReviews();
-  const reviewIndex = reviews.findIndex(r => r.id === reviewId && r.userId === userId);
-  
-  if (reviewIndex === -1) {
-    return { success: false, error: 'Review not found' };
+async function updateReview(reviewId: string, rating: number, content: string) {
+  const response = await fetch('/api/reviews', {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ reviewId, rating, content }),
+  });
+  const payload = await response.json().catch(() => ({}));
+
+  if (!response.ok) {
+    return { success: false, error: payload.error || 'Unable to update review' };
   }
-  
-  if (rating < 1 || rating > 5) {
-    return { success: false, error: 'Please select a rating between 1 and 5 stars' };
-  }
-  
-  if (content.trim().length < 10) {
-    return { success: false, error: 'Review must be at least 10 characters long' };
-  }
-  
-  reviews[reviewIndex] = {
-    ...reviews[reviewIndex],
-    rating,
-    content: content.trim(),
-    updatedAt: new Date().toISOString()
-  };
-  
-  localStorage.setItem(REVIEWS_KEY, JSON.stringify(reviews));
-  return { success: true };
+
+  return { success: true, review: payload.review as Review };
 }
 
-export function markReviewHelpful(reviewId: string): void {
-  const reviews = getAllReviews();
-  const review = reviews.find(r => r.id === reviewId);
-  
-  if (review) {
-    review.helpfulCount++;
-    localStorage.setItem(REVIEWS_KEY, JSON.stringify(reviews));
-  }
-}
+async function markReviewHelpful(reviewId: string) {
+  const response = await fetch('/api/reviews', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action: 'helpful', reviewId }),
+  });
+  const payload = await response.json().catch(() => ({}));
 
-export function getUserReview(userId: string): Review | null {
-  const reviews = getAllReviews();
-  return reviews.find(r => r.userId === userId) || null;
+  if (!response.ok) {
+    throw new Error(payload.error || 'Unable to update review');
+  }
+
+  return payload.review as Review;
 }
 
 interface ReviewSystemProps {
@@ -189,6 +115,7 @@ export function ReviewSystem({ user }: ReviewSystemProps) {
   const [averageRating, setAverageRating] = useState({ average: 0, total: 0 });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [userReview, setUserReview] = useState<Review | null>(null);
   
   // Form state
   const [rating, setRating] = useState(0);
@@ -196,12 +123,29 @@ export function ReviewSystem({ user }: ReviewSystemProps) {
   const [reviewContent, setReviewContent] = useState('');
   
   const isPaid = user ? isPaidUser(user) : false;
-  const userReview = user ? getUserReview(user.id) : null;
   
   useEffect(() => {
-    setReviews(getAllReviews());
-    setAverageRating(getAverageRating());
-  }, []);
+    let cancelled = false;
+
+    void fetchReviewsSnapshot(user?.id)
+      .then((snapshot) => {
+        if (cancelled) return;
+        setReviews(snapshot.reviews);
+        setAverageRating(snapshot.averageRating);
+        setUserReview(snapshot.userReview);
+      })
+      .catch((error) => {
+        if (cancelled) return;
+        console.error('Failed to load reviews', error);
+        setReviews([]);
+        setAverageRating({ average: 0, total: 0 });
+        setUserReview(null);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [user?.id]);
   
   // Load user's existing review if editing
   useEffect(() => {
@@ -218,9 +162,9 @@ export function ReviewSystem({ user }: ReviewSystemProps) {
     
     let result;
     if (userReview) {
-      result = updateReview(userReview.id, user.id, rating, reviewContent);
+      result = await updateReview(userReview.id, rating, reviewContent);
     } else {
-      result = submitReview(user, rating, reviewContent);
+      result = await submitReview(user, rating, reviewContent);
     }
     
     if (result.success) {
@@ -228,9 +172,10 @@ export function ReviewSystem({ user }: ReviewSystemProps) {
         description: 'Thank you for sharing your experience.',
       });
       
-      // Refresh reviews
-      setReviews(getAllReviews());
-      setAverageRating(getAverageRating());
+      const snapshot = await fetchReviewsSnapshot(user.id);
+      setReviews(snapshot.reviews);
+      setAverageRating(snapshot.averageRating);
+      setUserReview(snapshot.userReview);
       
       // Reset form
       setRating(0);
@@ -245,13 +190,22 @@ export function ReviewSystem({ user }: ReviewSystemProps) {
     setIsSubmitting(false);
   };
   
-  const handleHelpful = (reviewId: string) => {
-    markReviewHelpful(reviewId);
-    setReviews(getAllReviews());
-    
-    toast.success('Thanks!', {
-      description: 'Your feedback helps others.',
-    });
+  const handleHelpful = async (reviewId: string) => {
+    try {
+      await markReviewHelpful(reviewId);
+      const snapshot = await fetchReviewsSnapshot(user?.id);
+      setReviews(snapshot.reviews);
+      setAverageRating(snapshot.averageRating);
+      setUserReview(snapshot.userReview);
+
+      toast.success('Thanks!', {
+        description: 'Your feedback helps others.',
+      });
+    } catch (error) {
+      toast.error('Unable to update review', {
+        description: error instanceof Error ? error.message : 'Please try again.',
+      });
+    }
   };
   
   const renderStars = (count: number, interactive = false) => {
@@ -347,8 +301,8 @@ export function ReviewSystem({ user }: ReviewSystemProps) {
             <CardDescription>
               {isPaid 
                 ? userReview 
-                  ? 'Update your review of DivorceOS'
-                  : 'Share your experience with DivorceOS'
+                  ? 'Update your review of Divorce Agent'
+                  : 'Share your experience with Divorce Agent'
                 : 'Only paid subscribers can leave reviews. Please upgrade to Basic or higher.'}
             </CardDescription>
           </CardHeader>
@@ -415,7 +369,7 @@ export function ReviewSystem({ user }: ReviewSystemProps) {
                   <Textarea
                     value={reviewContent}
                     onChange={(e) => setReviewContent(e.target.value)}
-                    placeholder="Share your experience with DivorceOS. How has it helped you? What did you like most?"
+                    placeholder="Share your experience with Divorce Agent. How has it helped you? What did you like most?"
                     rows={4}
                     className="resize-none"
                   />
@@ -458,7 +412,7 @@ export function ReviewSystem({ user }: ReviewSystemProps) {
         <CardHeader>
           <CardTitle>Customer Reviews</CardTitle>
           <CardDescription>
-            See what our customers are saying about DivorceOS
+            See what our customers are saying about Divorce Agent
           </CardDescription>
         </CardHeader>
         

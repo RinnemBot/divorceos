@@ -99,7 +99,7 @@ export function ConfirmEmailPage() {
                 <Alert className="bg-green-50 border-green-200">
                   <CheckCircle className="h-5 w-5 text-green-600" />
                   <AlertDescription className="text-green-700">
-                    Your email has been successfully verified! You can now start using DivorceOS.
+                    Your email has been successfully verified! You can now start using Divorce Agent.
                   </AlertDescription>
                 </Alert>
                 
@@ -108,7 +108,7 @@ export function ConfirmEmailPage() {
                     onClick={() => navigate('/')} 
                     className="w-full bg-emerald-700 hover:bg-emerald-800"
                   >
-                    Start Using DivorceOS
+                    Start Using Divorce Agent
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                   

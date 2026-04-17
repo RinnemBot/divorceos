@@ -148,7 +148,7 @@ export function PricingPage() {
     if (planId === 'free') {
       if (currentUser.subscription !== 'free') {
         const updatedUser = { ...currentUser, subscription: 'free' as User['subscription'] };
-        authService.updateUser(updatedUser);
+        await authService.updateUser(updatedUser);
         setCurrentUser(updatedUser);
         toast.success('You are back on the Free plan.');
       }
@@ -162,7 +162,7 @@ export function PricingPage() {
 
     try {
       setIsProcessing(planId);
-      await redirectToCheckout(planId, billingPeriod, currentUser.email);
+      await redirectToCheckout(planId, billingPeriod);
     } catch (error) {
       console.error(error);
       toast.error(error instanceof Error ? error.message : 'Unable to start checkout.');
@@ -395,7 +395,7 @@ export function PricingPage() {
               },
               {
                 title: 'Is this a substitute for a lawyer?',
-                body: 'No. DivorceAgent gives strategic AI guidance, not legal representation or legal advice. For case-specific legal advice, work with a qualified California family law attorney.',
+                body: 'No. Divorce Agent gives strategic AI guidance, not legal representation or legal advice. For case-specific legal advice, work with a qualified California family law attorney.',
               },
               {
                 title: 'How does Maria work?',

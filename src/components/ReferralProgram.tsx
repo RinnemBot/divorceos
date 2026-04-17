@@ -166,17 +166,17 @@ export function ReferralProgram({ user }: ReferralProgramProps) {
   const shareOptions = [
     {
       name: 'Email',
-      url: `mailto:?subject=Try DivorceOS - Get $10 Credit&body=Sign up for DivorceOS using my referral link: ${encodeURIComponent(referralLink)}%0A%0AGet $10 credit when you sign up!`,
+      url: `mailto:?subject=Try Divorce Agent - Get $10 Credit&body=Sign up for Divorce Agent using my referral link: ${encodeURIComponent(referralLink)}%0A%0AGet $10 credit when you sign up!`,
       icon: '✉️'
     },
     {
       name: 'Text Message',
-      url: `sms:&body=${encodeURIComponent(`Get expert California divorce guidance with DivorceOS. Use my link for $10 credit: ${referralLink}`)}`,
+      url: `sms:&body=${encodeURIComponent(`Get expert California divorce guidance with Divorce Agent. Use my link for $10 credit: ${referralLink}`)}`,
       icon: '💬'
     },
     {
       name: 'Twitter',
-      url: `https://twitter.com/intent/tweet?text=${encodeURIComponent(`Get expert California divorce guidance with DivorceOS. Sign up with my link and get $10 credit! ${referralLink}`)}`,
+      url: `https://twitter.com/intent/tweet?text=${encodeURIComponent(`Get expert California divorce guidance with Divorce Agent. Sign up with my link and get $10 credit! ${referralLink}`)}`,
       icon: '🐦'
     },
     {

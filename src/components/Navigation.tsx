@@ -79,7 +79,7 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
               </div>
               <div className="leading-tight">
                 <span className="block text-lg font-semibold tracking-tight text-slate-900 dark:text-white">
-                  DivorceAgent
+                  Divorce Agent
                 </span>
                 <span className="block text-[11px] font-medium uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
                   California AI guidance

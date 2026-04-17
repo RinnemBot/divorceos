@@ -107,7 +107,7 @@ function buildReminderItems(user: User): ReminderItem[] {
       id: 'pick-county',
       tone: 'planning',
       title: 'Pick and save your county',
-      detail: 'Save at least one county so DivorceOS can keep the right filing path, clerk details, and local checklist front and center.',
+      detail: 'Save at least one county so Divorce Agent can keep the right filing path, clerk details, and local checklist front and center.',
       forms: [],
       actionTab: 'county',
       actionLabel: 'Save county',

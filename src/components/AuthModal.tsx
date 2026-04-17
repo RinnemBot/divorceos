@@ -93,7 +93,7 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
       <DialogContent className="sm:max-w-md border-white/80 bg-white/72 backdrop-blur-2xl dark:border-white/10 dark:bg-slate-950/90">
         <DialogHeader>
           <DialogTitle className="text-center text-2xl font-bold text-slate-900">
-            Welcome to DivorceOS
+            Welcome to Divorce Agent
           </DialogTitle>
         </DialogHeader>
         

@@ -40,17 +40,17 @@ export function TermsPage() {
     <LegalLayout
       title="Terms of Service"
       lastUpdated="April 8, 2026"
-      intro="These terms govern your use of DivorceOS. By using the site, you agree to use it for lawful purposes and understand the limits of the service."
+      intro="These terms govern your use of Divorce Agent. By using the site, you agree to use it for lawful purposes and understand the limits of the service."
     >
       <h2>Use of the service</h2>
       <p>
-        DivorceOS provides legal information, workflow tools, and document guidance focused on California family law matters.
+        Divorce Agent provides legal information, workflow tools, and document guidance focused on California family law matters.
         It is designed to help you get organized and understand your next steps.
       </p>
 
       <h2>Not legal advice</h2>
       <p>
-        DivorceOS is not a law firm, does not represent you, and does not create an attorney-client relationship.
+        Divorce Agent is not a law firm, does not represent you, and does not create an attorney-client relationship.
         Information on this site is general and may not fit your exact situation.
       </p>
 
@@ -79,7 +79,7 @@ export function PrivacyPage() {
     <LegalLayout
       title="Privacy Policy"
       lastUpdated="April 8, 2026"
-      intro="This page explains what information DivorceOS may collect, how it is used, and the practical limits of privacy when using online tools."
+      intro="This page explains what information Divorce Agent may collect, how it is used, and the practical limits of privacy when using online tools."
     >
       <h2>Information you provide</h2>
       <p>
@@ -100,7 +100,7 @@ export function PrivacyPage() {
 
       <h2>Third-party services</h2>
       <p>
-        DivorceOS may rely on third-party providers for hosting, analytics, payments, authentication, and AI processing. Those providers may process data on our behalf under their own terms.
+        Divorce Agent may rely on third-party providers for hosting, analytics, payments, authentication, and AI processing. Those providers may process data on our behalf under their own terms.
       </p>
 
       <h2>Your choices</h2>
@@ -116,17 +116,17 @@ export function DisclaimerPage() {
     <LegalLayout
       title="Disclaimer"
       lastUpdated="April 8, 2026"
-      intro="Please read this carefully before relying on information from DivorceOS. This site is meant to inform and organize, not replace legal counsel."
+      intro="Please read this carefully before relying on information from Divorce Agent. This site is meant to inform and organize, not replace legal counsel."
     >
       <h2>Informational use only</h2>
       <p>
-        Content on DivorceOS is provided for general informational and educational purposes only.
+        Content on Divorce Agent is provided for general informational and educational purposes only.
         It should not be treated as legal advice, legal opinion, or a guarantee of outcome.
       </p>
 
       <h2>No attorney-client relationship</h2>
       <p>
-        Using this site, sending a message, or creating an account does not create an attorney-client relationship with DivorceOS or any affiliated professional.
+        Using this site, sending a message, or creating an account does not create an attorney-client relationship with Divorce Agent or any affiliated professional.
       </p>
 
       <h2>Always verify before filing</h2>

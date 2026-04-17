@@ -457,7 +457,7 @@ export function DashboardPage() {
                             <tr key={doc.id} className="border-t border-slate-100">
                               <td className="px-4 py-3">
                                 <p className="font-medium text-slate-800">{doc.name}</p>
-                                <p className="text-xs text-slate-500">Stored securely in DivorceOS</p>
+                                <p className="text-xs text-slate-500">Stored securely in Divorce Agent</p>
                               </td>
                               <td className="px-4 py-3 text-slate-600">
                                 {new Date(doc.uploadedAt).toLocaleString()}

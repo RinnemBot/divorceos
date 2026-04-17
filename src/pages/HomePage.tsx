@@ -169,7 +169,7 @@ export function HomePage() {
             <div className="grid items-center gap-12 lg:grid-cols-[1.05fr,0.95fr]">
             <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
               <Badge className="mb-5 border border-emerald-200/80 bg-white/65 px-4 py-1 text-[11px] uppercase tracking-[0.28em] text-slate-700 shadow-sm backdrop-blur dark:border-emerald-400/20 dark:bg-white/5 dark:text-emerald-200">
-                DivorceAgent
+                Divorce Agent
               </Badge>
               <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-slate-950 md:text-6xl md:leading-[1.02] dark:text-white">
                 Strategic AI guidance for California Divorce and Family Law.
