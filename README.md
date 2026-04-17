@@ -1,4 +1,4 @@
-# DivorceOS
+# Divorce Agent
 
 AI-powered California divorce law assistant with court forms access and legal guidance.
 
@@ -114,4 +114,4 @@ MIT
 
 ## Disclaimer
 
-DivorceOS provides general information about California divorce law. It is not a substitute for legal advice from a qualified attorney. Always consult with a California family law attorney for advice specific to your situation.
+Divorce Agent provides general information about California divorce law. It is not a substitute for legal advice from a qualified attorney. Always consult with a California family law attorney for advice specific to your situation.

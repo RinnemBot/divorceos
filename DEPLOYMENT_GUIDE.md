@@ -1,6 +1,6 @@
-# Deployment Guide - DivorceOS
+# Deployment Guide - Divorce Agent
 
-This guide will walk you through deploying DivorceOS to GitHub and Vercel.
+This guide will walk you through deploying Divorce Agent to GitHub and Vercel.
 
 ## Step 1: Create a GitHub Repository
 
@@ -22,7 +22,7 @@ git init
 git add .
 
 # Commit
-git commit -m "Initial commit - DivorceOS"
+git commit -m "Initial commit - Divorce Agent"
 
 # Add remote (replace YOUR_USERNAME with your GitHub username)
 git remote add origin https://github.com/YOUR_USERNAME/divorceos.git

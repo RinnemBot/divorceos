@@ -128,16 +128,16 @@ async function sendVerificationEmail(email: string, name: string | null | undefi
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Confirm Your Email - DivorceOS</title>
+  <title>Confirm Your Email - Divorce Agent</title>
 </head>
 <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
   <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
     <div style="background: linear-gradient(135deg, #2563eb, #4f46e5); padding: 30px; text-align: center; border-radius: 8px 8px 0 0;">
-      <h1 style="color: white; margin: 0; font-size: 24px;">🏛️ DivorceOS</h1>
+      <h1 style="color: white; margin: 0; font-size: 24px;">🏛️ Divorce Agent</h1>
       <p style="color: #e0e7ff; margin: 10px 0 0;">California Divorce Law Assistance</p>
     </div>
     <div style="background: #ffffff; padding: 30px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 8px 8px;">
-      <h2>Welcome to DivorceOS, ${name || 'there'}!</h2>
+      <h2>Welcome to Divorce Agent, ${name || 'there'}!</h2>
       <p>Thank you for creating an account. To complete your registration, confirm your email address.</p>
       <p style="margin: 24px 0; text-align: center;">
         <a href="${confirmationUrl}" style="display: inline-block; background: #2563eb; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: bold;">Confirm My Email Address</a>
@@ -152,16 +152,16 @@ async function sendVerificationEmail(email: string, name: string | null | undefi
   await sendAgentMail({
     to: email,
     from: AGENTMAIL_INBOX_ID,
-    subject: 'Welcome to DivorceOS - Please Confirm Your Email',
+    subject: 'Welcome to Divorce Agent - Please Confirm Your Email',
     body: emailBody,
-    name: 'DivorceOS Team',
-    metadata: { source: 'DivorceOS Auth' },
+    name: 'Divorce Agent Team',
+    metadata: { source: 'Divorce Agent Auth' },
   });
 }
 
 async function sendAdminSignupNotification(email: string, name?: string | null, isConfirmed = false) {
   const body = `
-🎉 NEW USER SIGNUP - DivorceOS
+🎉 NEW USER SIGNUP - Divorce Agent
 
 User Details:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -174,10 +174,10 @@ User Details:
   await sendAgentMail({
     to: AGENTMAIL_INBOX_ID,
     from: 'system@divorceos.com',
-    subject: `[DivorceOS] New User Signup - ${email}`,
+    subject: `[Divorce Agent] New User Signup - ${email}`,
     body,
-    name: 'DivorceOS System',
-    metadata: { source: 'DivorceOS Auth' },
+    name: 'Divorce Agent System',
+    metadata: { source: 'Divorce Agent Auth' },
   });
 }
 
@@ -547,11 +547,11 @@ async function handleSendReminderTestEmail(req: VercelRequest, res: VercelRespon
   await sendAgentMail({
     to: user.email,
     from: AGENTMAIL_INBOX_ID,
-    subject: `DivorceOS reminder: ${reminder.title}`,
+    subject: `Divorce Agent reminder: ${reminder.title}`,
     body: [
       `Hi ${user.name || user.email.split('@')[0]},`,
       '',
-      'This is a test reminder email from DivorceOS.',
+      'This is a test reminder email from Divorce Agent.',
       '',
       `Reminder: ${reminder.title}`,
       reminder.description ? `Details: ${reminder.description}` : null,
@@ -590,17 +590,17 @@ async function handleDispatchDueReminders(req: VercelRequest, res: VercelRespons
       await sendAgentMail({
         to: delivery.userEmail,
         from: AGENTMAIL_INBOX_ID,
-        subject: `DivorceOS reminder: ${delivery.reminder.title}`,
+        subject: `Divorce Agent reminder: ${delivery.reminder.title}`,
         body: [
           `Hi ${delivery.userName || 'there'},`,
           '',
-          'DivorceOS reminder:',
+          'Divorce Agent reminder:',
           `• ${delivery.reminder.title}`,
           delivery.reminder.description ? `• ${delivery.reminder.description}` : null,
           `• Due: ${new Date(delivery.reminder.dueAt).toLocaleString()}`,
           delivery.reminder.forms.length ? `• Suggested forms: ${delivery.reminder.forms.join(', ')}` : null,
           '',
-          'Log in to DivorceOS to review the reminder, update dates, and jump back into forms or county filing guidance.',
+          'Log in to Divorce Agent to review the reminder, update dates, and jump back into forms or county filing guidance.',
         ].filter(Boolean).join('\n'),
         name: delivery.userName || delivery.userEmail,
         metadata: {

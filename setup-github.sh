@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# DivorceOS GitHub Setup Script
+# Divorce Agent GitHub Setup Script
 # Run this script to push your code to GitHub
 
-echo "Setting up DivorceOS for GitHub..."
+echo "Setting up Divorce Agent for GitHub..."
 
 # Check if git is installed
 if ! command -v git &> /dev/null; then
@@ -25,7 +25,7 @@ git init
 git add .
 
 # Commit
-git commit -m "Initial commit - DivorceOS"
+git commit -m "Initial commit - Divorce Agent"
 
 # Add remote
 git remote add origin https://github.com/Rinnembot/divorceos.git

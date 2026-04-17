@@ -28,7 +28,7 @@ function formatProfileContext(user: AuthUser) {
   if (!profile) return null;
 
   const lines = [
-    'Known user profile and case context from DivorceOS account settings. Use this to personalize guidance, but do not pretend the user said it in this message.',
+    'Known user profile and case context from Divorce Agent account settings. Use this to personalize guidance, but do not pretend the user said it in this message.',
   ];
 
   const displayName = [profile.firstName, profile.lastName].filter(Boolean).join(' ').trim();
