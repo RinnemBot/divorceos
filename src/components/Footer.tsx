@@ -50,7 +50,7 @@ export function Footer() {
                 </div>
               </div>
               <h2 className="text-2xl font-semibold tracking-tight text-white md:text-3xl">
-                Strategic AI guidance for California divorce and family law.
+                Strategic AI guidance for California Divorce and Family Law.
               </h2>
               <p className="mt-3 max-w-xl text-sm leading-6 text-slate-300">
                 Meet Maria, the Divorce Agent. Ask better questions, understand your options, and move from confusion to a clear next step.

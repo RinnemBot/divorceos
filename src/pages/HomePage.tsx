@@ -172,7 +172,7 @@ export function HomePage() {
                 DivorceAgent
               </Badge>
               <h1 className="max-w-3xl text-4xl font-semibold tracking-tight text-slate-950 md:text-6xl md:leading-[1.02] dark:text-white">
-                Strategic AI guidance for California divorce and family law.
+                Strategic AI guidance for California Divorce and Family Law.
               </h1>
               <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600 dark:text-slate-300">
                 Meet Maria, the Divorce Agent. Get clear on your options, prepare your next steps, and move forward with confidence.
