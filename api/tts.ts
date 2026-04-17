@@ -6,7 +6,7 @@ const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const OPENAI_TTS_MODEL = process.env.OPENAI_TTS_MODEL || 'gpt-4o-mini-tts';
 const OPENAI_TTS_VOICE = process.env.OPENAI_TTS_VOICE || 'marin';
 const OPENAI_TTS_SPEED = Number(process.env.OPENAI_TTS_SPEED || '1.14');
-const OPENAI_TTS_INSTRUCTIONS = process.env.OPENAI_TTS_INSTRUCTIONS || 'Speak like Maria, a real person: warm, grounded, sharp, and reassuring. Use a natural conversational tone with a slightly brisk pace. Sound human and relaxed, with subtle variation and clean pacing. Avoid robotic cadence, exaggerated cheerfulness, a call-center tone, or long dramatic pauses.';
+const OPENAI_TTS_INSTRUCTIONS = process.env.OPENAI_TTS_INSTRUCTIONS || 'Speak like Maria, a real person: natural, warm, confident, friendly, professional, and soft when appropriate, with a sharp edge when clarity matters. Use a natural conversational tone with a slightly quicker pace, but never rushed. Sound human, relaxed, and reassuring, with subtle variation and clean pacing. Avoid robotic cadence, exaggerated cheerfulness, a call-center tone, or long dramatic pauses.';
 const OPENAI_TTS_URL = 'https://api.openai.com/v1/audio/speech';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
