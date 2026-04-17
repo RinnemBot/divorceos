@@ -95,6 +95,21 @@ export function HomePage() {
   useEffect(() => {
     const user = authService.getCurrentUser();
     setCurrentUser(user);
+
+    const handleAuthRequired = () => {
+      setCurrentUser(null);
+      setShowAuthModal(true);
+    };
+
+    window.addEventListener('divorceos:auth-required', handleAuthRequired);
+
+    void authService.refreshCurrentUser().then((nextUser) => {
+      setCurrentUser(nextUser);
+    });
+
+    return () => {
+      window.removeEventListener('divorceos:auth-required', handleAuthRequired);
+    };
   }, []);
 
   useEffect(() => {

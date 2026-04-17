@@ -742,6 +742,10 @@ User name: ${userName || 'there'}`;
     console.error('AI API error:', error);
 
     if (error instanceof Error && error.message === 'AUTH_REQUIRED') {
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('divorceos:auth-required'));
+      }
+
       return {
         content: 'Please sign in again to keep chatting with Maria.',
         topic,

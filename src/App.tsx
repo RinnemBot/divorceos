@@ -33,10 +33,25 @@ function App() {
   const [showAuthModal, setShowAuthModal] = useState(false);
 
   useEffect(() => {
-    // Check for existing session
-    const user = authService.getCurrentUser();
-    setCurrentUser(user);
-    setIsLoading(false);
+    const cachedUser = authService.getCurrentUser();
+    setCurrentUser(cachedUser);
+
+    const handleAuthRequired = () => {
+      authService.logout();
+      setCurrentUser(null);
+      setShowAuthModal(true);
+    };
+
+    window.addEventListener('divorceos:auth-required', handleAuthRequired);
+
+    void authService.refreshCurrentUser().then((user) => {
+      setCurrentUser(user);
+      setIsLoading(false);
+    });
+
+    return () => {
+      window.removeEventListener('divorceos:auth-required', handleAuthRequired);
+    };
   }, []);
 
   const handleAuthSuccess = (user: User) => {
