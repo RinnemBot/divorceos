@@ -719,7 +719,12 @@ User name: ${userName || 'there'}`;
     if (!response.ok) {
       const errorText = await response.text();
       console.error('[Maria] API error:', response.status, errorText);
-      if (response.status === 401) {
+
+      const looksLikeAuthFailure =
+        response.status === 401 &&
+        /authentication required|unauthorized/i.test(errorText);
+
+      if (looksLikeAuthFailure) {
         throw new Error('AUTH_REQUIRED');
       }
       if (response.status === 403) {

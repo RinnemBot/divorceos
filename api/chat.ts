@@ -220,7 +220,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           console.warn('Falling back to Kimi provider due to OpenAI failure.');
           return proxyKimi(messagesWithMemory, safeTemperature, safeMaxTokens, res, currentUser.id);
         }
-        return res.status(response.status).json({ error: 'Upstream AI provider error' });
+        return res.status(502).json({
+          error: 'Upstream AI provider error',
+          provider: 'openai',
+          upstreamStatus: response.status,
+        });
       }
 
       const data = await response.json();
@@ -280,7 +284,11 @@ async function proxyKimi(
   if (!response.ok) {
     const errorText = await response.text();
     console.error('Kimi API error:', response.status, errorText);
-    return res.status(response.status).json({ error: 'Upstream AI provider error' });
+    return res.status(502).json({
+      error: 'Upstream AI provider error',
+      provider: 'kimi',
+      upstreamStatus: response.status,
+    });
   }
 
   const data = await response.json();
