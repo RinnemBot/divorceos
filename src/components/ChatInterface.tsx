@@ -25,7 +25,7 @@ import {
   XCircle
 } from 'lucide-react';
 import { generateAIResponse, generateWelcomeMessage } from '@/services/api';
-import { createMariaDocument } from '@/services/documents';
+import { MariaDocumentError, createMariaDocument } from '@/services/documents';
 import { authService, type User, type ChatSession, type ChatMessage, type ChatAttachment } from '@/services/auth';
 import { CALIFORNIA_DIVORCE_TOPICS } from '@/services/personality';
 import { v4 as uuidv4 } from 'uuid';
@@ -369,7 +369,11 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
       window.alert('Saved to your dashboard Saved Files.');
     } catch (error) {
       console.error('Failed to save Maria document', error);
-      window.alert(error instanceof Error ? error.message : 'Unable to save this PDF right now.');
+      if (error instanceof MariaDocumentError) {
+        window.alert(error.message);
+      } else {
+        window.alert(error instanceof Error ? `Save failed: ${error.message}` : 'Save failed: unable to save this PDF right now.');
+      }
     } finally {
       setSavingMessageId(null);
     }
