@@ -14,6 +14,7 @@ export interface AIResponse {
   intent?: string;
   urgency?: 'normal' | 'urgent';
   suggestedActions?: { label: string; href: string }[];
+  shouldOfferPdfSave?: boolean;
 }
 
 const FORM_PATTERN = /(FL[-\s]?\d{2,3}[A-Z]?|DV[-\s]?\d{3})/gi;
@@ -178,6 +179,15 @@ function getIntentGuidance(intent: ChatIntent): string {
     default:
       return 'Answer directly, explain why it matters, recommend the best next step, and be specific about exact forms or county-dependent procedure when that would reduce confusion.';
   }
+}
+
+function shouldOfferPdfSave(userMessage: string, content: string, intent: ChatIntent): boolean {
+  const combined = `${userMessage}\n${content}`.toLowerCase();
+  if (/(save this|save that|make (this|that) (a )?pdf|turn (this|that) into (a )?pdf|put (this|that) in (my )?(dashboard|saved files)|save (it|this) to (my )?(dashboard|saved files)|export (this|that))/i.test(combined)) {
+    return true;
+  }
+
+  return ['hearing_prep', 'forms_help', 'workflow_start_divorce', 'workflow_respond_divorce', 'joint_petition'].includes(intent);
 }
 
 function getSuggestedActions(intent: ChatIntent): { label: string; href: string }[] {
@@ -742,6 +752,7 @@ User name: ${userName || 'there'}`;
       intent: intentResult.intent,
       urgency: intentResult.urgency,
       suggestedActions: getSuggestedActions(intentResult.intent),
+      shouldOfferPdfSave: shouldOfferPdfSave(userMessage, content, intentResult.intent),
     };
   } catch (error) {
     console.error('AI API error:', error);
@@ -758,6 +769,7 @@ User name: ${userName || 'there'}`;
         intent: intentResult.intent,
         urgency: intentResult.urgency,
         suggestedActions: [{ label: 'View pricing', href: '/pricing' }],
+        shouldOfferPdfSave: false,
       };
     }
 
@@ -769,6 +781,7 @@ User name: ${userName || 'there'}`;
         intent: intentResult.intent,
         urgency: intentResult.urgency,
         suggestedActions: [{ label: 'View pricing', href: '/pricing' }],
+        shouldOfferPdfSave: false,
       };
     }
     
@@ -778,6 +791,7 @@ User name: ${userName || 'there'}`;
       intent: intentResult.intent,
       urgency: intentResult.urgency,
       suggestedActions: getSuggestedActions(intentResult.intent),
+      shouldOfferPdfSave: false,
     };
   }
 }

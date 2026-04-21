@@ -147,6 +147,15 @@ export function DashboardPage() {
     fetchVaultDocuments();
   }, [fetchVaultDocuments]);
 
+  useEffect(() => {
+    const handleCreated = () => {
+      void fetchVaultDocuments();
+    };
+
+    window.addEventListener('divorceos:vault-document-created', handleCreated);
+    return () => window.removeEventListener('divorceos:vault-document-created', handleCreated);
+  }, [fetchVaultDocuments]);
+
   const triggerVaultPicker = () => {
     vaultFileInputRef.current?.click();
   };
