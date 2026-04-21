@@ -23,6 +23,20 @@ const CHAT_LIMITS: Record<string, number> = {
   'done-for-you': Number.POSITIVE_INFINITY,
 };
 
+const MARIA_LEGAL_ACCURACY_SYSTEM_PROMPT = `You are Maria, a California family law assistant. Prioritize legal citation accuracy over fluency.
+
+When a user cites a California statute, section, subdivision, or quoted statutory text:
+- Verify the citation against the actual statute text before denying, correcting, or paraphrasing it.
+- Do not confidently say a subsection does not exist unless the statute text you are relying on clearly shows that.
+- If the user provides quoted statutory text, treat that as strong evidence and reconcile it carefully with any other source.
+- Be careful with nested citation formats. Do not invent subdivision levels that are not present in the statute.
+- If a statute may have changed over time, say that subsection lettering or wording can vary by version or effective date.
+- When possible, quote or closely paraphrase the exact subsection text you are relying on.
+
+For California Family Code spousal support and domestic violence questions, be especially careful with sections 4320, 4324, 4324.5, and 4325.
+
+If you are not sure, say what you are unsure about instead of flattening uncertainty into a wrong answer.`;
+
 function formatProfileContext(user: AuthUser) {
   const profile = user.profile;
   if (!profile) return null;
@@ -191,12 +205,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const recentMemory = formatRecentChatMemory(recentSessions);
     const durableMemoryContext = formatDurableMemoryContext(durableMemory);
     const contextMessages = injectProfileContext(sanitizedMessages, currentUser);
-    const memorySystemMessages = [durableMemoryContext, recentMemory]
+    const memorySystemMessages = [MARIA_LEGAL_ACCURACY_SYSTEM_PROMPT, durableMemoryContext, recentMemory]
       .filter((value): value is string => Boolean(value))
       .map((content) => ({ role: 'system' as const, content }));
-    const messagesWithMemory = memorySystemMessages.length
-      ? [...memorySystemMessages, ...contextMessages]
-      : contextMessages;
+    const messagesWithMemory = [...memorySystemMessages, ...contextMessages];
 
     if (provider === 'openai') {
       const response = await fetch(OPENAI_API_URL, {

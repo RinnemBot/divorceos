@@ -209,38 +209,52 @@ export const TOPIC_GUIDANCE: Record<string, {
 }> = {
   spousalSupport: {
     intro: `Spousal support (what people call alimony) can feel really unfair when you're in the middle of it. Let me explain how California actually handles it.`,
-    law: `California Family Code § 4320 lists all the factors the court must consider:
+    law: `California Family Code § 4320 lists the factors the court must consider when deciding spousal support. Key factors include:
 
-• How long you were married (this is BIG - under 10 years is "short-term," over 10 is "long-term")
-• What your standard of living was during the marriage
-• What each of you can earn now
-• Whether one of you supported the other's career/education
-• Age and health of both of you
-• Any history of domestic violence
-• Tax consequences`,
+• Each party's earning capacity and whether it can maintain the marital standard of living
+• Contributions by one spouse to the other's education, training, career, or license
+• The supporting party's ability to pay
+• Each party's needs based on the marital standard of living
+• Each party's obligations and assets, including separate property
+• Duration of the marriage
+• The supported party's ability to work without unduly interfering with dependent children
+• Age and health of the parties
+• Documented history of domestic violence under § 4320(i)
+• Tax consequences
+• Balance of hardships
+• The goal that the supported party become self-supporting within a reasonable period
+• Any other just and equitable factors
+
+Family Code § 4325 is different. It creates a rebuttable presumption against awarding spousal support to a spouse who has a qualifying criminal domestic violence conviction against the other spouse.`,
     practical: `Here's the reality:
 
-**Short-term marriages (under 10 years):** Support usually lasts about half the marriage length. Married 6 years? Expect about 3 years of support.
+**Short-term marriages (under 10 years):** Support often lasts about half the length of the marriage, but that's not automatic.
 
-**Long-term marriages (10+ years):** Support can be indefinite. The court might not even set an end date.
+**Long-term marriages (10+ years):** The court keeps broader jurisdiction, and support may continue longer or without a fixed end date.
 
-**Amount:** There's no set formula like child support. The judge has a lot of discretion based on those § 4320 factors.`,
+**Amount:** There's no rigid statewide formula for long-term spousal support like there is for child support. Judges weigh the § 4320 factors.
+
+**Domestic violence:** General documented domestic violence evidence can matter under § 4320(i). A qualifying conviction can trigger the stronger anti-support presumption under § 4325.`,
     steps: `If you're asking for support:
-• Document your marital standard of living - where you lived, what you spent
-• Get proof of your earning capacity (or lack thereof)
-• Show if you gave up a career to support your spouse or raise kids
-• Gather tax returns showing income differences
+• Document the marital standard of living, including housing, spending, and lifestyle
+• Gather proof of your earning capacity, health issues, and job history
+• Show if you gave up work or opportunities to support your spouse or care for children
+• Collect tax returns, income records, and evidence of need
+• If domestic violence is relevant, gather documented evidence carefully
 
 If you're being asked to pay:
-• Document your actual income (not just last year's taxes if things changed)
-• Show if your spouse can work but chooses not to
-• Consider if a vocational evaluation makes sense
-• Look at whether you can deduct it (tax laws changed recently)`,
+• Document your real income, assets, debts, and monthly obligations
+• Show if the other spouse can work or has earning capacity being ignored
+• Consider whether a vocational evaluation makes sense
+• Analyze tax consequences and cash flow realistically
+• If there is a qualifying DV conviction issue, evaluate § 4325 directly rather than treating it as just another general factor`,
     mistakes: `Common mistakes:
-• Agreeing to permanent support without an end date
-• Not considering tax implications
+• Mixing up § 4320 general support factors with § 4325's DV conviction presumption
+• Assuming support duration is automatic instead of fact-specific
 • Not documenting the marital standard of living
-• Letting emotions drive decisions instead of the law`,
+• Ignoring tax consequences and actual cash flow
+• Treating domestic violence evidence and criminal-conviction consequences as the same thing
+• Letting emotions drive decisions instead of the statute and evidence`,
   },
   
   childSupport: {
