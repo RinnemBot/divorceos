@@ -4,7 +4,7 @@ import { getDurableUserMemory, incrementChatCount, isAdminEmail, listRecentChatS
 
 // Prefer OpenAI GPT-5.1 when available; fall back to Kimi (Moonshot) otherwise.
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-const OPENAI_MODEL = process.env.OPENAI_MODEL || 'gpt-4.1-mini';
+const OPENAI_MODEL = process.env.OPENAI_MODEL || 'gpt-5.4-mini';
 const OPENAI_API_URL = process.env.OPENAI_API_URL || 'https://api.openai.com/v1/chat/completions';
 
 const KIMI_API_KEY = process.env.MOONSHOT_API_KEY || process.env.KIMI_API_KEY;
