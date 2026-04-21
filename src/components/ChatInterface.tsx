@@ -681,13 +681,16 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
       const plan = currentUser?.subscription ?? 'free';
       const aiResponse = await generateAIResponse(userMessage.content, conversationHistory, userName, plan);
       
+      const savePromptPattern = /(save this|save that|make (this|that) (a )?pdf|turn (this|that) into (a )?pdf|put (this|that) in (my )?(dashboard|saved files)|save (it|this) to (my )?(dashboard|saved files)|export (this|that)|save as a pdf|save (this|that) as pdf|pdf-ready|pdf ready)/i;
+      const shouldOfferPdfSave = aiResponse.shouldOfferPdfSave || savePromptPattern.test(userMessage.content);
+
       const assistantMessage: ChatMessage & { shouldOfferPdfSave?: boolean } = {
         id: uuidv4(),
         role: 'assistant',
         content: aiResponse.content,
         timestamp: new Date().toISOString(),
         suggestedActions: aiResponse.suggestedActions,
-        shouldOfferPdfSave: aiResponse.shouldOfferPdfSave,
+        shouldOfferPdfSave,
       };
       
       const finalMessages = [...updatedMessages, assistantMessage];

@@ -183,7 +183,7 @@ function getIntentGuidance(intent: ChatIntent): string {
 
 function shouldOfferPdfSave(userMessage: string, content: string, intent: ChatIntent): boolean {
   const combined = `${userMessage}\n${content}`.toLowerCase();
-  if (/(save this|save that|make (this|that) (a )?pdf|turn (this|that) into (a )?pdf|put (this|that) in (my )?(dashboard|saved files)|save (it|this) to (my )?(dashboard|saved files)|export (this|that))/i.test(combined)) {
+  if (/(save this|save that|make (this|that) (a )?pdf|turn (this|that) into (a )?pdf|put (this|that) in (my )?(dashboard|saved files)|save (it|this) to (my )?(dashboard|saved files)|export (this|that)|save as a pdf|save (this|that) as pdf|pdf-ready|pdf ready)/i.test(combined)) {
     return true;
   }
 
@@ -691,6 +691,7 @@ Preferred response shape:
 - When a deadline is relevant and reasonably clear, state it plainly and early instead of burying it.
 - When the question is about a hearing, add a short checklist only if it genuinely improves clarity.
 - When legal information and strategy are different, you may separate them briefly, but do it naturally instead of sounding like a memo.
+- If the user asks to save, export, or turn your reply into a PDF or add it to Saved Files, do not say you cannot save files. Tell them you can save it to Saved Files using the in-chat save action when available, or that you can format it for saving if that action is not available.
 
 When suitable, steer users into Divorce Agent workflows:
 - /forms
