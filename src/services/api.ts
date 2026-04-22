@@ -711,6 +711,7 @@ User name: ${userName || 'there'}`;
     
     const response = await fetch(API_URL, {
       method: 'POST',
+      credentials: 'same-origin',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -731,11 +732,7 @@ User name: ${userName || 'there'}`;
       const errorText = await response.text();
       console.error('[Maria] API error:', response.status, errorText);
 
-      const looksLikeAuthFailure =
-        response.status === 401 &&
-        /authentication required|unauthorized/i.test(errorText);
-
-      if (looksLikeAuthFailure) {
+      if (response.status === 401 || /authentication required|unauthorized/i.test(errorText)) {
         throw new Error('AUTH_REQUIRED');
       }
       if (response.status === 403) {
