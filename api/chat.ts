@@ -2,9 +2,9 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { enforceBrowserOrigin, enforceRateLimit } from './_security.js';
 import { getDurableUserMemory, incrementChatCount, isAdminEmail, listRecentChatSessions, requireAuthenticatedUser, type AuthUser } from './_auth.js';
 
-// Prefer OpenAI GPT-5.1 when available; fall back to Kimi (Moonshot) otherwise.
+// Prefer OpenAI GPT-5.4 when available; fall back to Kimi (Moonshot) otherwise.
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-const OPENAI_MODEL = process.env.OPENAI_MODEL || 'gpt-5.4-mini';
+const OPENAI_MODEL = process.env.OPENAI_MODEL || 'gpt-5.4';
 const OPENAI_API_URL = process.env.OPENAI_API_URL || 'https://api.openai.com/v1/chat/completions';
 
 const KIMI_API_KEY = process.env.MOONSHOT_API_KEY || process.env.KIMI_API_KEY;
@@ -179,7 +179,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     console.error('KIMI/MOONSHOT API key missing');
     return res.status(500).json({
       error: 'AI provider not configured',
-      message: 'Set OPENAI_API_KEY for OpenAI GPT-5.1 or MOONSHOT_API_KEY for Kimi.',
+      message: 'Set OPENAI_API_KEY for OpenAI GPT-5.4 or MOONSHOT_API_KEY for Kimi.',
     });
   }
 

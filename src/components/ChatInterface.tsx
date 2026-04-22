@@ -1,7 +1,18 @@
 import { useState, useRef, useEffect } from 'react';
 import type { JSX } from 'react';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -34,6 +45,13 @@ import { SUBSCRIPTION_LIMITS } from '@/services/auth';
 const URL_REGEX = /(https?:\/\/[^\s]+)/g;
 const MAX_TTS_CHARS = 900;
 const SILENT_AUDIO_DATA_URI = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABAAZGF0YQAAAAA=';
+
+interface PdfDraftSection {
+  id: string;
+  heading?: string;
+  body: string;
+  label: string;
+}
 
 function renderMessageContent(content: string): string | (string | JSX.Element)[] {
   const matches = [...content.matchAll(URL_REGEX)];
@@ -104,6 +122,100 @@ function getSpeechFriendlyText(content: string): string {
   return `${truncated.trim()} ...`;
 }
 
+function cleanPdfLine(value: string): string {
+  return value
+    .replace(/^[-*•◦▪‣]+\s*/, '')
+    .replace(/^\d+[.)]\s*/, '')
+    .replace(/\*\*/g, '')
+    .trim();
+}
+
+function truncatePdfLabel(value: string, max = 72): string {
+  if (value.length <= max) return value;
+  return `${value.slice(0, max - 1).trimEnd()}…`;
+}
+
+function extractPdfSectionsFromMessage(content: string): PdfDraftSection[] {
+  const cleaned = content.replace(/\*\*/g, '').trim();
+  if (!cleaned) return [];
+
+  const paragraphs = cleaned
+    .split(/\n\n+/)
+    .map((part) => part.trim())
+    .filter(Boolean);
+
+  const sections: PdfDraftSection[] = [];
+
+  paragraphs.forEach((paragraph, paragraphIndex) => {
+    const lines = paragraph
+      .split('\n')
+      .map((line) => line.trim())
+      .filter(Boolean);
+
+    const bulletLines = lines
+      .filter((line) => /^([-*•◦▪‣]|\d+[.)])\s+/.test(line))
+      .map(cleanPdfLine)
+      .filter(Boolean);
+
+    if (bulletLines.length >= 2) {
+      bulletLines.forEach((line, bulletIndex) => {
+        sections.push({
+          id: `p${paragraphIndex}-b${bulletIndex}`,
+          body: line,
+          label: truncatePdfLabel(line),
+        });
+      });
+      return;
+    }
+
+    if (lines.length > 1 && lines[0].length < 90 && !/[.!?]$/.test(lines[0])) {
+      const heading = cleanPdfLine(lines[0]);
+      const body = lines.slice(1).map(cleanPdfLine).join('\n').trim();
+      if (body) {
+        sections.push({
+          id: `p${paragraphIndex}`,
+          heading,
+          body,
+          label: truncatePdfLabel(heading || body),
+        });
+        return;
+      }
+    }
+
+    const body = lines.map(cleanPdfLine).join('\n').trim();
+    if (!body) return;
+
+    sections.push({
+      id: `p${paragraphIndex}`,
+      body,
+      label: truncatePdfLabel(lines[0] ? cleanPdfLine(lines[0]) : body),
+    });
+  });
+
+  return sections.length ? sections : [{ id: 'p0', body: cleaned, label: truncatePdfLabel(cleaned) }];
+}
+
+function buildPdfTitleFromMessage(content: string): string {
+  const firstLine = content
+    .replace(/\*\*/g, '')
+    .split('\n')
+    .map((line) => cleanPdfLine(line))
+    .find(Boolean);
+
+  if (!firstLine) return 'Maria conversation export';
+  return truncatePdfLabel(firstLine.replace(/[.:]+$/, ''), 48);
+}
+
+function toPdfFileName(title: string, fallbackDate: string): string {
+  const base = title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')
+    .slice(0, 60);
+
+  return `${base || `maria-${fallbackDate}`}.pdf`;
+}
+
 interface ChatInterfaceProps {
   currentUser: User | null;
   prefillPrompt?: string | null;
@@ -140,6 +252,11 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
 
   const [attachments, setAttachments] = useState<ComposerAttachment[]>([]);
   const [savingMessageId, setSavingMessageId] = useState<string | null>(null);
+  const [pdfComposerMessage, setPdfComposerMessage] = useState<ChatMessage | null>(null);
+  const [pdfComposerSections, setPdfComposerSections] = useState<PdfDraftSection[]>([]);
+  const [selectedPdfSectionIds, setSelectedPdfSectionIds] = useState<string[]>([]);
+  const [pdfTitle, setPdfTitle] = useState('');
+  const [pdfFileName, setPdfFileName] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const recognitionRef = useRef<BrowserSpeechRecognition | null>(null);
   const transcriptRef = useRef('');
@@ -332,41 +449,52 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
     setAttachments([]);
   };
 
-  const buildPdfSectionsFromMessage = (content: string) => {
-    const cleaned = content.replace(/\*\*/g, '').trim();
-    const parts = cleaned
-      .split(/\n\n+/)
-      .map((part) => part.trim())
-      .filter(Boolean);
-
-    if (parts.length <= 1) {
-      return [{ body: cleaned }];
-    }
-
-    return parts.map((part, index) => {
-      const lines = part.split('\n').map((line) => line.trim()).filter(Boolean);
-      if (lines.length > 1 && lines[0].length < 90 && !/[.!?]$/.test(lines[0])) {
-        return { heading: lines[0], body: lines.slice(1).join('\n') };
-      }
-      return index === 0 ? { body: part } : { heading: `Section ${index + 1}`, body: part };
-    });
+  const closePdfComposer = () => {
+    setPdfComposerMessage(null);
+    setPdfComposerSections([]);
+    setSelectedPdfSectionIds([]);
+    setPdfTitle('');
+    setPdfFileName('');
   };
 
-  const handleSaveMessageToPdf = async (message: ChatMessage) => {
-    if (!currentUser?.id || savingMessageId) return;
-    setSavingMessageId(message.id);
+  const openPdfComposer = (message: ChatMessage) => {
+    const sections = extractPdfSectionsFromMessage(message.content);
+    const nextTitle = buildPdfTitleFromMessage(message.content);
+    setPdfComposerMessage(message);
+    setPdfComposerSections(sections);
+    setSelectedPdfSectionIds(sections.map((section) => section.id));
+    setPdfTitle(nextTitle);
+    setPdfFileName(toPdfFileName(nextTitle, message.timestamp.slice(0, 10)));
+  };
+
+  const handleSaveMessageToPdf = async () => {
+    if (!currentUser?.id || savingMessageId || !pdfComposerMessage) return;
+
+    const trimmedTitle = pdfTitle.trim() || buildPdfTitleFromMessage(pdfComposerMessage.content);
+    const trimmedFileName = pdfFileName.trim() || toPdfFileName(trimmedTitle, pdfComposerMessage.timestamp.slice(0, 10));
+    const selectedSections = pdfComposerSections
+      .filter((section) => selectedPdfSectionIds.includes(section.id))
+      .map(({ heading, body }) => ({ heading, body }));
+
+    if (!selectedSections.length) {
+      window.alert('Pick at least one point to save.');
+      return;
+    }
+
+    setSavingMessageId(pdfComposerMessage.id);
 
     try {
       const createdDocument = await createMariaDocument({
-        title: 'Maria conversation export',
-        subtitle: `Saved from Maria on ${new Date(message.timestamp).toLocaleString()}`,
-        fileName: `maria-${message.timestamp.slice(0, 10)}.pdf`,
-        sections: buildPdfSectionsFromMessage(message.content),
+        title: trimmedTitle,
+        subtitle: `Saved from Maria on ${new Date(pdfComposerMessage.timestamp).toLocaleString()}`,
+        fileName: trimmedFileName,
+        sections: selectedSections,
         footerNote: 'Generated by Maria and saved to your dashboard vault.',
       });
 
       window.dispatchEvent(new CustomEvent('divorceos:vault-document-created', { detail: createdDocument }));
       window.alert('Saved to your dashboard Saved Files.');
+      closePdfComposer();
     } catch (error) {
       console.error('Failed to save Maria document', error);
       if (error instanceof MariaDocumentError) {
@@ -377,6 +505,18 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
     } finally {
       setSavingMessageId(null);
     }
+  };
+
+  const togglePdfSection = (sectionId: string, checked: boolean | 'indeterminate') => {
+    if (checked === 'indeterminate') return;
+
+    setSelectedPdfSectionIds((current) => {
+      if (checked) {
+        return current.includes(sectionId) ? current : [...current, sectionId];
+      }
+
+      return current.filter((id) => id !== sectionId);
+    });
   };
 
   const triggerAttachmentPicker = (mode: 'image' | 'document') => {
@@ -1026,14 +1166,14 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
                           type="button"
                           variant="outline"
                           size="sm"
-                          onClick={() => void handleSaveMessageToPdf(message)}
+                          onClick={() => openPdfComposer(message)}
                           disabled={savingMessageId === message.id}
                           className="rounded-full border-slate-300 text-slate-700 hover:bg-slate-50"
                         >
                           {savingMessageId === message.id ? (
                             <><Loader2 className="h-4 w-4 mr-1 animate-spin" /> Saving PDF…</>
                           ) : (
-                            <><FileTextIcon className="h-4 w-4 mr-1" /> Save to Saved Files</>
+                            <><FileTextIcon className="h-4 w-4 mr-1" /> Save points to PDF</>
                           )}
                         </Button>
                       </div>
@@ -1227,6 +1367,86 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
         <p className="text-xs text-gray-400 mt-2 text-center">
           Maria gives California divorce information, not legal advice. For advice about your specific facts, talk to an attorney.
         </p>
+
+        <Dialog open={Boolean(pdfComposerMessage)} onOpenChange={(open) => { if (!open) closePdfComposer(); }}>
+          <DialogContent className="sm:max-w-2xl">
+            <DialogHeader>
+              <DialogTitle>Save chat points as a PDF</DialogTitle>
+              <DialogDescription>
+                Pick the parts you want, name the file, and I’ll save it into Saved Files.
+              </DialogDescription>
+            </DialogHeader>
+
+            <div className="grid gap-4">
+              <div className="grid gap-2 sm:grid-cols-2">
+                <div className="space-y-2">
+                  <Label htmlFor="pdf-title">PDF title</Label>
+                  <Input
+                    id="pdf-title"
+                    value={pdfTitle}
+                    onChange={(event) => setPdfTitle(event.target.value)}
+                    placeholder="Maria conversation export"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="pdf-file-name">File name</Label>
+                  <Input
+                    id="pdf-file-name"
+                    value={pdfFileName}
+                    onChange={(event) => setPdfFileName(event.target.value)}
+                    placeholder="maria-notes.pdf"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label>Choose points to save</Label>
+                <div className="max-h-[340px] space-y-3 overflow-y-auto rounded-xl border border-slate-200 p-3">
+                  {pdfComposerSections.map((section) => {
+                    const checked = selectedPdfSectionIds.includes(section.id);
+                    return (
+                      <label
+                        key={section.id}
+                        className={`flex items-start gap-3 rounded-xl border p-3 transition-colors ${checked ? 'border-emerald-300 bg-emerald-50/60' : 'border-slate-200 bg-white'}`}
+                      >
+                        <Checkbox
+                          checked={checked}
+                          onCheckedChange={(next) => togglePdfSection(section.id, next)}
+                          className="mt-0.5"
+                        />
+                        <div className="min-w-0 flex-1 space-y-1">
+                          <div className="text-sm font-medium text-slate-900">{section.heading || section.label}</div>
+                          <Textarea
+                            value={section.body}
+                            readOnly
+                            className="min-h-[84px] resize-none border-0 bg-transparent px-0 py-0 text-sm leading-6 text-slate-600 shadow-none focus-visible:ring-0"
+                          />
+                        </div>
+                      </label>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            <DialogFooter>
+              <Button type="button" variant="outline" onClick={closePdfComposer}>
+                Cancel
+              </Button>
+              <Button
+                type="button"
+                onClick={() => void handleSaveMessageToPdf()}
+                disabled={!selectedPdfSectionIds.length || (savingMessageId === pdfComposerMessage?.id && Boolean(savingMessageId))}
+              >
+                {savingMessageId === pdfComposerMessage?.id ? (
+                  <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Saving PDF…</>
+                ) : (
+                  <><FileTextIcon className="mr-2 h-4 w-4" /> Save to Saved Files</>
+                )}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </Card>
   );

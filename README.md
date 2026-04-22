@@ -80,7 +80,7 @@ Create a `.env.local` (for browser-safe keys) and `.env.server` (for serverless-
 ```env
 # AI providers
 OPENAI_API_KEY=sk-...
-OPENAI_MODEL=gpt-5.1
+OPENAI_MODEL=gpt-5.4
 VITE_KIMI_API_KEY=moonshot-...
 
 # Secure document vault (server-side only)
