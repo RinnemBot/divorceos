@@ -7,8 +7,8 @@ import type {
   FilingRequestStatus,
   FilingRequestPriority,
   FilingQueueDocument,
-} from '../src/types/concierge';
-import { FILING_REQUEST_STATUS_ORDER } from '../src/types/concierge';
+} from '../src/types/concierge.js';
+import { FILING_REQUEST_STATUS_ORDER } from '../src/types/concierge.js';
 
 const TABLE_NAME = 'concierge_filing_requests';
 const SUPABASE_STORAGE_BUCKET = process.env.SUPABASE_STORAGE_BUCKET || 'divorceos-vault';

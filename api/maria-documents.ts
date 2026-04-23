@@ -24,15 +24,17 @@ function parseBody(req: VercelRequest): MariaDocumentRequest {
 
 function normalizeSections(value: unknown): MariaDocumentSection[] {
   if (!Array.isArray(value)) return [];
-  return value
-    .map((entry) => {
-      if (!entry || typeof entry !== 'object') return null;
-      const heading = typeof (entry as { heading?: unknown }).heading === 'string' ? (entry as { heading?: string }).heading?.trim() : undefined;
-      const body = typeof (entry as { body?: unknown }).body === 'string' ? (entry as { body?: string }).body?.trim() : '';
-      if (!body) return null;
-      return { heading, body };
-    })
-    .filter((entry): entry is MariaDocumentSection => Boolean(entry));
+
+  const sections: MariaDocumentSection[] = [];
+  for (const entry of value) {
+    if (!entry || typeof entry !== 'object') continue;
+    const heading = typeof (entry as { heading?: unknown }).heading === 'string' ? (entry as { heading?: string }).heading?.trim() : undefined;
+    const body = typeof (entry as { body?: unknown }).body === 'string' ? (entry as { body?: string }).body?.trim() : '';
+    if (!body) continue;
+    sections.push({ heading, body });
+  }
+
+  return sections;
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {

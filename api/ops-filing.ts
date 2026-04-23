@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { enforceBrowserOrigin, enforceSensitiveApiEnabled } from './_security.js';
-import { ensureFilingTables, getOpsSnapshot } from '@/services/filing/supabase';
+import { ensureFilingTables, getOpsSnapshot } from '../src/services/filing/supabase.js';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'GET') {
