@@ -41,6 +41,10 @@ async function loadPdfJs() {
     (globalThis as any).Path2D = Path2D;
   }
 
+  if (!('pdfjsWorker' in globalThis)) {
+    (globalThis as any).pdfjsWorker = await import('pdfjs-dist/legacy/build/pdf.worker.mjs');
+  }
+
   return import('pdfjs-dist/legacy/build/pdf.mjs');
 }
 
@@ -87,7 +91,7 @@ function isTextLikeFile(mimeType: string | null, extension: string) {
 
 async function extractPdfText(buffer: Buffer) {
   const pdfjsLib = await loadPdfJs();
-  const loadingTask = pdfjsLib.getDocument({ data: new Uint8Array(buffer), disableWorker: true } as any);
+  const loadingTask = pdfjsLib.getDocument({ data: new Uint8Array(buffer) });
   const pdf = await loadingTask.promise;
 
   try {
