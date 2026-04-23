@@ -37,6 +37,7 @@ import {
   XCircle
 } from 'lucide-react';
 import { generateAIResponse, generateWelcomeMessage } from '@/services/api';
+import { extractChatAttachmentContext } from '@/services/chatAttachments';
 import { MariaDocumentError, createMariaDocument } from '@/services/documents';
 import { authService, type User, type ChatSession, type ChatMessage, type ChatAttachment } from '@/services/auth';
 import { CALIFORNIA_DIVORCE_TOPICS } from '@/services/personality';
@@ -324,7 +325,7 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const shouldAutoScrollRef = useRef(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  type ComposerAttachment = ChatAttachment & { previewUrl?: string };
+  type ComposerAttachment = ChatAttachment & { file: File; previewUrl?: string };
 
   const [attachments, setAttachments] = useState<ComposerAttachment[]>([]);
   const [savingMessageId, setSavingMessageId] = useState<string | null>(null);
@@ -499,6 +500,7 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
       return {
         id: uuidv4(),
         name: file.name,
+        file,
         type: attachmentType,
         sizeLabel: formatFileSize(file.size),
         previewUrl: isImage ? URL.createObjectURL(file) : undefined,
@@ -650,7 +652,7 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
   const triggerAttachmentPicker = (mode: 'image' | 'document') => {
     if (!fileInputRef.current) return;
     fileInputRef.current.value = '';
-    fileInputRef.current.accept = mode === 'image' ? 'image/*' : '.pdf,.doc,.docx,.txt,.rtf,.xlsx,.csv';
+    fileInputRef.current.accept = mode === 'image' ? 'image/*' : '.pdf,.docx,.txt,.md,.csv,.json,.xml';
     fileInputRef.current.click();
   };
 
@@ -889,6 +891,7 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
   const handleSend = async (overrideInput?: string, fromVoice: boolean = false) => {
     const draftInput = overrideInput ?? input;
     if ((draftInput.trim().length === 0 && attachments.length === 0) || isLoading) return;
+    const selectedAttachments = attachments;
     
     if (currentUser) {
       const canChat = authService.canUserChat(currentUser);
@@ -905,8 +908,8 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
       }
     }
     
-    const attachmentSummary = attachments.length
-      ? attachments
+    const attachmentSummary = selectedAttachments.length
+      ? selectedAttachments
           .map((file, index) => `Attachment ${index + 1}: ${file.name}${file.sizeLabel ? ` (${file.sizeLabel})` : ''} [${file.type === 'image' ? 'Image' : 'Document'}]`)
           .join('\n')
       : '';
@@ -914,8 +917,8 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
     const composedContent = attachmentSummary
       ? [baseContent, `[Attachments]\n${attachmentSummary}`].filter(Boolean).join('\n\n')
       : baseContent;
-    const attachmentMeta: ChatAttachment[] = attachments.length
-      ? attachments.map(({ id, name, type, sizeLabel }) => ({ id, name, type, sizeLabel }))
+    const attachmentMeta: ChatAttachment[] = selectedAttachments.length
+      ? selectedAttachments.map(({ id, name, type, sizeLabel }) => ({ id, name, type, sizeLabel }))
       : [];
 
     const userMessage: ChatMessage = {
@@ -1021,7 +1024,35 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
       // Generate AI response with user's name for personalization
       const userName = currentUser?.name || currentUser?.email?.split('@')[0] || 'Guest';
       const plan = currentUser?.subscription ?? 'free';
-      const aiResponse = await generateAIResponse(userMessage.content, conversationHistory, userName, plan);
+      let aiUserMessage = userMessage.content;
+
+      if (selectedAttachments.length > 0) {
+        try {
+          const attachmentContext = await extractChatAttachmentContext(selectedAttachments.map((attachment) => attachment.file));
+          const basePrompt = baseContent || 'Please help me review the uploaded file and tell me what matters most.';
+
+          if (attachmentContext.context) {
+            aiUserMessage = [
+              basePrompt,
+              `[Uploaded file context]\n${attachmentContext.context}`,
+            ].join('\n\n');
+          } else if (!baseContent) {
+            aiUserMessage = basePrompt;
+          }
+
+          if (attachmentContext.readableCount === 0 && attachmentContext.unreadableCount > 0) {
+            toast.message('Maria can read PDFs, DOCX, TXT, CSV, JSON, and Markdown files right now.');
+          }
+        } catch (error) {
+          console.error('Chat attachment extraction failed', error);
+          toast.error(error instanceof Error ? error.message : 'I could not read those file contents just yet.');
+          if (!baseContent) {
+            aiUserMessage = 'Please help me with the uploaded file based on what you can infer from the attachment names.';
+          }
+        }
+      }
+
+      const aiResponse = await generateAIResponse(aiUserMessage, conversationHistory, userName, plan);
       
       const requestedPdfSave = SAVE_PROMPT_PATTERN.test(userMessage.content);
       const shouldOfferPdfSave = aiResponse.shouldOfferPdfSave || requestedPdfSave;
@@ -1565,6 +1596,9 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
           </div>
           <span className="text-xs text-slate-400">{attachments.length}/{maxAttachments} attachments</span>
         </div>
+        <p className="text-xs text-slate-400 mb-3">
+          Maria can read PDFs, DOCX, TXT, CSV, JSON, and Markdown files in chat. Images can be attached, but they are not analyzed yet.
+        </p>
         
         <div className="flex gap-2 items-end">
           <Input
@@ -1572,7 +1606,7 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder="Ask Maria a question or describe the files you're sharing..."
+            placeholder="Ask Maria a question or upload a file for her to review..."
             className="flex-1 rounded-2xl border-slate-200 h-12 px-4"
             disabled={isLoading}
           />
