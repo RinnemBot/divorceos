@@ -51,7 +51,7 @@ function buildStarterPacketFileName(body: MariaDocumentRequest) {
 
   const petitionerName = readStringField((body.workspace as { petitionerName?: { value?: unknown } } | undefined)?.petitionerName?.value);
   const base = petitionerName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'starter-packet';
-  return sanitizeVaultFileName(`${base}-fl-100-fl-110-prefilled.pdf`);
+  return sanitizeVaultFileName(`${base}-starter-packet-prefilled.pdf`);
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {

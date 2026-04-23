@@ -19,6 +19,57 @@ export interface DraftChild {
   id: string;
   fullName: DraftField<string>;
   birthDate: DraftField<string>;
+  placeOfBirth: DraftField<string>;
+}
+
+export interface DraftFl105ResidenceHistoryEntry {
+  id: string;
+  fromDate: DraftField<string>;
+  toDate: DraftField<string>;
+  residence: DraftField<string>;
+  personAndAddress: DraftField<string>;
+  relationship: DraftField<string>;
+}
+
+export interface DraftFl105OtherProceeding {
+  id: string;
+  proceedingType: DraftField<string>;
+  caseNumber: DraftField<string>;
+  court: DraftField<string>;
+  orderDate: DraftField<string>;
+  childNames: DraftField<string>;
+  connection: DraftField<string>;
+  status: DraftField<string>;
+}
+
+export interface DraftFl105RestrainingOrder {
+  id: string;
+  orderType: DraftField<string>;
+  county: DraftField<string>;
+  stateOrTribe: DraftField<string>;
+  caseNumber: DraftField<string>;
+  expirationDate: DraftField<string>;
+}
+
+export interface DraftFl105OtherClaimant {
+  id: string;
+  nameAndAddress: DraftField<string>;
+  childNames: DraftField<string>;
+  hasPhysicalCustody: DraftField<boolean>;
+  claimsCustodyRights: DraftField<boolean>;
+  claimsVisitationRights: DraftField<boolean>;
+}
+
+export interface DraftFl105Section {
+  childrenLivedTogetherPastFiveYears: DraftField<boolean>;
+  residenceHistory: DraftFl105ResidenceHistoryEntry[];
+  otherProceedingsKnown: DraftField<boolean>;
+  otherProceedings: DraftFl105OtherProceeding[];
+  domesticViolenceOrdersExist: DraftField<boolean>;
+  domesticViolenceOrders: DraftFl105RestrainingOrder[];
+  otherClaimantsKnown: DraftField<boolean>;
+  otherClaimants: DraftFl105OtherClaimant[];
+  declarantName: DraftField<string>;
 }
 
 export interface DraftFl100Section {
@@ -55,7 +106,12 @@ export interface DraftFormsWorkspace {
     mariaSummary?: string;
     attachmentNames: string[];
   };
+  caseNumber: DraftField<string>;
   filingCounty: DraftField<string>;
+  courtStreet: DraftField<string>;
+  courtMailingAddress: DraftField<string>;
+  courtCityZip: DraftField<string>;
+  courtBranch: DraftField<string>;
   petitionerName: DraftField<string>;
   petitionerAddress: DraftField<string>;
   petitionerPhone: DraftField<string>;
@@ -66,6 +122,7 @@ export interface DraftFormsWorkspace {
   hasMinorChildren: DraftField<boolean>;
   children: DraftChild[];
   fl100: DraftFl100Section;
+  fl105: DraftFl105Section;
   requests: {
     childCustody: DraftField<boolean>;
     visitation: DraftField<boolean>;
@@ -80,6 +137,14 @@ export interface DraftPacketSection {
   heading?: string;
   body: string;
 }
+
+export const FL105_FORM_CAPACITY = Object.freeze({
+  childrenRows: 4,
+  residenceHistoryRows: 5,
+  otherProceedingsRows: 5,
+  restrainingOrdersRows: 4,
+  otherClaimantsRows: 3,
+});
 
 function getStorage() {
   if (typeof window === 'undefined') return null;
@@ -162,11 +227,120 @@ function createDefaultFl100Section(): DraftFl100Section {
   };
 }
 
+function createBlankResidenceHistoryEntry(): DraftFl105ResidenceHistoryEntry {
+  return {
+    id: uuidv4(),
+    fromDate: createField('', { needsReview: true }),
+    toDate: createField('', { needsReview: false }),
+    residence: createField('', { needsReview: true }),
+    personAndAddress: createField('', { needsReview: true }),
+    relationship: createField('', { needsReview: true }),
+  };
+}
+
+function createBlankOtherProceeding(): DraftFl105OtherProceeding {
+  return {
+    id: uuidv4(),
+    proceedingType: createField('', { needsReview: true }),
+    caseNumber: createField('', { needsReview: false }),
+    court: createField('', { needsReview: true }),
+    orderDate: createField('', { needsReview: false }),
+    childNames: createField('', { needsReview: true }),
+    connection: createField('', { needsReview: true }),
+    status: createField('', { needsReview: true }),
+  };
+}
+
+function createBlankRestrainingOrder(): DraftFl105RestrainingOrder {
+  return {
+    id: uuidv4(),
+    orderType: createField('', { needsReview: true }),
+    county: createField('', { needsReview: true }),
+    stateOrTribe: createField('', { needsReview: true }),
+    caseNumber: createField('', { needsReview: false }),
+    expirationDate: createField('', { needsReview: false }),
+  };
+}
+
+function createBlankOtherClaimant(): DraftFl105OtherClaimant {
+  return {
+    id: uuidv4(),
+    nameAndAddress: createField('', { needsReview: true }),
+    childNames: createField('', { needsReview: true }),
+    hasPhysicalCustody: createField(false, { needsReview: true }),
+    claimsCustodyRights: createField(false, { needsReview: true }),
+    claimsVisitationRights: createField(false, { needsReview: true }),
+  };
+}
+
+function createDefaultFl105Section(petitionerName = ''): DraftFl105Section {
+  return {
+    childrenLivedTogetherPastFiveYears: createField(true, {
+      sourceType: 'manual',
+      sourceLabel: 'Default FL-105 assumption',
+      confidence: 'low',
+      needsReview: true,
+    }),
+    residenceHistory: [createBlankResidenceHistoryEntry()],
+    otherProceedingsKnown: createField(false, {
+      sourceType: 'manual',
+      sourceLabel: 'Default FL-105 assumption',
+      confidence: 'low',
+      needsReview: true,
+    }),
+    otherProceedings: [],
+    domesticViolenceOrdersExist: createField(false, {
+      sourceType: 'manual',
+      sourceLabel: 'Default FL-105 assumption',
+      confidence: 'low',
+      needsReview: true,
+    }),
+    domesticViolenceOrders: [],
+    otherClaimantsKnown: createField(false, {
+      sourceType: 'manual',
+      sourceLabel: 'Default FL-105 assumption',
+      confidence: 'low',
+      needsReview: true,
+    }),
+    otherClaimants: [],
+    declarantName: createField(petitionerName, {
+      sourceType: petitionerName ? 'profile' : undefined,
+      sourceLabel: petitionerName ? 'Account profile' : undefined,
+      confidence: petitionerName ? 'high' : undefined,
+      needsReview: petitionerName.length === 0,
+    }),
+  };
+}
+
 function normalizeWorkspace(workspace: DraftFormsWorkspace): DraftFormsWorkspace {
   const defaultFl100 = createDefaultFl100Section();
+  const petitionerName = workspace.petitionerName?.value ?? '';
+  const defaultFl105 = createDefaultFl105Section(petitionerName);
 
   return {
     ...workspace,
+    caseNumber: workspace.caseNumber ?? createField('', { needsReview: false }),
+    filingCounty: workspace.filingCounty ?? createField('', { needsReview: true }),
+    courtStreet: workspace.courtStreet ?? createField('', { needsReview: false }),
+    courtMailingAddress: workspace.courtMailingAddress ?? createField('', { needsReview: false }),
+    courtCityZip: workspace.courtCityZip ?? createField('', { needsReview: false }),
+    courtBranch: workspace.courtBranch ?? createField('', { needsReview: false }),
+    petitionerName: workspace.petitionerName ?? createField('', { needsReview: true }),
+    petitionerAddress: workspace.petitionerAddress ?? createField('', { needsReview: true }),
+    petitionerPhone: workspace.petitionerPhone ?? createField('', { needsReview: true }),
+    petitionerEmail: workspace.petitionerEmail ?? createField('', { needsReview: false }),
+    respondentName: workspace.respondentName ?? createField('', { needsReview: true }),
+    marriageDate: workspace.marriageDate ?? createField('', { needsReview: true }),
+    separationDate: workspace.separationDate ?? createField('', { needsReview: true }),
+    hasMinorChildren: workspace.hasMinorChildren ?? createField(false, { needsReview: true }),
+    children: Array.isArray(workspace.children)
+      ? workspace.children.map((child) => ({
+        id: child.id ?? uuidv4(),
+        fullName: child.fullName ?? createField('', { needsReview: true }),
+        birthDate: child.birthDate ?? createField('', { needsReview: true }),
+        placeOfBirth: child.placeOfBirth ?? createField('', { needsReview: true }),
+      }))
+      : [],
     fl100: {
       relationshipType: workspace.fl100?.relationshipType ?? defaultFl100.relationshipType,
       residency: {
@@ -184,6 +358,55 @@ function normalizeWorkspace(workspace: DraftFormsWorkspace): DraftFormsWorkspace
         separateProperty: workspace.fl100?.propertyDeclarations?.separateProperty ?? defaultFl100.propertyDeclarations.separateProperty,
       },
       formerName: workspace.fl100?.formerName ?? defaultFl100.formerName,
+    },
+    fl105: {
+      childrenLivedTogetherPastFiveYears: workspace.fl105?.childrenLivedTogetherPastFiveYears ?? defaultFl105.childrenLivedTogetherPastFiveYears,
+      residenceHistory: Array.isArray(workspace.fl105?.residenceHistory) && workspace.fl105?.residenceHistory.length > 0
+        ? workspace.fl105.residenceHistory.map((entry) => ({
+          id: entry.id ?? uuidv4(),
+          fromDate: entry.fromDate ?? createField('', { needsReview: true }),
+          toDate: entry.toDate ?? createField('', { needsReview: false }),
+          residence: entry.residence ?? createField('', { needsReview: true }),
+          personAndAddress: entry.personAndAddress ?? createField('', { needsReview: true }),
+          relationship: entry.relationship ?? createField('', { needsReview: true }),
+        }))
+        : defaultFl105.residenceHistory,
+      otherProceedingsKnown: workspace.fl105?.otherProceedingsKnown ?? defaultFl105.otherProceedingsKnown,
+      otherProceedings: Array.isArray(workspace.fl105?.otherProceedings)
+        ? workspace.fl105.otherProceedings.map((entry) => ({
+          id: entry.id ?? uuidv4(),
+          proceedingType: entry.proceedingType ?? createField('', { needsReview: true }),
+          caseNumber: entry.caseNumber ?? createField('', { needsReview: false }),
+          court: entry.court ?? createField('', { needsReview: true }),
+          orderDate: entry.orderDate ?? createField('', { needsReview: false }),
+          childNames: entry.childNames ?? createField('', { needsReview: true }),
+          connection: entry.connection ?? createField('', { needsReview: true }),
+          status: entry.status ?? createField('', { needsReview: true }),
+        }))
+        : defaultFl105.otherProceedings,
+      domesticViolenceOrdersExist: workspace.fl105?.domesticViolenceOrdersExist ?? defaultFl105.domesticViolenceOrdersExist,
+      domesticViolenceOrders: Array.isArray(workspace.fl105?.domesticViolenceOrders)
+        ? workspace.fl105.domesticViolenceOrders.map((entry) => ({
+          id: entry.id ?? uuidv4(),
+          orderType: entry.orderType ?? createField('', { needsReview: true }),
+          county: entry.county ?? createField('', { needsReview: true }),
+          stateOrTribe: entry.stateOrTribe ?? createField('', { needsReview: true }),
+          caseNumber: entry.caseNumber ?? createField('', { needsReview: false }),
+          expirationDate: entry.expirationDate ?? createField('', { needsReview: false }),
+        }))
+        : defaultFl105.domesticViolenceOrders,
+      otherClaimantsKnown: workspace.fl105?.otherClaimantsKnown ?? defaultFl105.otherClaimantsKnown,
+      otherClaimants: Array.isArray(workspace.fl105?.otherClaimants)
+        ? workspace.fl105.otherClaimants.map((entry) => ({
+          id: entry.id ?? uuidv4(),
+          nameAndAddress: entry.nameAndAddress ?? createField('', { needsReview: true }),
+          childNames: entry.childNames ?? createField('', { needsReview: true }),
+          hasPhysicalCustody: entry.hasPhysicalCustody ?? createField(false, { needsReview: true }),
+          claimsCustodyRights: entry.claimsCustodyRights ?? createField(false, { needsReview: true }),
+          claimsVisitationRights: entry.claimsVisitationRights ?? createField(false, { needsReview: true }),
+        }))
+        : defaultFl105.otherClaimants,
+      declarantName: workspace.fl105?.declarantName ?? defaultFl105.declarantName,
     },
   };
 }
@@ -299,11 +522,26 @@ export function createStarterPacketWorkspace(options: {
       mariaSummary: assistantMessage?.content?.trim() || undefined,
       attachmentNames,
     },
+    caseNumber: createField('', {
+      needsReview: false,
+    }),
     filingCounty: createField(user.profile?.county?.trim() || '', {
       sourceType: user.profile?.county ? 'profile' : undefined,
       sourceLabel: user.profile?.county ? 'Profile' : undefined,
       confidence: user.profile?.county ? 'medium' : undefined,
       needsReview: true,
+    }),
+    courtStreet: createField('', {
+      needsReview: false,
+    }),
+    courtMailingAddress: createField('', {
+      needsReview: false,
+    }),
+    courtCityZip: createField('', {
+      needsReview: false,
+    }),
+    courtBranch: createField('', {
+      needsReview: false,
     }),
     petitionerName: createField(petitionerName, {
       sourceType: petitionerName ? 'profile' : undefined,
@@ -346,6 +584,7 @@ export function createStarterPacketWorkspace(options: {
     }),
     children: [],
     fl100: createDefaultFl100Section(),
+    fl105: createDefaultFl105Section(petitionerName),
     requests: inferRequests(user, userMessage?.content, assistantMessage?.content),
   };
 
@@ -392,7 +631,24 @@ export function createBlankChild(): DraftChild {
     id: uuidv4(),
     fullName: createField('', { needsReview: true }),
     birthDate: createField('', { needsReview: true }),
+    placeOfBirth: createField('', { needsReview: true }),
   };
+}
+
+export function createBlankFl105ResidenceHistoryEntry() {
+  return createBlankResidenceHistoryEntry();
+}
+
+export function createBlankFl105OtherProceeding() {
+  return createBlankOtherProceeding();
+}
+
+export function createBlankFl105RestrainingOrder() {
+  return createBlankRestrainingOrder();
+}
+
+export function createBlankFl105OtherClaimant() {
+  return createBlankOtherClaimant();
 }
 
 export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace): {
@@ -433,6 +689,7 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
     {
       heading: 'Case snapshot',
       body: [
+        `Case number: ${workspace.caseNumber.value || 'Not provided'}`,
         `Filing county: ${workspace.filingCounty.value || 'Not provided'}`,
         `Petitioner: ${petitionerName}`,
         `Respondent: ${respondentName}`,
@@ -447,6 +704,15 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
         `Email: ${workspace.petitionerEmail.value || 'Not provided'}`,
         `Phone: ${workspace.petitionerPhone.value || 'Not provided'}`,
         `Mailing address: ${workspace.petitionerAddress.value || 'Not provided'}`,
+      ].join('\n'),
+    },
+    {
+      heading: 'Court caption details',
+      body: [
+        `Court street: ${workspace.courtStreet.value || 'Not provided'}`,
+        `Court mailing address: ${workspace.courtMailingAddress.value || 'Not provided'}`,
+        `Court city/zip: ${workspace.courtCityZip.value || 'Not provided'}`,
+        `Court branch: ${workspace.courtBranch.value || 'Not provided'}`,
       ].join('\n'),
     },
     {
@@ -471,8 +737,21 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
     sections.push({
       heading: 'Children of the relationship',
       body: workspace.children.length > 0
-        ? workspace.children.map((child, index) => `${index + 1}. ${child.fullName.value || 'Unnamed child'} — DOB: ${child.birthDate.value || 'Not provided'}`).join('\n')
+        ? workspace.children.map((child, index) => `${index + 1}. ${child.fullName.value || 'Unnamed child'} — DOB: ${child.birthDate.value || 'Not provided'} — Place of birth: ${child.placeOfBirth.value || 'Not provided'}`).join('\n')
         : 'Minor children were indicated, but child details have not been entered yet.',
+    });
+
+    sections.push({
+      heading: 'FL-105 / GC-120 details',
+      body: [
+        `Children lived together for past five years: ${workspace.fl105.childrenLivedTogetherPastFiveYears.value ? 'Yes' : 'No / attachment needed'}`,
+        workspace.fl105.residenceHistory.length > 0
+          ? `Residence history:\n${workspace.fl105.residenceHistory.map((entry, index) => `${index + 1}. From ${entry.fromDate.value || 'Not provided'}${entry.toDate.value ? ` to ${entry.toDate.value}` : ''} — ${entry.residence.value || 'Residence missing'} — Lived with ${entry.personAndAddress.value || 'Not provided'} (${entry.relationship.value || 'Relationship missing'})`).join('\n')}`
+          : 'Residence history not entered yet.',
+        `Other custody proceedings known: ${workspace.fl105.otherProceedingsKnown.value ? 'Yes' : 'No'}`,
+        `Protective/restraining orders known: ${workspace.fl105.domesticViolenceOrdersExist.value ? 'Yes' : 'No'}`,
+        `Other custody/visitation claimants known: ${workspace.fl105.otherClaimantsKnown.value ? 'Yes' : 'No'}`,
+      ].join('\n\n'),
     });
   }
 

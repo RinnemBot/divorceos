@@ -14,6 +14,11 @@ import { authService, type User } from '@/services/auth';
 import { MariaDocumentError, createOfficialStarterPacketDocument } from '@/services/documents';
 import {
   createBlankChild,
+  createBlankFl105OtherClaimant,
+  createBlankFl105OtherProceeding,
+  createBlankFl105ResidenceHistoryEntry,
+  createBlankFl105RestrainingOrder,
+  FL105_FORM_CAPACITY,
   createStarterPacketWorkspace,
   getDraftWorkspace,
   saveDraftWorkspace,
@@ -97,6 +102,10 @@ export function DraftFormsPage() {
     });
   };
 
+  const updateFl105 = (updater: (fl105: DraftFormsWorkspace['fl105']) => DraftFormsWorkspace['fl105']) => {
+    commitWorkspace((current) => ({ ...current, fl105: updater(current.fl105) }));
+  };
+
   const missingItems = useMemo(() => {
     if (!workspace) return [] as string[];
     const missing: string[] = [];
@@ -121,6 +130,7 @@ export function DraftFormsPage() {
       workspace.children.forEach((child, index) => {
         if (!child.fullName.value.trim()) missing.push(`Child ${index + 1} full name`);
         if (!child.birthDate.value.trim()) missing.push(`Child ${index + 1} birth date`);
+        if (!child.placeOfBirth.value.trim()) missing.push(`Child ${index + 1} place of birth`);
       });
     }
 
@@ -146,7 +156,7 @@ export function DraftFormsPage() {
     try {
       const document = await createOfficialStarterPacketDocument(workspace);
       setGeneratedPacketName(document.name);
-      toast.success('Official FL-100 + FL-110 packet saved to Saved Files.');
+      toast.success('Official starter packet PDF saved to Saved Files.');
     } catch (error) {
       const message = error instanceof MariaDocumentError
         ? error.message
@@ -175,7 +185,7 @@ export function DraftFormsPage() {
   }
 
   const includedForms = workspace.hasMinorChildren.value
-    ? ['FL-100', 'FL-110', 'FL-105/GC-120 (next attachment)']
+    ? ['FL-100', 'FL-110', 'FL-105/GC-120']
     : ['FL-100', 'FL-110'];
 
   return (
@@ -249,7 +259,7 @@ export function DraftFormsPage() {
             <Card className="rounded-[1.75rem] border-white/70 bg-white/80 shadow-xl backdrop-blur dark:border-white/10 dark:bg-white/5">
               <CardHeader>
                 <CardTitle className="text-slate-950 dark:text-white">Case basics</CardTitle>
-                <CardDescription>Core starter-packet facts for FL-100 and the summons packet.</CardDescription>
+                <CardDescription>Core starter-packet facts plus court caption details used across FL-100 and FL-105/GC-120.</CardDescription>
               </CardHeader>
               <CardContent className="grid gap-5 md:grid-cols-2">
                 <div>
@@ -258,6 +268,14 @@ export function DraftFormsPage() {
                     value={workspace.filingCounty.value}
                     onChange={(e) => commitWorkspace((current) => ({ ...current, filingCounty: setDraftFieldValue(current.filingCounty, e.target.value) }))}
                     placeholder="Los Angeles"
+                  />
+                </div>
+                <div>
+                  <FieldHeader label="Case number" field={workspace.caseNumber} />
+                  <Input
+                    value={workspace.caseNumber.value}
+                    onChange={(e) => commitWorkspace((current) => ({ ...current, caseNumber: setDraftFieldValue(current.caseNumber, e.target.value) }))}
+                    placeholder="24FL000123"
                   />
                 </div>
                 <div>
@@ -282,6 +300,38 @@ export function DraftFormsPage() {
                     type="date"
                     value={workspace.separationDate.value}
                     onChange={(e) => commitWorkspace((current) => ({ ...current, separationDate: setDraftFieldValue(current.separationDate, e.target.value) }))}
+                  />
+                </div>
+                <div>
+                  <FieldHeader label="Court street" field={workspace.courtStreet} />
+                  <Input
+                    value={workspace.courtStreet.value}
+                    onChange={(e) => commitWorkspace((current) => ({ ...current, courtStreet: setDraftFieldValue(current.courtStreet, e.target.value) }))}
+                    placeholder="111 N Hill St"
+                  />
+                </div>
+                <div>
+                  <FieldHeader label="Court mailing address" field={workspace.courtMailingAddress} />
+                  <Input
+                    value={workspace.courtMailingAddress.value}
+                    onChange={(e) => commitWorkspace((current) => ({ ...current, courtMailingAddress: setDraftFieldValue(current.courtMailingAddress, e.target.value) }))}
+                    placeholder="Same as street or P.O. Box"
+                  />
+                </div>
+                <div>
+                  <FieldHeader label="Court city / ZIP" field={workspace.courtCityZip} />
+                  <Input
+                    value={workspace.courtCityZip.value}
+                    onChange={(e) => commitWorkspace((current) => ({ ...current, courtCityZip: setDraftFieldValue(current.courtCityZip, e.target.value) }))}
+                    placeholder="Los Angeles, CA 90012"
+                  />
+                </div>
+                <div>
+                  <FieldHeader label="Court branch" field={workspace.courtBranch} />
+                  <Input
+                    value={workspace.courtBranch.value}
+                    onChange={(e) => commitWorkspace((current) => ({ ...current, courtBranch: setDraftFieldValue(current.courtBranch, e.target.value) }))}
+                    placeholder="Central District / Stanley Mosk"
                   />
                 </div>
               </CardContent>
@@ -573,6 +623,7 @@ export function DraftFormsPage() {
                         type="button"
                         variant="outline"
                         className="rounded-full"
+                        disabled={workspace.children.length >= FL105_FORM_CAPACITY.childrenRows}
                         onClick={() => commitWorkspace((current) => ({ ...current, children: [...current.children, createBlankChild()] }))}
                       >
                         Add child
@@ -583,7 +634,7 @@ export function DraftFormsPage() {
                     ) : (
                       <div className="space-y-4">
                         {workspace.children.map((child, index) => (
-                          <div key={child.id} className="grid gap-4 md:grid-cols-[1.2fr_0.8fr_auto] md:items-end">
+                          <div key={child.id} className="grid gap-4 md:grid-cols-[1.2fr_0.7fr_1fr_auto] md:items-end">
                             <div>
                               <FieldHeader label={`Child ${index + 1} full name`} field={child.fullName} />
                               <Input
@@ -610,6 +661,19 @@ export function DraftFormsPage() {
                                 }))}
                               />
                             </div>
+                            <div>
+                              <FieldHeader label="Place of birth" field={child.placeOfBirth} />
+                              <Input
+                                value={child.placeOfBirth.value}
+                                onChange={(e) => commitWorkspace((current) => ({
+                                  ...current,
+                                  children: current.children.map((entry) => entry.id === child.id
+                                    ? { ...entry, placeOfBirth: setDraftFieldValue(entry.placeOfBirth, e.target.value) }
+                                    : entry),
+                                }))}
+                                placeholder="City, State"
+                              />
+                            </div>
                             <Button
                               type="button"
                               variant="ghost"
@@ -622,8 +686,482 @@ export function DraftFormsPage() {
                             </Button>
                           </div>
                         ))}
+                        {workspace.children.length >= FL105_FORM_CAPACITY.childrenRows && (
+                          <p className="text-xs text-slate-500 dark:text-slate-400">
+                            FL-105 supports {FL105_FORM_CAPACITY.childrenRows} visible child rows in this slice.
+                          </p>
+                        )}
                       </div>
                     )}
+                  </div>
+                )}
+
+                {workspace.hasMinorChildren.value && (
+                  <div className="space-y-5 rounded-2xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5">
+                    <div>
+                      <p className="font-medium text-slate-800 dark:text-slate-100">FL-105 / GC-120 details</p>
+                      <p className="text-sm text-slate-500 dark:text-slate-400">Capture the highest-value UCCJEA fields that map directly into the official form rows.</p>
+                    </div>
+
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-white/70 p-3 dark:border-white/10 dark:bg-white/5">
+                        <Checkbox
+                          checked={workspace.fl105.childrenLivedTogetherPastFiveYears.value}
+                          onCheckedChange={(checked) => updateFl105((fl105) => ({
+                            ...fl105,
+                            childrenLivedTogetherPastFiveYears: setDraftFieldValue(fl105.childrenLivedTogetherPastFiveYears, checked === true),
+                          }))}
+                        />
+                        <div>
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="font-medium text-slate-800 dark:text-slate-100">Children lived together for the last five years</span>
+                            <FieldSourceBadge field={workspace.fl105.childrenLivedTogetherPastFiveYears} />
+                          </div>
+                          <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">If false, FL-105 indicates children did not all reside together.</p>
+                        </div>
+                      </label>
+                      <div>
+                        <FieldHeader label="Declarant name (FL-105 signature line)" field={workspace.fl105.declarantName} />
+                        <Input
+                          value={workspace.fl105.declarantName.value}
+                          onChange={(e) => updateFl105((fl105) => ({
+                            ...fl105,
+                            declarantName: setDraftFieldValue(fl105.declarantName, e.target.value),
+                          }))}
+                          placeholder="Usually petitioner name"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-3 rounded-xl border border-slate-200/80 bg-white/70 p-3 dark:border-white/10 dark:bg-white/5">
+                      <div className="flex items-center justify-between gap-3">
+                        <div>
+                          <p className="text-sm font-medium text-slate-800 dark:text-slate-100">Five-year residence history</p>
+                          <p className="text-xs text-slate-500 dark:text-slate-400">Visible FL-105 capacity: {FL105_FORM_CAPACITY.residenceHistoryRows} rows.</p>
+                        </div>
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant="outline"
+                          className="rounded-full"
+                          disabled={workspace.fl105.residenceHistory.length >= FL105_FORM_CAPACITY.residenceHistoryRows}
+                          onClick={() => updateFl105((fl105) => ({
+                            ...fl105,
+                            residenceHistory: [...fl105.residenceHistory, createBlankFl105ResidenceHistoryEntry()],
+                          }))}
+                        >
+                          Add history row
+                        </Button>
+                      </div>
+                      <div className="space-y-3">
+                        {workspace.fl105.residenceHistory.map((entry) => (
+                          <div key={entry.id} className="grid gap-3 rounded-lg border border-slate-200/80 bg-slate-50/70 p-3 md:grid-cols-6 dark:border-white/10 dark:bg-white/5">
+                            <Input
+                              type="date"
+                              value={entry.fromDate.value}
+                              onChange={(e) => updateFl105((fl105) => ({
+                                ...fl105,
+                                residenceHistory: fl105.residenceHistory.map((candidate) => candidate.id === entry.id
+                                  ? { ...candidate, fromDate: setDraftFieldValue(candidate.fromDate, e.target.value) }
+                                  : candidate),
+                              }))}
+                              placeholder="From"
+                            />
+                            <Input
+                              type="date"
+                              value={entry.toDate.value}
+                              onChange={(e) => updateFl105((fl105) => ({
+                                ...fl105,
+                                residenceHistory: fl105.residenceHistory.map((candidate) => candidate.id === entry.id
+                                  ? { ...candidate, toDate: setDraftFieldValue(candidate.toDate, e.target.value) }
+                                  : candidate),
+                              }))}
+                              placeholder="To"
+                            />
+                            <Input
+                              value={entry.residence.value}
+                              onChange={(e) => updateFl105((fl105) => ({
+                                ...fl105,
+                                residenceHistory: fl105.residenceHistory.map((candidate) => candidate.id === entry.id
+                                  ? { ...candidate, residence: setDraftFieldValue(candidate.residence, e.target.value) }
+                                  : candidate),
+                              }))}
+                              className="md:col-span-2"
+                              placeholder="Child's residence"
+                            />
+                            <Input
+                              value={entry.personAndAddress.value}
+                              onChange={(e) => updateFl105((fl105) => ({
+                                ...fl105,
+                                residenceHistory: fl105.residenceHistory.map((candidate) => candidate.id === entry.id
+                                  ? { ...candidate, personAndAddress: setDraftFieldValue(candidate.personAndAddress, e.target.value) }
+                                  : candidate),
+                              }))}
+                              placeholder="Person + address"
+                            />
+                            <div className="flex gap-2">
+                              <Input
+                                value={entry.relationship.value}
+                                onChange={(e) => updateFl105((fl105) => ({
+                                  ...fl105,
+                                  residenceHistory: fl105.residenceHistory.map((candidate) => candidate.id === entry.id
+                                    ? { ...candidate, relationship: setDraftFieldValue(candidate.relationship, e.target.value) }
+                                    : candidate),
+                                }))}
+                                placeholder="Relationship"
+                              />
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                onClick={() => updateFl105((fl105) => ({
+                                  ...fl105,
+                                  residenceHistory: fl105.residenceHistory.filter((candidate) => candidate.id !== entry.id),
+                                }))}
+                              >
+                                Remove
+                              </Button>
+                            </div>
+                          </div>
+                        ))}
+                        {workspace.fl105.residenceHistory.length === 0 && (
+                          <p className="text-xs text-slate-500 dark:text-slate-400">No residence rows added yet.</p>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="space-y-3 rounded-xl border border-slate-200/80 bg-white/70 p-3 dark:border-white/10 dark:bg-white/5">
+                      <label className="flex items-start gap-3">
+                        <Checkbox
+                          checked={workspace.fl105.otherProceedingsKnown.value}
+                          onCheckedChange={(checked) => updateFl105((fl105) => ({
+                            ...fl105,
+                            otherProceedingsKnown: setDraftFieldValue(fl105.otherProceedingsKnown, checked === true),
+                          }))}
+                        />
+                        <div>
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="text-sm font-medium text-slate-800 dark:text-slate-100">Other custody/parentage/adoption proceedings are known</span>
+                            <FieldSourceBadge field={workspace.fl105.otherProceedingsKnown} />
+                          </div>
+                          <p className="text-xs text-slate-500 dark:text-slate-400">Visible FL-105 capacity: {FL105_FORM_CAPACITY.otherProceedingsRows} rows.</p>
+                        </div>
+                      </label>
+                      <div className="flex justify-end">
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant="outline"
+                          className="rounded-full"
+                          disabled={workspace.fl105.otherProceedings.length >= FL105_FORM_CAPACITY.otherProceedingsRows}
+                          onClick={() => updateFl105((fl105) => ({
+                            ...fl105,
+                            otherProceedings: [...fl105.otherProceedings, createBlankFl105OtherProceeding()],
+                          }))}
+                        >
+                          Add proceeding
+                        </Button>
+                      </div>
+                      <div className="space-y-3">
+                        {workspace.fl105.otherProceedings.map((entry) => (
+                          <div key={entry.id} className="grid gap-3 rounded-lg border border-slate-200/80 bg-slate-50/70 p-3 md:grid-cols-6 dark:border-white/10 dark:bg-white/5">
+                            <Input
+                              value={entry.proceedingType.value}
+                              onChange={(e) => updateFl105((fl105) => ({
+                                ...fl105,
+                                otherProceedings: fl105.otherProceedings.map((candidate) => candidate.id === entry.id
+                                  ? { ...candidate, proceedingType: setDraftFieldValue(candidate.proceedingType, e.target.value) }
+                                  : candidate),
+                              }))}
+                              placeholder="Type"
+                            />
+                            <Input
+                              value={entry.caseNumber.value}
+                              onChange={(e) => updateFl105((fl105) => ({
+                                ...fl105,
+                                otherProceedings: fl105.otherProceedings.map((candidate) => candidate.id === entry.id
+                                  ? { ...candidate, caseNumber: setDraftFieldValue(candidate.caseNumber, e.target.value) }
+                                  : candidate),
+                              }))}
+                              placeholder="Case no."
+                            />
+                            <Input
+                              value={entry.court.value}
+                              onChange={(e) => updateFl105((fl105) => ({
+                                ...fl105,
+                                otherProceedings: fl105.otherProceedings.map((candidate) => candidate.id === entry.id
+                                  ? { ...candidate, court: setDraftFieldValue(candidate.court, e.target.value) }
+                                  : candidate),
+                              }))}
+                              placeholder="Court"
+                            />
+                            <Input
+                              type="date"
+                              value={entry.orderDate.value}
+                              onChange={(e) => updateFl105((fl105) => ({
+                                ...fl105,
+                                otherProceedings: fl105.otherProceedings.map((candidate) => candidate.id === entry.id
+                                  ? { ...candidate, orderDate: setDraftFieldValue(candidate.orderDate, e.target.value) }
+                                  : candidate),
+                              }))}
+                            />
+                            <Input
+                              value={entry.childNames.value}
+                              onChange={(e) => updateFl105((fl105) => ({
+                                ...fl105,
+                                otherProceedings: fl105.otherProceedings.map((candidate) => candidate.id === entry.id
+                                  ? { ...candidate, childNames: setDraftFieldValue(candidate.childNames, e.target.value) }
+                                  : candidate),
+                              }))}
+                              placeholder="Child(ren)"
+                            />
+                            <div className="flex gap-2">
+                              <Input
+                                value={entry.connection.value}
+                                onChange={(e) => updateFl105((fl105) => ({
+                                  ...fl105,
+                                  otherProceedings: fl105.otherProceedings.map((candidate) => candidate.id === entry.id
+                                    ? { ...candidate, connection: setDraftFieldValue(candidate.connection, e.target.value) }
+                                    : candidate),
+                                }))}
+                                placeholder="Your role"
+                              />
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                onClick={() => updateFl105((fl105) => ({
+                                  ...fl105,
+                                  otherProceedings: fl105.otherProceedings.filter((candidate) => candidate.id !== entry.id),
+                                }))}
+                              >
+                                Remove
+                              </Button>
+                            </div>
+                            <Input
+                              value={entry.status.value}
+                              onChange={(e) => updateFl105((fl105) => ({
+                                ...fl105,
+                                otherProceedings: fl105.otherProceedings.map((candidate) => candidate.id === entry.id
+                                  ? { ...candidate, status: setDraftFieldValue(candidate.status, e.target.value) }
+                                  : candidate),
+                              }))}
+                              className="md:col-span-6"
+                              placeholder="Current status/order summary"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="space-y-3 rounded-xl border border-slate-200/80 bg-white/70 p-3 dark:border-white/10 dark:bg-white/5">
+                      <label className="flex items-start gap-3">
+                        <Checkbox
+                          checked={workspace.fl105.domesticViolenceOrdersExist.value}
+                          onCheckedChange={(checked) => updateFl105((fl105) => ({
+                            ...fl105,
+                            domesticViolenceOrdersExist: setDraftFieldValue(fl105.domesticViolenceOrdersExist, checked === true),
+                          }))}
+                        />
+                        <div>
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="text-sm font-medium text-slate-800 dark:text-slate-100">Protective / restraining orders exist</span>
+                            <FieldSourceBadge field={workspace.fl105.domesticViolenceOrdersExist} />
+                          </div>
+                          <p className="text-xs text-slate-500 dark:text-slate-400">Visible FL-105 capacity: {FL105_FORM_CAPACITY.restrainingOrdersRows} rows.</p>
+                        </div>
+                      </label>
+                      <div className="flex justify-end">
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant="outline"
+                          className="rounded-full"
+                          disabled={workspace.fl105.domesticViolenceOrders.length >= FL105_FORM_CAPACITY.restrainingOrdersRows}
+                          onClick={() => updateFl105((fl105) => ({
+                            ...fl105,
+                            domesticViolenceOrders: [...fl105.domesticViolenceOrders, createBlankFl105RestrainingOrder()],
+                          }))}
+                        >
+                          Add order
+                        </Button>
+                      </div>
+                      <div className="space-y-3">
+                        {workspace.fl105.domesticViolenceOrders.map((entry) => (
+                          <div key={entry.id} className="grid gap-3 rounded-lg border border-slate-200/80 bg-slate-50/70 p-3 md:grid-cols-6 dark:border-white/10 dark:bg-white/5">
+                            <Input
+                              value={entry.orderType.value}
+                              onChange={(e) => updateFl105((fl105) => ({
+                                ...fl105,
+                                domesticViolenceOrders: fl105.domesticViolenceOrders.map((candidate) => candidate.id === entry.id
+                                  ? { ...candidate, orderType: setDraftFieldValue(candidate.orderType, e.target.value) }
+                                  : candidate),
+                              }))}
+                              placeholder="Order type"
+                            />
+                            <Input
+                              value={entry.county.value}
+                              onChange={(e) => updateFl105((fl105) => ({
+                                ...fl105,
+                                domesticViolenceOrders: fl105.domesticViolenceOrders.map((candidate) => candidate.id === entry.id
+                                  ? { ...candidate, county: setDraftFieldValue(candidate.county, e.target.value) }
+                                  : candidate),
+                              }))}
+                              placeholder="County"
+                            />
+                            <Input
+                              value={entry.stateOrTribe.value}
+                              onChange={(e) => updateFl105((fl105) => ({
+                                ...fl105,
+                                domesticViolenceOrders: fl105.domesticViolenceOrders.map((candidate) => candidate.id === entry.id
+                                  ? { ...candidate, stateOrTribe: setDraftFieldValue(candidate.stateOrTribe, e.target.value) }
+                                  : candidate),
+                              }))}
+                              placeholder="State/tribe"
+                            />
+                            <Input
+                              value={entry.caseNumber.value}
+                              onChange={(e) => updateFl105((fl105) => ({
+                                ...fl105,
+                                domesticViolenceOrders: fl105.domesticViolenceOrders.map((candidate) => candidate.id === entry.id
+                                  ? { ...candidate, caseNumber: setDraftFieldValue(candidate.caseNumber, e.target.value) }
+                                  : candidate),
+                              }))}
+                              placeholder="Case no."
+                            />
+                            <Input
+                              type="date"
+                              value={entry.expirationDate.value}
+                              onChange={(e) => updateFl105((fl105) => ({
+                                ...fl105,
+                                domesticViolenceOrders: fl105.domesticViolenceOrders.map((candidate) => candidate.id === entry.id
+                                  ? { ...candidate, expirationDate: setDraftFieldValue(candidate.expirationDate, e.target.value) }
+                                  : candidate),
+                              }))}
+                            />
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              onClick={() => updateFl105((fl105) => ({
+                                ...fl105,
+                                domesticViolenceOrders: fl105.domesticViolenceOrders.filter((candidate) => candidate.id !== entry.id),
+                              }))}
+                            >
+                              Remove
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="space-y-3 rounded-xl border border-slate-200/80 bg-white/70 p-3 dark:border-white/10 dark:bg-white/5">
+                      <label className="flex items-start gap-3">
+                        <Checkbox
+                          checked={workspace.fl105.otherClaimantsKnown.value}
+                          onCheckedChange={(checked) => updateFl105((fl105) => ({
+                            ...fl105,
+                            otherClaimantsKnown: setDraftFieldValue(fl105.otherClaimantsKnown, checked === true),
+                          }))}
+                        />
+                        <div>
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="text-sm font-medium text-slate-800 dark:text-slate-100">Other custody/visitation claimants are known</span>
+                            <FieldSourceBadge field={workspace.fl105.otherClaimantsKnown} />
+                          </div>
+                          <p className="text-xs text-slate-500 dark:text-slate-400">Visible FL-105 capacity: {FL105_FORM_CAPACITY.otherClaimantsRows} rows.</p>
+                        </div>
+                      </label>
+                      <div className="flex justify-end">
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant="outline"
+                          className="rounded-full"
+                          disabled={workspace.fl105.otherClaimants.length >= FL105_FORM_CAPACITY.otherClaimantsRows}
+                          onClick={() => updateFl105((fl105) => ({
+                            ...fl105,
+                            otherClaimants: [...fl105.otherClaimants, createBlankFl105OtherClaimant()],
+                          }))}
+                        >
+                          Add claimant
+                        </Button>
+                      </div>
+                      <div className="space-y-3">
+                        {workspace.fl105.otherClaimants.map((entry) => (
+                          <div key={entry.id} className="space-y-3 rounded-lg border border-slate-200/80 bg-slate-50/70 p-3 dark:border-white/10 dark:bg-white/5">
+                            <div className="grid gap-3 md:grid-cols-3">
+                              <Input
+                                value={entry.nameAndAddress.value}
+                                onChange={(e) => updateFl105((fl105) => ({
+                                  ...fl105,
+                                  otherClaimants: fl105.otherClaimants.map((candidate) => candidate.id === entry.id
+                                    ? { ...candidate, nameAndAddress: setDraftFieldValue(candidate.nameAndAddress, e.target.value) }
+                                    : candidate),
+                                }))}
+                                className="md:col-span-2"
+                                placeholder="Name and address"
+                              />
+                              <Input
+                                value={entry.childNames.value}
+                                onChange={(e) => updateFl105((fl105) => ({
+                                  ...fl105,
+                                  otherClaimants: fl105.otherClaimants.map((candidate) => candidate.id === entry.id
+                                    ? { ...candidate, childNames: setDraftFieldValue(candidate.childNames, e.target.value) }
+                                    : candidate),
+                                }))}
+                                placeholder="Child names"
+                              />
+                            </div>
+                            <div className="flex flex-wrap gap-4">
+                              <label className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-200">
+                                <Checkbox
+                                  checked={entry.hasPhysicalCustody.value}
+                                  onCheckedChange={(checked) => updateFl105((fl105) => ({
+                                    ...fl105,
+                                    otherClaimants: fl105.otherClaimants.map((candidate) => candidate.id === entry.id
+                                      ? { ...candidate, hasPhysicalCustody: setDraftFieldValue(candidate.hasPhysicalCustody, checked === true) }
+                                      : candidate),
+                                  }))}
+                                />
+                                Physical custody
+                              </label>
+                              <label className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-200">
+                                <Checkbox
+                                  checked={entry.claimsCustodyRights.value}
+                                  onCheckedChange={(checked) => updateFl105((fl105) => ({
+                                    ...fl105,
+                                    otherClaimants: fl105.otherClaimants.map((candidate) => candidate.id === entry.id
+                                      ? { ...candidate, claimsCustodyRights: setDraftFieldValue(candidate.claimsCustodyRights, checked === true) }
+                                      : candidate),
+                                  }))}
+                                />
+                                Claims custody rights
+                              </label>
+                              <label className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-200">
+                                <Checkbox
+                                  checked={entry.claimsVisitationRights.value}
+                                  onCheckedChange={(checked) => updateFl105((fl105) => ({
+                                    ...fl105,
+                                    otherClaimants: fl105.otherClaimants.map((candidate) => candidate.id === entry.id
+                                      ? { ...candidate, claimsVisitationRights: setDraftFieldValue(candidate.claimsVisitationRights, checked === true) }
+                                      : candidate),
+                                  }))}
+                                />
+                                Claims visitation rights
+                              </label>
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                onClick={() => updateFl105((fl105) => ({
+                                  ...fl105,
+                                  otherClaimants: fl105.otherClaimants.filter((candidate) => candidate.id !== entry.id),
+                                }))}
+                              >
+                                Remove
+                              </Button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 )}
 
@@ -670,7 +1208,7 @@ export function DraftFormsPage() {
                   <FileText className="h-5 w-5 text-emerald-600" />
                   Packet readiness
                 </CardTitle>
-                <CardDescription>Draft Forms now produces prefilled FL-100 and FL-110 PDFs, with attachment forms still staged as follow-up.</CardDescription>
+                <CardDescription>Draft Forms now produces prefilled FL-100, FL-110, and conditional FL-105/GC-120 in one official packet.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-5">
                 <div>
@@ -712,7 +1250,7 @@ export function DraftFormsPage() {
                     <div>
                       <p className="font-medium text-emerald-900 dark:text-emerald-100">What this slice proves</p>
                       <p className="mt-1 text-sm leading-6 text-emerald-900/80 dark:text-emerald-100/80">
-                        Maria can now turn the workspace into prefilled FL-100 and FL-110 PDFs instead of stopping at a summary sheet.
+                        Maria now turns the structured workspace into an official starter packet PDF, including FL-105/GC-120 when minor children are present.
                       </p>
                     </div>
                   </div>
@@ -720,7 +1258,7 @@ export function DraftFormsPage() {
 
                 {generatedPacketName && (
                   <div className="rounded-2xl border border-emerald-200 bg-emerald-50/80 p-4 text-sm text-emerald-900 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-100">
-                    Saved <strong>{generatedPacketName}</strong> to Saved Files. Review any needed attachments like FL-105 or FL-311 before filing.
+                    Saved <strong>{generatedPacketName}</strong> to Saved Files.
                   </div>
                 )}
                 {packetError && (
@@ -740,7 +1278,7 @@ export function DraftFormsPage() {
                     ) : generatedPacketName ? (
                       <><CheckCircle2 className="mr-2 h-4 w-4" /> Saved official packet</>
                     ) : (
-                      'Generate official FL-100 + FL-110 PDF'
+                      'Generate official starter packet PDF'
                     )}
                   </Button>
                   <Button disabled variant="outline" className="rounded-full disabled:cursor-not-allowed disabled:opacity-60">

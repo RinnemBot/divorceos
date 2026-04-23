@@ -9,10 +9,50 @@ interface StarterPacketField<T> {
 interface StarterPacketChild {
   fullName: StarterPacketField<string>;
   birthDate: StarterPacketField<string>;
+  placeOfBirth: StarterPacketField<string>;
+}
+
+interface StarterPacketFl105ResidenceHistoryEntry {
+  fromDate: StarterPacketField<string>;
+  toDate: StarterPacketField<string>;
+  residence: StarterPacketField<string>;
+  personAndAddress: StarterPacketField<string>;
+  relationship: StarterPacketField<string>;
+}
+
+interface StarterPacketFl105OtherProceeding {
+  proceedingType: StarterPacketField<string>;
+  caseNumber: StarterPacketField<string>;
+  court: StarterPacketField<string>;
+  orderDate: StarterPacketField<string>;
+  childNames: StarterPacketField<string>;
+  connection: StarterPacketField<string>;
+  status: StarterPacketField<string>;
+}
+
+interface StarterPacketFl105RestrainingOrder {
+  orderType: StarterPacketField<string>;
+  county: StarterPacketField<string>;
+  stateOrTribe: StarterPacketField<string>;
+  caseNumber: StarterPacketField<string>;
+  expirationDate: StarterPacketField<string>;
+}
+
+interface StarterPacketFl105OtherClaimant {
+  nameAndAddress: StarterPacketField<string>;
+  childNames: StarterPacketField<string>;
+  hasPhysicalCustody: StarterPacketField<boolean>;
+  claimsCustodyRights: StarterPacketField<boolean>;
+  claimsVisitationRights: StarterPacketField<boolean>;
 }
 
 interface StarterPacketWorkspace {
+  caseNumber: StarterPacketField<string>;
   filingCounty: StarterPacketField<string>;
+  courtStreet: StarterPacketField<string>;
+  courtMailingAddress: StarterPacketField<string>;
+  courtCityZip: StarterPacketField<string>;
+  courtBranch: StarterPacketField<string>;
   petitionerName: StarterPacketField<string>;
   petitionerAddress: StarterPacketField<string>;
   petitionerPhone: StarterPacketField<string>;
@@ -40,6 +80,17 @@ interface StarterPacketWorkspace {
     };
     formerName: StarterPacketField<string>;
   };
+  fl105: {
+    childrenLivedTogetherPastFiveYears: StarterPacketField<boolean>;
+    residenceHistory: StarterPacketFl105ResidenceHistoryEntry[];
+    otherProceedingsKnown: StarterPacketField<boolean>;
+    otherProceedings: StarterPacketFl105OtherProceeding[];
+    domesticViolenceOrdersExist: StarterPacketField<boolean>;
+    domesticViolenceOrders: StarterPacketFl105RestrainingOrder[];
+    otherClaimantsKnown: StarterPacketField<boolean>;
+    otherClaimants: StarterPacketFl105OtherClaimant[];
+    declarantName: StarterPacketField<string>;
+  };
   requests: {
     propertyRightsDetermination: StarterPacketField<boolean>;
     restoreFormerName: StarterPacketField<boolean>;
@@ -62,14 +113,18 @@ interface TemplateField {
 const TEMPLATES_DIR = path.join(process.cwd(), 'templates', 'forms');
 const FL100_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-100.template.pdf');
 const FL110_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-110.template.pdf');
+const FL105_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-105.template.pdf');
 const FL100_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-100.fields.json');
 const FL110_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-110.fields.json');
+const FL105_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-105.fields.json');
 
 let templateCache: Promise<{
   fl100Bytes: Uint8Array;
   fl110Bytes: Uint8Array;
+  fl105Bytes: Uint8Array;
   fl100Fields: TemplateField[];
   fl110Fields: TemplateField[];
+  fl105Fields: TemplateField[];
 }> | null = null;
 
 async function loadTemplates() {
@@ -77,13 +132,17 @@ async function loadTemplates() {
     templateCache = Promise.all([
       fs.readFile(FL100_TEMPLATE_PATH),
       fs.readFile(FL110_TEMPLATE_PATH),
+      fs.readFile(FL105_TEMPLATE_PATH),
       fs.readFile(FL100_FIELDS_PATH, 'utf8'),
       fs.readFile(FL110_FIELDS_PATH, 'utf8'),
-    ]).then(([fl100Bytes, fl110Bytes, fl100FieldsRaw, fl110FieldsRaw]) => ({
+      fs.readFile(FL105_FIELDS_PATH, 'utf8'),
+    ]).then(([fl100Bytes, fl110Bytes, fl105Bytes, fl100FieldsRaw, fl110FieldsRaw, fl105FieldsRaw]) => ({
       fl100Bytes: new Uint8Array(fl100Bytes),
       fl110Bytes: new Uint8Array(fl110Bytes),
+      fl105Bytes: new Uint8Array(fl105Bytes),
       fl100Fields: JSON.parse(fl100FieldsRaw) as TemplateField[],
       fl110Fields: JSON.parse(fl110FieldsRaw) as TemplateField[],
+      fl105Fields: JSON.parse(fl105FieldsRaw) as TemplateField[],
     }));
   }
 
@@ -271,24 +330,62 @@ function fillCheckbox(pages: PDFPage[], fieldMap: Map<string, TemplateField[]>, 
   }
 }
 
+function buildShortTitle(petitionerName: string, respondentName: string) {
+  const petitioner = sanitizeText(petitionerName);
+  const respondent = sanitizeText(respondentName);
+  if (!petitioner && !respondent) return '';
+  if (!petitioner) return respondent;
+  if (!respondent) return petitioner;
+  return `${petitioner} v. ${respondent}`;
+}
+
+function normalizeProceedingType(value: string | undefined | null): 'family' | 'guardianship' | 'other' | 'juvenile' | 'adoption' | null {
+  const raw = sanitizeText(value).toLowerCase();
+  if (!raw) return null;
+  if (/(family|dissolution|custody|divorce)/.test(raw)) return 'family';
+  if (/(guardian|probate|minor guardianship)/.test(raw)) return 'guardianship';
+  if (/(juvenile|dependency|delinquency)/.test(raw)) return 'juvenile';
+  if (/(adoption|adopt)/.test(raw)) return 'adoption';
+  if (/(other|tribal|out[- ]?of[- ]?state)/.test(raw)) return 'other';
+  return null;
+}
+
+function normalizeOrderType(value: string | undefined | null): 'criminal' | 'family' | 'juvenile' | 'other' | null {
+  const raw = sanitizeText(value).toLowerCase();
+  if (!raw) return null;
+  if (/(criminal|police|penal)/.test(raw)) return 'criminal';
+  if (/(family|dvro|domestic)/.test(raw)) return 'family';
+  if (/(juvenile|dependency|child welfare)/.test(raw)) return 'juvenile';
+  if (/(other|civil|tribal)/.test(raw)) return 'other';
+  return null;
+}
+
 export async function generateOfficialStarterPacketPdf(workspace: StarterPacketWorkspace): Promise<Uint8Array> {
-  const { fl100Bytes, fl110Bytes, fl100Fields, fl110Fields } = await loadTemplates();
+  const { fl100Bytes, fl110Bytes, fl105Bytes, fl100Fields, fl110Fields, fl105Fields } = await loadTemplates();
   const output = await PDFDocument.create();
   const fontRegular = await output.embedFont(StandardFonts.Helvetica);
 
   const fl100Template = await PDFDocument.load(fl100Bytes);
   const fl110Template = await PDFDocument.load(fl110Bytes);
+  const fl105Template = await PDFDocument.load(fl105Bytes);
   const fl100Pages = await output.copyPages(fl100Template, fl100Template.getPageIndices());
   fl100Pages.forEach((page) => output.addPage(page));
   const fl110Pages = await output.copyPages(fl110Template, fl110Template.getPageIndices());
   fl110Pages.forEach((page) => output.addPage(page));
+  const fl105Pages = await output.copyPages(fl105Template, fl105Template.getPageIndices());
 
   const fl100FieldMap = mapFields(fl100Fields);
   const fl110FieldMap = mapFields(fl110Fields);
+  const fl105FieldMap = mapFields(fl105Fields);
 
   const petitionerName = sanitizeText(workspace.petitionerName?.value);
   const respondentName = sanitizeText(workspace.respondentName?.value);
+  const caseNumber = sanitizeText(workspace.caseNumber?.value);
   const filingCounty = sanitizeText(workspace.filingCounty?.value);
+  const courtStreet = sanitizeText(workspace.courtStreet?.value);
+  const courtMailingAddress = sanitizeText(workspace.courtMailingAddress?.value);
+  const courtCityZip = sanitizeText(workspace.courtCityZip?.value);
+  const courtBranch = sanitizeText(workspace.courtBranch?.value);
   const petitionerEmail = sanitizeText(workspace.petitionerEmail?.value);
   const petitionerPhone = sanitizeText(workspace.petitionerPhone?.value);
   const petitionerAddress = sanitizeMultilineText(workspace.petitionerAddress?.value);
@@ -312,8 +409,17 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
   const wantsSeparateProperty = Boolean(workspace.fl100?.propertyDeclarations?.separateProperty?.value);
   const wantsSpousalSupport = Boolean(workspace.requests?.spousalSupport?.value);
   const wantsFormerNameRestore = Boolean(workspace.requests?.restoreFormerName?.value);
+  const shortTitle = buildShortTitle(petitionerName, respondentName);
+  const fl105 = workspace.fl105;
 
   fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].CaptionP1_sf[0].CourtInfo[0].CrtCounty_ft[0]', filingCounty, fontRegular);
+  fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].CaptionP1_sf[0].CourtInfo[0].Street_ft[0]', courtStreet, fontRegular);
+  fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].CaptionP1_sf[0].CourtInfo[0].MailingAdd_ft[0]', courtMailingAddress, fontRegular);
+  fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].CaptionP1_sf[0].CourtInfo[0].CityZip_ft[0]', courtCityZip, fontRegular);
+  fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].CaptionP1_sf[0].CourtInfo[0].Branch_ft[0]', courtBranch, fontRegular);
+  fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].CaptionP1_sf[0].CaseNumber[0].CaseNumber_ft[0]', caseNumber, fontRegular);
+  fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].CaseNumber[0].CaseNumber_ft[0]', caseNumber, fontRegular);
+  fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page3[0].CaseNumber[0].CaseNumber_ft[0]', caseNumber, fontRegular);
   fillTextFields(fl100Pages, fl100FieldMap, 'Party1_ft[0]', petitionerName, fontRegular);
   fillTextFields(fl100Pages, fl100FieldMap, 'Party2_ft[0]', respondentName, fontRegular);
   fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].CaptionP1_sf[0].AttyInfo[0].AttyName_ft[0]', petitionerName, fontRegular);
@@ -408,6 +514,155 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
     fontRegular,
     { size: 9, multiline: true },
   );
+
+  if (hasMinorChildren) {
+    fl105Pages.forEach((page) => output.addPage(page));
+
+    fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].P1Caption[0].AttyInfo[0].AttyName_ft[0]', petitionerName, fontRegular);
+    fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].P1Caption[0].AttyInfo[0].AttyStreet_ft[0]', address.street, fontRegular, { size: 8 });
+    fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].P1Caption[0].AttyInfo[0].AttyCity_ft[0]', address.city, fontRegular, { size: 8 });
+    fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].P1Caption[0].AttyInfo[0].AttyState_ft[0]', address.state, fontRegular, { size: 8 });
+    fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].P1Caption[0].AttyInfo[0].AttyZip_ft[0]', address.zip, fontRegular, { size: 8 });
+    fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].P1Caption[0].AttyInfo[0].Phone[0]', petitionerPhone, fontRegular, { size: 8 });
+    fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].P1Caption[0].AttyInfo[0].Email[0]', petitionerEmail, fontRegular, { size: 8 });
+    fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].P1Caption[0].AttyInfo[0].Name[0]', petitionerName ? `${petitionerName} (in pro per)` : '', fontRegular, { size: 8 });
+
+    fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].P1Caption[0].CrtInfo[0].CrtCounty[0]', filingCounty, fontRegular);
+    fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].P1Caption[0].CrtInfo[0].CrtStreet[0]', courtStreet, fontRegular, { size: 8 });
+    fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].P1Caption[0].CrtInfo[0].CrtMailingAdd[0]', courtMailingAddress, fontRegular, { size: 8 });
+    fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].P1Caption[0].CrtInfo[0].CrtCityZip[0]', courtCityZip, fontRegular, { size: 8 });
+    fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].P1Caption[0].CrtInfo[0].CrtBranch[0]', courtBranch, fontRegular, { size: 8 });
+    fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].P1Caption[0].ProbateParty[0].Party1[0]', petitionerName, fontRegular, { size: 8 });
+    fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].P1Caption[0].ProbateParty[0].Party2[0]', respondentName, fontRegular, { size: 8 });
+    fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].P1Caption[0].CaseNo[0].CaseNumber[0]', caseNumber, fontRegular);
+    fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page2[0].P2Caption[0].ShortTitle[0].ShortTitle_ft[0]', shortTitle, fontRegular, { size: 8 });
+    fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page2[0].P2Caption[0].CaseNumber[0].CaseNumber[0]', caseNumber, fontRegular);
+
+    fillCheckbox(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].List1[0].Li1[0].Party[0].PartyRepCB[0]', true);
+    fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].List2[0].Li1[0].NumChildren[0]', String(Math.min(workspace.children.length, 4)), fontRegular);
+
+    workspace.children.slice(0, 4).forEach((child, index) => {
+      const row = index + 1;
+      const childNameField = row === 1
+        ? `FL-105[0].Page1[0].List2[0].Li1[0].Table[0].Row1[0].TextField7[0]`
+        : `FL-105[0].Page1[0].List2[0].Li1[0].Table[0].Row${row}[0].TextField8[0]`;
+      fillTextFields(fl105Pages, fl105FieldMap, childNameField, sanitizeText(child.fullName?.value), fontRegular, { size: 8 });
+      fillTextFields(fl105Pages, fl105FieldMap, `FL-105[0].Page1[0].List2[0].Li1[0].Table[0].Row${row}[0].TextField1[0]`, formatDateForCourt(child.birthDate?.value), fontRegular, { size: 8 });
+      fillTextFields(fl105Pages, fl105FieldMap, `FL-105[0].Page1[0].List2[0].Li1[0].Table[0].Row${row}[0].TextField2[0]`, sanitizeText(child.placeOfBirth?.value), fontRegular, { size: 8 });
+    });
+
+    fillCheckbox(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].List2[0].Li1[0].CheckBox19[0]', workspace.children.length > 4);
+    fillCheckbox(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].List3[0].Li1[0].OneManyCB[0]', Boolean(fl105?.childrenLivedTogetherPastFiveYears?.value));
+    fillCheckbox(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].List3[0].Li2[0].KidsLiveApart[0].OneManyCB[0]', !fl105?.childrenLivedTogetherPastFiveYears?.value);
+
+    (fl105?.residenceHistory ?? []).slice(0, 5).forEach((entry, index) => {
+      const row = index + 1;
+      fillTextFields(fl105Pages, fl105FieldMap, `FL-105[0].Page1[0].List3[0].Li1[0].Table3a[0].Row${row}[0].From${row}[0]`, formatDateForCourt(entry.fromDate?.value), fontRegular, { size: 8 });
+      fillTextFields(fl105Pages, fl105FieldMap, `FL-105[0].Page1[0].List3[0].Li1[0].Table3a[0].Row${row}[0].To${row}[0]`, formatDateForCourt(entry.toDate?.value), fontRegular, { size: 8 });
+      fillTextFields(fl105Pages, fl105FieldMap, `FL-105[0].Page1[0].List3[0].Li1[0].Table3a[0].Row${row}[0].Residence${row}[0]`, sanitizeText(entry.residence?.value), fontRegular, { size: 8 });
+      fillTextFields(fl105Pages, fl105FieldMap, `FL-105[0].Page1[0].List3[0].Li1[0].Table3a[0].Row${row}[0].PersonStreet${row}[0]`, sanitizeText(entry.personAndAddress?.value), fontRegular, { size: 8 });
+      fillTextFields(fl105Pages, fl105FieldMap, `FL-105[0].Page1[0].List3[0].Li1[0].Table3a[0].Row${row}[0].Relationship${row}[0]`, sanitizeText(entry.relationship?.value), fontRegular, { size: 8 });
+    });
+
+    const proceedings = (fl105?.otherProceedings ?? []).filter((entry) => {
+      return Boolean(
+        sanitizeText(entry.proceedingType?.value) ||
+        sanitizeText(entry.caseNumber?.value) ||
+        sanitizeText(entry.court?.value) ||
+        sanitizeText(entry.orderDate?.value) ||
+        sanitizeText(entry.childNames?.value) ||
+        sanitizeText(entry.connection?.value) ||
+        sanitizeText(entry.status?.value),
+      );
+    });
+    const proceedingsKnown = Boolean(fl105?.otherProceedingsKnown?.value || proceedings.length > 0);
+    fillCheckbox(fl105Pages, fl105FieldMap, 'FL-105[0].Page2[0].Item4subformset[0].List4[0].Li1[0].OtherCaseYN[0]', proceedingsKnown);
+    fillCheckbox(fl105Pages, fl105FieldMap, 'FL-105[0].Page2[0].Item4subformset[0].List4[0].Li1[0].OtherCaseYN[1]', !proceedingsKnown);
+
+    const proceedingSlots = [
+      { key: 'family' as const, row: '4a', checkbox: 'FL-105[0].Page2[0].Item4subformset[0].List4[0].Li1[0].Table4abc[0].Row4a[0].PGCell4a[0].FamilyCB[0]' },
+      { key: 'guardianship' as const, row: '4b', checkbox: 'FL-105[0].Page2[0].Item4subformset[0].List4[0].Li1[0].Table4abc[0].Row4b[0].PGCell4b[0].PGCB4b[0]' },
+      { key: 'other' as const, row: '4c', checkbox: 'FL-105[0].Page2[0].Item4subformset[0].List4[0].Li1[0].Table4abc[0].Row4c[0].PGCell4c[0].OtherCB[0]' },
+      { key: 'juvenile' as const, row: '4d', checkbox: 'FL-105[0].Page2[0].Item4subformset[0].List4[0].Li1[0].Table4de[0].Row4d[0].PGCell4d[0].JuvCB[0]' },
+      { key: 'adoption' as const, row: '4e', checkbox: 'FL-105[0].Page2[0].Item4subformset[0].List4[0].Li1[0].Table4de[0].Row4e[0].PGCell4e[0].AdoptCB[0]' },
+    ];
+
+    const unassignedProceedings = proceedings.slice(0, 5);
+    for (const slot of proceedingSlots) {
+      if (unassignedProceedings.length === 0) break;
+      const targetIndex = unassignedProceedings.findIndex((entry) => normalizeProceedingType(entry.proceedingType?.value) === slot.key);
+      const entry = targetIndex >= 0 ? unassignedProceedings.splice(targetIndex, 1)[0] : unassignedProceedings.shift();
+      if (!entry) continue;
+
+      fillCheckbox(fl105Pages, fl105FieldMap, slot.checkbox, true);
+      fillTextFields(fl105Pages, fl105FieldMap, `FL-105[0].Page2[0].Item4subformset[0].List4[0].Li1[0].Table4abc[0].Row${slot.row}[0].CaseNo${slot.row}[0]`, sanitizeText(entry.caseNumber?.value), fontRegular, { size: 8 });
+      fillTextFields(fl105Pages, fl105FieldMap, `FL-105[0].Page2[0].Item4subformset[0].List4[0].Li1[0].Table4abc[0].Row${slot.row}[0].Court${slot.row}[0]`, sanitizeText(entry.court?.value), fontRegular, { size: 8 });
+      fillTextFields(fl105Pages, fl105FieldMap, `FL-105[0].Page2[0].Item4subformset[0].List4[0].Li1[0].Table4abc[0].Row${slot.row}[0].Date${slot.row}[0]`, formatDateForCourt(entry.orderDate?.value), fontRegular, { size: 8 });
+      fillTextFields(fl105Pages, fl105FieldMap, `FL-105[0].Page2[0].Item4subformset[0].List4[0].Li1[0].Table4abc[0].Row${slot.row}[0].ChildName${slot.row}[0]`, sanitizeText(entry.childNames?.value), fontRegular, { size: 8 });
+      fillTextFields(fl105Pages, fl105FieldMap, `FL-105[0].Page2[0].Item4subformset[0].List4[0].Li1[0].Table4abc[0].Row${slot.row}[0].YourRole${slot.row}[0]`, sanitizeText(entry.connection?.value), fontRegular, { size: 8 });
+      fillTextFields(fl105Pages, fl105FieldMap, `FL-105[0].Page2[0].Item4subformset[0].List4[0].Li1[0].Table4abc[0].Row${slot.row}[0].CaseStatus${slot.row}[0]`, sanitizeText(entry.status?.value), fontRegular, { size: 8 });
+      fillTextFields(fl105Pages, fl105FieldMap, `FL-105[0].Page2[0].Item4subformset[0].List4[0].Li1[0].Table4de[0].Row${slot.row}[0].CaseNo${slot.row}[0]`, sanitizeText(entry.caseNumber?.value), fontRegular, { size: 8 });
+      fillTextFields(fl105Pages, fl105FieldMap, `FL-105[0].Page2[0].Item4subformset[0].List4[0].Li1[0].Table4de[0].Row${slot.row}[0].Court${slot.row}[0]`, sanitizeText(entry.court?.value), fontRegular, { size: 8 });
+    }
+
+    const restrainingOrders = (fl105?.domesticViolenceOrders ?? []).filter((entry) => {
+      return Boolean(
+        sanitizeText(entry.orderType?.value) ||
+        sanitizeText(entry.county?.value) ||
+        sanitizeText(entry.stateOrTribe?.value) ||
+        sanitizeText(entry.caseNumber?.value) ||
+        sanitizeText(entry.expirationDate?.value),
+      );
+    });
+    const restrainingKnown = Boolean(fl105?.domesticViolenceOrdersExist?.value || restrainingOrders.length > 0);
+    fillCheckbox(fl105Pages, fl105FieldMap, 'FL-105[0].Page2[0].Item5subformset[0].List5[0].Li1[0].DVROCB[0].DVRO_CB[0]', restrainingKnown);
+
+    const orderRows = [
+      { key: 'criminal' as const, row: '5a', checkbox: 'FL-105[0].Page2[0].Item5subformset[0].List5[0].Li1[0].Table5[0].Row5a[0].ROCell5a[0].CrimPO_CB5a[0]' },
+      { key: 'family' as const, row: '5b', checkbox: 'FL-105[0].Page2[0].Item5subformset[0].List5[0].Li1[0].Table5[0].Row5b[0].ROCell5b[0].FamRO_CB5b[0]' },
+      { key: 'juvenile' as const, row: '5c', checkbox: 'FL-105[0].Page2[0].Item5subformset[0].List5[0].Li1[0].Table5[0].Row5c[0].ROCell5c[0].JuvRO_CB5c[0]' },
+      { key: 'other' as const, row: '5d', checkbox: 'FL-105[0].Page2[0].Item5subformset[0].List5[0].Li1[0].Table5[0].Row5d[0].ROCell5d[0].OtherRO_CB5d[0]' },
+    ];
+    const unassignedOrders = restrainingOrders.slice(0, 4);
+    for (const slot of orderRows) {
+      if (unassignedOrders.length === 0) break;
+      const targetIndex = unassignedOrders.findIndex((entry) => normalizeOrderType(entry.orderType?.value) === slot.key);
+      const entry = targetIndex >= 0 ? unassignedOrders.splice(targetIndex, 1)[0] : unassignedOrders.shift();
+      if (!entry) continue;
+
+      fillCheckbox(fl105Pages, fl105FieldMap, slot.checkbox, true);
+      fillTextFields(fl105Pages, fl105FieldMap, `FL-105[0].Page2[0].Item5subformset[0].List5[0].Li1[0].Table5[0].Row${slot.row}[0].County${slot.row}[0]`, sanitizeText(entry.county?.value), fontRegular, { size: 8 });
+      fillTextFields(fl105Pages, fl105FieldMap, `FL-105[0].Page2[0].Item5subformset[0].List5[0].Li1[0].Table5[0].Row${slot.row}[0].StateTribe${slot.row}[0]`, sanitizeText(entry.stateOrTribe?.value), fontRegular, { size: 8 });
+      fillTextFields(fl105Pages, fl105FieldMap, `FL-105[0].Page2[0].Item5subformset[0].List5[0].Li1[0].Table5[0].Row${slot.row}[0].CaseNo${slot.row}[0]`, sanitizeText(entry.caseNumber?.value), fontRegular, { size: 8 });
+      fillTextFields(fl105Pages, fl105FieldMap, `FL-105[0].Page2[0].Item5subformset[0].List5[0].Li1[0].Table5[0].Row${slot.row}[0].ExpDate${slot.row}[0]`, formatDateForCourt(entry.expirationDate?.value), fontRegular, { size: 8 });
+    }
+
+    const claimants = (fl105?.otherClaimants ?? []).filter((entry) => {
+      return Boolean(
+        sanitizeText(entry.nameAndAddress?.value) ||
+        sanitizeText(entry.childNames?.value) ||
+        entry.hasPhysicalCustody?.value ||
+        entry.claimsCustodyRights?.value ||
+        entry.claimsVisitationRights?.value,
+      );
+    });
+    const claimantsKnown = Boolean(fl105?.otherClaimantsKnown?.value || claimants.length > 0);
+    fillCheckbox(fl105Pages, fl105FieldMap, 'FL-105[0].Page2[0].List6[0].OtherPersonYN[0]', claimantsKnown);
+    fillCheckbox(fl105Pages, fl105FieldMap, 'FL-105[0].Page2[0].List6[0].OtherPersonYN[1]', !claimantsKnown);
+
+    claimants.slice(0, 3).forEach((entry, index) => {
+      const row = ['a', 'b', 'c'][index];
+      fillTextFields(fl105Pages, fl105FieldMap, `FL-105[0].Page2[0].List6[0].Li${index + 1}[0].Name6${row}[0]`, sanitizeText(entry.nameAndAddress?.value), fontRegular, { size: 8 });
+      fillTextFields(fl105Pages, fl105FieldMap, `FL-105[0].Page2[0].List6[0].Li${index + 1}[0].Child6${row}[0]`, sanitizeText(entry.childNames?.value), fontRegular, { size: 8 });
+      fillCheckbox(fl105Pages, fl105FieldMap, `FL-105[0].Page2[0].List6[0].Li${index + 1}[0].CheckBox6${row}1[0]`, Boolean(entry.hasPhysicalCustody?.value));
+      fillCheckbox(fl105Pages, fl105FieldMap, `FL-105[0].Page2[0].List6[0].Li${index + 1}[0].CheckBox6${row}2[0]`, Boolean(entry.claimsCustodyRights?.value));
+      fillCheckbox(fl105Pages, fl105FieldMap, `FL-105[0].Page2[0].List6[0].Li${index + 1}[0].CheckBox6${row}3[0]`, Boolean(entry.claimsVisitationRights?.value));
+    });
+
+    const declarantName = sanitizeText(fl105?.declarantName?.value || petitionerName);
+    fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page2[0].PoPDec[0].PrintName[0]', declarantName, fontRegular);
+    fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page2[0].PoPDec[0].SigDate[0]', formatDateForCourt(new Date().toISOString().slice(0, 10)), fontRegular);
+  }
 
   return output.save();
 }
