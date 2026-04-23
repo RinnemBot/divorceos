@@ -87,7 +87,7 @@ function isTextLikeFile(mimeType: string | null, extension: string) {
 
 async function extractPdfText(buffer: Buffer) {
   const pdfjsLib = await loadPdfJs();
-  const loadingTask = pdfjsLib.getDocument({ data: new Uint8Array(buffer) });
+  const loadingTask = pdfjsLib.getDocument({ data: new Uint8Array(buffer), disableWorker: true } as any);
   const pdf = await loadingTask.promise;
 
   try {
