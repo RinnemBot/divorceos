@@ -1,8 +1,8 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
+import { DOMMatrix, ImageData, Path2D } from '@napi-rs/canvas';
 import formidable, { type File as FormidableFile, type Files } from 'formidable';
 import { promises as fs } from 'fs';
 import path from 'path';
-import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf.mjs';
 import { enforceBrowserOrigin, enforceRateLimit } from './_security.js';
 import { requireAuthenticatedUser } from './_auth.js';
 
@@ -29,6 +29,20 @@ const DOCX_MIME = 'application/vnd.openxmlformats-officedocument.wordprocessingm
 const DOCX_EXTENSION = '.docx';
 const PDF_MIME = 'application/pdf';
 const PDF_EXTENSION = '.pdf';
+
+async function loadPdfJs() {
+  if (!('DOMMatrix' in globalThis)) {
+    (globalThis as any).DOMMatrix = DOMMatrix;
+  }
+  if (!('ImageData' in globalThis)) {
+    (globalThis as any).ImageData = ImageData;
+  }
+  if (!('Path2D' in globalThis)) {
+    (globalThis as any).Path2D = Path2D;
+  }
+
+  return import('pdfjs-dist/legacy/build/pdf.mjs');
+}
 
 interface AttachmentExtractionResult {
   name: string;
@@ -72,6 +86,7 @@ function isTextLikeFile(mimeType: string | null, extension: string) {
 }
 
 async function extractPdfText(buffer: Buffer) {
+  const pdfjsLib = await loadPdfJs();
   const loadingTask = pdfjsLib.getDocument({ data: new Uint8Array(buffer) });
   const pdf = await loadingTask.promise;
 
