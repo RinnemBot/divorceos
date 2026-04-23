@@ -2,14 +2,17 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { enforceBrowserOrigin, enforceSensitiveApiEnabled } from './_security.js';
 import { requireAuthenticatedUser } from './_auth.js';
 import { generateMariaPdf, type MariaDocumentSection } from './_documents.js';
+import { generateOfficialStarterPacketPdf } from './_starter-packet.js';
 import { sanitizeVaultFileName, uploadBufferToVault } from './_vault.js';
 
 interface MariaDocumentRequest {
+  kind?: string;
   title?: string;
   subtitle?: string;
   fileName?: string;
   sections?: MariaDocumentSection[];
   footerNote?: string;
+  workspace?: unknown;
 }
 
 function parseBody(req: VercelRequest): MariaDocumentRequest {
@@ -37,6 +40,20 @@ function normalizeSections(value: unknown): MariaDocumentSection[] {
   return sections;
 }
 
+function readStringField(value: unknown) {
+  return typeof value === 'string' ? value.trim() : '';
+}
+
+function buildStarterPacketFileName(body: MariaDocumentRequest) {
+  if (typeof body.fileName === 'string' && body.fileName.trim()) {
+    return sanitizeVaultFileName(body.fileName.trim().endsWith('.pdf') ? body.fileName.trim() : `${body.fileName.trim()}.pdf`);
+  }
+
+  const petitionerName = readStringField((body.workspace as { petitionerName?: { value?: unknown } } | undefined)?.petitionerName?.value);
+  const base = petitionerName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'starter-packet';
+  return sanitizeVaultFileName(`${base}-fl-100-fl-110-prefilled.pdf`);
+}
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -49,20 +66,37 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (!currentUser) return;
 
   const body = parseBody(req);
-  const title = typeof body.title === 'string' ? body.title.trim() : '';
-  const subtitle = typeof body.subtitle === 'string' ? body.subtitle.trim() : undefined;
-  const footerNote = typeof body.footerNote === 'string' ? body.footerNote.trim() : undefined;
-  const sections = normalizeSections(body.sections);
-
-  if (!title) {
-    return res.status(400).json({ error: 'title is required' });
-  }
-
-  if (!sections.length) {
-    return res.status(400).json({ error: 'At least one non-empty section is required' });
-  }
 
   try {
+    if (body.kind === 'starter_packet' || (body.workspace && typeof body.workspace === 'object')) {
+      if (!body.workspace || typeof body.workspace !== 'object') {
+        return res.status(400).json({ error: 'workspace is required' });
+      }
+
+      const pdfBytes = await generateOfficialStarterPacketPdf(body.workspace as Parameters<typeof generateOfficialStarterPacketPdf>[0]);
+      const document = await uploadBufferToVault({
+        userId: currentUser.id,
+        fileName: buildStarterPacketFileName(body),
+        buffer: pdfBytes,
+        contentType: 'application/pdf',
+      });
+
+      return res.status(200).json({ document });
+    }
+
+    const title = typeof body.title === 'string' ? body.title.trim() : '';
+    const subtitle = typeof body.subtitle === 'string' ? body.subtitle.trim() : undefined;
+    const footerNote = typeof body.footerNote === 'string' ? body.footerNote.trim() : undefined;
+    const sections = normalizeSections(body.sections);
+
+    if (!title) {
+      return res.status(400).json({ error: 'title is required' });
+    }
+
+    if (!sections.length) {
+      return res.status(400).json({ error: 'At least one non-empty section is required' });
+    }
+
     const pdfBytes = await generateMariaPdf({
       title,
       subtitle,

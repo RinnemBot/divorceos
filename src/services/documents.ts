@@ -103,12 +103,12 @@ export async function createMariaDocument(input: CreateMariaDocumentInput): Prom
 }
 
 export async function createOfficialStarterPacketDocument(workspace: DraftFormsWorkspace): Promise<VaultDocument> {
-  const response = await fetch('/api/starter-packet-document', {
+  const response = await fetch('/api/maria-documents', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ workspace }),
+    body: JSON.stringify({ kind: 'starter_packet', workspace }),
     credentials: 'same-origin',
   });
 
