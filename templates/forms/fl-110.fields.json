@@ -1,0 +1,158 @@
+[
+  {
+    "page": 0,
+    "name": "T33[0]",
+    "fullName": "topmostSubform[0].Page1[0].T33[0]",
+    "rect": [
+      247.391,
+      606.47,
+      389.058,
+      614.39
+    ],
+    "type": "/Tx",
+    "tooltip": "CASE NUMBER (N\u00daMERO DE CASO):"
+  },
+  {
+    "page": 0,
+    "name": "T91[0]",
+    "fullName": "topmostSubform[0].Page1[0].T91[0]",
+    "rect": [
+      95.239,
+      81.091,
+      219.782,
+      92.866
+    ],
+    "type": "/Tx",
+    "tooltip": "Date (Fecha):"
+  },
+  {
+    "page": 0,
+    "name": "T108[0]",
+    "fullName": "topmostSubform[0].Page1[0].T108[0]",
+    "rect": [
+      342.533,
+      80.144,
+      490.255,
+      92.721
+    ],
+    "type": "/Tx",
+    "tooltip": "Clerk , by (Secretario, por)"
+  },
+  {
+    "page": 0,
+    "name": "OtherSpecify_tf[0]",
+    "fullName": "topmostSubform[0].Page1[0].OtherSpecify_tf[0]",
+    "rect": [
+      179.789,
+      192.886,
+      576.216,
+      232.166
+    ],
+    "type": "/Tx",
+    "tooltip": "OtherSpecify_tf"
+  },
+  {
+    "page": 0,
+    "name": "TextField2[0]",
+    "fullName": "topmostSubform[0].Page1[0].TextField2[0]",
+    "rect": [
+      194.55,
+      718.682,
+      384.491,
+      731.642
+    ],
+    "type": "/Tx",
+    "tooltip": "NOTICE TO RESPONDENT (Name): "
+  },
+  {
+    "page": 0,
+    "name": "TextField2[1]",
+    "fullName": "topmostSubform[0].Page1[0].TextField2[1]",
+    "rect": [
+      128.486,
+      644.091,
+      362.495,
+      657.051
+    ],
+    "type": "/Tx",
+    "tooltip": "Petitioner's name is:"
+  },
+  {
+    "page": 0,
+    "name": "T89[0]",
+    "fullName": "topmostSubform[0].Page1[0].T89[0]",
+    "rect": [
+      179.717,
+      108.445,
+      576.216,
+      148.3
+    ],
+    "type": "/Tx",
+    "tooltip": "The name, address, and telephone number of the petitioner\u2019s attorney, or the petitioner without an attorney, are: (El nombre, direcci\u00f3n y n\u00famero de tel\u00e9fono del abogado del demandante, o del demandante si no tiene abogado, son):"
+  },
+  {
+    "page": 0,
+    "name": "#field[7]",
+    "fullName": "topmostSubform[0].Page1[0].#field[7]",
+    "rect": [
+      194.57,
+      706.847,
+      383.539,
+      717.846
+    ],
+    "type": "/Tx",
+    "tooltip": "AVISO AL DEMANDADO (Nombre):"
+  },
+  {
+    "page": 0,
+    "name": "#field[8]",
+    "fullName": "topmostSubform[0].Page1[0].#field[8]",
+    "rect": [
+      150.531,
+      630.085,
+      361.588,
+      641.084
+    ],
+    "type": "/Tx",
+    "tooltip": "Nombre del demandante:"
+  },
+  {
+    "page": 1,
+    "name": "Print_bt[0]",
+    "fullName": "topmostSubform[0].Page2[0].BtnFooter_gp[0].Print_bt[0]",
+    "rect": [
+      258.202,
+      8.29401,
+      339.202,
+      25.302
+    ],
+    "type": "/Btn",
+    "tooltip": "Print this form"
+  },
+  {
+    "page": 1,
+    "name": "Save_bt[0]",
+    "fullName": "topmostSubform[0].Page2[0].BtnFooter_gp[0].Save_bt[0]",
+    "rect": [
+      344.741,
+      8.29401,
+      425.846,
+      25.302
+    ],
+    "type": "/Btn",
+    "tooltip": "Save this form"
+  },
+  {
+    "page": 1,
+    "name": "Reset_bt[0]",
+    "fullName": "topmostSubform[0].Page2[0].BtnFooter_gp[0].Reset_bt[0]",
+    "rect": [
+      494.43,
+      8.29401,
+      575.427,
+      25.302
+    ],
+    "type": "/Btn",
+    "tooltip": "Clear this form"
+  }
+]

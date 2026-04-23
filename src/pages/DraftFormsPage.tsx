@@ -11,9 +11,8 @@ import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
 import { authService, type User } from '@/services/auth';
-import { MariaDocumentError, createMariaDocument } from '@/services/documents';
+import { MariaDocumentError, createOfficialStarterPacketDocument } from '@/services/documents';
 import {
-  buildDraftStarterPacketDocument,
   createBlankChild,
   createStarterPacketWorkspace,
   getDraftWorkspace,
@@ -137,7 +136,7 @@ export function DraftFormsPage() {
   const handleGeneratePacket = async () => {
     if (!workspace) return;
     if (missingItems.length > 0) {
-      toast.message('Finish the required Draft Forms fields before generating the draft packet PDF.');
+      toast.message('Finish the required Draft Forms fields before generating the official starter packet PDF.');
       return;
     }
 
@@ -145,16 +144,15 @@ export function DraftFormsPage() {
     setPacketError(null);
 
     try {
-      const input = buildDraftStarterPacketDocument(workspace);
-      const document = await createMariaDocument(input);
+      const document = await createOfficialStarterPacketDocument(workspace);
       setGeneratedPacketName(document.name);
-      toast.success('Draft packet summary saved to Saved Files.');
+      toast.success('Official FL-100 + FL-110 packet saved to Saved Files.');
     } catch (error) {
       const message = error instanceof MariaDocumentError
         ? error.message
         : error instanceof Error
           ? error.message
-          : 'Unable to generate the draft packet PDF right now.';
+          : 'Unable to generate the official starter packet PDF right now.';
       setPacketError(message);
       toast.error(message);
     } finally {
@@ -177,7 +175,7 @@ export function DraftFormsPage() {
   }
 
   const includedForms = workspace.hasMinorChildren.value
-    ? ['FL-100', 'FL-110', 'FL-105/GC-120']
+    ? ['FL-100', 'FL-110', 'FL-105/GC-120 (next attachment)']
     : ['FL-100', 'FL-110'];
 
   return (
@@ -672,7 +670,7 @@ export function DraftFormsPage() {
                   <FileText className="h-5 w-5 text-emerald-600" />
                   Packet readiness
                 </CardTitle>
-                <CardDescription>Milestone 1 is about getting users into a structured review loop.</CardDescription>
+                <CardDescription>Draft Forms now produces prefilled FL-100 and FL-110 PDFs, with attachment forms still staged as follow-up.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-5">
                 <div>
@@ -684,7 +682,7 @@ export function DraftFormsPage() {
                 </div>
 
                 <div className="rounded-2xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5">
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Included forms</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Forms in scope</p>
                   <div className="mt-3 flex flex-wrap gap-2">
                     {includedForms.map((form) => (
                       <Badge key={form} variant="outline" className="rounded-full">{form}</Badge>
@@ -714,7 +712,7 @@ export function DraftFormsPage() {
                     <div>
                       <p className="font-medium text-emerald-900 dark:text-emerald-100">What this slice proves</p>
                       <p className="mt-1 text-sm leading-6 text-emerald-900/80 dark:text-emerald-100/80">
-                        Maria can now hand facts into a reusable form workspace instead of trapping them in chat.
+                        Maria can now turn the workspace into prefilled FL-100 and FL-110 PDFs instead of stopping at a summary sheet.
                       </p>
                     </div>
                   </div>
@@ -722,7 +720,7 @@ export function DraftFormsPage() {
 
                 {generatedPacketName && (
                   <div className="rounded-2xl border border-emerald-200 bg-emerald-50/80 p-4 text-sm text-emerald-900 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-100">
-                    Saved <strong>{generatedPacketName}</strong> to Saved Files.
+                    Saved <strong>{generatedPacketName}</strong> to Saved Files. Review any needed attachments like FL-105 or FL-311 before filing.
                   </div>
                 )}
                 {packetError && (
@@ -738,11 +736,11 @@ export function DraftFormsPage() {
                     className="rounded-full bg-emerald-700 text-white hover:bg-emerald-800 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-emerald-600 dark:hover:bg-emerald-500"
                   >
                     {isGeneratingPacket ? (
-                      <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Generating draft packet…</>
+                      <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Generating official packet…</>
                     ) : generatedPacketName ? (
-                      <><CheckCircle2 className="mr-2 h-4 w-4" /> Saved draft packet</>
+                      <><CheckCircle2 className="mr-2 h-4 w-4" /> Saved official packet</>
                     ) : (
-                      'Generate draft packet PDF'
+                      'Generate official FL-100 + FL-110 PDF'
                     )}
                   </Button>
                   <Button disabled variant="outline" className="rounded-full disabled:cursor-not-allowed disabled:opacity-60">

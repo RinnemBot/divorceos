@@ -1,3 +1,5 @@
+import type { DraftFormsWorkspace } from '@/services/formDrafts';
+
 export interface VaultDocument {
   id: string;
   name: string;
@@ -73,16 +75,7 @@ function classifyMariaDocumentError(status: number, message: string) {
   };
 }
 
-export async function createMariaDocument(input: CreateMariaDocumentInput): Promise<VaultDocument> {
-  const response = await fetch('/api/maria-documents', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(input),
-    credentials: 'same-origin',
-  });
-
+async function parseDocumentResponse(response: Response): Promise<VaultDocument> {
   const payload = await response.json().catch(() => ({}));
   if (!response.ok) {
     const classified = classifyMariaDocumentError(response.status, typeof payload.error === 'string' ? payload.error : '');
@@ -94,4 +87,30 @@ export async function createMariaDocument(input: CreateMariaDocumentInput): Prom
   }
 
   return payload.document as VaultDocument;
+}
+
+export async function createMariaDocument(input: CreateMariaDocumentInput): Promise<VaultDocument> {
+  const response = await fetch('/api/maria-documents', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(input),
+    credentials: 'same-origin',
+  });
+
+  return parseDocumentResponse(response);
+}
+
+export async function createOfficialStarterPacketDocument(workspace: DraftFormsWorkspace): Promise<VaultDocument> {
+  const response = await fetch('/api/starter-packet-document', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ workspace }),
+    credentials: 'same-origin',
+  });
+
+  return parseDocumentResponse(response);
 }
