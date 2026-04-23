@@ -21,6 +21,25 @@ export interface DraftChild {
   birthDate: DraftField<string>;
 }
 
+export interface DraftFl100Section {
+  relationshipType: DraftField<'marriage' | 'domestic_partnership' | 'both'>;
+  residency: {
+    petitionerCaliforniaMonths: DraftField<string>;
+    petitionerCountyMonths: DraftField<string>;
+    respondentCaliforniaMonths: DraftField<string>;
+    respondentCountyMonths: DraftField<string>;
+  };
+  legalGrounds: {
+    irreconcilableDifferences: DraftField<boolean>;
+    permanentLegalIncapacity: DraftField<boolean>;
+  };
+  propertyDeclarations: {
+    communityAndQuasiCommunity: DraftField<boolean>;
+    separateProperty: DraftField<boolean>;
+  };
+  formerName: DraftField<string>;
+}
+
 export interface DraftFormsWorkspace {
   id: string;
   userId: string;
@@ -46,6 +65,7 @@ export interface DraftFormsWorkspace {
   separationDate: DraftField<string>;
   hasMinorChildren: DraftField<boolean>;
   children: DraftChild[];
+  fl100: DraftFl100Section;
   requests: {
     childCustody: DraftField<boolean>;
     visitation: DraftField<boolean>;
@@ -69,7 +89,7 @@ function readWorkspaces(): DraftFormsWorkspace[] {
     const raw = storage.getItem(FORM_DRAFTS_KEY);
     if (!raw) return [];
     const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
+    return Array.isArray(parsed) ? parsed.map((workspace) => normalizeWorkspace(workspace)) : [];
   } catch {
     return [];
   }
@@ -88,6 +108,78 @@ function createField<T>(value: T, config?: Omit<DraftField<T>, 'value'>): DraftF
     sourceLabel: config?.sourceLabel,
     confidence: config?.confidence,
     needsReview: config?.needsReview ?? false,
+  };
+}
+
+function createDefaultFl100Section(): DraftFl100Section {
+  return {
+    relationshipType: createField('marriage', {
+      sourceType: 'manual',
+      sourceLabel: 'Default starter packet assumption',
+      confidence: 'medium',
+      needsReview: true,
+    }),
+    residency: {
+      petitionerCaliforniaMonths: createField('', { needsReview: true }),
+      petitionerCountyMonths: createField('', { needsReview: true }),
+      respondentCaliforniaMonths: createField('', { needsReview: true }),
+      respondentCountyMonths: createField('', { needsReview: true }),
+    },
+    legalGrounds: {
+      irreconcilableDifferences: createField(true, {
+        sourceType: 'manual',
+        sourceLabel: 'Default FL-100 assumption',
+        confidence: 'medium',
+        needsReview: true,
+      }),
+      permanentLegalIncapacity: createField(false, {
+        sourceType: 'manual',
+        sourceLabel: 'Default FL-100 assumption',
+        confidence: 'medium',
+        needsReview: true,
+      }),
+    },
+    propertyDeclarations: {
+      communityAndQuasiCommunity: createField(true, {
+        sourceType: 'manual',
+        sourceLabel: 'Default FL-100 assumption',
+        confidence: 'low',
+        needsReview: true,
+      }),
+      separateProperty: createField(false, {
+        sourceType: 'manual',
+        sourceLabel: 'Default FL-100 assumption',
+        confidence: 'low',
+        needsReview: true,
+      }),
+    },
+    formerName: createField('', { needsReview: false }),
+  };
+}
+
+function normalizeWorkspace(workspace: DraftFormsWorkspace): DraftFormsWorkspace {
+  const defaultFl100 = createDefaultFl100Section();
+
+  return {
+    ...workspace,
+    fl100: {
+      relationshipType: workspace.fl100?.relationshipType ?? defaultFl100.relationshipType,
+      residency: {
+        petitionerCaliforniaMonths: workspace.fl100?.residency?.petitionerCaliforniaMonths ?? defaultFl100.residency.petitionerCaliforniaMonths,
+        petitionerCountyMonths: workspace.fl100?.residency?.petitionerCountyMonths ?? defaultFl100.residency.petitionerCountyMonths,
+        respondentCaliforniaMonths: workspace.fl100?.residency?.respondentCaliforniaMonths ?? defaultFl100.residency.respondentCaliforniaMonths,
+        respondentCountyMonths: workspace.fl100?.residency?.respondentCountyMonths ?? defaultFl100.residency.respondentCountyMonths,
+      },
+      legalGrounds: {
+        irreconcilableDifferences: workspace.fl100?.legalGrounds?.irreconcilableDifferences ?? defaultFl100.legalGrounds.irreconcilableDifferences,
+        permanentLegalIncapacity: workspace.fl100?.legalGrounds?.permanentLegalIncapacity ?? defaultFl100.legalGrounds.permanentLegalIncapacity,
+      },
+      propertyDeclarations: {
+        communityAndQuasiCommunity: workspace.fl100?.propertyDeclarations?.communityAndQuasiCommunity ?? defaultFl100.propertyDeclarations.communityAndQuasiCommunity,
+        separateProperty: workspace.fl100?.propertyDeclarations?.separateProperty ?? defaultFl100.propertyDeclarations.separateProperty,
+      },
+      formerName: workspace.fl100?.formerName ?? defaultFl100.formerName,
+    },
   };
 }
 
@@ -248,6 +340,7 @@ export function createStarterPacketWorkspace(options: {
       needsReview: true,
     }),
     children: [],
+    fl100: createDefaultFl100Section(),
     requests: inferRequests(user, userMessage?.content, assistantMessage?.content),
   };
 

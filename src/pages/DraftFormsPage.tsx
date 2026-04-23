@@ -100,6 +100,14 @@ export function DraftFormsPage() {
     if (!workspace.petitionerName.value.trim()) missing.push('Petitioner name');
     if (!workspace.respondentName.value.trim()) missing.push('Respondent name');
     if (!workspace.marriageDate.value.trim()) missing.push('Date of marriage');
+    if (!workspace.fl100.residency.petitionerCaliforniaMonths.value.trim()) missing.push('Petitioner California residency months');
+    if (!workspace.fl100.residency.petitionerCountyMonths.value.trim()) missing.push('Petitioner county residency months');
+    if (!workspace.fl100.legalGrounds.irreconcilableDifferences.value && !workspace.fl100.legalGrounds.permanentLegalIncapacity.value) {
+      missing.push('At least one legal ground for FL-100');
+    }
+    if (workspace.requests.restoreFormerName.value && !workspace.fl100.formerName.value.trim()) {
+      missing.push('Former name to restore');
+    }
 
     if (workspace.hasMinorChildren.value) {
       if (workspace.children.length === 0) {
@@ -285,6 +293,215 @@ export function DraftFormsPage() {
                     placeholder="Street, city, state, ZIP"
                     className="min-h-[96px]"
                   />
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="rounded-[1.75rem] border-white/70 bg-white/80 shadow-xl backdrop-blur dark:border-white/10 dark:bg-white/5">
+              <CardHeader>
+                <CardTitle className="text-slate-950 dark:text-white">FL-100 mapping slice</CardTitle>
+                <CardDescription>These are the first petition-specific fields needed to move from general intake into a real FL-100 packet.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="grid gap-5 md:grid-cols-2">
+                  <div>
+                    <FieldHeader label="Legal relationship" field={workspace.fl100.relationshipType} />
+                    <select
+                      value={workspace.fl100.relationshipType.value}
+                      onChange={(e) => commitWorkspace((current) => ({
+                        ...current,
+                        fl100: {
+                          ...current.fl100,
+                          relationshipType: setDraftFieldValue(current.fl100.relationshipType, e.target.value as 'marriage' | 'domestic_partnership' | 'both'),
+                        },
+                      }))}
+                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"
+                    >
+                      <option value="marriage">Marriage</option>
+                      <option value="domestic_partnership">Domestic partnership</option>
+                      <option value="both">Marriage + domestic partnership</option>
+                    </select>
+                  </div>
+                  <div>
+                    <FieldHeader label="Former name to restore" field={workspace.fl100.formerName} />
+                    <Input
+                      value={workspace.fl100.formerName.value}
+                      onChange={(e) => commitWorkspace((current) => ({
+                        ...current,
+                        fl100: {
+                          ...current.fl100,
+                          formerName: setDraftFieldValue(current.fl100.formerName, e.target.value),
+                        },
+                      }))}
+                      placeholder="Only if a former name restoration is requested"
+                    />
+                  </div>
+                </div>
+
+                <div className="rounded-2xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5">
+                  <p className="text-sm font-medium text-slate-800 dark:text-slate-100">Residency for filing eligibility</p>
+                  <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">FL-100 depends on California/county residency. Fill in the best months estimate now; we can tighten the rule logic next.</p>
+                  <div className="mt-4 grid gap-4 md:grid-cols-2">
+                    <div>
+                      <FieldHeader label="Petitioner months in California" field={workspace.fl100.residency.petitionerCaliforniaMonths} />
+                      <Input
+                        value={workspace.fl100.residency.petitionerCaliforniaMonths.value}
+                        onChange={(e) => commitWorkspace((current) => ({
+                          ...current,
+                          fl100: {
+                            ...current.fl100,
+                            residency: {
+                              ...current.fl100.residency,
+                              petitionerCaliforniaMonths: setDraftFieldValue(current.fl100.residency.petitionerCaliforniaMonths, e.target.value),
+                            },
+                          },
+                        }))}
+                        placeholder="Example: 8"
+                      />
+                    </div>
+                    <div>
+                      <FieldHeader label="Petitioner months in filing county" field={workspace.fl100.residency.petitionerCountyMonths} />
+                      <Input
+                        value={workspace.fl100.residency.petitionerCountyMonths.value}
+                        onChange={(e) => commitWorkspace((current) => ({
+                          ...current,
+                          fl100: {
+                            ...current.fl100,
+                            residency: {
+                              ...current.fl100.residency,
+                              petitionerCountyMonths: setDraftFieldValue(current.fl100.residency.petitionerCountyMonths, e.target.value),
+                            },
+                          },
+                        }))}
+                        placeholder="Example: 4"
+                      />
+                    </div>
+                    <div>
+                      <FieldHeader label="Respondent months in California" field={workspace.fl100.residency.respondentCaliforniaMonths} />
+                      <Input
+                        value={workspace.fl100.residency.respondentCaliforniaMonths.value}
+                        onChange={(e) => commitWorkspace((current) => ({
+                          ...current,
+                          fl100: {
+                            ...current.fl100,
+                            residency: {
+                              ...current.fl100.residency,
+                              respondentCaliforniaMonths: setDraftFieldValue(current.fl100.residency.respondentCaliforniaMonths, e.target.value),
+                            },
+                          },
+                        }))}
+                        placeholder="Optional if petitioner qualifies"
+                      />
+                    </div>
+                    <div>
+                      <FieldHeader label="Respondent months in filing county" field={workspace.fl100.residency.respondentCountyMonths} />
+                      <Input
+                        value={workspace.fl100.residency.respondentCountyMonths.value}
+                        onChange={(e) => commitWorkspace((current) => ({
+                          ...current,
+                          fl100: {
+                            ...current.fl100,
+                            residency: {
+                              ...current.fl100.residency,
+                              respondentCountyMonths: setDraftFieldValue(current.fl100.residency.respondentCountyMonths, e.target.value),
+                            },
+                          },
+                        }))}
+                        placeholder="Optional if petitioner qualifies"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid gap-4 md:grid-cols-2">
+                  <label className="flex items-start gap-3 rounded-2xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5">
+                    <Checkbox
+                      checked={workspace.fl100.legalGrounds.irreconcilableDifferences.value}
+                      onCheckedChange={(checked) => commitWorkspace((current) => ({
+                        ...current,
+                        fl100: {
+                          ...current.fl100,
+                          legalGrounds: {
+                            ...current.fl100.legalGrounds,
+                            irreconcilableDifferences: setDraftFieldValue(current.fl100.legalGrounds.irreconcilableDifferences, checked === true),
+                          },
+                        },
+                      }))}
+                    />
+                    <div>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="font-medium text-slate-800 dark:text-slate-100">Legal ground: irreconcilable differences</span>
+                        <FieldSourceBadge field={workspace.fl100.legalGrounds.irreconcilableDifferences} />
+                      </div>
+                      <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Default for most divorce filings.</p>
+                    </div>
+                  </label>
+                  <label className="flex items-start gap-3 rounded-2xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5">
+                    <Checkbox
+                      checked={workspace.fl100.legalGrounds.permanentLegalIncapacity.value}
+                      onCheckedChange={(checked) => commitWorkspace((current) => ({
+                        ...current,
+                        fl100: {
+                          ...current.fl100,
+                          legalGrounds: {
+                            ...current.fl100.legalGrounds,
+                            permanentLegalIncapacity: setDraftFieldValue(current.fl100.legalGrounds.permanentLegalIncapacity, checked === true),
+                          },
+                        },
+                      }))}
+                    />
+                    <div>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="font-medium text-slate-800 dark:text-slate-100">Legal ground: permanent legal incapacity</span>
+                        <FieldSourceBadge field={workspace.fl100.legalGrounds.permanentLegalIncapacity} />
+                      </div>
+                      <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Rare. Keep this off unless the facts really support it.</p>
+                    </div>
+                  </label>
+                  <label className="flex items-start gap-3 rounded-2xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5">
+                    <Checkbox
+                      checked={workspace.fl100.propertyDeclarations.communityAndQuasiCommunity.value}
+                      onCheckedChange={(checked) => commitWorkspace((current) => ({
+                        ...current,
+                        fl100: {
+                          ...current.fl100,
+                          propertyDeclarations: {
+                            ...current.fl100.propertyDeclarations,
+                            communityAndQuasiCommunity: setDraftFieldValue(current.fl100.propertyDeclarations.communityAndQuasiCommunity, checked === true),
+                          },
+                        },
+                      }))}
+                    />
+                    <div>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="font-medium text-slate-800 dark:text-slate-100">Community / quasi-community property exists</span>
+                        <FieldSourceBadge field={workspace.fl100.propertyDeclarations.communityAndQuasiCommunity} />
+                      </div>
+                      <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Use this when there are assets or debts to divide.</p>
+                    </div>
+                  </label>
+                  <label className="flex items-start gap-3 rounded-2xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5">
+                    <Checkbox
+                      checked={workspace.fl100.propertyDeclarations.separateProperty.value}
+                      onCheckedChange={(checked) => commitWorkspace((current) => ({
+                        ...current,
+                        fl100: {
+                          ...current.fl100,
+                          propertyDeclarations: {
+                            ...current.fl100.propertyDeclarations,
+                            separateProperty: setDraftFieldValue(current.fl100.propertyDeclarations.separateProperty, checked === true),
+                          },
+                        },
+                      }))}
+                    />
+                    <div>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="font-medium text-slate-800 dark:text-slate-100">Separate property exists</span>
+                        <FieldSourceBadge field={workspace.fl100.propertyDeclarations.separateProperty} />
+                      </div>
+                      <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Turn this on if either spouse claims separate property.</p>
+                    </div>
+                  </label>
                 </div>
               </CardContent>
             </Card>
