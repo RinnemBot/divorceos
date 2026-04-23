@@ -48,6 +48,7 @@ const URL_REGEX = /(https?:\/\/[^\s]+)/g;
 const MAX_TTS_CHARS = 900;
 const SILENT_AUDIO_DATA_URI = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABAAZGF0YQAAAAA=';
 const SAVE_PROMPT_PATTERN = /(save this|save that|make (this|that) (a )?pdf|turn (this|that) into (a )?pdf|put (this|that) in (my )?(dashboard|saved files)|save (it|this|that) to (my )?(dashboard|saved files)|export (this|that)|save as a pdf|save (this|that) as pdf|pdf-ready|pdf ready|save .* to (my )?saved files|make me a pdf|create .*pdf)/i;
+const DRAFT_REQUEST_PATTERN = /\b(draft|create|make|generate|prepare|write|finalize|polish|revise|summar(?:y|ize)|declaration|findings|packet|based on)\b/i;
 
 interface PdfDraftSection {
   id: string;
@@ -243,6 +244,42 @@ function buildPdfTitleFromRequest(userMessage: string, assistantContent: string)
   if (request.includes('hearing')) return 'Hearing Summary';
 
   return buildPdfTitleFromMessage(assistantContent);
+}
+
+function isSaveOnlyRequest(userMessage: string): boolean {
+  return SAVE_PROMPT_PATTERN.test(userMessage) && !DRAFT_REQUEST_PATTERN.test(userMessage);
+}
+
+function isMetaAssistantMessage(content: string): boolean {
+  return [
+    /saved that to your saved files/i,
+    /saved to your saved files/i,
+    /i can['’]?t save/i,
+    /i cannot save/i,
+    /copy\/paste format/i,
+    /save as pdf/i,
+    /^please sign in again/i,
+  ].some((pattern) => pattern.test(content));
+}
+
+function looksDocumentLike(content: string): boolean {
+  if (content.length >= 260) return true;
+  if (/\n[-*•]/.test(content)) return true;
+  if (/(family code|summary of request|declaration|findings|§\s?4320|hearing date|case no\.|county:|petitioner\/respondent)/i.test(content)) return true;
+  return false;
+}
+
+function findLastSavableAssistantMessage(messages: ChatMessage[]): ChatMessage | null {
+  for (let index = messages.length - 1; index >= 0; index -= 1) {
+    const message = messages[index];
+    if (message.role !== 'assistant') continue;
+    if (!message.content.trim()) continue;
+    if (isMetaAssistantMessage(message.content)) continue;
+    if (!looksDocumentLike(message.content)) continue;
+    return message;
+  }
+
+  return null;
 }
 
 function toPdfFileName(title: string, fallbackDate: string): string {
@@ -905,6 +942,76 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
     }
     
     try {
+      if (isSaveOnlyRequest(userMessage.content)) {
+        const targetMessage = findLastSavableAssistantMessage(messages);
+
+        if (!currentUser?.id) {
+          const authMessage: ChatMessage = {
+            id: uuidv4(),
+            role: 'assistant',
+            content: 'Sign in first and I can save that into your Saved Files here.',
+            timestamp: new Date().toISOString(),
+          };
+          const authMessages = [...updatedMessages, authMessage];
+          shouldAutoScrollRef.current = true;
+          setMessages(authMessages);
+          void saveCurrentSession(authMessages);
+          return;
+        }
+
+        if (!targetMessage) {
+          const noTargetMessage: ChatMessage = {
+            id: uuidv4(),
+            role: 'assistant',
+            content: 'I don’t have a drafted document in this chat to save yet. Ask me to draft it first, and I can save it straight into Saved Files here.',
+            timestamp: new Date().toISOString(),
+          };
+          const noTargetMessages = [...updatedMessages, noTargetMessage];
+          shouldAutoScrollRef.current = true;
+          setMessages(noTargetMessages);
+          void saveCurrentSession(noTargetMessages);
+          return;
+        }
+
+        try {
+          const preferredTitle = buildPdfTitleFromRequest(userMessage.content, targetMessage.content);
+          const preferredFileName = toPdfFileName(preferredTitle, targetMessage.timestamp.slice(0, 10));
+          await saveMessageToPdf({
+            message: targetMessage,
+            title: preferredTitle,
+            fileName: preferredFileName,
+          });
+
+          const savedNotice: ChatMessage = {
+            id: uuidv4(),
+            role: 'assistant',
+            content: `Saved that to your Saved Files as ${preferredFileName}.`,
+            timestamp: new Date().toISOString(),
+          };
+          const savedMessages = [...updatedMessages, savedNotice];
+          shouldAutoScrollRef.current = true;
+          setMessages(savedMessages);
+          void saveCurrentSession(savedMessages);
+          toast.success('Maria saved the PDF to your Saved Files.');
+        } catch (error) {
+          console.error('Direct Maria save failed', error);
+          const saveErrorMessage: ChatMessage = {
+            id: uuidv4(),
+            role: 'assistant',
+            content: error instanceof MariaDocumentError
+              ? error.message
+              : 'I hit a problem while saving that to Saved Files. Try again in a sec.',
+            timestamp: new Date().toISOString(),
+          };
+          const errorMessages = [...updatedMessages, saveErrorMessage];
+          shouldAutoScrollRef.current = true;
+          setMessages(errorMessages);
+          void saveCurrentSession(errorMessages);
+        }
+
+        return;
+      }
+
       // Prepare conversation history for AI
       const conversationHistory = updatedMessages.slice(-6).map(m => ({
         role: m.role,
