@@ -2,6 +2,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import formidable, { type File as FormidableFile, type Files } from 'formidable';
 import { promises as fs } from 'fs';
 import path from 'path';
+import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf.mjs';
 import { enforceBrowserOrigin, enforceRateLimit } from './_security.js';
 import { requireAuthenticatedUser } from './_auth.js';
 
@@ -71,15 +72,28 @@ function isTextLikeFile(mimeType: string | null, extension: string) {
 }
 
 async function extractPdfText(buffer: Buffer) {
-  const pdfParseModule = await import('pdf-parse');
-  const PDFParse = pdfParseModule.PDFParse;
-  const parser = new PDFParse({ data: buffer });
+  const loadingTask = pdfjsLib.getDocument({ data: new Uint8Array(buffer) });
+  const pdf = await loadingTask.promise;
 
   try {
-    const parsed = await parser.getText();
-    return parsed.text ?? '';
+    const pages: string[] = [];
+
+    for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
+      const page = await pdf.getPage(pageNumber);
+      const content = await page.getTextContent();
+      const pageText = content.items
+        .map((item) => ('str' in item ? item.str : ''))
+        .join(' ')
+        .trim();
+
+      if (pageText) {
+        pages.push(pageText);
+      }
+    }
+
+    return pages.join('\n\n');
   } finally {
-    await parser.destroy().catch(() => undefined);
+    await loadingTask.destroy();
   }
 }
 
