@@ -76,6 +76,11 @@ export interface DraftFormsWorkspace {
   };
 }
 
+export interface DraftPacketSection {
+  heading?: string;
+  body: string;
+}
+
 function getStorage() {
   if (typeof window === 'undefined') return null;
   return window.localStorage;
@@ -387,5 +392,108 @@ export function createBlankChild(): DraftChild {
     id: uuidv4(),
     fullName: createField('', { needsReview: true }),
     birthDate: createField('', { needsReview: true }),
+  };
+}
+
+export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace): {
+  title: string;
+  subtitle: string;
+  fileName: string;
+  sections: DraftPacketSection[];
+  footerNote: string;
+} {
+  const petitionerName = workspace.petitionerName.value.trim() || 'Petitioner';
+  const respondentName = workspace.respondentName.value.trim() || 'Respondent';
+  const relationshipLabel = workspace.fl100.relationshipType.value === 'domestic_partnership'
+    ? 'Domestic partnership'
+    : workspace.fl100.relationshipType.value === 'both'
+      ? 'Marriage and domestic partnership'
+      : 'Marriage';
+
+  const requestLabels = [
+    workspace.requests.childCustody.value ? 'Child custody' : null,
+    workspace.requests.visitation.value ? 'Visitation / parenting time' : null,
+    workspace.requests.childSupport.value ? 'Child support' : null,
+    workspace.requests.spousalSupport.value ? 'Spousal support' : null,
+    workspace.requests.propertyRightsDetermination.value ? 'Property rights determination' : null,
+    workspace.requests.restoreFormerName.value ? 'Restore former name' : null,
+  ].filter(Boolean) as string[];
+
+  const propertyLabels = [
+    workspace.fl100.propertyDeclarations.communityAndQuasiCommunity.value ? 'Community / quasi-community property' : null,
+    workspace.fl100.propertyDeclarations.separateProperty.value ? 'Separate property' : null,
+  ].filter(Boolean) as string[];
+
+  const legalGroundLabels = [
+    workspace.fl100.legalGrounds.irreconcilableDifferences.value ? 'Irreconcilable differences' : null,
+    workspace.fl100.legalGrounds.permanentLegalIncapacity.value ? 'Permanent legal incapacity' : null,
+  ].filter(Boolean) as string[];
+
+  const sections: DraftPacketSection[] = [
+    {
+      heading: 'Case snapshot',
+      body: [
+        `Filing county: ${workspace.filingCounty.value || 'Not provided'}`,
+        `Petitioner: ${petitionerName}`,
+        `Respondent: ${respondentName}`,
+        `Relationship type: ${relationshipLabel}`,
+        `Date of marriage: ${workspace.marriageDate.value || 'Not provided'}`,
+        `Date of separation: ${workspace.separationDate.value || 'Not provided'}`,
+      ].join('\n'),
+    },
+    {
+      heading: 'Petitioner contact',
+      body: [
+        `Email: ${workspace.petitionerEmail.value || 'Not provided'}`,
+        `Phone: ${workspace.petitionerPhone.value || 'Not provided'}`,
+        `Mailing address: ${workspace.petitionerAddress.value || 'Not provided'}`,
+      ].join('\n'),
+    },
+    {
+      heading: 'FL-100 filing details',
+      body: [
+        `Petitioner residency in California: ${workspace.fl100.residency.petitionerCaliforniaMonths.value || 'Not provided'} month(s)`,
+        `Petitioner residency in filing county: ${workspace.fl100.residency.petitionerCountyMonths.value || 'Not provided'} month(s)`,
+        `Respondent residency in California: ${workspace.fl100.residency.respondentCaliforniaMonths.value || 'Not provided'} month(s)`,
+        `Respondent residency in filing county: ${workspace.fl100.residency.respondentCountyMonths.value || 'Not provided'} month(s)`,
+        `Legal grounds: ${legalGroundLabels.join(', ') || 'Not provided'}`,
+        `Property declarations: ${propertyLabels.join(', ') || 'None selected'}`,
+        `Former name to restore: ${workspace.fl100.formerName.value || 'Not requested'}`,
+      ].join('\n'),
+    },
+    {
+      heading: 'Requested relief',
+      body: requestLabels.length > 0 ? requestLabels.map((label) => `• ${label}`).join('\n') : 'No requested relief has been selected yet.',
+    },
+  ];
+
+  if (workspace.hasMinorChildren.value) {
+    sections.push({
+      heading: 'Children of the relationship',
+      body: workspace.children.length > 0
+        ? workspace.children.map((child, index) => `${index + 1}. ${child.fullName.value || 'Unnamed child'} — DOB: ${child.birthDate.value || 'Not provided'}`).join('\n')
+        : 'Minor children were indicated, but child details have not been entered yet.',
+    });
+  }
+
+  if (workspace.intake.userRequest || workspace.intake.mariaSummary || workspace.intake.attachmentNames.length > 0) {
+    sections.push({
+      heading: 'Maria intake context',
+      body: [
+        workspace.intake.userRequest ? `User request:\n${workspace.intake.userRequest}` : null,
+        workspace.intake.mariaSummary ? `Maria summary:\n${workspace.intake.mariaSummary}` : null,
+        workspace.intake.attachmentNames.length > 0 ? `Uploaded files: ${workspace.intake.attachmentNames.join(', ')}` : null,
+      ].filter(Boolean).join('\n\n'),
+    });
+  }
+
+  const safeBaseName = `${petitionerName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'starter-packet'}-draft-summary.pdf`;
+
+  return {
+    title: `${petitionerName} starter packet draft`,
+    subtitle: `Structured Divorce Agent draft workspace for ${respondentName}`,
+    fileName: safeBaseName,
+    sections,
+    footerNote: 'This is a structured draft packet summary generated from Draft Forms. It is not yet an official court-filed packet.',
   };
 }

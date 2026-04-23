@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, CheckCircle2, FileText, Sparkles, Wand2 } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, FileText, Loader2, Sparkles, Wand2 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -11,7 +11,9 @@ import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
 import { authService, type User } from '@/services/auth';
+import { MariaDocumentError, createMariaDocument } from '@/services/documents';
 import {
+  buildDraftStarterPacketDocument,
   createBlankChild,
   createStarterPacketWorkspace,
   getDraftWorkspace,
@@ -20,6 +22,7 @@ import {
   type DraftField,
   type DraftFormsWorkspace,
 } from '@/services/formDrafts';
+import { toast } from 'sonner';
 
 function FieldSourceBadge({ field }: { field: DraftField<unknown> }) {
   if (!field.sourceType) {
@@ -58,6 +61,9 @@ export function DraftFormsPage() {
   const { workspaceId } = useParams();
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [workspace, setWorkspace] = useState<DraftFormsWorkspace | null>(null);
+  const [isGeneratingPacket, setIsGeneratingPacket] = useState(false);
+  const [generatedPacketName, setGeneratedPacketName] = useState<string | null>(null);
+  const [packetError, setPacketError] = useState<string | null>(null);
   const initializedRef = useRef(false);
 
   useEffect(() => {
@@ -127,6 +133,34 @@ export function DraftFormsPage() {
     const checklistSize = Math.max(missingItems.length + 5, 5);
     return Math.max(8, Math.round(((checklistSize - missingItems.length) / checklistSize) * 100));
   }, [workspace, missingItems.length]);
+
+  const handleGeneratePacket = async () => {
+    if (!workspace) return;
+    if (missingItems.length > 0) {
+      toast.message('Finish the required Draft Forms fields before generating the draft packet PDF.');
+      return;
+    }
+
+    setIsGeneratingPacket(true);
+    setPacketError(null);
+
+    try {
+      const input = buildDraftStarterPacketDocument(workspace);
+      const document = await createMariaDocument(input);
+      setGeneratedPacketName(document.name);
+      toast.success('Draft packet summary saved to Saved Files.');
+    } catch (error) {
+      const message = error instanceof MariaDocumentError
+        ? error.message
+        : error instanceof Error
+          ? error.message
+          : 'Unable to generate the draft packet PDF right now.';
+      setPacketError(message);
+      toast.error(message);
+    } finally {
+      setIsGeneratingPacket(false);
+    }
+  };
 
   if (!currentUser || !workspace) {
     return (
@@ -686,12 +720,33 @@ export function DraftFormsPage() {
                   </div>
                 </div>
 
+                {generatedPacketName && (
+                  <div className="rounded-2xl border border-emerald-200 bg-emerald-50/80 p-4 text-sm text-emerald-900 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-100">
+                    Saved <strong>{generatedPacketName}</strong> to Saved Files.
+                  </div>
+                )}
+                {packetError && (
+                  <div className="rounded-2xl border border-rose-200 bg-rose-50/80 p-4 text-sm text-rose-800 dark:border-rose-400/20 dark:bg-rose-400/10 dark:text-rose-100">
+                    {packetError}
+                  </div>
+                )}
+
                 <div className="grid gap-3">
-                  <Button disabled className="rounded-full bg-emerald-700 text-white hover:bg-emerald-800 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-emerald-600 dark:hover:bg-emerald-500">
-                    Generate official packet (next slice)
+                  <Button
+                    onClick={handleGeneratePacket}
+                    disabled={isGeneratingPacket || missingItems.length > 0}
+                    className="rounded-full bg-emerald-700 text-white hover:bg-emerald-800 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-emerald-600 dark:hover:bg-emerald-500"
+                  >
+                    {isGeneratingPacket ? (
+                      <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Generating draft packet…</>
+                    ) : generatedPacketName ? (
+                      <><CheckCircle2 className="mr-2 h-4 w-4" /> Saved draft packet</>
+                    ) : (
+                      'Generate draft packet PDF'
+                    )}
                   </Button>
                   <Button disabled variant="outline" className="rounded-full disabled:cursor-not-allowed disabled:opacity-60">
-                    Send to concierge (after packet generation)
+                    Send to concierge (after official packet generation)
                   </Button>
                 </div>
               </CardContent>
