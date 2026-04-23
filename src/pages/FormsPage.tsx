@@ -168,6 +168,17 @@ export function FormsPage() {
           <p className="mt-5 max-w-3xl text-lg leading-8 text-slate-600 dark:text-slate-300">
             Download official Judicial Council forms, then use Maria to understand what they are for, what comes next, and where people usually get stuck.
           </p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Button asChild className="rounded-full bg-emerald-700 px-6 text-white hover:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-600">
+              <Link to="/draft-forms">
+                <Sparkles className="mr-2 h-4 w-4" />
+                Start Draft Forms with Maria
+              </Link>
+            </Button>
+            <Button asChild variant="outline" className="rounded-full border-white/80 bg-white/70 dark:border-white/10 dark:bg-white/5">
+              <Link to="/#chat">Go to Maria chat</Link>
+            </Button>
+          </div>
         </div>
 
         <div className="mb-8 flex items-start gap-3 rounded-3xl border border-emerald-200 bg-emerald-50/90 p-4 dark:border-emerald-400/20 dark:bg-emerald-400/10">

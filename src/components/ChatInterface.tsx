@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import type { JSX } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -40,6 +41,7 @@ import { generateAIResponse, generateWelcomeMessage } from '@/services/api';
 import { extractChatAttachmentContext } from '@/services/chatAttachments';
 import { MariaDocumentError, createMariaDocument } from '@/services/documents';
 import { authService, type User, type ChatSession, type ChatMessage, type ChatAttachment } from '@/services/auth';
+import { createStarterPacketWorkspace } from '@/services/formDrafts';
 import { CALIFORNIA_DIVORCE_TOPICS } from '@/services/personality';
 import { v4 as uuidv4 } from 'uuid';
 import { SUBSCRIPTION_LIMITS } from '@/services/auth';
@@ -311,6 +313,7 @@ type BrowserSpeechRecognition = {
 };
 
 export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }: ChatInterfaceProps) {
+  const navigate = useNavigate();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -786,6 +789,23 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
         startNewChat();
       }
     }
+  };
+
+  const sendToDraftForms = (message: ChatMessage) => {
+    if (!currentUser) {
+      toast.message('Sign in to send Maria chat context into Draft Forms.');
+      return;
+    }
+
+    const workspace = createStarterPacketWorkspace({
+      user: currentUser,
+      messages,
+      sourceSessionId: currentSessionId ?? undefined,
+      sourceAssistantMessageId: message.id,
+    });
+
+    toast.success('Draft Forms workspace created.');
+    navigate(`/draft-forms/${workspace.id}`);
   };
 
   const speakText = async (text: string) => {
@@ -1430,8 +1450,18 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
                         <audio controls preload="auto" src={fallbackAudio.url} className="w-full" />
                       </div>
                     )}
-                    {(message as ChatMessage & { shouldOfferPdfSave?: boolean }).shouldOfferPdfSave && (
-                      <div className="mt-3">
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => sendToDraftForms(message)}
+                        className="rounded-full border-emerald-300 text-emerald-700 hover:bg-emerald-50"
+                      >
+                        <Sparkles className="mr-1 h-4 w-4" />
+                        Send to Draft Forms
+                      </Button>
+                      {(message as ChatMessage & { shouldOfferPdfSave?: boolean }).shouldOfferPdfSave && (
                         <Button
                           type="button"
                           variant="outline"
@@ -1448,10 +1478,10 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
                             <><FileTextIcon className="h-4 w-4 mr-1" /> Save points to PDF</>
                           )}
                         </Button>
-                        {pdfSaveErrorByMessageId[message.id] && (
-                          <p className="mt-2 text-xs text-rose-600">{pdfSaveErrorByMessageId[message.id]}</p>
-                        )}
-                      </div>
+                      )}
+                    </div>
+                    {pdfSaveErrorByMessageId[message.id] && (
+                      <p className="mt-2 text-xs text-rose-600">{pdfSaveErrorByMessageId[message.id]}</p>
                     )}
                   </>
                 )}
