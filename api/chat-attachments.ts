@@ -16,6 +16,9 @@ const MAX_FILES = 4;
 const MAX_FILE_SIZE = 8 * 1024 * 1024;
 const MAX_TOTAL_FILE_SIZE = 16 * 1024 * 1024;
 const MAX_EXCERPT_CHARS = 4_500;
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+const OPENAI_API_URL = process.env.OPENAI_API_URL || 'https://api.openai.com/v1/chat/completions';
+const OPENAI_VISION_MODEL = process.env.OPENAI_VISION_MODEL || 'gpt-4.1-mini';
 const TEXT_MIME_TYPES = new Set([
   'application/json',
   'application/xml',
@@ -29,6 +32,7 @@ const DOCX_MIME = 'application/vnd.openxmlformats-officedocument.wordprocessingm
 const DOCX_EXTENSION = '.docx';
 const PDF_MIME = 'application/pdf';
 const PDF_EXTENSION = '.pdf';
+const SUPPORTED_IMAGE_MIME_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif']);
 
 async function loadPdfJs() {
   if (!('DOMMatrix' in globalThis)) {
@@ -89,6 +93,70 @@ function isTextLikeFile(mimeType: string | null, extension: string) {
   return Boolean((mimeType && (mimeType.startsWith('text/') || TEXT_MIME_TYPES.has(mimeType))) || TEXT_EXTENSIONS.has(extension));
 }
 
+function isVisionReadableImage(mimeType: string | null) {
+  return Boolean(mimeType && SUPPORTED_IMAGE_MIME_TYPES.has(mimeType));
+}
+
+async function extractImageText(buffer: Buffer, mimeType: string, name: string) {
+  if (!OPENAI_API_KEY) {
+    throw new Error('Image analysis is not configured yet.');
+  }
+
+  const response = await fetch(OPENAI_API_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${OPENAI_API_KEY}`,
+    },
+    body: JSON.stringify({
+      model: OPENAI_VISION_MODEL,
+      messages: [
+        {
+          role: 'system',
+          content: 'You extract useful context from uploaded images for Maria, a California family law assistant. Describe what is visible, quote readable text when possible, call out dates, deadlines, money amounts, names, form numbers, warnings, screenshots, or document sections that matter, and say when something is blurry or uncertain. Keep it concise and factual.',
+        },
+        {
+          role: 'user',
+          content: [
+            {
+              type: 'text',
+              text: `Please analyze this uploaded image (${name}). If it contains text, transcribe the important parts. If it is a photo instead of a document, describe the relevant visible details without guessing beyond the image.`,
+            },
+            {
+              type: 'image_url',
+              image_url: {
+                url: `data:${mimeType};base64,${buffer.toString('base64')}`,
+              },
+            },
+          ],
+        },
+      ],
+      max_completion_tokens: 700,
+    }),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Image analysis failed: ${response.status} ${errorText.slice(0, 200)}`.trim());
+  }
+
+  const payload = await response.json();
+  const content = payload.choices?.[0]?.message?.content;
+
+  if (typeof content === 'string') {
+    return content;
+  }
+
+  if (Array.isArray(content)) {
+    return content
+      .map((item) => (item && typeof item === 'object' && 'text' in item && typeof item.text === 'string' ? item.text : ''))
+      .filter(Boolean)
+      .join('\n');
+  }
+
+  return '';
+}
+
 async function extractPdfText(buffer: Buffer) {
   const pdfjsLib = await loadPdfJs();
   const loadingTask = pdfjsLib.getDocument({ data: new Uint8Array(buffer) });
@@ -137,6 +205,8 @@ async function extractAttachment(file: FormidableFile): Promise<AttachmentExtrac
       extracted = await extractPdfText(buffer);
     } else if (mimeType === DOCX_MIME || extension === DOCX_EXTENSION) {
       extracted = await extractDocxText(buffer);
+    } else if (isVisionReadableImage(mimeType)) {
+      extracted = await extractImageText(buffer, mimeType, name);
     } else if (isTextLikeFile(mimeType, extension)) {
       extracted = buffer.toString('utf8');
     } else {
@@ -145,7 +215,7 @@ async function extractAttachment(file: FormidableFile): Promise<AttachmentExtrac
         mimeType,
         size,
         status: 'unsupported',
-        note: 'Maria can read PDFs, DOCX, TXT, CSV, JSON, and Markdown files right now.',
+        note: 'Maria can read PDFs, DOCX, TXT, CSV, JSON, Markdown, and JPG/PNG/WebP/GIF images right now.',
       };
     }
 
