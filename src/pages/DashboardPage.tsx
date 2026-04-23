@@ -126,7 +126,9 @@ export function DashboardPage() {
     setVaultError(null);
 
     try {
-      const response = await fetch('/api/vault-documents');
+      const response = await fetch('/api/vault-documents', {
+        credentials: 'same-origin',
+      });
       if (!response.ok) {
         const message = await response.text();
         throw new Error(message || 'Unable to load documents');
@@ -187,6 +189,7 @@ export function DashboardPage() {
       const response = await fetch('/api/vault-upload', {
         method: 'POST',
         body: formData,
+        credentials: 'same-origin',
       });
 
       if (!response.ok) {
@@ -237,6 +240,105 @@ export function DashboardPage() {
 
   const completionPercent = Math.round(
     (completedTasks.length / SERVICE_TASKS.length) * 100
+  );
+
+  const vaultPanel = (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <Shield className="h-4 w-4 text-emerald-600" />
+          Document vault
+        </CardTitle>
+        <CardDescription>Maria PDFs and uploaded packets live here.</CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <div className="text-sm text-slate-600 lg:w-2/3">
+            <p className="mb-2">
+              Stored documents live in an encrypted Supabase bucket. Maria-saved PDFs and your uploaded court packets should both appear here.
+            </p>
+            <p>PDF only • 10 MB max • Need edits first? Attach drafts in chat and I&apos;ll clean them before saving.</p>
+          </div>
+          <div className="flex flex-col gap-2 lg:w-1/3">
+            <input
+              ref={vaultFileInputRef}
+              type="file"
+              accept="application/pdf"
+              className="hidden"
+              onChange={handleVaultFileChange}
+            />
+            <Button onClick={triggerVaultPicker} disabled={isVaultUploading} className="justify-center">
+              {isVaultUploading ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Uploading…
+                </>
+              ) : (
+                <>
+                  <UploadCloud className="h-4 w-4 mr-2" />
+                  Upload PDF
+                </>
+              )}
+            </Button>
+            <span className="text-xs text-slate-500">Don&apos;t leave this tab while uploading. We&apos;ll refresh the vault automatically once it finishes.</span>
+          </div>
+        </div>
+        {vaultError && (
+          <Alert variant="destructive">
+            <AlertDescription>{vaultError}</AlertDescription>
+          </Alert>
+        )}
+        <div className="rounded-2xl border border-slate-200 overflow-hidden">
+          {isVaultLoading ? (
+            <div className="p-6 text-sm text-slate-500">Loading vault…</div>
+          ) : vaultDocs.length === 0 ? (
+            <div className="p-6 text-sm text-slate-500">Nothing in your vault yet. Upload your first stamped packet to kick things off.</div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="min-w-full text-sm">
+                <thead className="bg-slate-50 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
+                  <tr>
+                    <th className="px-4 py-3">Document</th>
+                    <th className="px-4 py-3">Uploaded</th>
+                    <th className="px-4 py-3">Size</th>
+                    <th className="px-4 py-3 text-right">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {vaultDocs.map((doc) => (
+                    <tr key={doc.id} className="border-t border-slate-100">
+                      <td className="px-4 py-3">
+                        <p className="font-medium text-slate-800">{doc.name}</p>
+                        <p className="text-xs text-slate-500">Stored securely in Divorce Agent</p>
+                      </td>
+                      <td className="px-4 py-3 text-slate-600">
+                        {new Date(doc.uploadedAt).toLocaleString()}
+                      </td>
+                      <td className="px-4 py-3 text-slate-600">{formatBytes(doc.size)}</td>
+                      <td className="px-4 py-3 text-right">
+                        {doc.downloadUrl ? (
+                          <Button asChild size="sm" variant="outline">
+                            <a href={doc.downloadUrl} target="_blank" rel="noopener noreferrer">
+                              <Download className="h-4 w-4 mr-2" />
+                              Download
+                            </a>
+                          </Button>
+                        ) : (
+                          <Button size="sm" variant="outline" disabled>
+                            <Download className="h-4 w-4 mr-2" />
+                            Download
+                          </Button>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      </CardContent>
+    </Card>
   );
 
   return (
@@ -402,102 +504,6 @@ export function DashboardPage() {
           <TabsContent value="documents" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Shield className="h-4 w-4 text-emerald-600" />
-                  Document vault
-                </CardTitle>
-                <CardDescription>Upload finished packets so we can route them into concierge filing workflows, with direct in-platform filing coming soon.</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-                  <div className="text-sm text-slate-600 lg:w-2/3">
-                    <p className="mb-2">
-                      Stored documents live in an encrypted Supabase bucket. Essential+ members can authorize Maria to pull these filings into concierge review and filing workflows, with deeper queue automation coming soon.
-                    </p>
-                    <p>PDF only • 10 MB max • Need edits first? Attach drafts in chat and we&apos;ll clean them before uploading.</p>
-                  </div>
-                  <div className="flex flex-col gap-2 lg:w-1/3">
-                    <input
-                      ref={vaultFileInputRef}
-                      type="file"
-                      accept="application/pdf"
-                      className="hidden"
-                      onChange={handleVaultFileChange}
-                    />
-                    <Button onClick={triggerVaultPicker} disabled={isVaultUploading} className="justify-center">
-                      {isVaultUploading ? (
-                        <>
-                          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                          Uploading…
-                        </>
-                      ) : (
-                        <>
-                          <UploadCloud className="h-4 w-4 mr-2" />
-                          Upload PDF
-                        </>
-                      )}
-                    </Button>
-                    <span className="text-xs text-slate-500">Don&apos;t leave this tab while uploading. We&apos;ll refresh the vault automatically once it finishes.</span>
-                  </div>
-                </div>
-                {vaultError && (
-                  <Alert variant="destructive">
-                    <AlertDescription>{vaultError}</AlertDescription>
-                  </Alert>
-                )}
-                <div className="rounded-2xl border border-slate-200 overflow-hidden">
-                  {isVaultLoading ? (
-                    <div className="p-6 text-sm text-slate-500">Loading vault…</div>
-                  ) : vaultDocs.length === 0 ? (
-                    <div className="p-6 text-sm text-slate-500">Nothing in your vault yet. Upload your first stamped packet to kick things off.</div>
-                  ) : (
-                    <div className="overflow-x-auto">
-                      <table className="min-w-full text-sm">
-                        <thead className="bg-slate-50 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
-                          <tr>
-                            <th className="px-4 py-3">Document</th>
-                            <th className="px-4 py-3">Uploaded</th>
-                            <th className="px-4 py-3">Size</th>
-                            <th className="px-4 py-3 text-right">Action</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {vaultDocs.map((doc) => (
-                            <tr key={doc.id} className="border-t border-slate-100">
-                              <td className="px-4 py-3">
-                                <p className="font-medium text-slate-800">{doc.name}</p>
-                                <p className="text-xs text-slate-500">Stored securely in Divorce Agent</p>
-                              </td>
-                              <td className="px-4 py-3 text-slate-600">
-                                {new Date(doc.uploadedAt).toLocaleString()}
-                              </td>
-                              <td className="px-4 py-3 text-slate-600">{formatBytes(doc.size)}</td>
-                              <td className="px-4 py-3 text-right">
-                                {doc.downloadUrl ? (
-                                  <Button asChild size="sm" variant="outline">
-                                    <a href={doc.downloadUrl} target="_blank" rel="noopener noreferrer">
-                                      <Download className="h-4 w-4 mr-2" />
-                                      Download
-                                    </a>
-                                  </Button>
-                                ) : (
-                                  <Button size="sm" variant="outline" disabled>
-                                    <Download className="h-4 w-4 mr-2" />
-                                    Download
-                                  </Button>
-                                )}
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader>
                 <CardTitle>Priority court forms</CardTitle>
                 <CardDescription>Download the most-requested California Judicial Council forms.</CardDescription>
               </CardHeader>
@@ -589,7 +595,8 @@ export function DashboardPage() {
             </Card>
           </TabsContent>
 
-          <TabsContent value="saved">
+          <TabsContent value="saved" className="space-y-6">
+            {vaultPanel}
             <SavedScenariosPanel user={user} />
           </TabsContent>
 

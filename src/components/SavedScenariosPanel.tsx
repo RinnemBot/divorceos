@@ -82,9 +82,9 @@ export function SavedScenariosPanel({ user }: SavedScenariosPanelProps) {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <FileText className="h-5 w-5 text-emerald-600" />
-          My Saved Files
+          Support estimator snapshots
         </CardTitle>
-        <CardDescription>Exports from the support estimator live here. Print or delete them anytime.</CardDescription>
+        <CardDescription>Estimator-specific saved runs live here. Maria PDFs and uploaded packets are listed above in Document vault.</CardDescription>
       </CardHeader>
       <CardContent>
         {savedScenarios.length === 0 ? (

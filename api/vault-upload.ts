@@ -2,6 +2,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import formidable, { type Fields, type Files } from 'formidable';
 import { promises as fs } from 'fs';
 import { enforceBrowserOrigin, enforceSensitiveApiEnabled } from './_security.js';
+import { requireAuthenticatedUser } from './_auth.js';
 import { ensureVaultBucketExists, sanitizeVaultFileName, uploadBufferToVault, supabaseServerClient } from './_vault.js';
 
 export const config = {
@@ -13,16 +14,6 @@ export const config = {
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
 const ALLOWED_MIME_TYPES = ['application/pdf'];
-
-function parseFields(fields: Fields): { userId: string } {
-  const rawUserId = fields.userId;
-  const value = Array.isArray(rawUserId) ? rawUserId[0] : rawUserId;
-  const userId = typeof value === 'string' ? value.trim() : '';
-  if (!userId) {
-    throw new Error('Missing userId');
-  }
-  return { userId };
-}
 
 function formatSize(bytes: number | undefined): number {
   if (!bytes || Number.isNaN(bytes)) return 0;
@@ -36,6 +27,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   if (!enforceSensitiveApiEnabled(res)) return;
   if (!enforceBrowserOrigin(req, res)) return;
+
+  const currentUser = await requireAuthenticatedUser(req, res);
+  if (!currentUser) return;
 
   if (!supabaseServerClient) {
     return res.status(500).json({ error: 'Supabase environment variables are not configured' });
@@ -54,14 +48,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     keepExtensions: false,
   });
 
-  formParser.parse(req, async (err: Error | null, fields: Fields, files: Files) => {
+  formParser.parse(req, async (err: Error | null, _fields: Fields, files: Files) => {
     if (err) {
       console.error('Upload parse error', err);
       return res.status(400).json({ error: err.message || 'Invalid upload payload' });
     }
 
     try {
-      const { userId } = parseFields(fields);
       const incomingFile = files.file;
       const file = Array.isArray(incomingFile) ? incomingFile[0] : incomingFile;
 
@@ -82,7 +75,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       const buffer = await fs.readFile(file.filepath);
 
       const document = await uploadBufferToVault({
-        userId,
+        userId: currentUser.id,
         fileName: sanitizedFileName,
         buffer,
         contentType: file.mimetype || 'application/pdf',

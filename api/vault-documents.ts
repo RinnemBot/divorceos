@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { enforceBrowserOrigin, enforceSensitiveApiEnabled } from './_security.js';
+import { requireAuthenticatedUser } from './_auth.js';
 import {
   SIGNED_URL_TTL_SECONDS,
   SUPABASE_STORAGE_BUCKET,
@@ -18,14 +19,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (!enforceSensitiveApiEnabled(res)) return;
   if (!enforceBrowserOrigin(req, res)) return;
 
+  const currentUser = await requireAuthenticatedUser(req, res);
+  if (!currentUser) return;
+
   if (!supabaseServerClient) {
     return res.status(500).json({ error: 'Supabase environment variables are not configured' });
   }
 
-  const userId = (req.query.userId as string | undefined)?.trim();
-  if (!userId) {
-    return res.status(400).json({ error: 'userId is required' });
-  }
+  const userId = currentUser.id;
 
   try {
     await ensureVaultBucketExists();
