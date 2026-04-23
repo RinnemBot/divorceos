@@ -1041,7 +1041,7 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
           }
 
           if (attachmentContext.readableCount === 0 && attachmentContext.unreadableCount > 0) {
-            toast.message('Maria can read PDFs, DOCX, TXT, CSV, JSON, Markdown, and JPG/PNG/WebP/GIF images right now.');
+            toast.message('Maria can read PDFs, DOCX, TXT, CSV, JSON, Markdown, common images, and HEIC photos right now.');
           }
         } catch (error) {
           console.error('Chat attachment extraction failed', error);
@@ -1597,7 +1597,7 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
           <span className="text-xs text-slate-400">{attachments.length}/{maxAttachments} attachments</span>
         </div>
         <p className="text-xs text-slate-400 mb-3">
-          Maria can read PDFs, DOCX, TXT, CSV, JSON, Markdown, and common images in chat.
+          Maria can read PDFs, DOCX, TXT, CSV, JSON, Markdown, common images, and HEIC photos in chat.
         </p>
         
         <div className="flex gap-2 items-end">

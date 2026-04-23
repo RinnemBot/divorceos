@@ -33,6 +33,8 @@ const DOCX_EXTENSION = '.docx';
 const PDF_MIME = 'application/pdf';
 const PDF_EXTENSION = '.pdf';
 const SUPPORTED_IMAGE_MIME_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif']);
+const HEIC_MIME_TYPES = new Set(['image/heic', 'image/heif', 'image/heic-sequence', 'image/heif-sequence']);
+const HEIC_EXTENSIONS = new Set(['.heic', '.heif']);
 
 async function loadPdfJs() {
   if (!('DOMMatrix' in globalThis)) {
@@ -95,6 +97,35 @@ function isTextLikeFile(mimeType: string | null, extension: string) {
 
 function isVisionReadableImage(mimeType: string | null) {
   return Boolean(mimeType && SUPPORTED_IMAGE_MIME_TYPES.has(mimeType));
+}
+
+function isHeicImage(mimeType: string | null, extension: string) {
+  return Boolean((mimeType && HEIC_MIME_TYPES.has(mimeType)) || HEIC_EXTENSIONS.has(extension));
+}
+
+async function convertHeicToJpeg(buffer: Buffer) {
+  const heicConvertModule = await import('heic-convert');
+  const heicConvert = (heicConvertModule.default ?? heicConvertModule) as (options: {
+    buffer: Buffer;
+    format: 'JPEG';
+    quality: number;
+  }) => Promise<Buffer | Uint8Array | ArrayBuffer>;
+
+  const converted = await heicConvert({
+    buffer,
+    format: 'JPEG',
+    quality: 0.92,
+  });
+
+  if (Buffer.isBuffer(converted)) {
+    return converted;
+  }
+
+  if (converted instanceof Uint8Array) {
+    return Buffer.from(converted);
+  }
+
+  return Buffer.from(converted);
 }
 
 async function extractImageText(buffer: Buffer, mimeType: string, name: string) {
@@ -205,6 +236,9 @@ async function extractAttachment(file: FormidableFile): Promise<AttachmentExtrac
       extracted = await extractPdfText(buffer);
     } else if (mimeType === DOCX_MIME || extension === DOCX_EXTENSION) {
       extracted = await extractDocxText(buffer);
+    } else if (isHeicImage(mimeType, extension)) {
+      const convertedBuffer = await convertHeicToJpeg(buffer);
+      extracted = await extractImageText(convertedBuffer, 'image/jpeg', name);
     } else if (isVisionReadableImage(mimeType)) {
       extracted = await extractImageText(buffer, mimeType, name);
     } else if (isTextLikeFile(mimeType, extension)) {
@@ -215,7 +249,7 @@ async function extractAttachment(file: FormidableFile): Promise<AttachmentExtrac
         mimeType,
         size,
         status: 'unsupported',
-        note: 'Maria can read PDFs, DOCX, TXT, CSV, JSON, Markdown, and JPG/PNG/WebP/GIF images right now.',
+        note: 'Maria can read PDFs, DOCX, TXT, CSV, JSON, Markdown, common images, and HEIC/HEIF photos right now.',
       };
     }
 
