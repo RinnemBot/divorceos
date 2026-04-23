@@ -32,6 +32,7 @@ const navLinks = [
   { path: '/', label: 'Home' },
   { path: '/support-tools', label: 'Support Tools' },
   { path: '/forms', label: 'Forms' },
+  { path: '/draft-forms', label: 'Draft Forms' },
   { path: '/concierge', label: 'Concierge' },
   { path: '/pricing', label: 'Pricing' },
 ];

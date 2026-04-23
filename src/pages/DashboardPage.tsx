@@ -19,6 +19,7 @@ import { FilingOpsPanel } from '@/components/FilingOpsPanel';
 import { COURT_FORMS } from '@/data/forms';
 import { COUNTY_GUIDES } from '@/data/countyGuides';
 import { authService, SUBSCRIPTION_LIMITS, type User } from '@/services/auth';
+import { listDraftWorkspaces } from '@/services/formDrafts';
 import {
   LayoutDashboard,
   Files,
@@ -100,6 +101,8 @@ export function DashboardPage() {
   const [isVaultUploading, setIsVaultUploading] = useState(false);
   const vaultFileInputRef = useRef<HTMLInputElement>(null);
   const isStaffUser = useMemo(() => (user ? authService.isConciergeStaff(user) : false), [user]);
+  const draftWorkspaces = useMemo(() => (user ? listDraftWorkspaces(user.id) : []), [user]);
+  const latestDraftWorkspace = draftWorkspaces[0] ?? null;
 
   useEffect(() => {
     const session = authService.getCurrentUser();
@@ -423,6 +426,12 @@ export function DashboardPage() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="grid gap-3">
+                  <Button variant="ghost" className="justify-start" asChild>
+                    <Link to="/draft-forms">
+                      <FileText className="h-4 w-4 mr-2 text-slate-500" />
+                      Open Draft Forms
+                    </Link>
+                  </Button>
                   <Button variant="ghost" className="justify-start" onClick={() => setActiveTab('documents')}>
                     <FileText className="h-4 w-4 mr-2 text-slate-500" />
                     Open court forms
@@ -452,6 +461,45 @@ export function DashboardPage() {
             </div>
 
             <div className="grid gap-4 md:grid-cols-2">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <FileText className="h-4 w-4 text-emerald-600" />
+                    Draft Forms
+                  </CardTitle>
+                  <CardDescription>Starter packet workspaces Maria has handed into structured review.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-end justify-between gap-4">
+                    <div>
+                      <p className="text-sm text-slate-500">Active workspaces</p>
+                      <p className="text-2xl font-semibold">{draftWorkspaces.length}</p>
+                    </div>
+                    <Button asChild variant="outline">
+                      <Link to="/draft-forms">
+                        Open workspace
+                        <ChevronRight className="h-4 w-4 ml-2" />
+                      </Link>
+                    </Button>
+                  </div>
+                  {latestDraftWorkspace ? (
+                    <div className="rounded-2xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5">
+                      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Latest draft</p>
+                      <p className="mt-2 font-medium text-slate-900 dark:text-white">{latestDraftWorkspace.title}</p>
+                      <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                        {latestDraftWorkspace.intake.attachmentNames.length > 0
+                          ? `${latestDraftWorkspace.intake.attachmentNames.length} uploaded file${latestDraftWorkspace.intake.attachmentNames.length === 1 ? '' : 's'} included`
+                          : 'No uploaded files captured yet'}
+                      </p>
+                    </div>
+                  ) : (
+                    <p className="text-sm text-slate-500 dark:text-slate-400">
+                      No draft workspace yet. Start one from Maria chat or the Forms page.
+                    </p>
+                  )}
+                </CardContent>
+              </Card>
+
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
