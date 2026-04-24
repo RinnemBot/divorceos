@@ -58,6 +58,7 @@ interface StarterPacketWorkspace {
   petitionerPhone: StarterPacketField<string>;
   petitionerEmail: StarterPacketField<string>;
   petitionerFax: StarterPacketField<string>;
+  petitionerAttorneyOrPartyName: StarterPacketField<string>;
   petitionerFirmName: StarterPacketField<string>;
   petitionerStateBarNumber: StarterPacketField<string>;
   petitionerAttorneyFor: StarterPacketField<string>;
@@ -510,6 +511,7 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
   const petitionerEmail = sanitizeText(workspace.petitionerEmail?.value);
   const petitionerPhone = sanitizeText(workspace.petitionerPhone?.value);
   const petitionerFax = sanitizeText(workspace.petitionerFax?.value);
+  const petitionerAttorneyOrPartyName = sanitizeText(workspace.petitionerAttorneyOrPartyName?.value) || petitionerName;
   const petitionerFirmName = sanitizeText(workspace.petitionerFirmName?.value);
   const petitionerStateBarNumber = sanitizeText(workspace.petitionerStateBarNumber?.value);
   const petitionerAttorneyFor = sanitizeText(workspace.petitionerAttorneyFor?.value);
@@ -631,7 +633,7 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
   fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page3[0].CaseNumber[0].CaseNumber_ft[0]', caseNumber, fontRegular);
   fillTextFields(fl100Pages, fl100FieldMap, 'Party1_ft[0]', petitionerName, fontRegular);
   fillTextFields(fl100Pages, fl100FieldMap, 'Party2_ft[0]', respondentName, fontRegular);
-  fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].CaptionP1_sf[0].AttyInfo[0].AttyName_ft[0]', petitionerName, fontRegular);
+  fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].CaptionP1_sf[0].AttyInfo[0].AttyName_ft[0]', petitionerAttorneyOrPartyName, fontRegular);
   fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].CaptionP1_sf[0].AttyInfo[0].AttyFirm_ft[0]', petitionerFirmName, fontRegular);
   fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].CaptionP1_sf[0].AttyInfo[0].BarNo_ft[0]', petitionerStateBarNumber, fontRegular);
   fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].CaptionP1_sf[0].AttyInfo[0].AttyStreet_ft[0]', address.street, fontRegular);
@@ -657,7 +659,7 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
   fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page3[0].SigDate[0]', fl100SignatureDate, fontRegular);
   fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page3[0].SigDate[1]', fl100SignatureDate, fontRegular);
   fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page3[0].PrintPetitionerName_tf[0]', petitionerName, fontRegular);
-  fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page3[0].PrintPetitionerAttorneyName_tf[0]', petitionerName, fontRegular);
+  fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page3[0].PrintPetitionerAttorneyName_tf[0]', petitionerAttorneyOrPartyName, fontRegular);
 
   fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].CaptionP1_sf[0].FormTitle[0].DissolutionOf_cb[0]', isDissolutionProceeding);
   fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].CaptionP1_sf[0].FormTitle[0].LegalSeparationOf_cb[0]', isLegalSeparationProceeding);
@@ -890,14 +892,17 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
   if (hasMinorChildren) {
     fl105Pages.forEach((page) => output.addPage(page));
 
-    fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].P1Caption[0].AttyInfo[0].AttyName_ft[0]', petitionerName, fontRegular);
+    fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].P1Caption[0].AttyInfo[0].AttyName_ft[0]', petitionerAttorneyOrPartyName, fontRegular);
+    fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].P1Caption[0].AttyInfo[0].AttyFirm_ft[0]', petitionerFirmName, fontRegular, { size: 8 });
+    fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].P1Caption[0].AttyInfo[0].BarNo_ft[0]', petitionerStateBarNumber, fontRegular, { size: 8 });
     fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].P1Caption[0].AttyInfo[0].AttyStreet_ft[0]', address.street, fontRegular, { size: 8 });
     fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].P1Caption[0].AttyInfo[0].AttyCity_ft[0]', address.city, fontRegular, { size: 8 });
     fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].P1Caption[0].AttyInfo[0].AttyState_ft[0]', address.state, fontRegular, { size: 8 });
     fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].P1Caption[0].AttyInfo[0].AttyZip_ft[0]', address.zip, fontRegular, { size: 8 });
     fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].P1Caption[0].AttyInfo[0].Phone[0]', petitionerPhone, fontRegular, { size: 8 });
+    fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].P1Caption[0].AttyInfo[0].Fax[0]', petitionerFax, fontRegular, { size: 8 });
     fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].P1Caption[0].AttyInfo[0].Email[0]', petitionerEmail, fontRegular, { size: 8 });
-    fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].P1Caption[0].AttyInfo[0].Name[0]', petitionerName ? `${petitionerName} (in pro per)` : '', fontRegular, { size: 8 });
+    fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].P1Caption[0].AttyInfo[0].Name[0]', petitionerAttorneyFor, fontRegular, { size: 8 });
 
     fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].P1Caption[0].CrtInfo[0].CrtCounty[0]', filingCounty, fontRegular);
     fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].P1Caption[0].CrtInfo[0].CrtStreet[0]', courtStreet, fontRegular, { size: 8 });

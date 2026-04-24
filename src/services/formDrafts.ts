@@ -182,6 +182,7 @@ export interface DraftFormsWorkspace {
   petitionerPhone: DraftField<string>;
   petitionerEmail: DraftField<string>;
   petitionerFax: DraftField<string>;
+  petitionerAttorneyOrPartyName: DraftField<string>;
   petitionerFirmName: DraftField<string>;
   petitionerStateBarNumber: DraftField<string>;
   petitionerAttorneyFor: DraftField<string>;
@@ -510,6 +511,12 @@ function normalizeWorkspace(workspace: DraftFormsWorkspace): DraftFormsWorkspace
     petitionerPhone: workspace.petitionerPhone ?? createField('', { needsReview: true }),
     petitionerEmail: workspace.petitionerEmail ?? createField('', { needsReview: false }),
     petitionerFax: workspace.petitionerFax ?? createField('', { needsReview: false }),
+    petitionerAttorneyOrPartyName: workspace.petitionerAttorneyOrPartyName ?? createField(workspace.petitionerName?.value ?? '', {
+      sourceType: 'manual',
+      sourceLabel: 'Default FL-100 assumption',
+      confidence: 'low',
+      needsReview: true,
+    }),
     petitionerFirmName: workspace.petitionerFirmName ?? createField('', { needsReview: false }),
     petitionerStateBarNumber: workspace.petitionerStateBarNumber ?? createField('', { needsReview: false }),
     petitionerAttorneyFor: workspace.petitionerAttorneyFor ?? createField('Petitioner in pro per', {
@@ -818,6 +825,12 @@ export function createStarterPacketWorkspace(options: {
     petitionerFax: createField('', {
       needsReview: false,
     }),
+    petitionerAttorneyOrPartyName: createField(petitionerName, {
+      sourceType: petitionerName ? 'profile' : 'manual',
+      sourceLabel: petitionerName ? 'Account profile' : 'Default FL-100 assumption',
+      confidence: petitionerName ? 'high' : 'low',
+      needsReview: true,
+    }),
     petitionerFirmName: createField('', {
       needsReview: false,
     }),
@@ -1076,6 +1089,7 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
         `Email: ${workspace.petitionerEmail.value || 'Not provided'}`,
         `Phone: ${workspace.petitionerPhone.value || 'Not provided'}`,
         `Fax: ${workspace.petitionerFax.value || 'Not provided'}`,
+        `Attorney or party name (FL-100 caption): ${workspace.petitionerAttorneyOrPartyName.value || 'Not provided'}`,
         `Firm name: ${workspace.petitionerFirmName.value || 'Not provided'}`,
         `State bar number: ${workspace.petitionerStateBarNumber.value || 'Not provided'}`,
         `Attorney for: ${workspace.petitionerAttorneyFor.value || 'Not provided'}`,

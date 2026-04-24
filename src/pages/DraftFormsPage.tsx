@@ -570,6 +570,17 @@ export function DraftFormsPage() {
                   />
                 </div>
                 <div>
+                  <FieldHeader label="Attorney or party name (FL-100)" field={workspace.petitionerAttorneyOrPartyName} />
+                  <Input
+                    value={workspace.petitionerAttorneyOrPartyName.value}
+                    onChange={(e) => commitWorkspace((current) => ({
+                      ...current,
+                      petitionerAttorneyOrPartyName: setDraftFieldValue(current.petitionerAttorneyOrPartyName, e.target.value),
+                    }))}
+                    placeholder="Name on caption: attorney, or your name if self-represented"
+                  />
+                </div>
+                <div>
                   <FieldHeader label="Firm name (FL-100)" field={workspace.petitionerFirmName} />
                   <Input
                     value={workspace.petitionerFirmName.value}
