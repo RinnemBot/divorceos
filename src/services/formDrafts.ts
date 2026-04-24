@@ -232,6 +232,97 @@ function getGeneratedChildAttachmentPageCount(extraChildrenCount: number) {
   return Math.ceil(extraChildrenCount / GENERATED_CHILD_ATTACHMENT_ENTRIES_PER_PAGE);
 }
 
+function hasFl105ProceedingData(entry: DraftFl105OtherProceeding) {
+  return [
+    entry.proceedingType.value,
+    entry.caseNumber.value,
+    entry.court.value,
+    entry.orderDate.value,
+    entry.childNames.value,
+    entry.connection.value,
+    entry.status.value,
+  ].some((value) => value.trim().length > 0);
+}
+
+function hasFl105OrderData(entry: DraftFl105RestrainingOrder) {
+  return [
+    entry.orderType.value,
+    entry.county.value,
+    entry.stateOrTribe.value,
+    entry.caseNumber.value,
+    entry.expirationDate.value,
+  ].some((value) => value.trim().length > 0);
+}
+
+function hasFl105ClaimantData(entry: DraftFl105OtherClaimant) {
+  return Boolean(
+    entry.nameAndAddress.value.trim()
+    || entry.childNames.value.trim()
+    || entry.hasPhysicalCustody.value
+    || entry.claimsCustodyRights.value
+    || entry.claimsVisitationRights.value,
+  );
+}
+
+function getFl105ProceedingOverflowCount(entries: DraftFl105OtherProceeding[]) {
+  const usedTypes = new Set<string>();
+  let overflowCount = 0;
+
+  entries.forEach((entry) => {
+    if (!hasFl105ProceedingData(entry)) return;
+    const type = normalizeFl105ProceedingType(entry.proceedingType.value);
+    if (type && !usedTypes.has(type)) {
+      usedTypes.add(type);
+      return;
+    }
+    overflowCount += 1;
+  });
+
+  return overflowCount;
+}
+
+function getFl105OrderOverflowCount(entries: DraftFl105RestrainingOrder[]) {
+  const usedTypes = new Set<string>();
+  let overflowCount = 0;
+
+  entries.forEach((entry) => {
+    if (!hasFl105OrderData(entry)) return;
+    const type = normalizeFl105OrderType(entry.orderType.value);
+    if (type && !usedTypes.has(type)) {
+      usedTypes.add(type);
+      return;
+    }
+    overflowCount += 1;
+  });
+
+  return overflowCount;
+}
+
+function getFl105ClaimantOverflowCount(entries: DraftFl105OtherClaimant[]) {
+  return Math.max(entries.filter(hasFl105ClaimantData).length - FL105_FORM_CAPACITY.otherClaimantsRows, 0);
+}
+
+function normalizeFl105ProceedingType(value: string) {
+  const raw = value.trim().toLowerCase();
+  if (!raw) return '';
+  if (raw === 'family' || /(family|dissolution|custody|divorce)/.test(raw)) return 'family';
+  if (raw === 'guardianship' || /(guardian|probate|minor guardianship)/.test(raw)) return 'guardianship';
+  if (raw === 'juvenile' || /(juvenile|dependency|delinquency)/.test(raw)) return 'juvenile';
+  if (raw === 'adoption' || /(adoption|adopt)/.test(raw)) return 'adoption';
+  if (raw === 'other' || /(other|tribal|out[- ]?of[- ]?state)/.test(raw)) return 'other';
+  return '';
+}
+
+function normalizeFl105OrderType(value: string) {
+  const raw = value.trim().toLowerCase();
+  if (!raw) return '';
+  if (raw === 'criminal' || /(criminal|police|penal)/.test(raw)) return 'criminal';
+  if (raw === 'family' || /(family|dvro|domestic)/.test(raw)) return 'family';
+  if (raw === 'juvenile' || /(juvenile|dependency|child welfare)/.test(raw)) return 'juvenile';
+  if (raw === 'other' || /(other|civil|tribal)/.test(raw)) return 'other';
+  return '';
+}
+
 function getStorage() {
   if (typeof window === 'undefined') return null;
   return window.localStorage;
@@ -1148,6 +1239,9 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
     entry.relationship.value,
   ].some((value) => value.trim().length > 0));
   const generatesFl105ResidenceAttachment = workspace.fl105.additionalResidenceAddressesOnAttachment3a.value && hasFl105ResidenceHistoryDetails;
+  const fl105ProceedingOverflowCount = getFl105ProceedingOverflowCount(workspace.fl105.otherProceedings);
+  const fl105OrderOverflowCount = getFl105OrderOverflowCount(workspace.fl105.domesticViolenceOrders);
+  const fl105ClaimantOverflowCount = getFl105ClaimantOverflowCount(workspace.fl105.otherClaimants);
 
   const sections: DraftPacketSection[] = [
     {
@@ -1300,8 +1394,14 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
           ? `Residence history:\n${workspace.fl105.residenceHistory.map((entry, index) => `${index + 1}. From ${entry.fromDate.value || 'Not provided'}${entry.toDate.value ? ` to ${entry.toDate.value}` : ''} — ${entry.residence.value || 'Residence missing'} — Lived with ${entry.personAndAddress.value || 'Not provided'} (${entry.relationship.value || 'Relationship missing'})`).join('\n')}`
           : 'Residence history not entered yet.',
         `Other custody proceedings known: ${workspace.fl105.otherProceedingsKnown.value ? 'Yes' : 'No'}`,
+        `Other custody proceedings entered: ${workspace.fl105.otherProceedings.filter(hasFl105ProceedingData).length}`,
+        `Generated FL-105 attachment 4 overflow rows: ${fl105ProceedingOverflowCount > 0 ? `Yes (${fl105ProceedingOverflowCount})` : 'No'}`,
         `Protective/restraining orders known: ${workspace.fl105.domesticViolenceOrdersExist.value ? 'Yes' : 'No'}`,
+        `Protective/restraining orders entered: ${workspace.fl105.domesticViolenceOrders.filter(hasFl105OrderData).length}`,
+        `Generated FL-105 attachment 5 overflow rows: ${fl105OrderOverflowCount > 0 ? `Yes (${fl105OrderOverflowCount})` : 'No'}`,
         `Other custody/visitation claimants known: ${workspace.fl105.otherClaimantsKnown.value ? 'Yes' : 'No'}`,
+        `Other custody/visitation claimants entered: ${workspace.fl105.otherClaimants.filter(hasFl105ClaimantData).length}`,
+        `Generated FL-105 attachment 6 overflow rows: ${fl105ClaimantOverflowCount > 0 ? `Yes (${fl105ClaimantOverflowCount})` : 'No'}`,
       ].join('\n\n'),
     });
   }

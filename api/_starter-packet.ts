@@ -197,6 +197,7 @@ const FL105_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-105.fields.json');
 const FL100_SEPARATE_PROPERTY_VISIBLE_ROWS = 5;
 const BASE_CHILD_VISIBLE_ROWS = 4;
 const GENERATED_CHILD_ATTACHMENT_ENTRIES_PER_PAGE = 6;
+const FL105_OTHER_CLAIMANTS_VISIBLE_ROWS = 3;
 const ATTACHMENT_PAGE_SIZE: [number, number] = [612, 792];
 const ATTACHMENT_PAGE_MARGIN = 48;
 
@@ -755,6 +756,44 @@ function normalizeOrderType(value: string | undefined | null): 'criminal' | 'fam
   if (/(juvenile|dependency|child welfare)/.test(raw)) return 'juvenile';
   if (/(other|civil|tribal)/.test(raw)) return 'other';
   return null;
+}
+
+function partitionFl105Proceedings(entries: StarterPacketFl105OtherProceeding[]) {
+  const visibleByType = new Map<'family' | 'guardianship' | 'other' | 'juvenile' | 'adoption', StarterPacketFl105OtherProceeding>();
+  const overflow: StarterPacketFl105OtherProceeding[] = [];
+
+  entries.forEach((entry) => {
+    const type = normalizeProceedingType(entry.proceedingType?.value);
+    if (type && !visibleByType.has(type)) {
+      visibleByType.set(type, entry);
+      return;
+    }
+    overflow.push(entry);
+  });
+
+  return {
+    visibleByType,
+    overflow,
+  };
+}
+
+function partitionFl105Orders(entries: StarterPacketFl105RestrainingOrder[]) {
+  const visibleByType = new Map<'criminal' | 'family' | 'juvenile' | 'other', StarterPacketFl105RestrainingOrder>();
+  const overflow: StarterPacketFl105RestrainingOrder[] = [];
+
+  entries.forEach((entry) => {
+    const type = normalizeOrderType(entry.orderType?.value);
+    if (type && !visibleByType.has(type)) {
+      visibleByType.set(type, entry);
+      return;
+    }
+    overflow.push(entry);
+  });
+
+  return {
+    visibleByType,
+    overflow,
+  };
 }
 
 export async function generateOfficialStarterPacketPdf(workspace: StarterPacketWorkspace): Promise<Uint8Array> {
@@ -1396,6 +1435,7 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
         sanitizeText(entry.status?.value),
       );
     });
+    const { visibleByType: visibleProceedingsByType, overflow: overflowProceedings } = partitionFl105Proceedings(proceedings);
     const proceedingsKnown = Boolean(fl105?.otherProceedingsKnown?.value || proceedings.length > 0);
     fillCheckbox(fl105Pages, fl105FieldMap, 'FL-105[0].Page2[0].Item4subformset[0].List4[0].Li1[0].OtherCaseYN[0]', proceedingsKnown);
     fillCheckbox(fl105Pages, fl105FieldMap, 'FL-105[0].Page2[0].Item4subformset[0].List4[0].Li1[0].OtherCaseYN[1]', !proceedingsKnown);
@@ -1408,11 +1448,8 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
       { key: 'adoption' as const, row: '4e', checkbox: 'FL-105[0].Page2[0].Item4subformset[0].List4[0].Li1[0].Table4de[0].Row4e[0].PGCell4e[0].AdoptCB[0]' },
     ];
 
-    const unassignedProceedings = proceedings.slice(0, 5);
     for (const slot of proceedingSlots) {
-      if (unassignedProceedings.length === 0) break;
-      const targetIndex = unassignedProceedings.findIndex((entry) => normalizeProceedingType(entry.proceedingType?.value) === slot.key);
-      const entry = targetIndex >= 0 ? unassignedProceedings.splice(targetIndex, 1)[0] : unassignedProceedings.shift();
+      const entry = visibleProceedingsByType.get(slot.key);
       if (!entry) continue;
 
       fillCheckbox(fl105Pages, fl105FieldMap, slot.checkbox, true);
@@ -1425,6 +1462,30 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
       fillTextFields(fl105Pages, fl105FieldMap, `FL-105[0].Page2[0].Item4subformset[0].List4[0].Li1[0].Table4de[0].Row${slot.row}[0].CaseNo${slot.row}[0]`, sanitizeText(entry.caseNumber?.value), fontRegular, { size: 8 });
       fillTextFields(fl105Pages, fl105FieldMap, `FL-105[0].Page2[0].Item4subformset[0].List4[0].Li1[0].Table4de[0].Row${slot.row}[0].Court${slot.row}[0]`, sanitizeText(entry.court?.value), fontRegular, { size: 8 });
     }
+    const generatedFl105ProceedingsAttachmentPages = overflowProceedings.length > 0
+      ? appendAttachmentTextPages(
+        output,
+        fontRegular,
+        fontBold,
+        'FL-105 Attachment 4 — Additional Proceedings',
+        shortTitle,
+        caseNumber,
+        [
+          {
+            heading: 'Additional custody / parentage / adoption proceedings',
+            paragraphs: overflowProceedings.map((entry, index) => [
+              `${index + 1}. Type: ${sanitizeText(entry.proceedingType?.value) || 'Not provided'}`,
+              `Case number: ${sanitizeText(entry.caseNumber?.value) || 'Not provided'}`,
+              `Court: ${sanitizeText(entry.court?.value) || 'Not provided'}`,
+              `Order date: ${formatDateForCourt(entry.orderDate?.value) || 'Not provided'}`,
+              `Child(ren): ${sanitizeText(entry.childNames?.value) || 'Not provided'}`,
+              `Your role / connection: ${sanitizeText(entry.connection?.value) || 'Not provided'}`,
+              `Status: ${sanitizeText(entry.status?.value) || 'Not provided'}`,
+            ].join('\n')),
+          },
+        ],
+      )
+      : 0;
 
     const restrainingOrders = (fl105?.domesticViolenceOrders ?? []).filter((entry) => {
       return Boolean(
@@ -1435,6 +1496,7 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
         sanitizeText(entry.expirationDate?.value),
       );
     });
+    const { visibleByType: visibleOrdersByType, overflow: overflowOrders } = partitionFl105Orders(restrainingOrders);
     const restrainingKnown = Boolean(fl105?.domesticViolenceOrdersExist?.value || restrainingOrders.length > 0);
     fillCheckbox(fl105Pages, fl105FieldMap, 'FL-105[0].Page2[0].Item5subformset[0].List5[0].Li1[0].DVROCB[0].DVRO_CB[0]', restrainingKnown);
 
@@ -1444,11 +1506,8 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
       { key: 'juvenile' as const, row: '5c', checkbox: 'FL-105[0].Page2[0].Item5subformset[0].List5[0].Li1[0].Table5[0].Row5c[0].ROCell5c[0].JuvRO_CB5c[0]' },
       { key: 'other' as const, row: '5d', checkbox: 'FL-105[0].Page2[0].Item5subformset[0].List5[0].Li1[0].Table5[0].Row5d[0].ROCell5d[0].OtherRO_CB5d[0]' },
     ];
-    const unassignedOrders = restrainingOrders.slice(0, 4);
     for (const slot of orderRows) {
-      if (unassignedOrders.length === 0) break;
-      const targetIndex = unassignedOrders.findIndex((entry) => normalizeOrderType(entry.orderType?.value) === slot.key);
-      const entry = targetIndex >= 0 ? unassignedOrders.splice(targetIndex, 1)[0] : unassignedOrders.shift();
+      const entry = visibleOrdersByType.get(slot.key);
       if (!entry) continue;
 
       fillCheckbox(fl105Pages, fl105FieldMap, slot.checkbox, true);
@@ -1457,6 +1516,28 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
       fillTextFields(fl105Pages, fl105FieldMap, `FL-105[0].Page2[0].Item5subformset[0].List5[0].Li1[0].Table5[0].Row${slot.row}[0].CaseNo${slot.row}[0]`, sanitizeText(entry.caseNumber?.value), fontRegular, { size: 8 });
       fillTextFields(fl105Pages, fl105FieldMap, `FL-105[0].Page2[0].Item5subformset[0].List5[0].Li1[0].Table5[0].Row${slot.row}[0].ExpDate${slot.row}[0]`, formatDateForCourt(entry.expirationDate?.value), fontRegular, { size: 8 });
     }
+    const generatedFl105OrdersAttachmentPages = overflowOrders.length > 0
+      ? appendAttachmentTextPages(
+        output,
+        fontRegular,
+        fontBold,
+        'FL-105 Attachment 5 — Additional Restraining / Protective Orders',
+        shortTitle,
+        caseNumber,
+        [
+          {
+            heading: 'Additional protective / restraining orders',
+            paragraphs: overflowOrders.map((entry, index) => [
+              `${index + 1}. Type: ${sanitizeText(entry.orderType?.value) || 'Not provided'}`,
+              `County: ${sanitizeText(entry.county?.value) || 'Not provided'}`,
+              `State / tribe: ${sanitizeText(entry.stateOrTribe?.value) || 'Not provided'}`,
+              `Case number: ${sanitizeText(entry.caseNumber?.value) || 'Not provided'}`,
+              `Expiration date: ${formatDateForCourt(entry.expirationDate?.value) || 'Not provided'}`,
+            ].join('\n')),
+          },
+        ],
+      )
+      : 0;
 
     const claimants = (fl105?.otherClaimants ?? []).filter((entry) => {
       return Boolean(
@@ -1471,7 +1552,10 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
     fillCheckbox(fl105Pages, fl105FieldMap, 'FL-105[0].Page2[0].List6[0].OtherPersonYN[0]', claimantsKnown);
     fillCheckbox(fl105Pages, fl105FieldMap, 'FL-105[0].Page2[0].List6[0].OtherPersonYN[1]', !claimantsKnown);
 
-    claimants.slice(0, 3).forEach((entry, index) => {
+    const visibleClaimants = claimants.slice(0, FL105_OTHER_CLAIMANTS_VISIBLE_ROWS);
+    const overflowClaimants = claimants.slice(FL105_OTHER_CLAIMANTS_VISIBLE_ROWS);
+
+    visibleClaimants.forEach((entry, index) => {
       const row = ['a', 'b', 'c'][index];
       fillTextFields(fl105Pages, fl105FieldMap, `FL-105[0].Page2[0].List6[0].Li${index + 1}[0].Name6${row}[0]`, sanitizeText(entry.nameAndAddress?.value), fontRegular, { size: 8 });
       fillTextFields(fl105Pages, fl105FieldMap, `FL-105[0].Page2[0].List6[0].Li${index + 1}[0].Child6${row}[0]`, sanitizeText(entry.childNames?.value), fontRegular, { size: 8 });
@@ -1479,11 +1563,38 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
       fillCheckbox(fl105Pages, fl105FieldMap, `FL-105[0].Page2[0].List6[0].Li${index + 1}[0].CheckBox6${row}2[0]`, Boolean(entry.claimsCustodyRights?.value));
       fillCheckbox(fl105Pages, fl105FieldMap, `FL-105[0].Page2[0].List6[0].Li${index + 1}[0].CheckBox6${row}3[0]`, Boolean(entry.claimsVisitationRights?.value));
     });
+    const generatedFl105ClaimantsAttachmentPages = overflowClaimants.length > 0
+      ? appendAttachmentTextPages(
+        output,
+        fontRegular,
+        fontBold,
+        'FL-105 Attachment 6 — Additional Other Claimants',
+        shortTitle,
+        caseNumber,
+        [
+          {
+            heading: 'Additional other custody / visitation claimants',
+            paragraphs: overflowClaimants.map((entry, index) => [
+              `${index + 1}. Name and address: ${sanitizeText(entry.nameAndAddress?.value) || 'Not provided'}`,
+              `Child names: ${sanitizeText(entry.childNames?.value) || 'Not provided'}`,
+              `Has physical custody: ${Boolean(entry.hasPhysicalCustody?.value) ? 'Yes' : 'No'}`,
+              `Claims custody rights: ${Boolean(entry.claimsCustodyRights?.value) ? 'Yes' : 'No'}`,
+              `Claims visitation rights: ${Boolean(entry.claimsVisitationRights?.value) ? 'Yes' : 'No'}`,
+            ].join('\n')),
+          },
+        ],
+      )
+      : 0;
 
     const declarantName = sanitizeText(fl105?.declarantName?.value || petitionerName);
     const declarantSignatureDate = formatDateForCourt(fl105?.signatureDate?.value);
     const manualFl105AttachmentPageCount = parseAttachmentPageCount(fl105?.attachmentPageCount?.value);
-    const totalFl105AttachmentPageCount = manualFl105AttachmentPageCount + generatedFl105ChildAttachmentPages + generatedFl105ResidenceAttachmentPages;
+    const totalFl105AttachmentPageCount = manualFl105AttachmentPageCount
+      + generatedFl105ChildAttachmentPages
+      + generatedFl105ResidenceAttachmentPages
+      + generatedFl105ProceedingsAttachmentPages
+      + generatedFl105OrdersAttachmentPages
+      + generatedFl105ClaimantsAttachmentPages;
     const hasFl105Attachments = Boolean(fl105?.attachmentsIncluded?.value) || totalFl105AttachmentPageCount > 0;
     fillCheckbox(fl105Pages, fl105FieldMap, 'FL-105[0].Page2[0].List7[0].Li1[0].Checkbox[0]', hasFl105Attachments);
     fillTextFields(

@@ -75,6 +75,76 @@ function isFl105StateOnlyAddress(value: string) {
   return !/[0-9]/.test(trimmed) && !/,/.test(trimmed);
 }
 
+function hasFl105ProceedingData(entry: DraftFormsWorkspace['fl105']['otherProceedings'][number]) {
+  return [
+    entry.proceedingType.value,
+    entry.caseNumber.value,
+    entry.court.value,
+    entry.orderDate.value,
+    entry.childNames.value,
+    entry.connection.value,
+    entry.status.value,
+  ].some((value) => value.trim().length > 0);
+}
+
+function hasFl105OrderData(entry: DraftFormsWorkspace['fl105']['domesticViolenceOrders'][number]) {
+  return [
+    entry.orderType.value,
+    entry.county.value,
+    entry.stateOrTribe.value,
+    entry.caseNumber.value,
+    entry.expirationDate.value,
+  ].some((value) => value.trim().length > 0);
+}
+
+function hasFl105ClaimantData(entry: DraftFormsWorkspace['fl105']['otherClaimants'][number]) {
+  return Boolean(
+    entry.nameAndAddress.value.trim()
+    || entry.childNames.value.trim()
+    || entry.hasPhysicalCustody.value
+    || entry.claimsCustodyRights.value
+    || entry.claimsVisitationRights.value,
+  );
+}
+
+function getFl105OtherProceedingOverflowCount(entries: DraftFormsWorkspace['fl105']['otherProceedings']) {
+  const usedTypes = new Set<string>();
+  let overflowCount = 0;
+
+  entries.forEach((entry) => {
+    if (!hasFl105ProceedingData(entry)) return;
+    const type = normalizeFl105ProceedingType(entry.proceedingType.value);
+    if (type && !usedTypes.has(type)) {
+      usedTypes.add(type);
+      return;
+    }
+    overflowCount += 1;
+  });
+
+  return overflowCount;
+}
+
+function getFl105OrderOverflowCount(entries: DraftFormsWorkspace['fl105']['domesticViolenceOrders']) {
+  const usedTypes = new Set<string>();
+  let overflowCount = 0;
+
+  entries.forEach((entry) => {
+    if (!hasFl105OrderData(entry)) return;
+    const type = normalizeFl105OrderType(entry.orderType.value);
+    if (type && !usedTypes.has(type)) {
+      usedTypes.add(type);
+      return;
+    }
+    overflowCount += 1;
+  });
+
+  return overflowCount;
+}
+
+function getFl105ClaimantOverflowCount(entries: DraftFormsWorkspace['fl105']['otherClaimants']) {
+  return Math.max(entries.filter(hasFl105ClaimantData).length - FL105_FORM_CAPACITY.otherClaimantsRows, 0);
+}
+
 const FL100_SEPARATE_PROPERTY_VISIBLE_ROWS = 5;
 const GENERATED_CHILD_ATTACHMENT_ENTRIES_PER_PAGE = 6;
 
@@ -341,6 +411,9 @@ export function DraftFormsPage() {
         entry.personAndAddress.value,
         entry.relationship.value,
       ].some((value) => value.trim().length > 0));
+      const fl105ProceedingOverflowCount = getFl105OtherProceedingOverflowCount(workspace.fl105.otherProceedings);
+      const fl105OrderOverflowCount = getFl105OrderOverflowCount(workspace.fl105.domesticViolenceOrders);
+      const fl105ClaimantOverflowCount = getFl105ClaimantOverflowCount(workspace.fl105.otherClaimants);
       if (workspace.children.length === 0 && !workspace.fl100.minorChildren.hasUnbornChild.value) {
         missing.push('At least one child entry or unborn child selection');
       }
@@ -376,6 +449,9 @@ export function DraftFormsPage() {
         && !workspace.fl105.attachmentPageCount.value.trim()
         && workspace.children.length <= FL105_FORM_CAPACITY.childrenRows
         && !workspace.fl105.additionalResidenceAddressesOnAttachment3a.value
+        && fl105ProceedingOverflowCount === 0
+        && fl105OrderOverflowCount === 0
+        && fl105ClaimantOverflowCount === 0
       ) {
         missing.push('FL-105 attachment page count');
       }
@@ -2044,7 +2120,7 @@ export function DraftFormsPage() {
                             <span className="font-medium text-slate-800 dark:text-slate-100">FL-105 has attached pages</span>
                             <FieldSourceBadge field={workspace.fl105.attachmentsIncluded} />
                           </div>
-                          <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Maps to page 2, item 7 checkbox. Generated child-overflow pages and generated attachment 3a pages count as attached pages automatically.</p>
+                          <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Maps to page 2, item 7 checkbox. Generated child-overflow pages, generated attachment 3a pages, and generated overflow pages for items 4/5/6 count as attached pages automatically.</p>
                         </div>
                       </label>
                       <div>
@@ -2063,7 +2139,7 @@ export function DraftFormsPage() {
                           disabled={!workspace.fl105.attachmentsIncluded.value}
                         />
                         <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                          Enter manual attachment pages here. Any generated FL-105 child-overflow pages or generated attachment 3a pages are added to the final item 7 total automatically.
+                          Enter manual attachment pages here. Any generated FL-105 child-overflow pages, generated attachment 3a pages, or generated overflow pages for items 4/5/6 are added to the final item 7 total automatically.
                         </p>
                       </div>
                     </div>
@@ -2242,7 +2318,7 @@ export function DraftFormsPage() {
                             <span className="text-sm font-medium text-slate-800 dark:text-slate-100">Other custody/parentage/adoption proceedings are known</span>
                             <FieldSourceBadge field={workspace.fl105.otherProceedingsKnown} />
                           </div>
-                          <p className="text-xs text-slate-500 dark:text-slate-400">Visible FL-105 capacity: {FL105_FORM_CAPACITY.otherProceedingsRows} rows.</p>
+                          <p className="text-xs text-slate-500 dark:text-slate-400">Base FL-105 capacity: {FL105_FORM_CAPACITY.otherProceedingsRows} typed rows. Extra or duplicate proceeding rows generate attachment 4 pages automatically.</p>
                         </div>
                       </label>
                       <div className="flex justify-end">
@@ -2251,7 +2327,6 @@ export function DraftFormsPage() {
                           size="sm"
                           variant="outline"
                           className="rounded-full"
-                          disabled={workspace.fl105.otherProceedings.length >= FL105_FORM_CAPACITY.otherProceedingsRows}
                           onClick={() => updateFl105((fl105) => ({
                             ...fl105,
                             otherProceedings: [...fl105.otherProceedings, createBlankFl105OtherProceeding()],
@@ -2260,6 +2335,11 @@ export function DraftFormsPage() {
                           Add proceeding
                         </Button>
                       </div>
+                      {getFl105OtherProceedingOverflowCount(workspace.fl105.otherProceedings) > 0 && (
+                        <p className="text-xs text-slate-500 dark:text-slate-400">
+                          {getFl105OtherProceedingOverflowCount(workspace.fl105.otherProceedings)} additional proceeding row(s) will be generated as FL-105 attachment 4 pages.
+                        </p>
+                      )}
                       <div className="space-y-3">
                         {workspace.fl105.otherProceedings.map((entry) => (
                           <div key={entry.id} className="grid gap-3 rounded-lg border border-slate-200/80 bg-slate-50/70 p-3 md:grid-cols-6 dark:border-white/10 dark:bg-white/5">
@@ -2372,7 +2452,7 @@ export function DraftFormsPage() {
                             <span className="text-sm font-medium text-slate-800 dark:text-slate-100">Protective / restraining orders exist</span>
                             <FieldSourceBadge field={workspace.fl105.domesticViolenceOrdersExist} />
                           </div>
-                          <p className="text-xs text-slate-500 dark:text-slate-400">Visible FL-105 capacity: {FL105_FORM_CAPACITY.restrainingOrdersRows} rows.</p>
+                          <p className="text-xs text-slate-500 dark:text-slate-400">Base FL-105 capacity: {FL105_FORM_CAPACITY.restrainingOrdersRows} typed rows. Extra or duplicate order rows generate attachment 5 pages automatically.</p>
                         </div>
                       </label>
                       <div className="flex justify-end">
@@ -2381,7 +2461,6 @@ export function DraftFormsPage() {
                           size="sm"
                           variant="outline"
                           className="rounded-full"
-                          disabled={workspace.fl105.domesticViolenceOrders.length >= FL105_FORM_CAPACITY.restrainingOrdersRows}
                           onClick={() => updateFl105((fl105) => ({
                             ...fl105,
                             domesticViolenceOrders: [...fl105.domesticViolenceOrders, createBlankFl105RestrainingOrder()],
@@ -2390,6 +2469,11 @@ export function DraftFormsPage() {
                           Add order
                         </Button>
                       </div>
+                      {getFl105OrderOverflowCount(workspace.fl105.domesticViolenceOrders) > 0 && (
+                        <p className="text-xs text-slate-500 dark:text-slate-400">
+                          {getFl105OrderOverflowCount(workspace.fl105.domesticViolenceOrders)} additional order row(s) will be generated as FL-105 attachment 5 pages.
+                        </p>
+                      )}
                       <div className="space-y-3">
                         {workspace.fl105.domesticViolenceOrders.map((entry) => (
                           <div key={entry.id} className="grid gap-3 rounded-lg border border-slate-200/80 bg-slate-50/70 p-3 md:grid-cols-6 dark:border-white/10 dark:bg-white/5">
@@ -2478,7 +2562,7 @@ export function DraftFormsPage() {
                             <span className="text-sm font-medium text-slate-800 dark:text-slate-100">Other custody/visitation claimants are known</span>
                             <FieldSourceBadge field={workspace.fl105.otherClaimantsKnown} />
                           </div>
-                          <p className="text-xs text-slate-500 dark:text-slate-400">Visible FL-105 capacity: {FL105_FORM_CAPACITY.otherClaimantsRows} rows.</p>
+                          <p className="text-xs text-slate-500 dark:text-slate-400">Base FL-105 capacity: {FL105_FORM_CAPACITY.otherClaimantsRows} rows. Extra claimant rows generate attachment 6 pages automatically.</p>
                         </div>
                       </label>
                       <div className="flex justify-end">
@@ -2487,7 +2571,6 @@ export function DraftFormsPage() {
                           size="sm"
                           variant="outline"
                           className="rounded-full"
-                          disabled={workspace.fl105.otherClaimants.length >= FL105_FORM_CAPACITY.otherClaimantsRows}
                           onClick={() => updateFl105((fl105) => ({
                             ...fl105,
                             otherClaimants: [...fl105.otherClaimants, createBlankFl105OtherClaimant()],
@@ -2496,6 +2579,11 @@ export function DraftFormsPage() {
                           Add claimant
                         </Button>
                       </div>
+                      {getFl105ClaimantOverflowCount(workspace.fl105.otherClaimants) > 0 && (
+                        <p className="text-xs text-slate-500 dark:text-slate-400">
+                          {getFl105ClaimantOverflowCount(workspace.fl105.otherClaimants)} additional claimant row(s) will be generated as FL-105 attachment 6 pages.
+                        </p>
+                      )}
                       <div className="space-y-3">
                         {workspace.fl105.otherClaimants.map((entry) => (
                           <div key={entry.id} className="space-y-3 rounded-lg border border-slate-200/80 bg-slate-50/70 p-3 dark:border-white/10 dark:bg-white/5">
