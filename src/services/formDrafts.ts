@@ -1232,6 +1232,7 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
         `FL-105 item 1 filing role: ${workspace.fl105.representationRole.value === 'authorized_representative' ? 'Authorized representative' : 'Party'}`,
         `Authorized representative agency name: ${workspace.fl105.representationRole.value === 'authorized_representative' ? (workspace.fl105.authorizedRepresentativeAgencyName.value || 'Not provided') : 'Not applicable'}`,
         `Children lived together for past five years: ${workspace.fl105.childrenLivedTogetherPastFiveYears.value ? 'Yes' : 'No / attachment needed'}`,
+        `FL-105(A)/GC-120(A) attachment support needed: ${workspace.fl105.childrenLivedTogetherPastFiveYears.value ? 'No' : 'Yes — not generated yet'}`,
         `Declarant signature date: ${workspace.fl105.signatureDate.value || 'Not provided'}`,
         `Additional FL-105 attached pages included: ${workspace.fl105.attachmentsIncluded.value ? 'Yes' : 'No'}`,
         `FL-105 attachment page count: ${workspace.fl105.attachmentsIncluded.value ? (workspace.fl105.attachmentPageCount.value || 'Not provided') : 'Not applicable'}`,

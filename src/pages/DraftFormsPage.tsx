@@ -292,6 +292,9 @@ export function DraftFormsPage() {
       ) {
         missing.push('FL-105 authorized representative agency name');
       }
+      if (!workspace.fl105.childrenLivedTogetherPastFiveYears.value) {
+        missing.push('FL-105(A)/GC-120(A) attachment support is required when children have not all lived together for the past five years');
+      }
       if (!workspace.fl105.signatureDate.value.trim()) {
         missing.push('FL-105 declarant signature date');
       }
@@ -1887,7 +1890,7 @@ export function DraftFormsPage() {
                             <span className="font-medium text-slate-800 dark:text-slate-100">Children lived together for the last five years</span>
                             <FieldSourceBadge field={workspace.fl105.childrenLivedTogetherPastFiveYears} />
                           </div>
-                          <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">If false, FL-105 indicates children did not all reside together.</p>
+                          <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">If false, FL-105(A)/GC-120(A) is required. Draft Forms does not generate that attachment yet, so starter-packet generation stays blocked.</p>
                         </div>
                       </label>
                       <div>
