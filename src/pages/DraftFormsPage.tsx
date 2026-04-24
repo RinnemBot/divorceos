@@ -286,6 +286,12 @@ export function DraftFormsPage() {
       if (workspace.children.length === 0 && !workspace.fl100.minorChildren.hasUnbornChild.value) {
         missing.push('At least one child entry or unborn child selection');
       }
+      if (
+        workspace.fl105.representationRole.value === 'authorized_representative'
+        && !workspace.fl105.authorizedRepresentativeAgencyName.value.trim()
+      ) {
+        missing.push('FL-105 authorized representative agency name');
+      }
       if (!workspace.fl105.signatureDate.value.trim()) {
         missing.push('FL-105 declarant signature date');
       }
@@ -1830,6 +1836,44 @@ export function DraftFormsPage() {
                     </div>
 
                     <div className="grid gap-4 md:grid-cols-3">
+                      <div>
+                        <FieldHeader label="FL-105 item 1 filing role" field={workspace.fl105.representationRole} />
+                        <select
+                          value={workspace.fl105.representationRole.value}
+                          onChange={(e) => updateFl105((fl105) => ({
+                            ...fl105,
+                            representationRole: setDraftFieldValue(
+                              fl105.representationRole,
+                              e.target.value as 'party' | 'authorized_representative',
+                            ),
+                            authorizedRepresentativeAgencyName: e.target.value === 'authorized_representative'
+                              ? fl105.authorizedRepresentativeAgencyName
+                              : setDraftFieldValue(fl105.authorizedRepresentativeAgencyName, ''),
+                          }))}
+                          className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"
+                        >
+                          <option value="party">I am the party in this case</option>
+                          <option value="authorized_representative">I am the authorized representative of a party</option>
+                        </select>
+                      </div>
+                      <div>
+                        <FieldHeader
+                          label="Authorized representative agency name (FL-105 item 1)"
+                          field={workspace.fl105.authorizedRepresentativeAgencyName}
+                        />
+                        <Input
+                          value={workspace.fl105.authorizedRepresentativeAgencyName.value}
+                          onChange={(e) => updateFl105((fl105) => ({
+                            ...fl105,
+                            authorizedRepresentativeAgencyName: setDraftFieldValue(
+                              fl105.authorizedRepresentativeAgencyName,
+                              e.target.value,
+                            ),
+                          }))}
+                          placeholder="Agency, department, or entity name"
+                          disabled={workspace.fl105.representationRole.value !== 'authorized_representative'}
+                        />
+                      </div>
                       <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-white/70 p-3 dark:border-white/10 dark:bg-white/5">
                         <Checkbox
                           checked={workspace.fl105.childrenLivedTogetherPastFiveYears.value}

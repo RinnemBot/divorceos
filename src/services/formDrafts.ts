@@ -62,6 +62,8 @@ export interface DraftFl105OtherClaimant {
 }
 
 export interface DraftFl105Section {
+  representationRole: DraftField<'party' | 'authorized_representative'>;
+  authorizedRepresentativeAgencyName: DraftField<string>;
   childrenLivedTogetherPastFiveYears: DraftField<boolean>;
   residenceHistory: DraftFl105ResidenceHistoryEntry[];
   otherProceedingsKnown: DraftField<boolean>;
@@ -459,6 +461,15 @@ function createBlankOtherClaimant(): DraftFl105OtherClaimant {
 
 function createDefaultFl105Section(petitionerName = ''): DraftFl105Section {
   return {
+    representationRole: createField('party', {
+      sourceType: 'manual',
+      sourceLabel: 'Default FL-105 assumption',
+      confidence: 'low',
+      needsReview: true,
+    }),
+    authorizedRepresentativeAgencyName: createField('', {
+      needsReview: false,
+    }),
     childrenLivedTogetherPastFiveYears: createField(true, {
       sourceType: 'manual',
       sourceLabel: 'Default FL-105 assumption',
@@ -636,6 +647,9 @@ function normalizeWorkspace(workspace: DraftFormsWorkspace): DraftFormsWorkspace
       formerName: workspace.fl100?.formerName ?? defaultFl100.formerName,
     },
     fl105: {
+      representationRole: workspace.fl105?.representationRole ?? defaultFl105.representationRole,
+      authorizedRepresentativeAgencyName: workspace.fl105?.authorizedRepresentativeAgencyName
+        ?? defaultFl105.authorizedRepresentativeAgencyName,
       childrenLivedTogetherPastFiveYears: workspace.fl105?.childrenLivedTogetherPastFiveYears ?? defaultFl105.childrenLivedTogetherPastFiveYears,
       residenceHistory: Array.isArray(workspace.fl105?.residenceHistory) && workspace.fl105?.residenceHistory.length > 0
         ? workspace.fl105.residenceHistory.map((entry) => ({
@@ -1215,6 +1229,8 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
     sections.push({
       heading: 'FL-105 / GC-120 details',
       body: [
+        `FL-105 item 1 filing role: ${workspace.fl105.representationRole.value === 'authorized_representative' ? 'Authorized representative' : 'Party'}`,
+        `Authorized representative agency name: ${workspace.fl105.representationRole.value === 'authorized_representative' ? (workspace.fl105.authorizedRepresentativeAgencyName.value || 'Not provided') : 'Not applicable'}`,
         `Children lived together for past five years: ${workspace.fl105.childrenLivedTogetherPastFiveYears.value ? 'Yes' : 'No / attachment needed'}`,
         `Declarant signature date: ${workspace.fl105.signatureDate.value || 'Not provided'}`,
         `Additional FL-105 attached pages included: ${workspace.fl105.attachmentsIncluded.value ? 'Yes' : 'No'}`,

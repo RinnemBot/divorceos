@@ -150,6 +150,8 @@ interface StarterPacketWorkspace {
     formerName: StarterPacketField<string>;
   };
   fl105: {
+    representationRole: StarterPacketField<'party' | 'authorized_representative'>;
+    authorizedRepresentativeAgencyName: StarterPacketField<string>;
     childrenLivedTogetherPastFiveYears: StarterPacketField<boolean>;
     residenceHistory: StarterPacketFl105ResidenceHistoryEntry[];
     otherProceedingsKnown: StarterPacketField<boolean>;
@@ -918,7 +920,19 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
     fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page2[0].P2Caption[0].ShortTitle[0].ShortTitle_ft[0]', shortTitle, fontRegular, { size: 8 });
     fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page2[0].P2Caption[0].CaseNumber[0].CaseNumber[0]', caseNumber, fontRegular);
 
-    fillCheckbox(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].List1[0].Li1[0].Party[0].PartyRepCB[0]', true);
+    const fl105RepresentationRole = fl105?.representationRole?.value ?? 'party';
+    const isFl105AuthorizedRepresentative = fl105RepresentationRole === 'authorized_representative';
+    const fl105AuthorizedRepresentativeAgencyName = sanitizeText(fl105?.authorizedRepresentativeAgencyName?.value);
+    fillCheckbox(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].List1[0].Li1[0].Party[0].PartyRepCB[0]', !isFl105AuthorizedRepresentative);
+    fillCheckbox(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].List1[0].Li1[0].AuthRep[0].PartyRepCB[0]', isFl105AuthorizedRepresentative);
+    fillTextFields(
+      fl105Pages,
+      fl105FieldMap,
+      'FL-105[0].Page1[0].List1[0].Li1[0].Agencyname[0]',
+      isFl105AuthorizedRepresentative ? fl105AuthorizedRepresentativeAgencyName : '',
+      fontRegular,
+      { size: 8 },
+    );
     fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].List2[0].Li1[0].NumChildren[0]', String(workspace.children.length), fontRegular);
 
     workspace.children.slice(0, 4).forEach((child, index) => {
