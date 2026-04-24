@@ -108,6 +108,10 @@ interface StarterPacketWorkspace {
       requestAdditionalOrders: StarterPacketField<boolean>;
       additionalOrdersDetails: StarterPacketField<string>;
     };
+    minorChildren: {
+      hasUnbornChild: StarterPacketField<boolean>;
+      detailsOnAttachment4b: StarterPacketField<boolean>;
+    };
     childCustodyVisitation: {
       legalCustodyTo: StarterPacketField<'none' | 'petitioner' | 'respondent' | 'joint' | 'other'>;
       physicalCustodyTo: StarterPacketField<'none' | 'petitioner' | 'respondent' | 'joint' | 'other'>;
@@ -470,6 +474,9 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
   const isDomesticPartnershipProceeding = relationshipType === 'domestic_partnership' || relationshipType === 'both';
   const isMarriageProceeding = relationshipType === 'marriage' || relationshipType === 'both';
   const hasMinorChildren = Boolean(workspace.hasMinorChildren?.value);
+  const hasOverflowMinorChildren = workspace.children.length > 4;
+  const hasUnbornChild = Boolean(workspace.fl100?.minorChildren?.hasUnbornChild?.value);
+  const childListContinuedOnAttachment4b = Boolean(workspace.fl100?.minorChildren?.detailsOnAttachment4b?.value);
   const petitionerQualifies = qualifiesForResidency(
     workspace.fl100?.residency?.petitionerCaliforniaMonths?.value,
     workspace.fl100?.residency?.petitionerCountyMonths?.value,
@@ -623,10 +630,20 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
     fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].ThereAreNoMinorChildren_cb[0]', true);
   } else {
     fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].MinorChildren_sf[0].MinorChildrenList_cb[0]', true);
+    fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].MinorChildren_sf[0].UnbornChild_cb[0]', hasUnbornChild);
+    fillCheckbox(
+      fl100Pages,
+      fl100FieldMap,
+      'FL-100[0].Page1[0].MinorChildren_sf[0].Attachment4b[0]',
+      childListContinuedOnAttachment4b,
+    );
     workspace.children.slice(0, 4).forEach((child, index) => {
       const number = index + 1;
+      const childBirthdateField = number === 3
+        ? 'FL-100[0].Page1[0].MinorChildren_sf[0].Child3Date_dt[0]'
+        : `FL-100[0].Page1[0].MinorChildren_sf[0].Child${number}Birthdate_dt[0]`;
       fillTextFields(fl100Pages, fl100FieldMap, `FL-100[0].Page1[0].MinorChildren_sf[0].Child${number}Name_tf[0]`, sanitizeText(child.fullName?.value), fontRegular, { size: 8 });
-      fillTextFields(fl100Pages, fl100FieldMap, `FL-100[0].Page1[0].MinorChildren_sf[0].Child${number}Birthdate_dt[0]`, formatDateForCourt(child.birthDate?.value), fontRegular, { size: 8 });
+      fillTextFields(fl100Pages, fl100FieldMap, childBirthdateField, formatDateForCourt(child.birthDate?.value), fontRegular, { size: 8 });
       fillTextFields(fl100Pages, fl100FieldMap, `FL-100[0].Page1[0].MinorChildren_sf[0].Child${number}Age_tf[0]`, formatChildAge(child.birthDate?.value), fontRegular, { size: 8 });
     });
   }
@@ -768,7 +785,7 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
       fillTextFields(fl105Pages, fl105FieldMap, `FL-105[0].Page1[0].List2[0].Li1[0].Table[0].Row${row}[0].TextField2[0]`, sanitizeText(child.placeOfBirth?.value), fontRegular, { size: 8 });
     });
 
-    fillCheckbox(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].List2[0].Li1[0].CheckBox19[0]', workspace.children.length > 4);
+    fillCheckbox(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].List2[0].Li1[0].CheckBox19[0]', hasOverflowMinorChildren);
     fillCheckbox(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].List3[0].Li1[0].OneManyCB[0]', Boolean(fl105?.childrenLivedTogetherPastFiveYears?.value));
     fillCheckbox(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].List3[0].Li2[0].KidsLiveApart[0].OneManyCB[0]', !fl105?.childrenLivedTogetherPastFiveYears?.value);
 

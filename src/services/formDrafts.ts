@@ -118,6 +118,10 @@ export interface DraftFl100Section {
     requestAdditionalOrders: DraftField<boolean>;
     additionalOrdersDetails: DraftField<string>;
   };
+  minorChildren: {
+    hasUnbornChild: DraftField<boolean>;
+    detailsOnAttachment4b: DraftField<boolean>;
+  };
   childCustodyVisitation: {
     legalCustodyTo: DraftField<'none' | 'petitioner' | 'respondent' | 'joint' | 'other'>;
     physicalCustodyTo: DraftField<'none' | 'petitioner' | 'respondent' | 'joint' | 'other'>;
@@ -330,6 +334,10 @@ function createDefaultFl100Section(): DraftFl100Section {
       }),
       additionalOrdersDetails: createField('', { needsReview: true }),
     },
+    minorChildren: {
+      hasUnbornChild: createField(false, { ...assumptionFieldConfig }),
+      detailsOnAttachment4b: createField(false, { ...assumptionFieldConfig }),
+    },
     childCustodyVisitation: {
       legalCustodyTo: createField('none', {
         ...assumptionFieldConfig,
@@ -529,6 +537,10 @@ function normalizeWorkspace(workspace: DraftFormsWorkspace): DraftFormsWorkspace
       childSupport: {
         requestAdditionalOrders: workspace.fl100?.childSupport?.requestAdditionalOrders ?? defaultFl100.childSupport.requestAdditionalOrders,
         additionalOrdersDetails: workspace.fl100?.childSupport?.additionalOrdersDetails ?? defaultFl100.childSupport.additionalOrdersDetails,
+      },
+      minorChildren: {
+        hasUnbornChild: workspace.fl100?.minorChildren?.hasUnbornChild ?? defaultFl100.minorChildren.hasUnbornChild,
+        detailsOnAttachment4b: workspace.fl100?.minorChildren?.detailsOnAttachment4b ?? defaultFl100.minorChildren.detailsOnAttachment4b,
       },
       childCustodyVisitation: {
         legalCustodyTo: workspace.fl100?.childCustodyVisitation?.legalCustodyTo ?? defaultFl100.childCustodyVisitation.legalCustodyTo,
@@ -954,6 +966,8 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
     workspace.fl100.childCustodyVisitation.attachments.formFl341e.value ? 'FL-341(E)' : null,
     workspace.fl100.childCustodyVisitation.attachments.attachment6c1.value ? 'Attachment 6c(1)' : null,
   ].filter(Boolean) as string[];
+  const hasOverflowMinorChildren = workspace.children.length > FL105_FORM_CAPACITY.childrenRows;
+  const childrenBeyondVisibleRowsCount = Math.max(workspace.children.length - FL105_FORM_CAPACITY.childrenRows, 0);
 
   const sections: DraftPacketSection[] = [
     {
@@ -1014,6 +1028,9 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
         `Custody/visitation attachments selected: ${custodyAttachmentLabels.join(', ') || 'None'}`,
         `Additional child support orders requested: ${workspace.fl100.childSupport.requestAdditionalOrders.value ? 'Yes' : 'No'}`,
         `Additional child support order details: ${workspace.fl100.childSupport.additionalOrdersDetails.value || 'Not provided'}`,
+        `Unborn child of the relationship listed in item 4: ${workspace.fl100.minorChildren.hasUnbornChild.value ? 'Yes' : 'No'}`,
+        `Children exceed FL-100 visible child rows: ${hasOverflowMinorChildren ? `Yes (${workspace.children.length} entered, ${FL105_FORM_CAPACITY.childrenRows} visible)` : 'No'}`,
+        `Attachment 4b marked for additional child details: ${workspace.fl100.minorChildren.detailsOnAttachment4b.value ? 'Yes' : 'No'}`,
         `Attorney fees and costs requested: ${workspace.fl100.attorneyFeesAndCosts.requestAward.value ? 'Yes' : 'No'}`,
         `Attorney fees/costs payable by: ${workspace.fl100.attorneyFeesAndCosts.payableBy.value}`,
         `Other FL-100 requests selected: ${workspace.fl100.otherRequests.requestOtherRelief.value ? 'Yes' : 'No'}`,
@@ -1033,8 +1050,25 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
       heading: 'Children of the relationship',
       body: workspace.children.length > 0
         ? workspace.children.map((child, index) => `${index + 1}. ${child.fullName.value || 'Unnamed child'} — DOB: ${child.birthDate.value || 'Not provided'} — Place of birth: ${child.placeOfBirth.value || 'Not provided'}`).join('\n')
-        : 'Minor children were indicated, but child details have not been entered yet.',
+        : workspace.fl100.minorChildren.hasUnbornChild.value
+          ? 'No born/adopted child rows entered. Unborn child checkbox is selected for FL-100 item 4.'
+          : 'Minor children were indicated, but child details have not been entered yet.',
     });
+
+    if (hasOverflowMinorChildren) {
+      sections.push({
+        heading: 'FL-100 child row overflow',
+        body: [
+          `Visible FL-100 rows in this packet: ${FL105_FORM_CAPACITY.childrenRows}`,
+          `Children entered in workspace: ${workspace.children.length}`,
+          `Children beyond visible rows: ${childrenBeyondVisibleRowsCount}`,
+          `Attachment 4b selected: ${workspace.fl100.minorChildren.detailsOnAttachment4b.value ? 'Yes' : 'No'}`,
+          workspace.fl100.minorChildren.detailsOnAttachment4b.value
+            ? 'Additional child details are expected on an external attachment to item 4b.'
+            : 'Attachment 4b is not selected; generation should stay blocked until this is resolved.',
+        ].join('\n'),
+      });
+    }
 
     sections.push({
       heading: 'FL-105 / GC-120 details',

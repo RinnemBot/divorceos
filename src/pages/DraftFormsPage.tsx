@@ -234,14 +234,27 @@ export function DraftFormsPage() {
     }
 
     if (workspace.hasMinorChildren.value) {
-      if (workspace.children.length === 0) {
-        missing.push('At least one child entry');
+      if (workspace.children.length === 0 && !workspace.fl100.minorChildren.hasUnbornChild.value) {
+        missing.push('At least one child entry or unborn child selection');
       }
       workspace.children.forEach((child, index) => {
         if (!child.fullName.value.trim()) missing.push(`Child ${index + 1} full name`);
         if (!child.birthDate.value.trim()) missing.push(`Child ${index + 1} birth date`);
         if (!child.placeOfBirth.value.trim()) missing.push(`Child ${index + 1} place of birth`);
       });
+      if (
+        workspace.children.length > FL105_FORM_CAPACITY.childrenRows
+        && !workspace.fl100.minorChildren.detailsOnAttachment4b.value
+      ) {
+        missing.push('FL-100 attachment 4b selection for children beyond visible rows');
+      }
+    } else {
+      if (workspace.fl100.minorChildren.hasUnbornChild.value) {
+        missing.push('Enable minor children before selecting unborn child in FL-100 item 4');
+      }
+      if (workspace.fl100.minorChildren.detailsOnAttachment4b.value) {
+        missing.push('Enable minor children before using FL-100 attachment 4b');
+      }
     }
 
     return missing;
@@ -317,6 +330,8 @@ export function DraftFormsPage() {
   const hasSameSexMarriageJurisdictionException = isMarriageRelationship
     && workspace.fl100.domesticPartnership.sameSexMarriageJurisdictionException.value;
   const hasJurisdictionException = hasDomesticPartnershipResidencyException || hasSameSexMarriageJurisdictionException;
+  const hasOverflowMinorChildren = workspace.children.length > FL105_FORM_CAPACITY.childrenRows;
+  const overflowMinorChildrenCount = Math.max(workspace.children.length - FL105_FORM_CAPACITY.childrenRows, 0);
 
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_14%_0%,rgba(16,185,129,0.16),transparent_24%),radial-gradient(circle_at_86%_8%,rgba(59,130,246,0.12),transparent_20%),linear-gradient(180deg,#f8fafc_0%,#ecfdf5_45%,#f8fafc_100%)] py-12 dark:bg-[radial-gradient(circle_at_16%_0%,rgba(16,185,129,0.16),transparent_24%),radial-gradient(circle_at_84%_8%,rgba(59,130,246,0.14),transparent_20%),linear-gradient(180deg,#020617_0%,#03111f_50%,#020617_100%)]">
@@ -1412,6 +1427,16 @@ export function DraftFormsPage() {
                         ...current,
                         hasMinorChildren: setDraftFieldValue(current.hasMinorChildren, nextValue),
                         children: nextValue ? current.children : [],
+                        fl100: nextValue
+                          ? current.fl100
+                          : {
+                            ...current.fl100,
+                            minorChildren: {
+                              ...current.fl100.minorChildren,
+                              hasUnbornChild: setDraftFieldValue(current.fl100.minorChildren.hasUnbornChild, false),
+                              detailsOnAttachment4b: setDraftFieldValue(current.fl100.minorChildren.detailsOnAttachment4b, false),
+                            },
+                          },
                       }));
                     }}
                   />
@@ -1432,11 +1457,50 @@ export function DraftFormsPage() {
                         type="button"
                         variant="outline"
                         className="rounded-full"
-                        disabled={workspace.children.length >= FL105_FORM_CAPACITY.childrenRows}
                         onClick={() => commitWorkspace((current) => ({ ...current, children: [...current.children, createBlankChild()] }))}
                       >
                         Add child
                       </Button>
+                    </div>
+                    <div className="grid gap-3 md:grid-cols-2">
+                      <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-white/70 p-3 dark:border-white/10 dark:bg-white/5">
+                        <Checkbox
+                          checked={workspace.fl100.minorChildren.hasUnbornChild.value}
+                          onCheckedChange={(checked) => updateFl100((fl100) => ({
+                            ...fl100,
+                            minorChildren: {
+                              ...fl100.minorChildren,
+                              hasUnbornChild: setDraftFieldValue(fl100.minorChildren.hasUnbornChild, checked === true),
+                            },
+                          }))}
+                        />
+                        <div>
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="text-sm font-medium text-slate-800 dark:text-slate-100">Include unborn child in FL-100 item 4</span>
+                            <FieldSourceBadge field={workspace.fl100.minorChildren.hasUnbornChild} />
+                          </div>
+                          <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Maps to FL-100 `UnbornChild_cb[0]`.</p>
+                        </div>
+                      </label>
+                      <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-white/70 p-3 dark:border-white/10 dark:bg-white/5">
+                        <Checkbox
+                          checked={workspace.fl100.minorChildren.detailsOnAttachment4b.value}
+                          onCheckedChange={(checked) => updateFl100((fl100) => ({
+                            ...fl100,
+                            minorChildren: {
+                              ...fl100.minorChildren,
+                              detailsOnAttachment4b: setDraftFieldValue(fl100.minorChildren.detailsOnAttachment4b, checked === true),
+                            },
+                          }))}
+                        />
+                        <div>
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="text-sm font-medium text-slate-800 dark:text-slate-100">Child list continues on attachment 4b</span>
+                            <FieldSourceBadge field={workspace.fl100.minorChildren.detailsOnAttachment4b} />
+                          </div>
+                          <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Use when additional child detail is supplied outside visible FL-100 rows.</p>
+                        </div>
+                      </label>
                     </div>
                     {workspace.children.length === 0 ? (
                       <p className="text-sm text-amber-700 dark:text-amber-200">No child entries yet.</p>
@@ -1495,9 +1559,12 @@ export function DraftFormsPage() {
                             </Button>
                           </div>
                         ))}
-                        {workspace.children.length >= FL105_FORM_CAPACITY.childrenRows && (
-                          <p className="text-xs text-slate-500 dark:text-slate-400">
-                            FL-105 supports {FL105_FORM_CAPACITY.childrenRows} visible child rows in this slice.
+                        <p className="text-xs text-slate-500 dark:text-slate-400">
+                          FL-100 page 1 has {FL105_FORM_CAPACITY.childrenRows} visible child rows in this packet.
+                        </p>
+                        {hasOverflowMinorChildren && (
+                          <p className="text-xs text-amber-700 dark:text-amber-200">
+                            {overflowMinorChildrenCount} child(ren) exceed visible FL-100 rows. Select “Child list continues on attachment 4b” before generation.
                           </p>
                         )}
                       </div>
