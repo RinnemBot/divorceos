@@ -1158,6 +1158,7 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
         `Additional child support order details: ${workspace.fl100.childSupport.additionalOrdersDetails.value || 'Not provided'}`,
         `Unborn child of the relationship listed in item 4: ${workspace.fl100.minorChildren.hasUnbornChild.value ? 'Yes' : 'No'}`,
         `Children exceed FL-100 visible child rows: ${hasOverflowMinorChildren ? `Yes (${workspace.children.length} entered, ${FL105_FORM_CAPACITY.childrenRows} visible)` : 'No'}`,
+        `Children exceed FL-105 visible child rows: ${hasOverflowMinorChildren ? `Yes (${workspace.children.length} entered, ${FL105_FORM_CAPACITY.childrenRows} visible)` : 'No'}`,
         `Attachment 4b marked for additional child details: ${workspace.fl100.minorChildren.detailsOnAttachment4b.value ? 'Yes' : 'No'}`,
         `Attorney fees and costs requested: ${workspace.fl100.attorneyFeesAndCosts.requestAward.value ? 'Yes' : 'No'}`,
         `Attorney fees/costs payable by: ${workspace.fl100.attorneyFeesAndCosts.payableBy.value}`,
@@ -1195,6 +1196,18 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
           workspace.fl100.minorChildren.detailsOnAttachment4b.value
             ? 'Additional child details are expected on an external attachment to item 4b.'
             : 'Attachment 4b is not selected; generation should stay blocked until this is resolved.',
+        ].join('\n'),
+      });
+
+      sections.push({
+        heading: 'FL-105 child row overflow',
+        body: [
+          `Visible FL-105 rows in this packet: ${FL105_FORM_CAPACITY.childrenRows}`,
+          `Children entered in workspace: ${workspace.children.length}`,
+          `Children beyond visible rows: ${childrenBeyondVisibleRowsCount}`,
+          `FL-105 attached pages selected: ${workspace.fl105.attachmentsIncluded.value ? 'Yes' : 'No'}`,
+          `FL-105 attachment page count: ${workspace.fl105.attachmentsIncluded.value ? (workspace.fl105.attachmentPageCount.value || 'Not provided') : 'Not applicable'}`,
+          'Starter-packet generation does not yet create extra FL-105 child attachment pages, so generation should stay blocked until this overflow is resolved.',
         ].join('\n'),
       });
     }

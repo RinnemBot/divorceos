@@ -919,7 +919,7 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
     fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page2[0].P2Caption[0].CaseNumber[0].CaseNumber[0]', caseNumber, fontRegular);
 
     fillCheckbox(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].List1[0].Li1[0].Party[0].PartyRepCB[0]', true);
-    fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].List2[0].Li1[0].NumChildren[0]', String(Math.min(workspace.children.length, 4)), fontRegular);
+    fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].List2[0].Li1[0].NumChildren[0]', String(workspace.children.length), fontRegular);
 
     workspace.children.slice(0, 4).forEach((child, index) => {
       const row = index + 1;

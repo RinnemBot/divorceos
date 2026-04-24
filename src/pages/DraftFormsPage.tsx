@@ -297,6 +297,11 @@ export function DraftFormsPage() {
         if (!child.birthDate.value.trim()) missing.push(`Child ${index + 1} birth date`);
         if (!child.placeOfBirth.value.trim()) missing.push(`Child ${index + 1} place of birth`);
       });
+      if (workspace.children.length > FL105_FORM_CAPACITY.childrenRows) {
+        missing.push(
+          `FL-105 child rows exceed visible capacity (${workspace.children.length} entered, ${FL105_FORM_CAPACITY.childrenRows} visible). Extra FL-105 child attachment pages are not generated yet.`,
+        );
+      }
       if (
         workspace.children.length > FL105_FORM_CAPACITY.childrenRows
         && !workspace.fl100.minorChildren.detailsOnAttachment4b.value
@@ -1800,12 +1805,17 @@ export function DraftFormsPage() {
                           </div>
                         ))}
                         <p className="text-xs text-slate-500 dark:text-slate-400">
-                          FL-100 page 1 has {FL105_FORM_CAPACITY.childrenRows} visible child rows in this packet.
+                          FL-100 page 1 and FL-105 page 1 each have {FL105_FORM_CAPACITY.childrenRows} visible child rows in this packet.
                         </p>
                         {hasOverflowMinorChildren && (
-                          <p className="text-xs text-amber-700 dark:text-amber-200">
-                            {overflowMinorChildrenCount} child(ren) exceed visible FL-100 rows. Select “Child list continues on attachment 4b” before generation.
-                          </p>
+                          <div className="space-y-1 text-xs text-amber-700 dark:text-amber-200">
+                            <p>
+                              {overflowMinorChildrenCount} child(ren) exceed visible FL-100 rows. Select “Child list continues on attachment 4b” before generation.
+                            </p>
+                            <p>
+                              Draft Forms does not yet generate extra FL-105 child attachment pages, so starter-packet generation stays blocked when more than {FL105_FORM_CAPACITY.childrenRows} children are entered.
+                            </p>
+                          </div>
                         )}
                       </div>
                     )}
