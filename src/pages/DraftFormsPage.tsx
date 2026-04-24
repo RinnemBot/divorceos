@@ -48,6 +48,27 @@ function splitNonEmptyLines(value: string) {
     .filter(Boolean);
 }
 
+function normalizeFl105ProceedingType(value: string) {
+  const raw = value.trim().toLowerCase();
+  if (!raw) return '';
+  if (raw === 'family' || /(family|dissolution|custody|divorce)/.test(raw)) return 'family';
+  if (raw === 'guardianship' || /(guardian|probate|minor guardianship)/.test(raw)) return 'guardianship';
+  if (raw === 'juvenile' || /(juvenile|dependency|delinquency)/.test(raw)) return 'juvenile';
+  if (raw === 'adoption' || /(adoption|adopt)/.test(raw)) return 'adoption';
+  if (raw === 'other' || /(other|tribal|out[- ]?of[- ]?state)/.test(raw)) return 'other';
+  return '';
+}
+
+function normalizeFl105OrderType(value: string) {
+  const raw = value.trim().toLowerCase();
+  if (!raw) return '';
+  if (raw === 'criminal' || /(criminal|police|penal)/.test(raw)) return 'criminal';
+  if (raw === 'family' || /(family|dvro|domestic)/.test(raw)) return 'family';
+  if (raw === 'juvenile' || /(juvenile|dependency|child welfare)/.test(raw)) return 'juvenile';
+  if (raw === 'other' || /(other|civil|tribal)/.test(raw)) return 'other';
+  return '';
+}
+
 const FL100_SEPARATE_PROPERTY_VISIBLE_ROWS = 5;
 
 function FieldSourceBadge({ field }: { field: DraftField<unknown> }) {
@@ -301,6 +322,34 @@ export function DraftFormsPage() {
       if (workspace.fl105.attachmentsIncluded.value && !workspace.fl105.attachmentPageCount.value.trim()) {
         missing.push('FL-105 attachment page count');
       }
+      workspace.fl105.otherProceedings.forEach((entry, index) => {
+        const hasProceedingData = [
+          entry.proceedingType.value,
+          entry.caseNumber.value,
+          entry.court.value,
+          entry.orderDate.value,
+          entry.childNames.value,
+          entry.connection.value,
+          entry.status.value,
+        ].some((value) => value.trim().length > 0);
+
+        if (hasProceedingData && !normalizeFl105ProceedingType(entry.proceedingType.value)) {
+          missing.push(`FL-105 other proceeding ${index + 1} type`);
+        }
+      });
+      workspace.fl105.domesticViolenceOrders.forEach((entry, index) => {
+        const hasOrderData = [
+          entry.orderType.value,
+          entry.county.value,
+          entry.stateOrTribe.value,
+          entry.caseNumber.value,
+          entry.expirationDate.value,
+        ].some((value) => value.trim().length > 0);
+
+        if (hasOrderData && !normalizeFl105OrderType(entry.orderType.value)) {
+          missing.push(`FL-105 restraining/protective order ${index + 1} type`);
+        }
+      });
       workspace.children.forEach((child, index) => {
         if (!child.fullName.value.trim()) missing.push(`Child ${index + 1} full name`);
         if (!child.birthDate.value.trim()) missing.push(`Child ${index + 1} birth date`);
@@ -2083,16 +2132,23 @@ export function DraftFormsPage() {
                       <div className="space-y-3">
                         {workspace.fl105.otherProceedings.map((entry) => (
                           <div key={entry.id} className="grid gap-3 rounded-lg border border-slate-200/80 bg-slate-50/70 p-3 md:grid-cols-6 dark:border-white/10 dark:bg-white/5">
-                            <Input
-                              value={entry.proceedingType.value}
+                            <select
+                              value={normalizeFl105ProceedingType(entry.proceedingType.value)}
                               onChange={(e) => updateFl105((fl105) => ({
                                 ...fl105,
                                 otherProceedings: fl105.otherProceedings.map((candidate) => candidate.id === entry.id
                                   ? { ...candidate, proceedingType: setDraftFieldValue(candidate.proceedingType, e.target.value) }
                                   : candidate),
                               }))}
-                              placeholder="Type"
-                            />
+                              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"
+                            >
+                              <option value="">Proceeding type…</option>
+                              <option value="family">Family</option>
+                              <option value="guardianship">Guardianship</option>
+                              <option value="other">Other</option>
+                              <option value="juvenile">Juvenile</option>
+                              <option value="adoption">Adoption</option>
+                            </select>
                             <Input
                               value={entry.caseNumber.value}
                               onChange={(e) => updateFl105((fl105) => ({
@@ -2206,16 +2262,22 @@ export function DraftFormsPage() {
                       <div className="space-y-3">
                         {workspace.fl105.domesticViolenceOrders.map((entry) => (
                           <div key={entry.id} className="grid gap-3 rounded-lg border border-slate-200/80 bg-slate-50/70 p-3 md:grid-cols-6 dark:border-white/10 dark:bg-white/5">
-                            <Input
-                              value={entry.orderType.value}
+                            <select
+                              value={normalizeFl105OrderType(entry.orderType.value)}
                               onChange={(e) => updateFl105((fl105) => ({
                                 ...fl105,
                                 domesticViolenceOrders: fl105.domesticViolenceOrders.map((candidate) => candidate.id === entry.id
                                   ? { ...candidate, orderType: setDraftFieldValue(candidate.orderType, e.target.value) }
                                   : candidate),
                               }))}
-                              placeholder="Order type"
-                            />
+                              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"
+                            >
+                              <option value="">Order type…</option>
+                              <option value="criminal">Criminal</option>
+                              <option value="family">Family</option>
+                              <option value="juvenile">Juvenile</option>
+                              <option value="other">Other</option>
+                            </select>
                             <Input
                               value={entry.county.value}
                               onChange={(e) => updateFl105((fl105) => ({

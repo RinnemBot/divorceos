@@ -469,6 +469,9 @@ function buildShortTitle(petitionerName: string, respondentName: string) {
 function normalizeProceedingType(value: string | undefined | null): 'family' | 'guardianship' | 'other' | 'juvenile' | 'adoption' | null {
   const raw = sanitizeText(value).toLowerCase();
   if (!raw) return null;
+  if (raw === 'family' || raw === 'guardianship' || raw === 'other' || raw === 'juvenile' || raw === 'adoption') {
+    return raw;
+  }
   if (/(family|dissolution|custody|divorce)/.test(raw)) return 'family';
   if (/(guardian|probate|minor guardianship)/.test(raw)) return 'guardianship';
   if (/(juvenile|dependency|delinquency)/.test(raw)) return 'juvenile';
@@ -480,6 +483,9 @@ function normalizeProceedingType(value: string | undefined | null): 'family' | '
 function normalizeOrderType(value: string | undefined | null): 'criminal' | 'family' | 'juvenile' | 'other' | null {
   const raw = sanitizeText(value).toLowerCase();
   if (!raw) return null;
+  if (raw === 'criminal' || raw === 'family' || raw === 'juvenile' || raw === 'other') {
+    return raw;
+  }
   if (/(criminal|police|penal)/.test(raw)) return 'criminal';
   if (/(family|dvro|domestic)/.test(raw)) return 'family';
   if (/(juvenile|dependency|child welfare)/.test(raw)) return 'juvenile';
