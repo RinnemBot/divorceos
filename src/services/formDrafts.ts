@@ -225,6 +225,12 @@ export const FL105_FORM_CAPACITY = Object.freeze({
 });
 
 const FL100_SEPARATE_PROPERTY_VISIBLE_ROWS = 5;
+const GENERATED_CHILD_ATTACHMENT_ENTRIES_PER_PAGE = 6;
+
+function getGeneratedChildAttachmentPageCount(extraChildrenCount: number) {
+  if (extraChildrenCount <= 0) return 0;
+  return Math.ceil(extraChildrenCount / GENERATED_CHILD_ATTACHMENT_ENTRIES_PER_PAGE);
+}
 
 function getStorage() {
   if (typeof window === 'undefined') return null;
@@ -1124,6 +1130,7 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
   ].filter(Boolean) as string[];
   const hasOverflowMinorChildren = workspace.children.length > FL105_FORM_CAPACITY.childrenRows;
   const childrenBeyondVisibleRowsCount = Math.max(workspace.children.length - FL105_FORM_CAPACITY.childrenRows, 0);
+  const generatedChildAttachmentPageCount = getGeneratedChildAttachmentPageCount(childrenBeyondVisibleRowsCount);
 
   const sections: DraftPacketSection[] = [
     {
@@ -1235,7 +1242,7 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
           `Children beyond visible rows: ${childrenBeyondVisibleRowsCount}`,
           `Attachment 4b selected: ${workspace.fl100.minorChildren.detailsOnAttachment4b.value ? 'Yes' : 'No'}`,
           workspace.fl100.minorChildren.detailsOnAttachment4b.value
-            ? 'Additional child details are expected on an external attachment to item 4b.'
+            ? 'Starter-packet generation will add FL-100 attachment 4b continuation pages for the extra children.'
             : 'Attachment 4b is not selected; generation should stay blocked until this is resolved.',
         ].join('\n'),
       });
@@ -1247,8 +1254,9 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
           `Children entered in workspace: ${workspace.children.length}`,
           `Children beyond visible rows: ${childrenBeyondVisibleRowsCount}`,
           `FL-105 attached pages selected: ${workspace.fl105.attachmentsIncluded.value ? 'Yes' : 'No'}`,
-          `FL-105 attachment page count: ${workspace.fl105.attachmentsIncluded.value ? (workspace.fl105.attachmentPageCount.value || 'Not provided') : 'Not applicable'}`,
-          'Starter-packet generation does not yet create extra FL-105 child attachment pages, so generation should stay blocked until this overflow is resolved.',
+          `Manual FL-105 attachment page count entered: ${workspace.fl105.attachmentsIncluded.value ? (workspace.fl105.attachmentPageCount.value || 'Not provided') : 'Not applicable'}`,
+          `Generated FL-105 attachment 2 pages for extra children: ${generatedChildAttachmentPageCount}`,
+          'Starter-packet generation now creates FL-105 additional-child continuation pages automatically when children exceed the visible rows.',
         ].join('\n'),
       });
     }
@@ -1265,7 +1273,8 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
         `FL-105 item 3a person/address confidentiality (state only): ${workspace.fl105.personAddressConfidentialStateOnly.value ? 'Yes' : 'No'}`,
         `Declarant signature date: ${workspace.fl105.signatureDate.value || 'Not provided'}`,
         `Additional FL-105 attached pages included: ${workspace.fl105.attachmentsIncluded.value ? 'Yes' : 'No'}`,
-        `FL-105 attachment page count: ${workspace.fl105.attachmentsIncluded.value ? (workspace.fl105.attachmentPageCount.value || 'Not provided') : 'Not applicable'}`,
+        `Manual FL-105 attachment page count entered: ${workspace.fl105.attachmentsIncluded.value ? (workspace.fl105.attachmentPageCount.value || 'Not provided') : 'Not applicable'}`,
+        `Generated FL-105 child-overflow pages: ${generatedChildAttachmentPageCount}`,
         workspace.fl105.residenceHistory.length > 0
           ? `Residence history:\n${workspace.fl105.residenceHistory.map((entry, index) => `${index + 1}. From ${entry.fromDate.value || 'Not provided'}${entry.toDate.value ? ` to ${entry.toDate.value}` : ''} — ${entry.residence.value || 'Residence missing'} — Lived with ${entry.personAndAddress.value || 'Not provided'} (${entry.relationship.value || 'Relationship missing'})`).join('\n')}`
           : 'Residence history not entered yet.',

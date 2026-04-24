@@ -195,6 +195,10 @@ const FL100_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-100.fields.json');
 const FL110_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-110.fields.json');
 const FL105_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-105.fields.json');
 const FL100_SEPARATE_PROPERTY_VISIBLE_ROWS = 5;
+const BASE_CHILD_VISIBLE_ROWS = 4;
+const GENERATED_CHILD_ATTACHMENT_ENTRIES_PER_PAGE = 6;
+const ATTACHMENT_PAGE_SIZE: [number, number] = [612, 792];
+const ATTACHMENT_PAGE_MARGIN = 48;
 
 let templateCache: Promise<{
   fl100Bytes: Uint8Array;
@@ -460,6 +464,140 @@ function fillCheckbox(pages: PDFPage[], fieldMap: Map<string, TemplateField[]>, 
   }
 }
 
+function parseAttachmentPageCount(value: string | undefined | null) {
+  const digits = sanitizeText(value).replace(/\D/g, '');
+  if (!digits) return 0;
+  const parsed = Number.parseInt(digits, 10);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : 0;
+}
+
+function addAttachmentHeader(
+  page: PDFPage,
+  title: string,
+  shortTitle: string,
+  caseNumber: string,
+  fontRegular: PDFFont,
+  fontBold: PDFFont,
+  pageNumber: number,
+  totalPages: number,
+) {
+  const { width, height } = page.getSize();
+  const topY = height - ATTACHMENT_PAGE_MARGIN;
+  const color = rgb(0.08, 0.16, 0.28);
+
+  page.drawText(title, {
+    x: ATTACHMENT_PAGE_MARGIN,
+    y: topY,
+    size: 15,
+    font: fontBold,
+    color,
+  });
+
+  const pageLabel = totalPages > 1 ? `Page ${pageNumber} of ${totalPages}` : 'Page 1';
+  page.drawText(pageLabel, {
+    x: width - ATTACHMENT_PAGE_MARGIN - fontRegular.widthOfTextAtSize(pageLabel, 10),
+    y: topY + 2,
+    size: 10,
+    font: fontRegular,
+    color,
+  });
+
+  const caseNameLine = `Case name: ${shortTitle || 'Not provided'}`;
+  page.drawText(caseNameLine, {
+    x: ATTACHMENT_PAGE_MARGIN,
+    y: topY - 20,
+    size: 10,
+    font: fontRegular,
+    color,
+  });
+
+  if (caseNumber) {
+    const caseNumberLine = `Case number: ${caseNumber}`;
+    page.drawText(caseNumberLine, {
+      x: ATTACHMENT_PAGE_MARGIN,
+      y: topY - 34,
+      size: 10,
+      font: fontRegular,
+      color,
+    });
+  }
+
+  page.drawLine({
+    start: { x: ATTACHMENT_PAGE_MARGIN, y: topY - 44 },
+    end: { x: width - ATTACHMENT_PAGE_MARGIN, y: topY - 44 },
+    thickness: 1,
+    color,
+  });
+
+  return topY - 62;
+}
+
+function appendChildAttachmentPages(
+  output: PDFDocument,
+  fontRegular: PDFFont,
+  fontBold: PDFFont,
+  title: string,
+  shortTitle: string,
+  caseNumber: string,
+  children: StarterPacketChild[],
+  options?: { includeAge?: boolean },
+) {
+  if (children.length === 0) return 0;
+
+  const totalPages = Math.ceil(children.length / GENERATED_CHILD_ATTACHMENT_ENTRIES_PER_PAGE);
+  const color = rgb(0.08, 0.16, 0.28);
+
+  for (let pageIndex = 0; pageIndex < totalPages; pageIndex += 1) {
+    const page = output.addPage(ATTACHMENT_PAGE_SIZE);
+    let cursorY = addAttachmentHeader(page, title, shortTitle, caseNumber, fontRegular, fontBold, pageIndex + 1, totalPages);
+    const chunk = children.slice(
+      pageIndex * GENERATED_CHILD_ATTACHMENT_ENTRIES_PER_PAGE,
+      (pageIndex + 1) * GENERATED_CHILD_ATTACHMENT_ENTRIES_PER_PAGE,
+    );
+
+    chunk.forEach((child, chunkIndex) => {
+      const itemNumber = pageIndex * GENERATED_CHILD_ATTACHMENT_ENTRIES_PER_PAGE + chunkIndex + 1;
+      const fullName = sanitizeText(child.fullName?.value) || 'Not provided';
+      const birthDate = formatDateForCourt(child.birthDate?.value) || 'Not provided';
+      const placeOfBirth = sanitizeText(child.placeOfBirth?.value) || 'Not provided';
+      const age = options?.includeAge ? (formatChildAge(child.birthDate?.value) || 'Not provided') : null;
+
+      page.drawText(`${itemNumber}. ${fullName}`, {
+        x: ATTACHMENT_PAGE_MARGIN,
+        y: cursorY,
+        size: 11,
+        font: fontBold,
+        color,
+      });
+      cursorY -= 15;
+
+      const detailsLine = age
+        ? `Birth date: ${birthDate}    Age: ${age}`
+        : `Birth date: ${birthDate}`;
+      page.drawText(detailsLine, {
+        x: ATTACHMENT_PAGE_MARGIN + 12,
+        y: cursorY,
+        size: 10,
+        font: fontRegular,
+        color,
+      });
+      cursorY -= 13;
+
+      page.drawText(`Place of birth: ${placeOfBirth}`, {
+        x: ATTACHMENT_PAGE_MARGIN + 12,
+        y: cursorY,
+        size: 10,
+        font: fontRegular,
+        color,
+        maxWidth: ATTACHMENT_PAGE_SIZE[0] - (ATTACHMENT_PAGE_MARGIN * 2) - 12,
+      });
+      cursorY -= 22;
+    });
+  }
+
+  return totalPages;
+}
+
 function buildShortTitle(petitionerName: string, respondentName: string) {
   const petitioner = sanitizeText(petitionerName);
   const respondent = sanitizeText(respondentName);
@@ -500,6 +638,7 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
   const { fl100Bytes, fl110Bytes, fl105Bytes, fl100Fields, fl110Fields, fl105Fields } = await loadTemplates();
   const output = await PDFDocument.create();
   const fontRegular = await output.embedFont(StandardFonts.Helvetica);
+  const fontBold = await output.embedFont(StandardFonts.HelveticaBold);
 
   const fl100Template = await PDFDocument.load(fl100Bytes);
   const fl110Template = await PDFDocument.load(fl110Bytes);
@@ -507,7 +646,6 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
   const fl100Pages = await output.copyPages(fl100Template, fl100Template.getPageIndices());
   fl100Pages.forEach((page) => output.addPage(page));
   const fl110Pages = await output.copyPages(fl110Template, fl110Template.getPageIndices());
-  fl110Pages.forEach((page) => output.addPage(page));
   const fl105Pages = await output.copyPages(fl105Template, fl105Template.getPageIndices());
 
   const fl100FieldMap = mapFields(fl100Fields);
@@ -888,6 +1026,22 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
     fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page3[0].ContinuedOnAttachment_cb[0]', otherRequestsContinuedOnAttachment);
   }
 
+  const overflowChildren = workspace.children.slice(BASE_CHILD_VISIBLE_ROWS);
+  if (overflowChildren.length > 0 && hasMinorChildren && workspace.fl100?.minorChildren?.detailsOnAttachment4b?.value) {
+    appendChildAttachmentPages(
+      output,
+      fontRegular,
+      fontBold,
+      'FL-100 Attachment 4b — Additional Minor Children',
+      shortTitle,
+      caseNumber,
+      overflowChildren,
+      { includeAge: true },
+    );
+  }
+
+  fl110Pages.forEach((page) => output.addPage(page));
+
   fillTextFields(fl110Pages, fl110FieldMap, 'FL-110[0].Page1[0].TextField2[0]', respondentName, fontRegular, { size: 10 });
   fillTextFields(fl110Pages, fl110FieldMap, 'FL-110[0].Page1[0].TextField2[1]', petitionerName, fontRegular, { size: 10 });
   fillTextFields(fl110Pages, fl110FieldMap, 'FL-110[0].Page1[0].#field[7]', respondentName, fontRegular, { size: 10 });
@@ -955,6 +1109,17 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
     });
 
     fillCheckbox(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].List2[0].Li1[0].CheckBox19[0]', hasOverflowMinorChildren);
+    const generatedFl105ChildAttachmentPages = hasOverflowMinorChildren
+      ? appendChildAttachmentPages(
+        output,
+        fontRegular,
+        fontBold,
+        'FL-105, Attachment 2, Additional Children',
+        shortTitle,
+        caseNumber,
+        overflowChildren,
+      )
+      : 0;
     fillCheckbox(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].List3[0].Li1[0].OneManyCB[0]', Boolean(fl105?.childrenLivedTogetherPastFiveYears?.value));
     fillCheckbox(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].List3[0].Li2[0].KidsLiveApart[0].OneManyCB[0]', !fl105?.childrenLivedTogetherPastFiveYears?.value);
 
@@ -1082,14 +1247,15 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
 
     const declarantName = sanitizeText(fl105?.declarantName?.value || petitionerName);
     const declarantSignatureDate = formatDateForCourt(fl105?.signatureDate?.value);
-    const hasFl105Attachments = Boolean(fl105?.attachmentsIncluded?.value);
-    const fl105AttachmentPageCount = sanitizeText(fl105?.attachmentPageCount?.value);
+    const manualFl105AttachmentPageCount = parseAttachmentPageCount(fl105?.attachmentPageCount?.value);
+    const totalFl105AttachmentPageCount = manualFl105AttachmentPageCount + generatedFl105ChildAttachmentPages;
+    const hasFl105Attachments = Boolean(fl105?.attachmentsIncluded?.value) || totalFl105AttachmentPageCount > 0;
     fillCheckbox(fl105Pages, fl105FieldMap, 'FL-105[0].Page2[0].List7[0].Li1[0].Checkbox[0]', hasFl105Attachments);
     fillTextFields(
       fl105Pages,
       fl105FieldMap,
       'FL-105[0].Page2[0].List7[0].Li1[0].PPAttached[0]',
-      hasFl105Attachments ? fl105AttachmentPageCount : '',
+      totalFl105AttachmentPageCount > 0 ? String(totalFl105AttachmentPageCount) : '',
       fontRegular,
       { size: 8 },
     );

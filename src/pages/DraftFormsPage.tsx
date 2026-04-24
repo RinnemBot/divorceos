@@ -76,6 +76,12 @@ function isFl105StateOnlyAddress(value: string) {
 }
 
 const FL100_SEPARATE_PROPERTY_VISIBLE_ROWS = 5;
+const GENERATED_CHILD_ATTACHMENT_ENTRIES_PER_PAGE = 6;
+
+function getGeneratedChildAttachmentPageCount(extraChildrenCount: number) {
+  if (extraChildrenCount <= 0) return 0;
+  return Math.ceil(extraChildrenCount / GENERATED_CHILD_ATTACHMENT_ENTRIES_PER_PAGE);
+}
 
 function FieldSourceBadge({ field }: { field: DraftField<unknown> }) {
   if (!field.sourceType) {
@@ -349,7 +355,11 @@ export function DraftFormsPage() {
           missing.push('FL-105 item 3a person/address confidentiality is selected, so person/address entries must be state-only (no street details)');
         }
       }
-      if (workspace.fl105.attachmentsIncluded.value && !workspace.fl105.attachmentPageCount.value.trim()) {
+      if (
+        workspace.fl105.attachmentsIncluded.value
+        && !workspace.fl105.attachmentPageCount.value.trim()
+        && workspace.children.length <= FL105_FORM_CAPACITY.childrenRows
+      ) {
         missing.push('FL-105 attachment page count');
       }
       workspace.fl105.otherProceedings.forEach((entry, index) => {
@@ -385,11 +395,6 @@ export function DraftFormsPage() {
         if (!child.birthDate.value.trim()) missing.push(`Child ${index + 1} birth date`);
         if (!child.placeOfBirth.value.trim()) missing.push(`Child ${index + 1} place of birth`);
       });
-      if (workspace.children.length > FL105_FORM_CAPACITY.childrenRows) {
-        missing.push(
-          `FL-105 child rows exceed visible capacity (${workspace.children.length} entered, ${FL105_FORM_CAPACITY.childrenRows} visible). Extra FL-105 child attachment pages are not generated yet.`,
-        );
-      }
       if (
         workspace.children.length > FL105_FORM_CAPACITY.childrenRows
         && !workspace.fl100.minorChildren.detailsOnAttachment4b.value
@@ -480,6 +485,7 @@ export function DraftFormsPage() {
   const hasJurisdictionException = hasDomesticPartnershipResidencyException || hasSameSexMarriageJurisdictionException;
   const hasOverflowMinorChildren = workspace.children.length > FL105_FORM_CAPACITY.childrenRows;
   const overflowMinorChildrenCount = Math.max(workspace.children.length - FL105_FORM_CAPACITY.childrenRows, 0);
+  const generatedChildAttachmentPageCount = getGeneratedChildAttachmentPageCount(overflowMinorChildrenCount);
 
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_14%_0%,rgba(16,185,129,0.16),transparent_24%),radial-gradient(circle_at_86%_8%,rgba(59,130,246,0.12),transparent_20%),linear-gradient(180deg,#f8fafc_0%,#ecfdf5_45%,#f8fafc_100%)] py-12 dark:bg-[radial-gradient(circle_at_16%_0%,rgba(16,185,129,0.16),transparent_24%),radial-gradient(circle_at_84%_8%,rgba(59,130,246,0.14),transparent_20%),linear-gradient(180deg,#020617_0%,#03111f_50%,#020617_100%)]">
@@ -1898,10 +1904,12 @@ export function DraftFormsPage() {
                         {hasOverflowMinorChildren && (
                           <div className="space-y-1 text-xs text-amber-700 dark:text-amber-200">
                             <p>
-                              {overflowMinorChildrenCount} child(ren) exceed visible FL-100 rows. Select “Child list continues on attachment 4b” before generation.
+                              {overflowMinorChildrenCount} child(ren) exceed the visible FL-100 / FL-105 rows in this packet.
                             </p>
                             <p>
-                              Draft Forms does not yet generate extra FL-105 child attachment pages, so starter-packet generation stays blocked when more than {FL105_FORM_CAPACITY.childrenRows} children are entered.
+                              {workspace.fl100.minorChildren.detailsOnAttachment4b.value
+                                ? `Starter-packet generation will add FL-100 attachment 4b and ${generatedChildAttachmentPageCount} generated FL-105 attachment page${generatedChildAttachmentPageCount === 1 ? '' : 's'} for the extra children.`
+                                : 'Select “Child list continues on attachment 4b” so Draft Forms can generate the required FL-100 continuation page. FL-105 continuation pages will be added automatically once item 4b is enabled.'}
                             </p>
                           </div>
                         )}
@@ -2010,7 +2018,7 @@ export function DraftFormsPage() {
                             <span className="font-medium text-slate-800 dark:text-slate-100">FL-105 has attached pages</span>
                             <FieldSourceBadge field={workspace.fl105.attachmentsIncluded} />
                           </div>
-                          <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Maps to page 2, item 7 checkbox.</p>
+                          <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Maps to page 2, item 7 checkbox. Generated child-overflow pages count as attached pages automatically.</p>
                         </div>
                       </label>
                       <div>
@@ -2028,6 +2036,9 @@ export function DraftFormsPage() {
                           placeholder="e.g., 2"
                           disabled={!workspace.fl105.attachmentsIncluded.value}
                         />
+                        <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                          Enter manual attachment pages here. Any generated FL-105 child-overflow pages are added to the final item 7 total automatically.
+                        </p>
                       </div>
                     </div>
 
