@@ -659,6 +659,22 @@ export function DraftFormsPage() {
                     />
                   </div>
                 </div>
+                <label className="flex items-start gap-3 rounded-2xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5">
+                  <Checkbox
+                    checked={workspace.fl100.isAmended.value}
+                    onCheckedChange={(checked) => updateFl100((fl100) => ({
+                      ...fl100,
+                      isAmended: setDraftFieldValue(fl100.isAmended, checked === true),
+                    }))}
+                  />
+                  <div>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="text-sm font-medium text-slate-800 dark:text-slate-100">Mark petition as amended (FL-100 caption)</span>
+                      <FieldSourceBadge field={workspace.fl100.isAmended} />
+                    </div>
+                    <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Maps to FL-100 `Amended_cb[0]`.</p>
+                  </div>
+                </label>
                 <div className="rounded-xl border border-slate-200/80 bg-slate-50/80 p-3 text-sm text-slate-700 dark:border-white/10 dark:bg-white/5 dark:text-slate-200">
                   {isDissolutionProceeding
                     ? 'Dissolution: confirm a residency path (petitioner or respondent at 6 months in California and 3 months in filing county), or use a supported jurisdiction exception when available.'

@@ -75,6 +75,7 @@ export interface DraftFl105Section {
 
 export interface DraftFl100Section {
   proceedingType: DraftField<'dissolution' | 'legal_separation' | 'nullity'>;
+  isAmended: DraftField<boolean>;
   relationshipType: DraftField<'marriage' | 'domestic_partnership' | 'both'>;
   domesticPartnership: {
     establishment: DraftField<'unspecified' | 'established_in_california' | 'not_established_in_california'>;
@@ -263,6 +264,9 @@ function createDefaultFl100Section(): DraftFl100Section {
       sourceLabel: 'Default starter packet assumption',
       confidence: 'medium',
       needsReview: true,
+    }),
+    isAmended: createField(false, {
+      ...assumptionFieldConfig,
     }),
     relationshipType: createField('marriage', {
       sourceType: 'manual',
@@ -524,6 +528,7 @@ function normalizeWorkspace(workspace: DraftFormsWorkspace): DraftFormsWorkspace
       : [],
     fl100: {
       proceedingType: workspace.fl100?.proceedingType ?? defaultFl100.proceedingType,
+      isAmended: workspace.fl100?.isAmended ?? defaultFl100.isAmended,
       relationshipType: workspace.fl100?.relationshipType ?? defaultFl100.relationshipType,
       domesticPartnership: {
         establishment: workspace.fl100?.domesticPartnership?.establishment ?? defaultFl100.domesticPartnership.establishment,
@@ -1051,6 +1056,7 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
         `Petitioner: ${petitionerName}`,
         `Respondent: ${respondentName}`,
         `Proceeding type: ${proceedingTypeLabel}`,
+        `Amended petition: ${workspace.fl100.isAmended.value ? 'Yes' : 'No'}`,
         `Relationship type: ${relationshipLabel}`,
         `Date of marriage: ${workspace.marriageDate.value || 'Not provided'}`,
         `Date of separation: ${workspace.separationDate.value || 'Not provided'}`,

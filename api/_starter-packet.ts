@@ -68,6 +68,7 @@ interface StarterPacketWorkspace {
   children: StarterPacketChild[];
   fl100: {
     proceedingType: StarterPacketField<'dissolution' | 'legal_separation' | 'nullity'>;
+    isAmended: StarterPacketField<boolean>;
     relationshipType: StarterPacketField<'marriage' | 'domestic_partnership' | 'both'>;
     domesticPartnership: {
       establishment: StarterPacketField<'unspecified' | 'established_in_california' | 'not_established_in_california'>;
@@ -522,6 +523,7 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
   const marriageDuration = calculateCourtDuration(marriageDateRaw, separationDateRaw);
   const domesticPartnershipDuration = calculateCourtDuration(marriageDateRaw, domesticPartnershipSeparationDateRaw);
   const proceedingType = workspace.fl100?.proceedingType?.value ?? 'dissolution';
+  const isAmendedPetition = Boolean(workspace.fl100?.isAmended?.value);
   const relationshipType = relationshipTypeValue;
   const domesticPartnershipEstablishment = workspace.fl100?.domesticPartnership?.establishment?.value ?? 'unspecified';
   const domesticPartnershipCaliforniaResidencyException = Boolean(workspace.fl100?.domesticPartnership?.californiaResidencyException?.value);
@@ -649,6 +651,7 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
   fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].CaptionP1_sf[0].FormTitle[0].DissolutionOf_cb[0]', isDissolutionProceeding);
   fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].CaptionP1_sf[0].FormTitle[0].LegalSeparationOf_cb[0]', isLegalSeparationProceeding);
   fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].CaptionP1_sf[0].FormTitle[0].NullityOf_cb[0]', isNullityProceeding);
+  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].CaptionP1_sf[0].FormTitle[0].Amended_cb[0]', isAmendedPetition);
   fillCheckbox(
     fl100Pages,
     fl100FieldMap,
