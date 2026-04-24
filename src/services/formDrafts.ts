@@ -178,6 +178,10 @@ export interface DraftFormsWorkspace {
   petitionerAddress: DraftField<string>;
   petitionerPhone: DraftField<string>;
   petitionerEmail: DraftField<string>;
+  petitionerFax: DraftField<string>;
+  petitionerFirmName: DraftField<string>;
+  petitionerStateBarNumber: DraftField<string>;
+  petitionerAttorneyFor: DraftField<string>;
   respondentName: DraftField<string>;
   marriageDate: DraftField<string>;
   separationDate: DraftField<string>;
@@ -497,6 +501,15 @@ function normalizeWorkspace(workspace: DraftFormsWorkspace): DraftFormsWorkspace
     petitionerAddress: workspace.petitionerAddress ?? createField('', { needsReview: true }),
     petitionerPhone: workspace.petitionerPhone ?? createField('', { needsReview: true }),
     petitionerEmail: workspace.petitionerEmail ?? createField('', { needsReview: false }),
+    petitionerFax: workspace.petitionerFax ?? createField('', { needsReview: false }),
+    petitionerFirmName: workspace.petitionerFirmName ?? createField('', { needsReview: false }),
+    petitionerStateBarNumber: workspace.petitionerStateBarNumber ?? createField('', { needsReview: false }),
+    petitionerAttorneyFor: workspace.petitionerAttorneyFor ?? createField('Petitioner in pro per', {
+      sourceType: 'manual',
+      sourceLabel: 'Default FL-100 assumption',
+      confidence: 'low',
+      needsReview: true,
+    }),
     respondentName: workspace.respondentName ?? createField('', { needsReview: true }),
     marriageDate: workspace.marriageDate ?? createField('', { needsReview: true }),
     separationDate: workspace.separationDate ?? createField('', { needsReview: true }),
@@ -791,6 +804,21 @@ export function createStarterPacketWorkspace(options: {
       confidence: user.email ? 'high' : undefined,
       needsReview: false,
     }),
+    petitionerFax: createField('', {
+      needsReview: false,
+    }),
+    petitionerFirmName: createField('', {
+      needsReview: false,
+    }),
+    petitionerStateBarNumber: createField('', {
+      needsReview: false,
+    }),
+    petitionerAttorneyFor: createField('Petitioner in pro per', {
+      sourceType: 'manual',
+      sourceLabel: 'Default FL-100 assumption',
+      confidence: 'low',
+      needsReview: true,
+    }),
     respondentName: createField('', {
       needsReview: true,
     }),
@@ -1034,6 +1062,10 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
       body: [
         `Email: ${workspace.petitionerEmail.value || 'Not provided'}`,
         `Phone: ${workspace.petitionerPhone.value || 'Not provided'}`,
+        `Fax: ${workspace.petitionerFax.value || 'Not provided'}`,
+        `Firm name: ${workspace.petitionerFirmName.value || 'Not provided'}`,
+        `State bar number: ${workspace.petitionerStateBarNumber.value || 'Not provided'}`,
+        `Attorney for: ${workspace.petitionerAttorneyFor.value || 'Not provided'}`,
         `Mailing address: ${workspace.petitionerAddress.value || 'Not provided'}`,
       ].join('\n'),
     },

@@ -557,6 +557,38 @@ export function DraftFormsPage() {
                     placeholder="(555) 555-5555"
                   />
                 </div>
+                <div>
+                  <FieldHeader label="Petitioner fax (FL-100)" field={workspace.petitionerFax} />
+                  <Input
+                    value={workspace.petitionerFax.value}
+                    onChange={(e) => commitWorkspace((current) => ({ ...current, petitionerFax: setDraftFieldValue(current.petitionerFax, e.target.value) }))}
+                    placeholder="Optional"
+                  />
+                </div>
+                <div>
+                  <FieldHeader label="Firm name (FL-100)" field={workspace.petitionerFirmName} />
+                  <Input
+                    value={workspace.petitionerFirmName.value}
+                    onChange={(e) => commitWorkspace((current) => ({ ...current, petitionerFirmName: setDraftFieldValue(current.petitionerFirmName, e.target.value) }))}
+                    placeholder="Optional; leave blank if self-represented"
+                  />
+                </div>
+                <div>
+                  <FieldHeader label="State bar number (FL-100)" field={workspace.petitionerStateBarNumber} />
+                  <Input
+                    value={workspace.petitionerStateBarNumber.value}
+                    onChange={(e) => commitWorkspace((current) => ({ ...current, petitionerStateBarNumber: setDraftFieldValue(current.petitionerStateBarNumber, e.target.value) }))}
+                    placeholder="Optional; leave blank if self-represented"
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <FieldHeader label="Attorney for (FL-100)" field={workspace.petitionerAttorneyFor} />
+                  <Input
+                    value={workspace.petitionerAttorneyFor.value}
+                    onChange={(e) => commitWorkspace((current) => ({ ...current, petitionerAttorneyFor: setDraftFieldValue(current.petitionerAttorneyFor, e.target.value) }))}
+                    placeholder="Example: Petitioner in pro per"
+                  />
+                </div>
                 <div className="md:col-span-2">
                   <FieldHeader label="Petitioner mailing address" field={workspace.petitionerAddress} />
                   <Textarea
