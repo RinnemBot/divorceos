@@ -92,8 +92,10 @@ interface StarterPacketWorkspace {
     };
     propertyDeclarations: {
       communityAndQuasiCommunity: StarterPacketField<boolean>;
+      communityAndQuasiCommunityWhereListed: StarterPacketField<'unspecified' | 'fl160' | 'attachment' | 'inline_list'>;
       communityAndQuasiCommunityDetails: StarterPacketField<string>;
       separateProperty: StarterPacketField<boolean>;
+      separatePropertyWhereListed: StarterPacketField<'unspecified' | 'fl160' | 'attachment' | 'inline_list'>;
       separatePropertyDetails: StarterPacketField<string>;
       separatePropertyAwardedTo: StarterPacketField<string>;
     };
@@ -173,6 +175,7 @@ const FL105_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-105.template.pdf');
 const FL100_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-100.fields.json');
 const FL110_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-110.fields.json');
 const FL105_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-105.fields.json');
+const FL100_SEPARATE_PROPERTY_VISIBLE_ROWS = 5;
 
 let templateCache: Promise<{
   fl100Bytes: Uint8Array;
@@ -238,6 +241,13 @@ function sanitizeMultilineText(value: string | undefined | null) {
     .map((line) => line.trim())
     .filter(Boolean)
     .join('\n');
+}
+
+function splitNonEmptyLines(value: string | undefined | null) {
+  return sanitizeMultilineText(value)
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
 }
 
 function formatDateForCourt(value: string | undefined | null) {
@@ -529,7 +539,11 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
   const voluntaryDeclarationOfParentageSigned = Boolean(workspace.fl100?.spousalSupport?.voluntaryDeclarationOfParentageSigned?.value);
   const communityPropertyDetails = sanitizeMultilineText(workspace.fl100?.propertyDeclarations?.communityAndQuasiCommunityDetails?.value);
   const separatePropertyDetails = sanitizeMultilineText(workspace.fl100?.propertyDeclarations?.separatePropertyDetails?.value);
-  const separatePropertyAwardedTo = sanitizeText(workspace.fl100?.propertyDeclarations?.separatePropertyAwardedTo?.value);
+  const separatePropertyAwardedTo = sanitizeMultilineText(workspace.fl100?.propertyDeclarations?.separatePropertyAwardedTo?.value);
+  const communityPropertyWhereListed = workspace.fl100?.propertyDeclarations?.communityAndQuasiCommunityWhereListed?.value ?? 'unspecified';
+  const separatePropertyWhereListed = workspace.fl100?.propertyDeclarations?.separatePropertyWhereListed?.value ?? 'unspecified';
+  const separatePropertyEntries = splitNonEmptyLines(separatePropertyDetails);
+  const separatePropertyAwardTargets = splitNonEmptyLines(separatePropertyAwardedTo);
   const wantsFormerNameRestore = Boolean(workspace.requests?.restoreFormerName?.value);
   const shortTitle = buildShortTitle(petitionerName, respondentName);
   const fl105 = workspace.fl105;
@@ -691,32 +705,69 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
   }
 
   if (wantsCommunityProperty) {
+    if (communityPropertyWhereListed === 'unspecified') {
+      throw new Error('FL-100 community/quasi-community property is selected, but list location is not specified.');
+    }
     fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page3[0].CommQuasiProperty_sf[0].PropertyListed_cb[0]', true);
-    fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page3[0].CommQuasiProperty_sf[0].WhereCPListed_cb[2]', true);
-    fillTextFields(
-      fl100Pages,
-      fl100FieldMap,
-      'FL-100[0].Page3[0].CommQuasiProperty_sf[0].ListProperty_ft[0]',
-      communityPropertyDetails,
-      fontRegular,
-      { size: 8 },
-    );
+    fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page3[0].CommQuasiProperty_sf[0].WhereCPListed_cb[0]', communityPropertyWhereListed === 'attachment');
+    fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page3[0].CommQuasiProperty_sf[0].WhereCPListed_cb[1]', communityPropertyWhereListed === 'fl160');
+    fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page3[0].CommQuasiProperty_sf[0].WhereCPListed_cb[2]', communityPropertyWhereListed === 'inline_list');
+    if (communityPropertyWhereListed === 'inline_list') {
+      fillTextFields(
+        fl100Pages,
+        fl100FieldMap,
+        'FL-100[0].Page3[0].CommQuasiProperty_sf[0].ListProperty_ft[0]',
+        communityPropertyDetails,
+        fontRegular,
+        { size: 8 },
+      );
+    }
   } else {
     fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page3[0].NoCommOrQuasiCommProperty_cb[0]', true);
   }
 
   if (wantsSeparateProperty) {
+    if (separatePropertyWhereListed === 'unspecified') {
+      throw new Error('FL-100 separate property is selected, but list location is not specified.');
+    }
     fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].ConfirmSeparateProperty_sf[0].ConfirmSeparateProperty_cb[0]', true);
-    fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].ConfirmSeparateProperty_sf[0].WhereSPListed_cb[2]', true);
-    fillTextFields(
-      fl100Pages,
-      fl100FieldMap,
-      'FL-100[0].Page2[0].ConfirmSeparateProperty_sf[0].SeparatePropertyList1_tf[0]',
-      separatePropertyDetails,
-      fontRegular,
-      { size: 8 },
-    );
-    fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].ConfirmSeparateProperty_sf[0].ConfirmPropertyList1To_tf[0]', separatePropertyAwardedTo, fontRegular, { size: 8 });
+    fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].ConfirmSeparateProperty_sf[0].WhereSPListed_cb[0]', separatePropertyWhereListed === 'attachment');
+    fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].ConfirmSeparateProperty_sf[0].WhereSPListed_cb[1]', separatePropertyWhereListed === 'fl160');
+    fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].ConfirmSeparateProperty_sf[0].WhereSPListed_cb[2]', separatePropertyWhereListed === 'inline_list');
+    if (separatePropertyWhereListed === 'inline_list') {
+      if (separatePropertyEntries.length === 0) {
+        throw new Error('FL-100 separate property is set to inline list, but no list entries were provided.');
+      }
+      if (separatePropertyEntries.length > FL100_SEPARATE_PROPERTY_VISIBLE_ROWS) {
+        throw new Error(
+          `FL-100 separate property inline list has ${separatePropertyEntries.length} entries but only ${FL100_SEPARATE_PROPERTY_VISIBLE_ROWS} visible rows. Choose FL-160 or attachment 9b.`,
+        );
+      }
+      if (separatePropertyAwardTargets.length === 0) {
+        throw new Error('FL-100 separate property inline list needs at least one "confirmed to" value.');
+      }
+
+      const listFieldNames = [
+        'FL-100[0].Page2[0].ConfirmSeparateProperty_sf[0].SeparatePropertyList1_tf[0]',
+        'FL-100[0].Page2[0].ConfirmSeparateProperty_sf[0].SeparatePropertyList2_tf[0]',
+        'FL-100[0].Page2[0].ConfirmSeparateProperty_sf[0].SeparatePropertyList3_tf[0]',
+        'FL-100[0].Page2[0].ConfirmSeparateProperty_sf[0].SeparatePropertyList4_tf[0]',
+        'FL-100[0].Page2[0].ConfirmSeparateProperty_sf[0].SeparatePropertyList4_tf[1]',
+      ];
+      const awardFieldNames = [
+        'FL-100[0].Page2[0].ConfirmSeparateProperty_sf[0].ConfirmPropertyList1To_tf[0]',
+        'FL-100[0].Page2[0].ConfirmSeparateProperty_sf[0].ConfirmPropertyList2To_tf[0]',
+        'FL-100[0].Page2[0].ConfirmSeparateProperty_sf[0].ConfirmPropertyList3To_tf[0]',
+        'FL-100[0].Page2[0].ConfirmSeparateProperty_sf[0].ConfirmPropertyList4To_tf[0]',
+        'FL-100[0].Page2[0].ConfirmSeparateProperty_sf[0].ConfirmPropertyList4To_tf[1]',
+      ];
+
+      separatePropertyEntries.forEach((entry, index) => {
+        const awardTarget = separatePropertyAwardTargets[index] ?? separatePropertyAwardTargets[0] ?? '';
+        fillTextFields(fl100Pages, fl100FieldMap, listFieldNames[index], entry, fontRegular, { size: 8 });
+        fillTextFields(fl100Pages, fl100FieldMap, awardFieldNames[index], awardTarget, fontRegular, { size: 8 });
+      });
+    }
   } else {
     fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].NoSeparateProperty_cb[0]', true);
   }

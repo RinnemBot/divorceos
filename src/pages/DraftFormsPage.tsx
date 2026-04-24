@@ -41,6 +41,15 @@ function qualifiesForResidency(californiaMonths: string, countyMonths: string) {
   return california !== null && county !== null && california >= 6 && county >= 3;
 }
 
+function splitNonEmptyLines(value: string) {
+  return value
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+}
+
+const FL100_SEPARATE_PROPERTY_VISIBLE_ROWS = 5;
+
 function FieldSourceBadge({ field }: { field: DraftField<unknown> }) {
   if (!field.sourceType) {
     return <Badge variant="secondary">Needs source</Badge>;
@@ -192,14 +201,38 @@ export function DraftFormsPage() {
     if (workspace.requests.restoreFormerName.value && !workspace.fl100.formerName.value.trim()) {
       missing.push('Former name to restore');
     }
-    if (workspace.fl100.propertyDeclarations.communityAndQuasiCommunity.value && !workspace.fl100.propertyDeclarations.communityAndQuasiCommunityDetails.value.trim()) {
-      missing.push('Community / quasi-community property details');
+    const communityWhereListed = workspace.fl100.propertyDeclarations.communityAndQuasiCommunityWhereListed.value;
+    const separateWhereListed = workspace.fl100.propertyDeclarations.separatePropertyWhereListed.value;
+    const separateInlineEntries = splitNonEmptyLines(workspace.fl100.propertyDeclarations.separatePropertyDetails.value);
+    if (workspace.fl100.propertyDeclarations.communityAndQuasiCommunity.value) {
+      if (communityWhereListed === 'unspecified') {
+        missing.push('Community/quasi-community property list location');
+      }
+      if (communityWhereListed === 'inline_list' && !workspace.fl100.propertyDeclarations.communityAndQuasiCommunityDetails.value.trim()) {
+        missing.push('Community / quasi-community inline property list');
+      }
     }
-    if (workspace.fl100.propertyDeclarations.separateProperty.value && !workspace.fl100.propertyDeclarations.separatePropertyDetails.value.trim()) {
-      missing.push('Separate property details');
-    }
-    if (workspace.fl100.propertyDeclarations.separateProperty.value && !workspace.fl100.propertyDeclarations.separatePropertyAwardedTo.value.trim()) {
-      missing.push('Who separate property should be confirmed to');
+    if (workspace.fl100.propertyDeclarations.separateProperty.value) {
+      if (separateWhereListed === 'unspecified') {
+        missing.push('Separate property list location');
+      }
+      if (separateWhereListed === 'inline_list' && separateInlineEntries.length === 0) {
+        missing.push('Separate property inline list entries');
+      }
+      if (
+        separateWhereListed === 'inline_list'
+        && separateInlineEntries.length > FL100_SEPARATE_PROPERTY_VISIBLE_ROWS
+      ) {
+        missing.push(
+          `Separate property inline rows exceed FL-100 capacity (${separateInlineEntries.length} entered, ${FL100_SEPARATE_PROPERTY_VISIBLE_ROWS} visible). Use FL-160 or attachment 9b.`,
+        );
+      }
+      if (
+        separateWhereListed === 'inline_list'
+        && !workspace.fl100.propertyDeclarations.separatePropertyAwardedTo.value.trim()
+      ) {
+        missing.push('Who separate property should be confirmed to (inline list)');
+      }
     }
 
     const spousalSupportDirection = workspace.fl100.spousalSupport.supportOrderDirection.value;
@@ -937,35 +970,73 @@ export function DraftFormsPage() {
 
                 <div className="grid gap-4 md:grid-cols-2">
                   <div className="rounded-2xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5">
-                    <FieldHeader label="Community / quasi-community property details" field={workspace.fl100.propertyDeclarations.communityAndQuasiCommunityDetails} />
-                    <Textarea
-                      value={workspace.fl100.propertyDeclarations.communityAndQuasiCommunityDetails.value}
+                    <FieldHeader label="Community/quasi-community where listed" field={workspace.fl100.propertyDeclarations.communityAndQuasiCommunityWhereListed} />
+                    <select
+                      value={workspace.fl100.propertyDeclarations.communityAndQuasiCommunityWhereListed.value}
                       onChange={(e) => updateFl100((fl100) => ({
                         ...fl100,
                         propertyDeclarations: {
                           ...fl100.propertyDeclarations,
-                          communityAndQuasiCommunityDetails: setDraftFieldValue(fl100.propertyDeclarations.communityAndQuasiCommunityDetails, e.target.value),
+                          communityAndQuasiCommunityWhereListed: setDraftFieldValue(fl100.propertyDeclarations.communityAndQuasiCommunityWhereListed, e.target.value as 'unspecified' | 'fl160' | 'attachment' | 'inline_list'),
                         },
                       }))}
-                      className="min-h-[96px]"
-                      placeholder="Describe community or quasi-community assets/debts to divide."
-                    />
-                    <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">Maps to FL-100 property details text instead of placeholder language.</p>
+                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"
+                    >
+                      <option value="unspecified">Not selected</option>
+                      <option value="fl160">Property Declaration (FL-160)</option>
+                      <option value="attachment">Attachment 10b</option>
+                      <option value="inline_list">Inline list on FL-100 item 10b(3)</option>
+                    </select>
+                    <div className="mt-3">
+                      <FieldHeader label="Community / quasi-community property details" field={workspace.fl100.propertyDeclarations.communityAndQuasiCommunityDetails} />
+                      <Textarea
+                        value={workspace.fl100.propertyDeclarations.communityAndQuasiCommunityDetails.value}
+                        onChange={(e) => updateFl100((fl100) => ({
+                          ...fl100,
+                          propertyDeclarations: {
+                            ...fl100.propertyDeclarations,
+                            communityAndQuasiCommunityDetails: setDraftFieldValue(fl100.propertyDeclarations.communityAndQuasiCommunityDetails, e.target.value),
+                          },
+                        }))}
+                        className="min-h-[96px]"
+                        placeholder="If using inline list, enter community/quasi-community assets/debts here."
+                      />
+                    </div>
+                    <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">Generator only checks FL-160 or attachment boxes when you explicitly choose them.</p>
                   </div>
                   <div className="rounded-2xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5">
-                    <FieldHeader label="Separate property details" field={workspace.fl100.propertyDeclarations.separatePropertyDetails} />
-                    <Textarea
-                      value={workspace.fl100.propertyDeclarations.separatePropertyDetails.value}
+                    <FieldHeader label="Separate property where listed" field={workspace.fl100.propertyDeclarations.separatePropertyWhereListed} />
+                    <select
+                      value={workspace.fl100.propertyDeclarations.separatePropertyWhereListed.value}
                       onChange={(e) => updateFl100((fl100) => ({
                         ...fl100,
                         propertyDeclarations: {
                           ...fl100.propertyDeclarations,
-                          separatePropertyDetails: setDraftFieldValue(fl100.propertyDeclarations.separatePropertyDetails, e.target.value),
+                          separatePropertyWhereListed: setDraftFieldValue(fl100.propertyDeclarations.separatePropertyWhereListed, e.target.value as 'unspecified' | 'fl160' | 'attachment' | 'inline_list'),
                         },
                       }))}
-                      className="min-h-[96px]"
-                      placeholder="Describe separate property claims."
-                    />
+                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"
+                    >
+                      <option value="unspecified">Not selected</option>
+                      <option value="fl160">Property Declaration (FL-160)</option>
+                      <option value="attachment">Attachment 9b</option>
+                      <option value="inline_list">Inline list on FL-100 item 9b(3)</option>
+                    </select>
+                    <div className="mt-3">
+                      <FieldHeader label="Separate property details" field={workspace.fl100.propertyDeclarations.separatePropertyDetails} />
+                      <Textarea
+                        value={workspace.fl100.propertyDeclarations.separatePropertyDetails.value}
+                        onChange={(e) => updateFl100((fl100) => ({
+                          ...fl100,
+                          propertyDeclarations: {
+                            ...fl100.propertyDeclarations,
+                            separatePropertyDetails: setDraftFieldValue(fl100.propertyDeclarations.separatePropertyDetails, e.target.value),
+                          },
+                        }))}
+                        className="min-h-[96px]"
+                        placeholder="If using inline list: one property/debt entry per line."
+                      />
+                    </div>
                     <div className="mt-3">
                       <FieldHeader label="Separate property should be confirmed to" field={workspace.fl100.propertyDeclarations.separatePropertyAwardedTo} />
                       <Input
@@ -977,9 +1048,17 @@ export function DraftFormsPage() {
                             separatePropertyAwardedTo: setDraftFieldValue(fl100.propertyDeclarations.separatePropertyAwardedTo, e.target.value),
                           },
                         }))}
-                        placeholder="Petitioner / Respondent / mixed allocation"
+                        placeholder="If inline list: one target per line, or one value for all rows."
                       />
                     </div>
+                    {workspace.fl100.propertyDeclarations.separatePropertyWhereListed.value === 'inline_list'
+                      && splitNonEmptyLines(workspace.fl100.propertyDeclarations.separatePropertyDetails.value).length > FL100_SEPARATE_PROPERTY_VISIBLE_ROWS ? (
+                        <p className="mt-2 text-xs text-amber-700 dark:text-amber-300">
+                          Inline list exceeds FL-100 visible separate-property rows ({FL100_SEPARATE_PROPERTY_VISIBLE_ROWS}). Choose FL-160 or attachment 9b to continue.
+                        </p>
+                      ) : (
+                        <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">Inline separate-property rows are limited to {FL100_SEPARATE_PROPERTY_VISIBLE_ROWS} visible entries in this packet.</p>
+                      )}
                   </div>
                 </div>
 

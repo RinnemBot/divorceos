@@ -6,6 +6,7 @@ const FORM_DRAFTS_KEY = 'divorceos_form_drafts';
 export type DraftFieldSourceType = 'chat' | 'upload' | 'profile' | 'manual';
 export type DraftFieldConfidence = 'high' | 'medium' | 'low';
 export type DraftWorkspaceStatus = 'not_started' | 'in_review' | 'ready';
+export type DraftFl100PropertyListLocation = 'unspecified' | 'fl160' | 'attachment' | 'inline_list';
 
 export interface DraftField<T> {
   value: T;
@@ -102,8 +103,10 @@ export interface DraftFl100Section {
   };
   propertyDeclarations: {
     communityAndQuasiCommunity: DraftField<boolean>;
+    communityAndQuasiCommunityWhereListed: DraftField<DraftFl100PropertyListLocation>;
     communityAndQuasiCommunityDetails: DraftField<string>;
     separateProperty: DraftField<boolean>;
+    separatePropertyWhereListed: DraftField<DraftFl100PropertyListLocation>;
     separatePropertyDetails: DraftField<string>;
     separatePropertyAwardedTo: DraftField<string>;
   };
@@ -201,6 +204,8 @@ export const FL105_FORM_CAPACITY = Object.freeze({
   restrainingOrdersRows: 4,
   otherClaimantsRows: 3,
 });
+
+const FL100_SEPARATE_PROPERTY_VISIBLE_ROWS = 5;
 
 function getStorage() {
   if (typeof window === 'undefined') return null;
@@ -306,8 +311,14 @@ function createDefaultFl100Section(): DraftFl100Section {
       communityAndQuasiCommunity: createField(true, {
         ...assumptionFieldConfig,
       }),
+      communityAndQuasiCommunityWhereListed: createField('unspecified', {
+        ...assumptionFieldConfig,
+      }),
       communityAndQuasiCommunityDetails: createField('', { needsReview: true }),
       separateProperty: createField(false, {
+        ...assumptionFieldConfig,
+      }),
+      separatePropertyWhereListed: createField('unspecified', {
         ...assumptionFieldConfig,
       }),
       separatePropertyDetails: createField('', { needsReview: true }),
@@ -522,8 +533,10 @@ function normalizeWorkspace(workspace: DraftFormsWorkspace): DraftFormsWorkspace
       },
       propertyDeclarations: {
         communityAndQuasiCommunity: workspace.fl100?.propertyDeclarations?.communityAndQuasiCommunity ?? defaultFl100.propertyDeclarations.communityAndQuasiCommunity,
+        communityAndQuasiCommunityWhereListed: workspace.fl100?.propertyDeclarations?.communityAndQuasiCommunityWhereListed ?? defaultFl100.propertyDeclarations.communityAndQuasiCommunityWhereListed,
         communityAndQuasiCommunityDetails: workspace.fl100?.propertyDeclarations?.communityAndQuasiCommunityDetails ?? defaultFl100.propertyDeclarations.communityAndQuasiCommunityDetails,
         separateProperty: workspace.fl100?.propertyDeclarations?.separateProperty ?? defaultFl100.propertyDeclarations.separateProperty,
+        separatePropertyWhereListed: workspace.fl100?.propertyDeclarations?.separatePropertyWhereListed ?? defaultFl100.propertyDeclarations.separatePropertyWhereListed,
         separatePropertyDetails: workspace.fl100?.propertyDeclarations?.separatePropertyDetails ?? defaultFl100.propertyDeclarations.separatePropertyDetails,
         separatePropertyAwardedTo: workspace.fl100?.propertyDeclarations?.separatePropertyAwardedTo ?? defaultFl100.propertyDeclarations.separatePropertyAwardedTo,
       },
@@ -907,6 +920,28 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
     workspace.fl100.propertyDeclarations.communityAndQuasiCommunity.value ? 'Community / quasi-community property' : null,
     workspace.fl100.propertyDeclarations.separateProperty.value ? 'Separate property' : null,
   ].filter(Boolean) as string[];
+  const communityPropertyWhereListedLabel = workspace.fl100.propertyDeclarations.communityAndQuasiCommunityWhereListed.value === 'fl160'
+    ? 'Property Declaration (FL-160)'
+    : workspace.fl100.propertyDeclarations.communityAndQuasiCommunityWhereListed.value === 'attachment'
+      ? 'Attachment 10b'
+      : workspace.fl100.propertyDeclarations.communityAndQuasiCommunityWhereListed.value === 'inline_list'
+        ? 'Inline FL-100 list'
+        : 'Not selected';
+  const separatePropertyWhereListedLabel = workspace.fl100.propertyDeclarations.separatePropertyWhereListed.value === 'fl160'
+    ? 'Property Declaration (FL-160)'
+    : workspace.fl100.propertyDeclarations.separatePropertyWhereListed.value === 'attachment'
+      ? 'Attachment 9b'
+      : workspace.fl100.propertyDeclarations.separatePropertyWhereListed.value === 'inline_list'
+        ? 'Inline FL-100 list'
+        : 'Not selected';
+  const separatePropertyInlineEntries = workspace.fl100.propertyDeclarations.separatePropertyDetails.value
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+  const separatePropertyInlineOverflowCount = Math.max(
+    separatePropertyInlineEntries.length - FL100_SEPARATE_PROPERTY_VISIBLE_ROWS,
+    0,
+  );
 
   const spousalSupportDirectionLabel = workspace.fl100.spousalSupport.supportOrderDirection.value === 'petitioner_to_respondent'
     ? 'Petitioner pays support to respondent'
@@ -1014,9 +1049,12 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
         `Nullity basis selections: ${nullityBasisLabels.join(', ') || 'None selected'}`,
         `Legal grounds: ${legalGroundLabels.join(', ') || 'Not provided'}`,
         `Property declarations: ${propertyLabels.join(', ') || 'None selected'}`,
+        `Community/quasi-community where listed: ${communityPropertyWhereListedLabel}`,
         `Community/quasi-community details: ${workspace.fl100.propertyDeclarations.communityAndQuasiCommunityDetails.value || 'Not provided'}`,
+        `Separate property where listed: ${separatePropertyWhereListedLabel}`,
         `Separate property details: ${workspace.fl100.propertyDeclarations.separatePropertyDetails.value || 'Not provided'}`,
         `Separate property confirmed to: ${workspace.fl100.propertyDeclarations.separatePropertyAwardedTo.value || 'Not provided'}`,
+        `Separate property inline-row overflow: ${separatePropertyInlineOverflowCount > 0 ? `Yes (${separatePropertyInlineEntries.length} entered, ${FL100_SEPARATE_PROPERTY_VISIBLE_ROWS} visible)` : 'No'}`,
         `Spousal support direction: ${spousalSupportDirectionLabel}`,
         `Spousal support reserve jurisdiction: ${spousalSupportReserveLabel}`,
         `Spousal support terminate jurisdiction: ${spousalSupportTerminateLabel}`,
