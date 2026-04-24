@@ -69,6 +69,12 @@ function normalizeFl105OrderType(value: string) {
   return '';
 }
 
+function isFl105StateOnlyAddress(value: string) {
+  const trimmed = value.trim();
+  if (!trimmed) return true;
+  return !/[0-9]/.test(trimmed) && !/,/.test(trimmed);
+}
+
 const FL100_SEPARATE_PROPERTY_VISIBLE_ROWS = 5;
 
 function FieldSourceBadge({ field }: { field: DraftField<unknown> }) {
@@ -318,6 +324,30 @@ export function DraftFormsPage() {
       }
       if (!workspace.fl105.signatureDate.value.trim()) {
         missing.push('FL-105 declarant signature date');
+      }
+      if (
+        workspace.fl105.additionalResidenceAddressesOnAttachment3a.value
+        && !workspace.fl105.attachmentsIncluded.value
+      ) {
+        missing.push('FL-105 item 3a additional addresses require selecting "FL-105 has attached pages"');
+      }
+      if (
+        workspace.fl105.additionalResidenceAddressesOnAttachment3a.value
+        && !workspace.fl105.attachmentPageCount.value.trim()
+      ) {
+        missing.push('FL-105 item 3a additional addresses require an attachment page count');
+      }
+      if (workspace.fl105.residenceAddressConfidentialStateOnly.value) {
+        const hasNonStateOnlyResidenceAddress = workspace.fl105.residenceHistory.some((entry) => !isFl105StateOnlyAddress(entry.residence.value));
+        if (hasNonStateOnlyResidenceAddress) {
+          missing.push('FL-105 item 3a residence confidentiality is selected, so residence entries must be state-only (no street details)');
+        }
+      }
+      if (workspace.fl105.personAddressConfidentialStateOnly.value) {
+        const hasNonStateOnlyPersonAddress = workspace.fl105.residenceHistory.some((entry) => !isFl105StateOnlyAddress(entry.personAndAddress.value));
+        if (hasNonStateOnlyPersonAddress) {
+          missing.push('FL-105 item 3a person/address confidentiality is selected, so person/address entries must be state-only (no street details)');
+        }
       }
       if (workspace.fl105.attachmentsIncluded.value && !workspace.fl105.attachmentPageCount.value.trim()) {
         missing.push('FL-105 attachment page count');
@@ -2021,6 +2051,70 @@ export function DraftFormsPage() {
                           Add history row
                         </Button>
                       </div>
+                      <div className="grid gap-3 md:grid-cols-3">
+                        <label className="flex items-start gap-3 rounded-lg border border-slate-200/80 bg-slate-50/70 p-3 dark:border-white/10 dark:bg-white/5">
+                          <Checkbox
+                            checked={workspace.fl105.additionalResidenceAddressesOnAttachment3a.value}
+                            onCheckedChange={(checked) => updateFl105((fl105) => ({
+                              ...fl105,
+                              additionalResidenceAddressesOnAttachment3a: setDraftFieldValue(
+                                fl105.additionalResidenceAddressesOnAttachment3a,
+                                checked === true,
+                              ),
+                            }))}
+                          />
+                          <div>
+                            <div className="flex flex-wrap items-center gap-2">
+                              <span className="text-sm font-medium text-slate-800 dark:text-slate-100">Additional addresses on attachment 3a</span>
+                              <FieldSourceBadge field={workspace.fl105.additionalResidenceAddressesOnAttachment3a} />
+                            </div>
+                            <p className="text-xs text-slate-500 dark:text-slate-400">Maps to FL-105 item 3a `AddlAddyCB`.</p>
+                          </div>
+                        </label>
+                        <label className="flex items-start gap-3 rounded-lg border border-slate-200/80 bg-slate-50/70 p-3 dark:border-white/10 dark:bg-white/5">
+                          <Checkbox
+                            checked={workspace.fl105.residenceAddressConfidentialStateOnly.value}
+                            onCheckedChange={(checked) => updateFl105((fl105) => ({
+                              ...fl105,
+                              residenceAddressConfidentialStateOnly: setDraftFieldValue(
+                                fl105.residenceAddressConfidentialStateOnly,
+                                checked === true,
+                              ),
+                            }))}
+                          />
+                          <div>
+                            <div className="flex flex-wrap items-center gap-2">
+                              <span className="text-sm font-medium text-slate-800 dark:text-slate-100">Residence confidential (state only)</span>
+                              <FieldSourceBadge field={workspace.fl105.residenceAddressConfidentialStateOnly} />
+                            </div>
+                            <p className="text-xs text-slate-500 dark:text-slate-400">Maps to FL-105 `Confidential1a3` checkbox.</p>
+                          </div>
+                        </label>
+                        <label className="flex items-start gap-3 rounded-lg border border-slate-200/80 bg-slate-50/70 p-3 dark:border-white/10 dark:bg-white/5">
+                          <Checkbox
+                            checked={workspace.fl105.personAddressConfidentialStateOnly.value}
+                            onCheckedChange={(checked) => updateFl105((fl105) => ({
+                              ...fl105,
+                              personAddressConfidentialStateOnly: setDraftFieldValue(
+                                fl105.personAddressConfidentialStateOnly,
+                                checked === true,
+                              ),
+                            }))}
+                          />
+                          <div>
+                            <div className="flex flex-wrap items-center gap-2">
+                              <span className="text-sm font-medium text-slate-800 dark:text-slate-100">Person/address confidential (state only)</span>
+                              <FieldSourceBadge field={workspace.fl105.personAddressConfidentialStateOnly} />
+                            </div>
+                            <p className="text-xs text-slate-500 dark:text-slate-400">Maps to FL-105 `Confidential1a4` checkbox.</p>
+                          </div>
+                        </label>
+                      </div>
+                      {(workspace.fl105.residenceAddressConfidentialStateOnly.value || workspace.fl105.personAddressConfidentialStateOnly.value) && (
+                        <p className="text-xs text-slate-500 dark:text-slate-400">
+                          When confidentiality is checked, keep address entries state-only (for example: <code>CA</code> or <code>California</code>) rather than full street details.
+                        </p>
+                      )}
                       <div className="space-y-3">
                         {workspace.fl105.residenceHistory.map((entry) => (
                           <div key={entry.id} className="grid gap-3 rounded-lg border border-slate-200/80 bg-slate-50/70 p-3 md:grid-cols-6 dark:border-white/10 dark:bg-white/5">

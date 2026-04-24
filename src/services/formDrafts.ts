@@ -66,6 +66,9 @@ export interface DraftFl105Section {
   authorizedRepresentativeAgencyName: DraftField<string>;
   childrenLivedTogetherPastFiveYears: DraftField<boolean>;
   residenceHistory: DraftFl105ResidenceHistoryEntry[];
+  residenceAddressConfidentialStateOnly: DraftField<boolean>;
+  personAddressConfidentialStateOnly: DraftField<boolean>;
+  additionalResidenceAddressesOnAttachment3a: DraftField<boolean>;
   otherProceedingsKnown: DraftField<boolean>;
   otherProceedings: DraftFl105OtherProceeding[];
   domesticViolenceOrdersExist: DraftField<boolean>;
@@ -477,6 +480,24 @@ function createDefaultFl105Section(petitionerName = ''): DraftFl105Section {
       needsReview: true,
     }),
     residenceHistory: [createBlankResidenceHistoryEntry()],
+    residenceAddressConfidentialStateOnly: createField(false, {
+      sourceType: 'manual',
+      sourceLabel: 'Default FL-105 assumption',
+      confidence: 'low',
+      needsReview: true,
+    }),
+    personAddressConfidentialStateOnly: createField(false, {
+      sourceType: 'manual',
+      sourceLabel: 'Default FL-105 assumption',
+      confidence: 'low',
+      needsReview: true,
+    }),
+    additionalResidenceAddressesOnAttachment3a: createField(false, {
+      sourceType: 'manual',
+      sourceLabel: 'Default FL-105 assumption',
+      confidence: 'low',
+      needsReview: true,
+    }),
     otherProceedingsKnown: createField(false, {
       sourceType: 'manual',
       sourceLabel: 'Default FL-105 assumption',
@@ -661,6 +682,12 @@ function normalizeWorkspace(workspace: DraftFormsWorkspace): DraftFormsWorkspace
           relationship: entry.relationship ?? createField('', { needsReview: true }),
         }))
         : defaultFl105.residenceHistory,
+      residenceAddressConfidentialStateOnly: workspace.fl105?.residenceAddressConfidentialStateOnly
+        ?? defaultFl105.residenceAddressConfidentialStateOnly,
+      personAddressConfidentialStateOnly: workspace.fl105?.personAddressConfidentialStateOnly
+        ?? defaultFl105.personAddressConfidentialStateOnly,
+      additionalResidenceAddressesOnAttachment3a: workspace.fl105?.additionalResidenceAddressesOnAttachment3a
+        ?? defaultFl105.additionalResidenceAddressesOnAttachment3a,
       otherProceedingsKnown: workspace.fl105?.otherProceedingsKnown ?? defaultFl105.otherProceedingsKnown,
       otherProceedings: Array.isArray(workspace.fl105?.otherProceedings)
         ? workspace.fl105.otherProceedings.map((entry) => ({
@@ -1233,6 +1260,9 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
         `Authorized representative agency name: ${workspace.fl105.representationRole.value === 'authorized_representative' ? (workspace.fl105.authorizedRepresentativeAgencyName.value || 'Not provided') : 'Not applicable'}`,
         `Children lived together for past five years: ${workspace.fl105.childrenLivedTogetherPastFiveYears.value ? 'Yes' : 'No / attachment needed'}`,
         `FL-105(A)/GC-120(A) attachment support needed: ${workspace.fl105.childrenLivedTogetherPastFiveYears.value ? 'No' : 'Yes — not generated yet'}`,
+        `FL-105 item 3a additional addresses on attachment: ${workspace.fl105.additionalResidenceAddressesOnAttachment3a.value ? 'Yes' : 'No'}`,
+        `FL-105 item 3a residence confidentiality (state only): ${workspace.fl105.residenceAddressConfidentialStateOnly.value ? 'Yes' : 'No'}`,
+        `FL-105 item 3a person/address confidentiality (state only): ${workspace.fl105.personAddressConfidentialStateOnly.value ? 'Yes' : 'No'}`,
         `Declarant signature date: ${workspace.fl105.signatureDate.value || 'Not provided'}`,
         `Additional FL-105 attached pages included: ${workspace.fl105.attachmentsIncluded.value ? 'Yes' : 'No'}`,
         `FL-105 attachment page count: ${workspace.fl105.attachmentsIncluded.value ? (workspace.fl105.attachmentPageCount.value || 'Not provided') : 'Not applicable'}`,

@@ -154,6 +154,9 @@ interface StarterPacketWorkspace {
     authorizedRepresentativeAgencyName: StarterPacketField<string>;
     childrenLivedTogetherPastFiveYears: StarterPacketField<boolean>;
     residenceHistory: StarterPacketFl105ResidenceHistoryEntry[];
+    residenceAddressConfidentialStateOnly: StarterPacketField<boolean>;
+    personAddressConfidentialStateOnly: StarterPacketField<boolean>;
+    additionalResidenceAddressesOnAttachment3a: StarterPacketField<boolean>;
     otherProceedingsKnown: StarterPacketField<boolean>;
     otherProceedings: StarterPacketFl105OtherProceeding[];
     domesticViolenceOrdersExist: StarterPacketField<boolean>;
@@ -963,6 +966,24 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
       fillTextFields(fl105Pages, fl105FieldMap, `FL-105[0].Page1[0].List3[0].Li1[0].Table3a[0].Row${row}[0].PersonStreet${row}[0]`, sanitizeText(entry.personAndAddress?.value), fontRegular, { size: 8 });
       fillTextFields(fl105Pages, fl105FieldMap, `FL-105[0].Page1[0].List3[0].Li1[0].Table3a[0].Row${row}[0].Relationship${row}[0]`, sanitizeText(entry.relationship?.value), fontRegular, { size: 8 });
     });
+    fillCheckbox(
+      fl105Pages,
+      fl105FieldMap,
+      'FL-105[0].Page1[0].List3[0].Li1[0].Table3a[0].Row1a[0].Confidential1a3[0].ConfidentialCB[0]',
+      Boolean(fl105?.residenceAddressConfidentialStateOnly?.value),
+    );
+    fillCheckbox(
+      fl105Pages,
+      fl105FieldMap,
+      'FL-105[0].Page1[0].List3[0].Li1[0].Table3a[0].Row1a[0].Confidential1a4[0].ConfidentialCB[0]',
+      Boolean(fl105?.personAddressConfidentialStateOnly?.value),
+    );
+    fillCheckbox(
+      fl105Pages,
+      fl105FieldMap,
+      'FL-105[0].Page1[0].List3[0].Li1[0].AddlAddyCB[0]',
+      Boolean(fl105?.additionalResidenceAddressesOnAttachment3a?.value),
+    );
 
     const proceedings = (fl105?.otherProceedings ?? []).filter((entry) => {
       return Boolean(
