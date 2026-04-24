@@ -94,8 +94,10 @@ export interface DraftFl100Section {
   residency: {
     petitionerCaliforniaMonths: DraftField<string>;
     petitionerCountyMonths: DraftField<string>;
+    petitionerResidenceLocation: DraftField<string>;
     respondentCaliforniaMonths: DraftField<string>;
     respondentCountyMonths: DraftField<string>;
+    respondentResidenceLocation: DraftField<string>;
   };
   legalGrounds: {
     irreconcilableDifferences: DraftField<boolean>;
@@ -290,8 +292,10 @@ function createDefaultFl100Section(): DraftFl100Section {
     residency: {
       petitionerCaliforniaMonths: createField('', { needsReview: true }),
       petitionerCountyMonths: createField('', { needsReview: true }),
+      petitionerResidenceLocation: createField('', { needsReview: true }),
       respondentCaliforniaMonths: createField('', { needsReview: true }),
       respondentCountyMonths: createField('', { needsReview: true }),
+      respondentResidenceLocation: createField('', { needsReview: true }),
     },
     legalGrounds: {
       irreconcilableDifferences: createField(true, {
@@ -524,8 +528,10 @@ function normalizeWorkspace(workspace: DraftFormsWorkspace): DraftFormsWorkspace
       residency: {
         petitionerCaliforniaMonths: workspace.fl100?.residency?.petitionerCaliforniaMonths ?? defaultFl100.residency.petitionerCaliforniaMonths,
         petitionerCountyMonths: workspace.fl100?.residency?.petitionerCountyMonths ?? defaultFl100.residency.petitionerCountyMonths,
+        petitionerResidenceLocation: workspace.fl100?.residency?.petitionerResidenceLocation ?? defaultFl100.residency.petitionerResidenceLocation,
         respondentCaliforniaMonths: workspace.fl100?.residency?.respondentCaliforniaMonths ?? defaultFl100.residency.respondentCaliforniaMonths,
         respondentCountyMonths: workspace.fl100?.residency?.respondentCountyMonths ?? defaultFl100.residency.respondentCountyMonths,
+        respondentResidenceLocation: workspace.fl100?.residency?.respondentResidenceLocation ?? defaultFl100.residency.respondentResidenceLocation,
       },
       legalGrounds: {
         irreconcilableDifferences: workspace.fl100?.legalGrounds?.irreconcilableDifferences ?? defaultFl100.legalGrounds.irreconcilableDifferences,
@@ -1041,8 +1047,10 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
         `Residency qualification rule: ${isDissolutionProceeding ? 'Apply dissolution residency thresholds (or listed jurisdiction exceptions)' : 'Dissolution residency thresholds do not block this proceeding type'}`,
         `Petitioner residency in California: ${workspace.fl100.residency.petitionerCaliforniaMonths.value || 'Not provided'} month(s)`,
         `Petitioner residency in filing county: ${workspace.fl100.residency.petitionerCountyMonths.value || 'Not provided'} month(s)`,
+        `Petitioner lives in (FL-100 item 2): ${workspace.fl100.residency.petitionerResidenceLocation.value || 'Not provided'}`,
         `Respondent residency in California: ${workspace.fl100.residency.respondentCaliforniaMonths.value || 'Not provided'} month(s)`,
         `Respondent residency in filing county: ${workspace.fl100.residency.respondentCountyMonths.value || 'Not provided'} month(s)`,
+        `Respondent lives in (FL-100 item 2): ${workspace.fl100.residency.respondentResidenceLocation.value || 'Not provided'}`,
         `Domestic partnership establishment: ${domesticPartnershipEstablishmentLabel}`,
         `Domestic partnership California-residency exception: ${workspace.fl100.domesticPartnership.californiaResidencyException.value ? 'Yes' : 'No'}`,
         `Same-sex-married-in-California jurisdiction exception: ${workspace.fl100.domesticPartnership.sameSexMarriageJurisdictionException.value ? 'Yes' : 'No'}`,

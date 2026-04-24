@@ -146,6 +146,8 @@ export function DraftFormsPage() {
     const petitionerCountyMonths = workspace.fl100.residency.petitionerCountyMonths.value;
     const respondentCaliforniaMonths = workspace.fl100.residency.respondentCaliforniaMonths.value;
     const respondentCountyMonths = workspace.fl100.residency.respondentCountyMonths.value;
+    const petitionerResidenceLocation = workspace.fl100.residency.petitionerResidenceLocation.value.trim();
+    const respondentResidenceLocation = workspace.fl100.residency.respondentResidenceLocation.value.trim();
     const petitionerCaliforniaProvided = petitionerCaliforniaMonths.trim().length > 0;
     const petitionerCountyProvided = petitionerCountyMonths.trim().length > 0;
     const respondentCaliforniaProvided = respondentCaliforniaMonths.trim().length > 0;
@@ -179,8 +181,14 @@ export function DraftFormsPage() {
       if (petitionerCaliforniaProvided !== petitionerCountyProvided) {
         missing.push('Complete petitioner residency pair (California + filing county months)');
       }
+      if (petitionerPairProvided && !petitionerResidenceLocation) {
+        missing.push('Petitioner residence location for FL-100 item 2');
+      }
       if (respondentCaliforniaProvided !== respondentCountyProvided) {
         missing.push('Complete respondent residency pair (California + filing county months)');
+      }
+      if (respondentPairProvided && !respondentResidenceLocation) {
+        missing.push('Respondent residence location for FL-100 item 2');
       }
 
       if (!petitionerPairProvided && !respondentPairProvided && !hasJurisdictionException) {
@@ -830,6 +838,23 @@ export function DraftFormsPage() {
                       />
                     </div>
                     <div>
+                      <FieldHeader label="Petitioner lives in (FL-100 item 2)" field={workspace.fl100.residency.petitionerResidenceLocation} />
+                      <Input
+                        value={workspace.fl100.residency.petitionerResidenceLocation.value}
+                        onChange={(e) => commitWorkspace((current) => ({
+                          ...current,
+                          fl100: {
+                            ...current.fl100,
+                            residency: {
+                              ...current.fl100.residency,
+                              petitionerResidenceLocation: setDraftFieldValue(current.fl100.residency.petitionerResidenceLocation, e.target.value),
+                            },
+                          },
+                        }))}
+                        placeholder="Example: Los Angeles County, California"
+                      />
+                    </div>
+                    <div>
                       <FieldHeader label="Respondent months in California" field={workspace.fl100.residency.respondentCaliforniaMonths} />
                       <Input
                         value={workspace.fl100.residency.respondentCaliforniaMonths.value}
@@ -863,7 +888,25 @@ export function DraftFormsPage() {
                         placeholder="Optional if petitioner qualifies"
                       />
                     </div>
+                    <div>
+                      <FieldHeader label="Respondent lives in (FL-100 item 2)" field={workspace.fl100.residency.respondentResidenceLocation} />
+                      <Input
+                        value={workspace.fl100.residency.respondentResidenceLocation.value}
+                        onChange={(e) => commitWorkspace((current) => ({
+                          ...current,
+                          fl100: {
+                            ...current.fl100,
+                            residency: {
+                              ...current.fl100.residency,
+                              respondentResidenceLocation: setDraftFieldValue(current.fl100.residency.respondentResidenceLocation, e.target.value),
+                            },
+                          },
+                        }))}
+                        placeholder="Optional if respondent residency facts are being used"
+                      />
+                    </div>
                   </div>
+                  <p className="mt-3 text-xs text-slate-500 dark:text-slate-400">FL-100 item 2 now uses the exact “lives in (specify)” values you enter here instead of auto-filling the filing county.</p>
                   {isDissolutionProceeding ? (
                     <div className="mt-4 grid gap-2 text-xs text-slate-600 dark:text-slate-300">
                       <p>Petitioner month-based qualification: {petitionerQualifiesResidencyByMonths ? 'Meets 6/3 threshold' : 'Not yet at 6/3 threshold or incomplete'}</p>

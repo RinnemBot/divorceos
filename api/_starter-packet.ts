@@ -83,8 +83,10 @@ interface StarterPacketWorkspace {
     residency: {
       petitionerCaliforniaMonths: StarterPacketField<string>;
       petitionerCountyMonths: StarterPacketField<string>;
+      petitionerResidenceLocation: StarterPacketField<string>;
       respondentCaliforniaMonths: StarterPacketField<string>;
       respondentCountyMonths: StarterPacketField<string>;
+      respondentResidenceLocation: StarterPacketField<string>;
     };
     legalGrounds: {
       irreconcilableDifferences: StarterPacketField<boolean>;
@@ -537,6 +539,8 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
     || spousalSupportDetails,
   );
   const voluntaryDeclarationOfParentageSigned = Boolean(workspace.fl100?.spousalSupport?.voluntaryDeclarationOfParentageSigned?.value);
+  const petitionerResidenceLocation = sanitizeText(workspace.fl100?.residency?.petitionerResidenceLocation?.value);
+  const respondentResidenceLocation = sanitizeText(workspace.fl100?.residency?.respondentResidenceLocation?.value);
   const communityPropertyDetails = sanitizeMultilineText(workspace.fl100?.propertyDeclarations?.communityAndQuasiCommunityDetails?.value);
   const separatePropertyDetails = sanitizeMultilineText(workspace.fl100?.propertyDeclarations?.separatePropertyDetails?.value);
   const separatePropertyAwardedTo = sanitizeMultilineText(workspace.fl100?.propertyDeclarations?.separatePropertyAwardedTo?.value);
@@ -566,8 +570,8 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
   fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].CaptionP1_sf[0].AttyInfo[0].Phone_ft[0]', petitionerPhone, fontRegular);
   fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].CaptionP1_sf[0].AttyInfo[0].Email_ft[0]', petitionerEmail, fontRegular, { size: 8 });
   fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].CaptionP1_sf[0].AttyInfo[0].AttyFor_ft[0]', petitionerName ? `${petitionerName} (in pro per)` : 'Petitioner in pro per', fontRegular, { size: 8 });
-  fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].PetitionersResidence_tf[0]', filingCounty, fontRegular);
-  fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].RespondentsResidence_tf[0]', filingCounty, fontRegular);
+  fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].PetitionersResidence_tf[0]', petitionerResidenceLocation, fontRegular);
+  fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].RespondentsResidence_tf[0]', respondentResidenceLocation, fontRegular);
   fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].DateOfMarriage_dt[0]', marriageDate, fontRegular);
   fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].DateOfSeparation_dt[0]', separationDate, fontRegular);
   fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page3[0].PrintPetitionerName_tf[0]', petitionerName, fontRegular);
