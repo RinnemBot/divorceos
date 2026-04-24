@@ -152,6 +152,7 @@ export interface DraftFl100Section {
     details: DraftField<string>;
     continuedOnAttachment: DraftField<boolean>;
   };
+  signatureDate: DraftField<string>;
   formerName: DraftField<string>;
 }
 
@@ -401,6 +402,7 @@ function createDefaultFl100Section(): DraftFl100Section {
         ...assumptionFieldConfig,
       }),
     },
+    signatureDate: createField('', { needsReview: true }),
     formerName: createField('', { needsReview: false }),
   };
 }
@@ -608,6 +610,7 @@ function normalizeWorkspace(workspace: DraftFormsWorkspace): DraftFormsWorkspace
         details: workspace.fl100?.otherRequests?.details ?? defaultFl100.otherRequests.details,
         continuedOnAttachment: workspace.fl100?.otherRequests?.continuedOnAttachment ?? defaultFl100.otherRequests.continuedOnAttachment,
       },
+      signatureDate: workspace.fl100?.signatureDate ?? defaultFl100.signatureDate,
       formerName: workspace.fl100?.formerName ?? defaultFl100.formerName,
     },
     fl105: {
@@ -1129,6 +1132,7 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
         `Other FL-100 requests selected: ${workspace.fl100.otherRequests.requestOtherRelief.value ? 'Yes' : 'No'}`,
         `Other FL-100 requests detail: ${workspace.fl100.otherRequests.details.value || 'Not provided'}`,
         `Other requests continued on attachment: ${workspace.fl100.otherRequests.continuedOnAttachment.value ? 'Yes' : 'No'}`,
+        `FL-100 signature date (page 3): ${workspace.fl100.signatureDate.value || 'Not provided'}`,
         `Former name to restore: ${workspace.fl100.formerName.value || 'Not requested'}`,
       ].join('\n'),
     },

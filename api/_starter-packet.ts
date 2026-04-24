@@ -145,6 +145,7 @@ interface StarterPacketWorkspace {
       details: StarterPacketField<string>;
       continuedOnAttachment: StarterPacketField<boolean>;
     };
+    signatureDate: StarterPacketField<string>;
     formerName: StarterPacketField<string>;
   };
   fl105: {
@@ -514,6 +515,8 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
   const petitionerAttorneyFor = sanitizeText(workspace.petitionerAttorneyFor?.value);
   const petitionerAddress = sanitizeMultilineText(workspace.petitionerAddress?.value);
   const address = parseAddress(petitionerAddress);
+  const fl100SignatureDateRaw = workspace.fl100?.signatureDate?.value;
+  const fl100SignatureDate = formatDateForCourt(fl100SignatureDateRaw);
   const relationshipTypeValue = workspace.fl100?.relationshipType?.value ?? 'marriage';
   const marriageDateRaw = workspace.marriageDate?.value;
   const separationDateRaw = workspace.separationDate?.value;
@@ -651,6 +654,8 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
   fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].MonthsSeparated_tf[1]', isMarriageProceeding ? marriageDuration.months : '', fontRegular);
   fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].MonthsSeparated_tf[3]', isDomesticPartnershipProceeding ? domesticPartnershipDuration.years : '', fontRegular);
   fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].MonthsSeparated_tf[2]', isDomesticPartnershipProceeding ? domesticPartnershipDuration.months : '', fontRegular);
+  fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page3[0].SigDate[0]', fl100SignatureDate, fontRegular);
+  fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page3[0].SigDate[1]', fl100SignatureDate, fontRegular);
   fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page3[0].PrintPetitionerName_tf[0]', petitionerName, fontRegular);
   fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page3[0].PrintPetitionerAttorneyName_tf[0]', petitionerName, fontRegular);
 

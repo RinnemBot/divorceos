@@ -611,7 +611,7 @@ export function DraftFormsPage() {
                 <CardDescription>These are the first petition-specific fields needed to move from general intake into a real FL-100 packet.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
-                <div className="grid gap-5 md:grid-cols-3">
+                <div className="grid gap-5 md:grid-cols-4">
                   <div>
                     <FieldHeader label="Proceeding type" field={workspace.fl100.proceedingType} />
                     <select
@@ -661,6 +661,21 @@ export function DraftFormsPage() {
                       }))}
                       placeholder="Only if a former name restoration is requested"
                     />
+                  </div>
+                  <div>
+                    <FieldHeader label="FL-100 signature date" field={workspace.fl100.signatureDate} />
+                    <Input
+                      type="date"
+                      value={workspace.fl100.signatureDate.value}
+                      onChange={(e) => commitWorkspace((current) => ({
+                        ...current,
+                        fl100: {
+                          ...current.fl100,
+                          signatureDate: setDraftFieldValue(current.fl100.signatureDate, e.target.value),
+                        },
+                      }))}
+                    />
+                    <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Maps to FL-100 page 3 petitioner date fields.</p>
                   </div>
                 </div>
                 <label className="flex items-start gap-3 rounded-2xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5">
