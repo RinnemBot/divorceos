@@ -87,6 +87,16 @@ function hasFl105ProceedingData(entry: DraftFormsWorkspace['fl105']['otherProcee
   ].some((value) => value.trim().length > 0);
 }
 
+function hasFl105ResidenceHistoryData(entry: DraftFormsWorkspace['fl105']['residenceHistory'][number]) {
+  return [
+    entry.fromDate.value,
+    entry.toDate.value,
+    entry.residence.value,
+    entry.personAndAddress.value,
+    entry.relationship.value,
+  ].some((value) => value.trim().length > 0);
+}
+
 function hasFl105OrderData(entry: DraftFormsWorkspace['fl105']['domesticViolenceOrders'][number]) {
   return [
     entry.orderType.value,
@@ -143,6 +153,10 @@ function getFl105OrderOverflowCount(entries: DraftFormsWorkspace['fl105']['domes
 
 function getFl105ClaimantOverflowCount(entries: DraftFormsWorkspace['fl105']['otherClaimants']) {
   return Math.max(entries.filter(hasFl105ClaimantData).length - FL105_FORM_CAPACITY.otherClaimantsRows, 0);
+}
+
+function getFl105ResidenceHistoryOverflowCount(entries: DraftFormsWorkspace['fl105']['residenceHistory']) {
+  return Math.max(entries.filter(hasFl105ResidenceHistoryData).length - FL105_FORM_CAPACITY.residenceHistoryRows, 0);
 }
 
 const FL100_SEPARATE_PROPERTY_VISIBLE_ROWS = 5;
@@ -411,6 +425,7 @@ export function DraftFormsPage() {
         entry.personAndAddress.value,
         entry.relationship.value,
       ].some((value) => value.trim().length > 0));
+      const fl105ResidenceHistoryOverflowCount = getFl105ResidenceHistoryOverflowCount(workspace.fl105.residenceHistory);
       const fl105ProceedingOverflowCount = getFl105OtherProceedingOverflowCount(workspace.fl105.otherProceedings);
       const fl105OrderOverflowCount = getFl105OrderOverflowCount(workspace.fl105.domesticViolenceOrders);
       const fl105ClaimantOverflowCount = getFl105ClaimantOverflowCount(workspace.fl105.otherClaimants);
@@ -449,6 +464,7 @@ export function DraftFormsPage() {
         && !workspace.fl105.attachmentPageCount.value.trim()
         && workspace.children.length <= FL105_FORM_CAPACITY.childrenRows
         && !workspace.fl105.additionalResidenceAddressesOnAttachment3a.value
+        && fl105ResidenceHistoryOverflowCount === 0
         && fl105ProceedingOverflowCount === 0
         && fl105OrderOverflowCount === 0
         && fl105ClaimantOverflowCount === 0
@@ -2148,14 +2164,13 @@ export function DraftFormsPage() {
                       <div className="flex items-center justify-between gap-3">
                         <div>
                           <p className="text-sm font-medium text-slate-800 dark:text-slate-100">Five-year residence history</p>
-                          <p className="text-xs text-slate-500 dark:text-slate-400">Visible FL-105 capacity: {FL105_FORM_CAPACITY.residenceHistoryRows} rows.</p>
+                          <p className="text-xs text-slate-500 dark:text-slate-400">Base FL-105 capacity: {FL105_FORM_CAPACITY.residenceHistoryRows} rows. Extra history rows generate attachment 3a pages automatically.</p>
                         </div>
                         <Button
                           type="button"
                           size="sm"
                           variant="outline"
                           className="rounded-full"
-                          disabled={workspace.fl105.residenceHistory.length >= FL105_FORM_CAPACITY.residenceHistoryRows}
                           onClick={() => updateFl105((fl105) => ({
                             ...fl105,
                             residenceHistory: [...fl105.residenceHistory, createBlankFl105ResidenceHistoryEntry()],
@@ -2164,6 +2179,11 @@ export function DraftFormsPage() {
                           Add history row
                         </Button>
                       </div>
+                      {getFl105ResidenceHistoryOverflowCount(workspace.fl105.residenceHistory) > 0 && (
+                        <p className="text-xs text-slate-500 dark:text-slate-400">
+                          {getFl105ResidenceHistoryOverflowCount(workspace.fl105.residenceHistory)} additional residence-history row(s) will be generated as FL-105 attachment 3a pages.
+                        </p>
+                      )}
                       <div className="grid gap-3 md:grid-cols-3">
                         <label className="flex items-start gap-3 rounded-lg border border-slate-200/80 bg-slate-50/70 p-3 dark:border-white/10 dark:bg-white/5">
                           <Checkbox
@@ -2181,7 +2201,7 @@ export function DraftFormsPage() {
                               <span className="text-sm font-medium text-slate-800 dark:text-slate-100">Additional addresses on attachment 3a</span>
                               <FieldSourceBadge field={workspace.fl105.additionalResidenceAddressesOnAttachment3a} />
                             </div>
-                            <p className="text-xs text-slate-500 dark:text-slate-400">Maps to FL-105 item 3a `AddlAddyCB` and generates a labeled attachment page from the residence-history rows below.</p>
+                            <p className="text-xs text-slate-500 dark:text-slate-400">Maps to FL-105 item 3a `AddlAddyCB` and generates labeled attachment 3a pages from the residence-history rows below. Extra history rows auto-trigger this in the generated form.</p>
                           </div>
                         </label>
                         <label className="flex items-start gap-3 rounded-lg border border-slate-200/80 bg-slate-50/70 p-3 dark:border-white/10 dark:bg-white/5">

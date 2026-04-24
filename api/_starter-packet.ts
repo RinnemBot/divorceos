@@ -197,6 +197,7 @@ const FL105_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-105.fields.json');
 const FL100_SEPARATE_PROPERTY_VISIBLE_ROWS = 5;
 const BASE_CHILD_VISIBLE_ROWS = 4;
 const GENERATED_CHILD_ATTACHMENT_ENTRIES_PER_PAGE = 6;
+const FL105_RESIDENCE_HISTORY_VISIBLE_ROWS = 5;
 const FL105_OTHER_CLAIMANTS_VISIBLE_ROWS = 3;
 const ATTACHMENT_PAGE_SIZE: [number, number] = [612, 792];
 const ATTACHMENT_PAGE_MARGIN = 48;
@@ -1371,7 +1372,10 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
       );
     });
 
-    (fl105?.residenceHistory ?? []).slice(0, 5).forEach((entry, index) => {
+    const visibleResidenceHistoryEntries = residenceHistoryEntries.slice(0, FL105_RESIDENCE_HISTORY_VISIBLE_ROWS);
+    const overflowResidenceHistoryEntries = residenceHistoryEntries.slice(FL105_RESIDENCE_HISTORY_VISIBLE_ROWS);
+
+    visibleResidenceHistoryEntries.forEach((entry, index) => {
       const row = index + 1;
       fillTextFields(fl105Pages, fl105FieldMap, `FL-105[0].Page1[0].List3[0].Li1[0].Table3a[0].Row${row}[0].From${row}[0]`, formatDateForCourt(entry.fromDate?.value), fontRegular, { size: 8 });
       fillTextFields(fl105Pages, fl105FieldMap, `FL-105[0].Page1[0].List3[0].Li1[0].Table3a[0].Row${row}[0].To${row}[0]`, formatDateForCourt(entry.toDate?.value), fontRegular, { size: 8 });
@@ -1395,11 +1399,14 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
       fl105Pages,
       fl105FieldMap,
       'FL-105[0].Page1[0].List3[0].Li1[0].AddlAddyCB[0]',
-      Boolean(fl105?.additionalResidenceAddressesOnAttachment3a?.value),
+      Boolean(fl105?.additionalResidenceAddressesOnAttachment3a?.value) || overflowResidenceHistoryEntries.length > 0,
     );
 
-    const shouldGenerateFl105ResidenceAttachment = Boolean(fl105?.additionalResidenceAddressesOnAttachment3a?.value);
-    if (shouldGenerateFl105ResidenceAttachment && residenceHistoryEntries.length === 0) {
+    const shouldGenerateFl105ResidenceAttachment = Boolean(fl105?.additionalResidenceAddressesOnAttachment3a?.value) || overflowResidenceHistoryEntries.length > 0;
+    const residenceAttachmentEntries = Boolean(fl105?.additionalResidenceAddressesOnAttachment3a?.value)
+      ? residenceHistoryEntries
+      : overflowResidenceHistoryEntries;
+    if (shouldGenerateFl105ResidenceAttachment && residenceAttachmentEntries.length === 0) {
       throw new Error('FL-105 attachment 3a is selected, but no residence-history details were provided.');
     }
     const generatedFl105ResidenceAttachmentPages = shouldGenerateFl105ResidenceAttachment
@@ -1413,7 +1420,7 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
         [
           {
             heading: 'Residence-history address details',
-            paragraphs: residenceHistoryEntries.map((entry, index) => [
+            paragraphs: residenceAttachmentEntries.map((entry, index) => [
               `${index + 1}. From: ${formatDateForCourt(entry.fromDate?.value) || 'Not provided'}${sanitizeText(entry.toDate?.value) ? `  To: ${formatDateForCourt(entry.toDate?.value)}` : ''}`,
               `Residence: ${sanitizeText(entry.residence?.value) || 'Not provided'}`,
               `Person / address: ${sanitizeText(entry.personAndAddress?.value) || 'Not provided'}`,

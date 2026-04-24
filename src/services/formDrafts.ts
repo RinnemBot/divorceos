@@ -244,6 +244,16 @@ function hasFl105ProceedingData(entry: DraftFl105OtherProceeding) {
   ].some((value) => value.trim().length > 0);
 }
 
+function hasFl105ResidenceHistoryData(entry: DraftFl105ResidenceHistoryEntry) {
+  return [
+    entry.fromDate.value,
+    entry.toDate.value,
+    entry.residence.value,
+    entry.personAndAddress.value,
+    entry.relationship.value,
+  ].some((value) => value.trim().length > 0);
+}
+
 function hasFl105OrderData(entry: DraftFl105RestrainingOrder) {
   return [
     entry.orderType.value,
@@ -300,6 +310,10 @@ function getFl105OrderOverflowCount(entries: DraftFl105RestrainingOrder[]) {
 
 function getFl105ClaimantOverflowCount(entries: DraftFl105OtherClaimant[]) {
   return Math.max(entries.filter(hasFl105ClaimantData).length - FL105_FORM_CAPACITY.otherClaimantsRows, 0);
+}
+
+function getFl105ResidenceHistoryOverflowCount(entries: DraftFl105ResidenceHistoryEntry[]) {
+  return Math.max(entries.filter(hasFl105ResidenceHistoryData).length - FL105_FORM_CAPACITY.residenceHistoryRows, 0);
 }
 
 function normalizeFl105ProceedingType(value: string) {
@@ -1231,6 +1245,7 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
   const hasOverflowMinorChildren = workspace.children.length > FL105_FORM_CAPACITY.childrenRows;
   const childrenBeyondVisibleRowsCount = Math.max(workspace.children.length - FL105_FORM_CAPACITY.childrenRows, 0);
   const generatedChildAttachmentPageCount = getGeneratedChildAttachmentPageCount(childrenBeyondVisibleRowsCount);
+  const fl105ResidenceHistoryOverflowCount = getFl105ResidenceHistoryOverflowCount(workspace.fl105.residenceHistory);
   const hasFl105ResidenceHistoryDetails = workspace.fl105.residenceHistory.some((entry) => [
     entry.fromDate.value,
     entry.toDate.value,
@@ -1238,7 +1253,8 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
     entry.personAndAddress.value,
     entry.relationship.value,
   ].some((value) => value.trim().length > 0));
-  const generatesFl105ResidenceAttachment = workspace.fl105.additionalResidenceAddressesOnAttachment3a.value && hasFl105ResidenceHistoryDetails;
+  const generatesFl105ResidenceAttachment = hasFl105ResidenceHistoryDetails
+    && (workspace.fl105.additionalResidenceAddressesOnAttachment3a.value || fl105ResidenceHistoryOverflowCount > 0);
   const fl105ProceedingOverflowCount = getFl105ProceedingOverflowCount(workspace.fl105.otherProceedings);
   const fl105OrderOverflowCount = getFl105OrderOverflowCount(workspace.fl105.domesticViolenceOrders);
   const fl105ClaimantOverflowCount = getFl105ClaimantOverflowCount(workspace.fl105.otherClaimants);
@@ -1383,6 +1399,8 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
         `Children lived together for past five years: ${workspace.fl105.childrenLivedTogetherPastFiveYears.value ? 'Yes' : 'No / attachment needed'}`,
         `FL-105(A)/GC-120(A) attachment support needed: ${workspace.fl105.childrenLivedTogetherPastFiveYears.value ? 'No' : 'Yes — not generated yet'}`,
         `FL-105 item 3a additional addresses on attachment: ${workspace.fl105.additionalResidenceAddressesOnAttachment3a.value ? 'Yes' : 'No'}`,
+        `FL-105 residence history rows entered: ${workspace.fl105.residenceHistory.filter(hasFl105ResidenceHistoryData).length}`,
+        `Generated FL-105 attachment 3a overflow rows: ${fl105ResidenceHistoryOverflowCount > 0 ? `Yes (${fl105ResidenceHistoryOverflowCount})` : 'No'}`,
         `Generated FL-105 attachment 3a from residence history: ${generatesFl105ResidenceAttachment ? 'Yes' : workspace.fl105.additionalResidenceAddressesOnAttachment3a.value ? 'Not ready yet' : 'No'}`,
         `FL-105 item 3a residence confidentiality (state only): ${workspace.fl105.residenceAddressConfidentialStateOnly.value ? 'Yes' : 'No'}`,
         `FL-105 item 3a person/address confidentiality (state only): ${workspace.fl105.personAddressConfidentialStateOnly.value ? 'Yes' : 'No'}`,
