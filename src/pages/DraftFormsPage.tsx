@@ -156,6 +156,7 @@ export function DraftFormsPage() {
     const respondentPairProvided = respondentCaliforniaProvided && respondentCountyProvided;
     const petitionerQualifies = qualifiesForResidency(petitionerCaliforniaMonths, petitionerCountyMonths);
     const respondentQualifies = qualifiesForResidency(respondentCaliforniaMonths, respondentCountyMonths);
+    const domesticPartnershipSeparationDate = workspace.fl100.domesticPartnership.partnerSeparationDate.value.trim();
     const hasDomesticPartnershipResidencyException = isDomesticPartnershipRelationship
       && workspace.fl100.domesticPartnership.establishment.value === 'not_established_in_california'
       && workspace.fl100.domesticPartnership.californiaResidencyException.value;
@@ -205,6 +206,9 @@ export function DraftFormsPage() {
     }
     if (isDomesticPartnershipRelationship && workspace.fl100.domesticPartnership.establishment.value === 'unspecified') {
       missing.push('Domestic partnership establishment in California');
+    }
+    if (isDomesticPartnershipRelationship && !domesticPartnershipSeparationDate) {
+      missing.push('Domestic partnership date of separation');
     }
     if (workspace.requests.restoreFormerName.value && !workspace.fl100.formerName.value.trim()) {
       missing.push('Former name to restore');
@@ -658,6 +662,21 @@ export function DraftFormsPage() {
                               <option value="established_in_california">Established in California</option>
                               <option value="not_established_in_california">Not established in California</option>
                             </select>
+                          </div>
+                          <div>
+                            <FieldHeader label="Domestic partnership date of separation" field={workspace.fl100.domesticPartnership.partnerSeparationDate} />
+                            <Input
+                              type="date"
+                              value={workspace.fl100.domesticPartnership.partnerSeparationDate.value}
+                              onChange={(e) => updateFl100((fl100) => ({
+                                ...fl100,
+                                domesticPartnership: {
+                                  ...fl100.domesticPartnership,
+                                  partnerSeparationDate: setDraftFieldValue(fl100.domesticPartnership.partnerSeparationDate, e.target.value),
+                                },
+                              }))}
+                            />
+                            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Maps to FL-100 `DatePartnersSeparated_dt[0]` and is separate from marriage separation date.</p>
                           </div>
                           <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-white/70 p-3 dark:border-white/10 dark:bg-white/5">
                             <Checkbox

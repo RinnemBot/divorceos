@@ -69,6 +69,7 @@ interface StarterPacketWorkspace {
       establishment: StarterPacketField<'unspecified' | 'established_in_california' | 'not_established_in_california'>;
       californiaResidencyException: StarterPacketField<boolean>;
       sameSexMarriageJurisdictionException: StarterPacketField<boolean>;
+      partnerSeparationDate: StarterPacketField<string>;
     };
     nullity: {
       basedOnIncest: StarterPacketField<boolean>;
@@ -260,6 +261,51 @@ function formatDateForCourt(value: string | undefined | null) {
     return `${match[2]}/${match[3]}/${match[1]}`;
   }
   return raw;
+}
+
+function parseIsoDate(value: string | undefined | null) {
+  const raw = sanitizeText(value);
+  const match = raw.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!match) return null;
+  const year = Number.parseInt(match[1], 10);
+  const month = Number.parseInt(match[2], 10);
+  const day = Number.parseInt(match[3], 10);
+  const parsed = new Date(Date.UTC(year, month - 1, day));
+  if (
+    parsed.getUTCFullYear() !== year
+    || parsed.getUTCMonth() + 1 !== month
+    || parsed.getUTCDate() !== day
+  ) {
+    return null;
+  }
+  return { year, month, day };
+}
+
+function calculateCourtDuration(start: string | undefined | null, end: string | undefined | null) {
+  const startDate = parseIsoDate(start);
+  const endDate = parseIsoDate(end);
+  if (!startDate || !endDate) {
+    return { years: '', months: '' };
+  }
+
+  let years = endDate.year - startDate.year;
+  let months = endDate.month - startDate.month;
+  const days = endDate.day - startDate.day;
+  if (days < 0) {
+    months -= 1;
+  }
+  if (months < 0) {
+    years -= 1;
+    months += 12;
+  }
+  if (years < 0) {
+    return { years: '', months: '' };
+  }
+
+  return {
+    years: String(years),
+    months: String(months),
+  };
 }
 
 function parseNumber(value: string | undefined | null) {
@@ -458,10 +504,17 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
   const petitionerPhone = sanitizeText(workspace.petitionerPhone?.value);
   const petitionerAddress = sanitizeMultilineText(workspace.petitionerAddress?.value);
   const address = parseAddress(petitionerAddress);
-  const marriageDate = formatDateForCourt(workspace.marriageDate?.value);
-  const separationDate = formatDateForCourt(workspace.separationDate?.value);
+  const relationshipTypeValue = workspace.fl100?.relationshipType?.value ?? 'marriage';
+  const marriageDateRaw = workspace.marriageDate?.value;
+  const separationDateRaw = workspace.separationDate?.value;
+  const domesticPartnershipSeparationDateRaw = workspace.fl100?.domesticPartnership?.partnerSeparationDate?.value;
+  const marriageDate = formatDateForCourt(marriageDateRaw);
+  const separationDate = formatDateForCourt(separationDateRaw);
+  const domesticPartnershipSeparationDate = formatDateForCourt(domesticPartnershipSeparationDateRaw);
+  const marriageDuration = calculateCourtDuration(marriageDateRaw, separationDateRaw);
+  const domesticPartnershipDuration = calculateCourtDuration(marriageDateRaw, domesticPartnershipSeparationDateRaw);
   const proceedingType = workspace.fl100?.proceedingType?.value ?? 'dissolution';
-  const relationshipType = workspace.fl100?.relationshipType?.value ?? 'marriage';
+  const relationshipType = relationshipTypeValue;
   const domesticPartnershipEstablishment = workspace.fl100?.domesticPartnership?.establishment?.value ?? 'unspecified';
   const domesticPartnershipCaliforniaResidencyException = Boolean(workspace.fl100?.domesticPartnership?.californiaResidencyException?.value);
   const sameSexMarriageJurisdictionException = Boolean(workspace.fl100?.domesticPartnership?.sameSexMarriageJurisdictionException?.value);
@@ -574,6 +627,11 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
   fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].RespondentsResidence_tf[0]', respondentResidenceLocation, fontRegular);
   fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].DateOfMarriage_dt[0]', marriageDate, fontRegular);
   fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].DateOfSeparation_dt[0]', separationDate, fontRegular);
+  fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].DatePartnersSeparated_dt[0]', domesticPartnershipSeparationDate, fontRegular);
+  fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].MonthsSeparated_tf[0]', isMarriageProceeding ? marriageDuration.years : '', fontRegular);
+  fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].MonthsSeparated_tf[1]', isMarriageProceeding ? marriageDuration.months : '', fontRegular);
+  fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].MonthsSeparated_tf[3]', isDomesticPartnershipProceeding ? domesticPartnershipDuration.years : '', fontRegular);
+  fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].MonthsSeparated_tf[2]', isDomesticPartnershipProceeding ? domesticPartnershipDuration.months : '', fontRegular);
   fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page3[0].PrintPetitionerName_tf[0]', petitionerName, fontRegular);
   fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page3[0].PrintPetitionerAttorneyName_tf[0]', petitionerName, fontRegular);
 
