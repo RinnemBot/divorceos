@@ -1322,6 +1322,16 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
     fillCheckbox(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].List3[0].Li1[0].OneManyCB[0]', Boolean(fl105?.childrenLivedTogetherPastFiveYears?.value));
     fillCheckbox(fl105Pages, fl105FieldMap, 'FL-105[0].Page1[0].List3[0].Li2[0].KidsLiveApart[0].OneManyCB[0]', !fl105?.childrenLivedTogetherPastFiveYears?.value);
 
+    const residenceHistoryEntries = (fl105?.residenceHistory ?? []).filter((entry) => {
+      return Boolean(
+        sanitizeText(entry.fromDate?.value)
+        || sanitizeText(entry.toDate?.value)
+        || sanitizeText(entry.residence?.value)
+        || sanitizeText(entry.personAndAddress?.value)
+        || sanitizeText(entry.relationship?.value),
+      );
+    });
+
     (fl105?.residenceHistory ?? []).slice(0, 5).forEach((entry, index) => {
       const row = index + 1;
       fillTextFields(fl105Pages, fl105FieldMap, `FL-105[0].Page1[0].List3[0].Li1[0].Table3a[0].Row${row}[0].From${row}[0]`, formatDateForCourt(entry.fromDate?.value), fontRegular, { size: 8 });
@@ -1348,6 +1358,32 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
       'FL-105[0].Page1[0].List3[0].Li1[0].AddlAddyCB[0]',
       Boolean(fl105?.additionalResidenceAddressesOnAttachment3a?.value),
     );
+
+    const shouldGenerateFl105ResidenceAttachment = Boolean(fl105?.additionalResidenceAddressesOnAttachment3a?.value);
+    if (shouldGenerateFl105ResidenceAttachment && residenceHistoryEntries.length === 0) {
+      throw new Error('FL-105 attachment 3a is selected, but no residence-history details were provided.');
+    }
+    const generatedFl105ResidenceAttachmentPages = shouldGenerateFl105ResidenceAttachment
+      ? appendAttachmentTextPages(
+        output,
+        fontRegular,
+        fontBold,
+        'FL-105 Attachment 3a — Additional Residence Addresses',
+        shortTitle,
+        caseNumber,
+        [
+          {
+            heading: 'Residence-history address details',
+            paragraphs: residenceHistoryEntries.map((entry, index) => [
+              `${index + 1}. From: ${formatDateForCourt(entry.fromDate?.value) || 'Not provided'}${sanitizeText(entry.toDate?.value) ? `  To: ${formatDateForCourt(entry.toDate?.value)}` : ''}`,
+              `Residence: ${sanitizeText(entry.residence?.value) || 'Not provided'}`,
+              `Person / address: ${sanitizeText(entry.personAndAddress?.value) || 'Not provided'}`,
+              `Relationship: ${sanitizeText(entry.relationship?.value) || 'Not provided'}`,
+            ].join('\n')),
+          },
+        ],
+      )
+      : 0;
 
     const proceedings = (fl105?.otherProceedings ?? []).filter((entry) => {
       return Boolean(
@@ -1447,7 +1483,7 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
     const declarantName = sanitizeText(fl105?.declarantName?.value || petitionerName);
     const declarantSignatureDate = formatDateForCourt(fl105?.signatureDate?.value);
     const manualFl105AttachmentPageCount = parseAttachmentPageCount(fl105?.attachmentPageCount?.value);
-    const totalFl105AttachmentPageCount = manualFl105AttachmentPageCount + generatedFl105ChildAttachmentPages;
+    const totalFl105AttachmentPageCount = manualFl105AttachmentPageCount + generatedFl105ChildAttachmentPages + generatedFl105ResidenceAttachmentPages;
     const hasFl105Attachments = Boolean(fl105?.attachmentsIncluded?.value) || totalFl105AttachmentPageCount > 0;
     fillCheckbox(fl105Pages, fl105FieldMap, 'FL-105[0].Page2[0].List7[0].Li1[0].Checkbox[0]', hasFl105Attachments);
     fillTextFields(

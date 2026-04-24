@@ -334,6 +334,13 @@ export function DraftFormsPage() {
     }
 
     if (workspace.hasMinorChildren.value) {
+      const hasResidenceHistoryDetails = workspace.fl105.residenceHistory.some((entry) => [
+        entry.fromDate.value,
+        entry.toDate.value,
+        entry.residence.value,
+        entry.personAndAddress.value,
+        entry.relationship.value,
+      ].some((value) => value.trim().length > 0));
       if (workspace.children.length === 0 && !workspace.fl100.minorChildren.hasUnbornChild.value) {
         missing.push('At least one child entry or unborn child selection');
       }
@@ -349,17 +356,8 @@ export function DraftFormsPage() {
       if (!workspace.fl105.signatureDate.value.trim()) {
         missing.push('FL-105 declarant signature date');
       }
-      if (
-        workspace.fl105.additionalResidenceAddressesOnAttachment3a.value
-        && !workspace.fl105.attachmentsIncluded.value
-      ) {
-        missing.push('FL-105 item 3a additional addresses require selecting "FL-105 has attached pages"');
-      }
-      if (
-        workspace.fl105.additionalResidenceAddressesOnAttachment3a.value
-        && !workspace.fl105.attachmentPageCount.value.trim()
-      ) {
-        missing.push('FL-105 item 3a additional addresses require an attachment page count');
+      if (workspace.fl105.additionalResidenceAddressesOnAttachment3a.value && !hasResidenceHistoryDetails) {
+        missing.push('FL-105 attachment 3a residence-history details');
       }
       if (workspace.fl105.residenceAddressConfidentialStateOnly.value) {
         const hasNonStateOnlyResidenceAddress = workspace.fl105.residenceHistory.some((entry) => !isFl105StateOnlyAddress(entry.residence.value));
@@ -377,6 +375,7 @@ export function DraftFormsPage() {
         workspace.fl105.attachmentsIncluded.value
         && !workspace.fl105.attachmentPageCount.value.trim()
         && workspace.children.length <= FL105_FORM_CAPACITY.childrenRows
+        && !workspace.fl105.additionalResidenceAddressesOnAttachment3a.value
       ) {
         missing.push('FL-105 attachment page count');
       }
@@ -2045,7 +2044,7 @@ export function DraftFormsPage() {
                             <span className="font-medium text-slate-800 dark:text-slate-100">FL-105 has attached pages</span>
                             <FieldSourceBadge field={workspace.fl105.attachmentsIncluded} />
                           </div>
-                          <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Maps to page 2, item 7 checkbox. Generated child-overflow pages count as attached pages automatically.</p>
+                          <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Maps to page 2, item 7 checkbox. Generated child-overflow pages and generated attachment 3a pages count as attached pages automatically.</p>
                         </div>
                       </label>
                       <div>
@@ -2064,7 +2063,7 @@ export function DraftFormsPage() {
                           disabled={!workspace.fl105.attachmentsIncluded.value}
                         />
                         <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                          Enter manual attachment pages here. Any generated FL-105 child-overflow pages are added to the final item 7 total automatically.
+                          Enter manual attachment pages here. Any generated FL-105 child-overflow pages or generated attachment 3a pages are added to the final item 7 total automatically.
                         </p>
                       </div>
                     </div>
@@ -2106,7 +2105,7 @@ export function DraftFormsPage() {
                               <span className="text-sm font-medium text-slate-800 dark:text-slate-100">Additional addresses on attachment 3a</span>
                               <FieldSourceBadge field={workspace.fl105.additionalResidenceAddressesOnAttachment3a} />
                             </div>
-                            <p className="text-xs text-slate-500 dark:text-slate-400">Maps to FL-105 item 3a `AddlAddyCB`.</p>
+                            <p className="text-xs text-slate-500 dark:text-slate-400">Maps to FL-105 item 3a `AddlAddyCB` and generates a labeled attachment page from the residence-history rows below.</p>
                           </div>
                         </label>
                         <label className="flex items-start gap-3 rounded-lg border border-slate-200/80 bg-slate-50/70 p-3 dark:border-white/10 dark:bg-white/5">

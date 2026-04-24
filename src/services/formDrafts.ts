@@ -1140,6 +1140,14 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
   const hasOverflowMinorChildren = workspace.children.length > FL105_FORM_CAPACITY.childrenRows;
   const childrenBeyondVisibleRowsCount = Math.max(workspace.children.length - FL105_FORM_CAPACITY.childrenRows, 0);
   const generatedChildAttachmentPageCount = getGeneratedChildAttachmentPageCount(childrenBeyondVisibleRowsCount);
+  const hasFl105ResidenceHistoryDetails = workspace.fl105.residenceHistory.some((entry) => [
+    entry.fromDate.value,
+    entry.toDate.value,
+    entry.residence.value,
+    entry.personAndAddress.value,
+    entry.relationship.value,
+  ].some((value) => value.trim().length > 0));
+  const generatesFl105ResidenceAttachment = workspace.fl105.additionalResidenceAddressesOnAttachment3a.value && hasFl105ResidenceHistoryDetails;
 
   const sections: DraftPacketSection[] = [
     {
@@ -1281,6 +1289,7 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
         `Children lived together for past five years: ${workspace.fl105.childrenLivedTogetherPastFiveYears.value ? 'Yes' : 'No / attachment needed'}`,
         `FL-105(A)/GC-120(A) attachment support needed: ${workspace.fl105.childrenLivedTogetherPastFiveYears.value ? 'No' : 'Yes — not generated yet'}`,
         `FL-105 item 3a additional addresses on attachment: ${workspace.fl105.additionalResidenceAddressesOnAttachment3a.value ? 'Yes' : 'No'}`,
+        `Generated FL-105 attachment 3a from residence history: ${generatesFl105ResidenceAttachment ? 'Yes' : workspace.fl105.additionalResidenceAddressesOnAttachment3a.value ? 'Not ready yet' : 'No'}`,
         `FL-105 item 3a residence confidentiality (state only): ${workspace.fl105.residenceAddressConfidentialStateOnly.value ? 'Yes' : 'No'}`,
         `FL-105 item 3a person/address confidentiality (state only): ${workspace.fl105.personAddressConfidentialStateOnly.value ? 'Yes' : 'No'}`,
         `Declarant signature date: ${workspace.fl105.signatureDate.value || 'Not provided'}`,
