@@ -70,6 +70,8 @@ export interface DraftFl105Section {
   domesticViolenceOrders: DraftFl105RestrainingOrder[];
   otherClaimantsKnown: DraftField<boolean>;
   otherClaimants: DraftFl105OtherClaimant[];
+  attachmentsIncluded: DraftField<boolean>;
+  attachmentPageCount: DraftField<string>;
   declarantName: DraftField<string>;
   signatureDate: DraftField<string>;
 }
@@ -485,6 +487,15 @@ function createDefaultFl105Section(petitionerName = ''): DraftFl105Section {
       needsReview: true,
     }),
     otherClaimants: [],
+    attachmentsIncluded: createField(false, {
+      sourceType: 'manual',
+      sourceLabel: 'Default FL-105 assumption',
+      confidence: 'low',
+      needsReview: true,
+    }),
+    attachmentPageCount: createField('', {
+      needsReview: false,
+    }),
     declarantName: createField(petitionerName, {
       sourceType: petitionerName ? 'profile' : undefined,
       sourceLabel: petitionerName ? 'Account profile' : undefined,
@@ -671,6 +682,8 @@ function normalizeWorkspace(workspace: DraftFormsWorkspace): DraftFormsWorkspace
           claimsVisitationRights: entry.claimsVisitationRights ?? createField(false, { needsReview: true }),
         }))
         : defaultFl105.otherClaimants,
+      attachmentsIncluded: workspace.fl105?.attachmentsIncluded ?? defaultFl105.attachmentsIncluded,
+      attachmentPageCount: workspace.fl105?.attachmentPageCount ?? defaultFl105.attachmentPageCount,
       declarantName: workspace.fl105?.declarantName ?? defaultFl105.declarantName,
       signatureDate: workspace.fl105?.signatureDate ?? defaultFl105.signatureDate,
     },
@@ -1191,6 +1204,8 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
       body: [
         `Children lived together for past five years: ${workspace.fl105.childrenLivedTogetherPastFiveYears.value ? 'Yes' : 'No / attachment needed'}`,
         `Declarant signature date: ${workspace.fl105.signatureDate.value || 'Not provided'}`,
+        `Additional FL-105 attached pages included: ${workspace.fl105.attachmentsIncluded.value ? 'Yes' : 'No'}`,
+        `FL-105 attachment page count: ${workspace.fl105.attachmentsIncluded.value ? (workspace.fl105.attachmentPageCount.value || 'Not provided') : 'Not applicable'}`,
         workspace.fl105.residenceHistory.length > 0
           ? `Residence history:\n${workspace.fl105.residenceHistory.map((entry, index) => `${index + 1}. From ${entry.fromDate.value || 'Not provided'}${entry.toDate.value ? ` to ${entry.toDate.value}` : ''} — ${entry.residence.value || 'Residence missing'} — Lived with ${entry.personAndAddress.value || 'Not provided'} (${entry.relationship.value || 'Relationship missing'})`).join('\n')}`
           : 'Residence history not entered yet.',

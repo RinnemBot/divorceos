@@ -289,6 +289,9 @@ export function DraftFormsPage() {
       if (!workspace.fl105.signatureDate.value.trim()) {
         missing.push('FL-105 declarant signature date');
       }
+      if (workspace.fl105.attachmentsIncluded.value && !workspace.fl105.attachmentPageCount.value.trim()) {
+        missing.push('FL-105 attachment page count');
+      }
       workspace.children.forEach((child, index) => {
         if (!child.fullName.value.trim()) missing.push(`Child ${index + 1} full name`);
         if (!child.birthDate.value.trim()) missing.push(`Child ${index + 1} birth date`);
@@ -1853,6 +1856,41 @@ export function DraftFormsPage() {
                             ...fl105,
                             signatureDate: setDraftFieldValue(fl105.signatureDate, e.target.value),
                           }))}
+                        />
+                      </div>
+                      <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-white/70 p-3 dark:border-white/10 dark:bg-white/5">
+                        <Checkbox
+                          checked={workspace.fl105.attachmentsIncluded.value}
+                          onCheckedChange={(checked) => updateFl105((fl105) => ({
+                            ...fl105,
+                            attachmentsIncluded: setDraftFieldValue(fl105.attachmentsIncluded, checked === true),
+                            attachmentPageCount: checked === true
+                              ? fl105.attachmentPageCount
+                              : setDraftFieldValue(fl105.attachmentPageCount, ''),
+                          }))}
+                        />
+                        <div>
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="font-medium text-slate-800 dark:text-slate-100">FL-105 has attached pages</span>
+                            <FieldSourceBadge field={workspace.fl105.attachmentsIncluded} />
+                          </div>
+                          <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Maps to page 2, item 7 checkbox.</p>
+                        </div>
+                      </label>
+                      <div>
+                        <FieldHeader label="FL-105 attachment page count" field={workspace.fl105.attachmentPageCount} />
+                        <Input
+                          inputMode="numeric"
+                          value={workspace.fl105.attachmentPageCount.value}
+                          onChange={(e) => updateFl105((fl105) => ({
+                            ...fl105,
+                            attachmentPageCount: setDraftFieldValue(
+                              fl105.attachmentPageCount,
+                              e.target.value.replace(/[^\d]/g, ''),
+                            ),
+                          }))}
+                          placeholder="e.g., 2"
+                          disabled={!workspace.fl105.attachmentsIncluded.value}
                         />
                       </div>
                     </div>

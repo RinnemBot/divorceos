@@ -158,6 +158,8 @@ interface StarterPacketWorkspace {
     domesticViolenceOrders: StarterPacketFl105RestrainingOrder[];
     otherClaimantsKnown: StarterPacketField<boolean>;
     otherClaimants: StarterPacketFl105OtherClaimant[];
+    attachmentsIncluded: StarterPacketField<boolean>;
+    attachmentPageCount: StarterPacketField<string>;
     declarantName: StarterPacketField<string>;
     signatureDate: StarterPacketField<string>;
   };
@@ -1039,6 +1041,17 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
 
     const declarantName = sanitizeText(fl105?.declarantName?.value || petitionerName);
     const declarantSignatureDate = formatDateForCourt(fl105?.signatureDate?.value);
+    const hasFl105Attachments = Boolean(fl105?.attachmentsIncluded?.value);
+    const fl105AttachmentPageCount = sanitizeText(fl105?.attachmentPageCount?.value);
+    fillCheckbox(fl105Pages, fl105FieldMap, 'FL-105[0].Page2[0].List7[0].Li1[0].Checkbox[0]', hasFl105Attachments);
+    fillTextFields(
+      fl105Pages,
+      fl105FieldMap,
+      'FL-105[0].Page2[0].List7[0].Li1[0].PPAttached[0]',
+      hasFl105Attachments ? fl105AttachmentPageCount : '',
+      fontRegular,
+      { size: 8 },
+    );
     fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page2[0].PoPDec[0].PrintName[0]', declarantName, fontRegular);
     fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page2[0].PoPDec[0].SigDate[0]', declarantSignatureDate, fontRegular);
   }
