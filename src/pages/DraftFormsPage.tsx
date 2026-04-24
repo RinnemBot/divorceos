@@ -28,6 +28,19 @@ import {
 } from '@/services/formDrafts';
 import { toast } from 'sonner';
 
+function parseMonths(value: string) {
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+  const parsed = Number.parseFloat(trimmed);
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
+function qualifiesForResidency(californiaMonths: string, countyMonths: string) {
+  const california = parseMonths(californiaMonths);
+  const county = parseMonths(countyMonths);
+  return california !== null && county !== null && california >= 6 && county >= 3;
+}
+
 function FieldSourceBadge({ field }: { field: DraftField<unknown> }) {
   if (!field.sourceType) {
     return <Badge variant="secondary">Needs source</Badge>;
@@ -114,9 +127,30 @@ export function DraftFormsPage() {
     if (!workspace) return [] as string[];
     const missing: string[] = [];
     const proceedingType = workspace.fl100.proceedingType.value;
+    const isDissolutionProceeding = proceedingType === 'dissolution';
     const isNullityProceeding = proceedingType === 'nullity';
+    const isMarriageRelationship = workspace.fl100.relationshipType.value === 'marriage'
+      || workspace.fl100.relationshipType.value === 'both';
     const isDomesticPartnershipRelationship = workspace.fl100.relationshipType.value === 'domestic_partnership'
       || workspace.fl100.relationshipType.value === 'both';
+    const petitionerCaliforniaMonths = workspace.fl100.residency.petitionerCaliforniaMonths.value;
+    const petitionerCountyMonths = workspace.fl100.residency.petitionerCountyMonths.value;
+    const respondentCaliforniaMonths = workspace.fl100.residency.respondentCaliforniaMonths.value;
+    const respondentCountyMonths = workspace.fl100.residency.respondentCountyMonths.value;
+    const petitionerCaliforniaProvided = petitionerCaliforniaMonths.trim().length > 0;
+    const petitionerCountyProvided = petitionerCountyMonths.trim().length > 0;
+    const respondentCaliforniaProvided = respondentCaliforniaMonths.trim().length > 0;
+    const respondentCountyProvided = respondentCountyMonths.trim().length > 0;
+    const petitionerPairProvided = petitionerCaliforniaProvided && petitionerCountyProvided;
+    const respondentPairProvided = respondentCaliforniaProvided && respondentCountyProvided;
+    const petitionerQualifies = qualifiesForResidency(petitionerCaliforniaMonths, petitionerCountyMonths);
+    const respondentQualifies = qualifiesForResidency(respondentCaliforniaMonths, respondentCountyMonths);
+    const hasDomesticPartnershipResidencyException = isDomesticPartnershipRelationship
+      && workspace.fl100.domesticPartnership.establishment.value === 'not_established_in_california'
+      && workspace.fl100.domesticPartnership.californiaResidencyException.value;
+    const hasSameSexMarriageJurisdictionException = isMarriageRelationship
+      && workspace.fl100.domesticPartnership.sameSexMarriageJurisdictionException.value;
+    const hasJurisdictionException = hasDomesticPartnershipResidencyException || hasSameSexMarriageJurisdictionException;
     const hasNullityBasis = [
       workspace.fl100.nullity.basedOnIncest.value,
       workspace.fl100.nullity.basedOnBigamy.value,
@@ -132,8 +166,20 @@ export function DraftFormsPage() {
     if (!workspace.petitionerName.value.trim()) missing.push('Petitioner name');
     if (!workspace.respondentName.value.trim()) missing.push('Respondent name');
     if (!workspace.marriageDate.value.trim()) missing.push('Date of marriage');
-    if (!workspace.fl100.residency.petitionerCaliforniaMonths.value.trim()) missing.push('Petitioner California residency months');
-    if (!workspace.fl100.residency.petitionerCountyMonths.value.trim()) missing.push('Petitioner county residency months');
+    if (isDissolutionProceeding) {
+      if (petitionerCaliforniaProvided !== petitionerCountyProvided) {
+        missing.push('Complete petitioner residency pair (California + filing county months)');
+      }
+      if (respondentCaliforniaProvided !== respondentCountyProvided) {
+        missing.push('Complete respondent residency pair (California + filing county months)');
+      }
+
+      if (!petitionerPairProvided && !respondentPairProvided && !hasJurisdictionException) {
+        missing.push('Dissolution residency path (qualifying spouse months or jurisdiction exception)');
+      } else if (!petitionerQualifies && !respondentQualifies && !hasJurisdictionException) {
+        missing.push('Dissolution residency qualification (6 months CA + 3 months county for either spouse)');
+      }
+    }
     if (!isNullityProceeding && !workspace.fl100.legalGrounds.irreconcilableDifferences.value && !workspace.fl100.legalGrounds.permanentLegalIncapacity.value) {
       missing.push('At least one legal ground for FL-100');
     }
@@ -251,9 +297,26 @@ export function DraftFormsPage() {
   const includedForms = workspace.hasMinorChildren.value
     ? ['FL-100', 'FL-110', 'FL-105/GC-120']
     : ['FL-100', 'FL-110'];
+  const isDissolutionProceeding = workspace.fl100.proceedingType.value === 'dissolution';
+  const isMarriageRelationship = workspace.fl100.relationshipType.value === 'marriage'
+    || workspace.fl100.relationshipType.value === 'both';
   const isDomesticPartnershipRelationship = workspace.fl100.relationshipType.value === 'domestic_partnership'
     || workspace.fl100.relationshipType.value === 'both';
   const isNullityProceeding = workspace.fl100.proceedingType.value === 'nullity';
+  const petitionerQualifiesResidencyByMonths = qualifiesForResidency(
+    workspace.fl100.residency.petitionerCaliforniaMonths.value,
+    workspace.fl100.residency.petitionerCountyMonths.value,
+  );
+  const respondentQualifiesResidencyByMonths = qualifiesForResidency(
+    workspace.fl100.residency.respondentCaliforniaMonths.value,
+    workspace.fl100.residency.respondentCountyMonths.value,
+  );
+  const hasDomesticPartnershipResidencyException = isDomesticPartnershipRelationship
+    && workspace.fl100.domesticPartnership.establishment.value === 'not_established_in_california'
+    && workspace.fl100.domesticPartnership.californiaResidencyException.value;
+  const hasSameSexMarriageJurisdictionException = isMarriageRelationship
+    && workspace.fl100.domesticPartnership.sameSexMarriageJurisdictionException.value;
+  const hasJurisdictionException = hasDomesticPartnershipResidencyException || hasSameSexMarriageJurisdictionException;
 
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_14%_0%,rgba(16,185,129,0.16),transparent_24%),radial-gradient(circle_at_86%_8%,rgba(59,130,246,0.12),transparent_20%),linear-gradient(180deg,#f8fafc_0%,#ecfdf5_45%,#f8fafc_100%)] py-12 dark:bg-[radial-gradient(circle_at_16%_0%,rgba(16,185,129,0.16),transparent_24%),radial-gradient(circle_at_84%_8%,rgba(59,130,246,0.14),transparent_20%),linear-gradient(180deg,#020617_0%,#03111f_50%,#020617_100%)]">
@@ -504,51 +567,62 @@ export function DraftFormsPage() {
                     />
                   </div>
                 </div>
+                <div className="rounded-xl border border-slate-200/80 bg-slate-50/80 p-3 text-sm text-slate-700 dark:border-white/10 dark:bg-white/5 dark:text-slate-200">
+                  {isDissolutionProceeding
+                    ? 'Dissolution: confirm a residency path (petitioner or respondent at 6 months in California and 3 months in filing county), or use a supported jurisdiction exception when available.'
+                    : isNullityProceeding
+                      ? 'Nullity: residency qualification is not a blocker in this checklist, but keep residency facts for filing strategy and court review.'
+                      : 'Legal separation: dissolution residency thresholds are not required for this checklist, but residency facts are still useful for venue and planning.'}
+                </div>
 
-                {isDomesticPartnershipRelationship && (
+                {(isDomesticPartnershipRelationship || isMarriageRelationship) && (
                   <div className="rounded-2xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5">
-                    <p className="text-sm font-medium text-slate-800 dark:text-slate-100">Domestic-partnership nuance</p>
-                    <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Maps FL-100 domestic-partnership California establishment and special jurisdiction checkboxes.</p>
+                    <p className="text-sm font-medium text-slate-800 dark:text-slate-100">Jurisdiction exceptions</p>
+                    <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Maps FL-100 domestic-partnership and same-sex-marriage jurisdiction exception checkboxes.</p>
                     <div className="mt-4 grid gap-4 md:grid-cols-2">
-                      <div>
-                        <FieldHeader label="Domestic partnership establishment" field={workspace.fl100.domesticPartnership.establishment} />
-                        <select
-                          value={workspace.fl100.domesticPartnership.establishment.value}
-                          onChange={(e) => updateFl100((fl100) => ({
-                            ...fl100,
-                            domesticPartnership: {
-                              ...fl100.domesticPartnership,
-                              establishment: setDraftFieldValue(
-                                fl100.domesticPartnership.establishment,
-                                e.target.value as 'unspecified' | 'established_in_california' | 'not_established_in_california',
-                              ),
-                            },
-                          }))}
-                          className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"
-                        >
-                          <option value="unspecified">Not specified yet</option>
-                          <option value="established_in_california">Established in California</option>
-                          <option value="not_established_in_california">Not established in California</option>
-                        </select>
-                      </div>
-                      <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-white/70 p-3 dark:border-white/10 dark:bg-white/5">
-                        <Checkbox
-                          checked={workspace.fl100.domesticPartnership.californiaResidencyException.value}
-                          onCheckedChange={(checked) => updateFl100((fl100) => ({
-                            ...fl100,
-                            domesticPartnership: {
-                              ...fl100.domesticPartnership,
-                              californiaResidencyException: setDraftFieldValue(fl100.domesticPartnership.californiaResidencyException, checked === true),
-                            },
-                          }))}
-                        />
-                        <div>
-                          <div className="flex flex-wrap items-center gap-2">
-                            <span className="text-sm font-medium text-slate-800 dark:text-slate-100">Use CA domestic-partnership residency exception</span>
-                            <FieldSourceBadge field={workspace.fl100.domesticPartnership.californiaResidencyException} />
+                      {isDomesticPartnershipRelationship && (
+                        <>
+                          <div>
+                            <FieldHeader label="Domestic partnership establishment" field={workspace.fl100.domesticPartnership.establishment} />
+                            <select
+                              value={workspace.fl100.domesticPartnership.establishment.value}
+                              onChange={(e) => updateFl100((fl100) => ({
+                                ...fl100,
+                                domesticPartnership: {
+                                  ...fl100.domesticPartnership,
+                                  establishment: setDraftFieldValue(
+                                    fl100.domesticPartnership.establishment,
+                                    e.target.value as 'unspecified' | 'established_in_california' | 'not_established_in_california',
+                                  ),
+                                },
+                              }))}
+                              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"
+                            >
+                              <option value="unspecified">Not specified yet</option>
+                              <option value="established_in_california">Established in California</option>
+                              <option value="not_established_in_california">Not established in California</option>
+                            </select>
                           </div>
-                        </div>
-                      </label>
+                          <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-white/70 p-3 dark:border-white/10 dark:bg-white/5">
+                            <Checkbox
+                              checked={workspace.fl100.domesticPartnership.californiaResidencyException.value}
+                              onCheckedChange={(checked) => updateFl100((fl100) => ({
+                                ...fl100,
+                                domesticPartnership: {
+                                  ...fl100.domesticPartnership,
+                                  californiaResidencyException: setDraftFieldValue(fl100.domesticPartnership.californiaResidencyException, checked === true),
+                                },
+                              }))}
+                            />
+                            <div>
+                              <div className="flex flex-wrap items-center gap-2">
+                                <span className="text-sm font-medium text-slate-800 dark:text-slate-100">Use CA domestic-partnership residency exception</span>
+                                <FieldSourceBadge field={workspace.fl100.domesticPartnership.californiaResidencyException} />
+                              </div>
+                            </div>
+                          </label>
+                        </>
+                      )}
                       <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-white/70 p-3 dark:border-white/10 dark:bg-white/5 md:col-span-2">
                         <Checkbox
                           checked={workspace.fl100.domesticPartnership.sameSexMarriageJurisdictionException.value}
@@ -665,7 +739,13 @@ export function DraftFormsPage() {
 
                 <div className="rounded-2xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5">
                   <p className="text-sm font-medium text-slate-800 dark:text-slate-100">Residency for filing eligibility</p>
-                  <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">FL-100 depends on California/county residency. Fill in the best months estimate now; we can tighten the rule logic next.</p>
+                  <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                    {isDissolutionProceeding
+                      ? 'For dissolution, FL-100 residency qualification is typically 6 months in California and 3 months in the filing county for either spouse (unless a listed jurisdiction exception applies).'
+                      : isNullityProceeding
+                        ? 'For nullity, this workspace tracks residency months as supporting facts; they do not gate packet generation by themselves.'
+                        : 'For legal separation, this workspace tracks residency months for context and venue decisions; dissolution-style residency qualification does not gate packet generation.'}
+                  </p>
                   <div className="mt-4 grid gap-4 md:grid-cols-2">
                     <div>
                       <FieldHeader label="Petitioner months in California" field={workspace.fl100.residency.petitionerCaliforniaMonths} />
@@ -736,6 +816,17 @@ export function DraftFormsPage() {
                       />
                     </div>
                   </div>
+                  {isDissolutionProceeding ? (
+                    <div className="mt-4 grid gap-2 text-xs text-slate-600 dark:text-slate-300">
+                      <p>Petitioner month-based qualification: {petitionerQualifiesResidencyByMonths ? 'Meets 6/3 threshold' : 'Not yet at 6/3 threshold or incomplete'}</p>
+                      <p>Respondent month-based qualification: {respondentQualifiesResidencyByMonths ? 'Meets 6/3 threshold' : 'Not yet at 6/3 threshold or incomplete'}</p>
+                      <p>Jurisdiction exception selected: {hasJurisdictionException ? 'Yes' : 'No'}</p>
+                    </div>
+                  ) : (
+                    <p className="mt-4 text-xs text-slate-500 dark:text-slate-400">
+                      Proceeding type is not dissolution, so these residency fields are informational in this readiness checklist.
+                    </p>
+                  )}
                 </div>
 
                 <div className="grid gap-4 md:grid-cols-2">

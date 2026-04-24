@@ -865,6 +865,7 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
     : workspace.fl100.proceedingType.value === 'nullity'
       ? 'Nullity'
       : 'Dissolution';
+  const isDissolutionProceeding = workspace.fl100.proceedingType.value === 'dissolution';
   const domesticPartnershipEstablishmentLabel = workspace.fl100.domesticPartnership.establishment.value === 'established_in_california'
     ? 'Established in California'
     : workspace.fl100.domesticPartnership.establishment.value === 'not_established_in_california'
@@ -988,6 +989,7 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
     {
       heading: 'FL-100 filing details',
       body: [
+        `Residency qualification rule: ${isDissolutionProceeding ? 'Apply dissolution residency thresholds (or listed jurisdiction exceptions)' : 'Dissolution residency thresholds do not block this proceeding type'}`,
         `Petitioner residency in California: ${workspace.fl100.residency.petitionerCaliforniaMonths.value || 'Not provided'} month(s)`,
         `Petitioner residency in filing county: ${workspace.fl100.residency.petitionerCountyMonths.value || 'Not provided'} month(s)`,
         `Respondent residency in California: ${workspace.fl100.residency.respondentCaliforniaMonths.value || 'Not provided'} month(s)`,

@@ -467,6 +467,8 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
   const isDissolutionProceeding = proceedingType === 'dissolution';
   const isLegalSeparationProceeding = proceedingType === 'legal_separation';
   const isNullityProceeding = proceedingType === 'nullity';
+  const isDomesticPartnershipProceeding = relationshipType === 'domestic_partnership' || relationshipType === 'both';
+  const isMarriageProceeding = relationshipType === 'marriage' || relationshipType === 'both';
   const hasMinorChildren = Boolean(workspace.hasMinorChildren?.value);
   const petitionerQualifies = qualifiesForResidency(
     workspace.fl100?.residency?.petitionerCaliforniaMonths?.value,
@@ -574,12 +576,34 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
     relationshipType === 'domestic_partnership' || relationshipType === 'both',
   );
   fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].WeAreMarried_cb[0]', relationshipType === 'marriage' || relationshipType === 'both');
-  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].DPEstablishedInCalifornia[0]', domesticPartnershipEstablishment === 'established_in_california');
-  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].DPNOTEstablishedinCA_cb[0]', domesticPartnershipEstablishment === 'not_established_in_california');
-  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].DPNOTEstablishedinCA_cb[1]', domesticPartnershipCaliforniaResidencyException);
-  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].SameSexMarriedInCA_cb[0]', sameSexMarriageJurisdictionException);
-  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].PetitionerMeetsResidencyReqs_cb[0]', petitionerQualifies);
-  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].RespondentMeetsResidencyReqs_cb[0]', respondentQualifies);
+  fillCheckbox(
+    fl100Pages,
+    fl100FieldMap,
+    'FL-100[0].Page1[0].DPEstablishedInCalifornia[0]',
+    isDomesticPartnershipProceeding && domesticPartnershipEstablishment === 'established_in_california',
+  );
+  fillCheckbox(
+    fl100Pages,
+    fl100FieldMap,
+    'FL-100[0].Page1[0].DPNOTEstablishedinCA_cb[0]',
+    isDomesticPartnershipProceeding && domesticPartnershipEstablishment === 'not_established_in_california',
+  );
+  fillCheckbox(
+    fl100Pages,
+    fl100FieldMap,
+    'FL-100[0].Page1[0].DPNOTEstablishedinCA_cb[1]',
+    isDomesticPartnershipProceeding
+      && domesticPartnershipEstablishment === 'not_established_in_california'
+      && domesticPartnershipCaliforniaResidencyException,
+  );
+  fillCheckbox(
+    fl100Pages,
+    fl100FieldMap,
+    'FL-100[0].Page1[0].SameSexMarriedInCA_cb[0]',
+    isMarriageProceeding && sameSexMarriageJurisdictionException,
+  );
+  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].PetitionerMeetsResidencyReqs_cb[0]', isDissolutionProceeding && petitionerQualifies);
+  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].RespondentMeetsResidencyReqs_cb[0]', isDissolutionProceeding && respondentQualifies);
   fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].SepTypeDef_cb[1]', isDissolutionProceeding);
   fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].SepTypeDef_cb[0]', isLegalSeparationProceeding);
   fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].SepBasis_cb[0]', !isNullityProceeding && Boolean(workspace.fl100?.legalGrounds?.irreconcilableDifferences?.value));
