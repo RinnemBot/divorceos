@@ -74,6 +74,7 @@ interface StarterPacketWorkspace {
       establishment: StarterPacketField<'unspecified' | 'established_in_california' | 'not_established_in_california'>;
       californiaResidencyException: StarterPacketField<boolean>;
       sameSexMarriageJurisdictionException: StarterPacketField<boolean>;
+      registrationDate: StarterPacketField<string>;
       partnerSeparationDate: StarterPacketField<string>;
     };
     nullity: {
@@ -516,12 +517,14 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
   const relationshipTypeValue = workspace.fl100?.relationshipType?.value ?? 'marriage';
   const marriageDateRaw = workspace.marriageDate?.value;
   const separationDateRaw = workspace.separationDate?.value;
+  const domesticPartnershipRegistrationDateRaw = workspace.fl100?.domesticPartnership?.registrationDate?.value;
   const domesticPartnershipSeparationDateRaw = workspace.fl100?.domesticPartnership?.partnerSeparationDate?.value;
   const marriageDate = formatDateForCourt(marriageDateRaw);
   const separationDate = formatDateForCourt(separationDateRaw);
+  const domesticPartnershipRegistrationDate = formatDateForCourt(domesticPartnershipRegistrationDateRaw);
   const domesticPartnershipSeparationDate = formatDateForCourt(domesticPartnershipSeparationDateRaw);
   const marriageDuration = calculateCourtDuration(marriageDateRaw, separationDateRaw);
-  const domesticPartnershipDuration = calculateCourtDuration(marriageDateRaw, domesticPartnershipSeparationDateRaw);
+  const domesticPartnershipDuration = calculateCourtDuration(domesticPartnershipRegistrationDateRaw, domesticPartnershipSeparationDateRaw);
   const proceedingType = workspace.fl100?.proceedingType?.value ?? 'dissolution';
   const isAmendedPetition = Boolean(workspace.fl100?.isAmended?.value);
   const relationshipType = relationshipTypeValue;
@@ -638,8 +641,11 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
   fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].CaptionP1_sf[0].AttyInfo[0].AttyFor_ft[0]', petitionerAttorneyFor, fontRegular, { size: 8 });
   fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].PetitionersResidence_tf[0]', petitionerResidenceLocation, fontRegular);
   fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].RespondentsResidence_tf[0]', respondentResidenceLocation, fontRegular);
+  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].CheckBox61[0]', isMarriageProceeding);
+  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].CheckBox61[1]', isDomesticPartnershipProceeding);
   fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].DateOfMarriage_dt[0]', marriageDate, fontRegular);
   fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].DateOfSeparation_dt[0]', separationDate, fontRegular);
+  fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].DateTimeField1[0]', domesticPartnershipRegistrationDate, fontRegular);
   fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].DatePartnersSeparated_dt[0]', domesticPartnershipSeparationDate, fontRegular);
   fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].MonthsSeparated_tf[0]', isMarriageProceeding ? marriageDuration.years : '', fontRegular);
   fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].MonthsSeparated_tf[1]', isMarriageProceeding ? marriageDuration.months : '', fontRegular);

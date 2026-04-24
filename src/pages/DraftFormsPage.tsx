@@ -156,6 +156,7 @@ export function DraftFormsPage() {
     const respondentPairProvided = respondentCaliforniaProvided && respondentCountyProvided;
     const petitionerQualifies = qualifiesForResidency(petitionerCaliforniaMonths, petitionerCountyMonths);
     const respondentQualifies = qualifiesForResidency(respondentCaliforniaMonths, respondentCountyMonths);
+    const domesticPartnershipRegistrationDate = workspace.fl100.domesticPartnership.registrationDate.value.trim();
     const domesticPartnershipSeparationDate = workspace.fl100.domesticPartnership.partnerSeparationDate.value.trim();
     const hasDomesticPartnershipResidencyException = isDomesticPartnershipRelationship
       && workspace.fl100.domesticPartnership.establishment.value === 'not_established_in_california'
@@ -177,7 +178,7 @@ export function DraftFormsPage() {
     if (!workspace.filingCounty.value.trim()) missing.push('Filing county');
     if (!workspace.petitionerName.value.trim()) missing.push('Petitioner name');
     if (!workspace.respondentName.value.trim()) missing.push('Respondent name');
-    if (!workspace.marriageDate.value.trim()) missing.push('Date of marriage');
+    if (isMarriageRelationship && !workspace.marriageDate.value.trim()) missing.push('Date of marriage');
     if (isDissolutionProceeding) {
       if (petitionerCaliforniaProvided !== petitionerCountyProvided) {
         missing.push('Complete petitioner residency pair (California + filing county months)');
@@ -206,6 +207,9 @@ export function DraftFormsPage() {
     }
     if (isDomesticPartnershipRelationship && workspace.fl100.domesticPartnership.establishment.value === 'unspecified') {
       missing.push('Domestic partnership establishment in California');
+    }
+    if (isDomesticPartnershipRelationship && !domesticPartnershipRegistrationDate) {
+      missing.push('Domestic partnership registration date');
     }
     if (isDomesticPartnershipRelationship && !domesticPartnershipSeparationDate) {
       missing.push('Domestic partnership date of separation');
@@ -710,6 +714,21 @@ export function DraftFormsPage() {
                               <option value="established_in_california">Established in California</option>
                               <option value="not_established_in_california">Not established in California</option>
                             </select>
+                          </div>
+                          <div>
+                            <FieldHeader label="Domestic partnership registration date" field={workspace.fl100.domesticPartnership.registrationDate} />
+                            <Input
+                              type="date"
+                              value={workspace.fl100.domesticPartnership.registrationDate.value}
+                              onChange={(e) => updateFl100((fl100) => ({
+                                ...fl100,
+                                domesticPartnership: {
+                                  ...fl100.domesticPartnership,
+                                  registrationDate: setDraftFieldValue(fl100.domesticPartnership.registrationDate, e.target.value),
+                                },
+                              }))}
+                            />
+                            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Maps to FL-100 `DateTimeField1[0]` and drives item 3b duration fields.</p>
                           </div>
                           <div>
                             <FieldHeader label="Domestic partnership date of separation" field={workspace.fl100.domesticPartnership.partnerSeparationDate} />

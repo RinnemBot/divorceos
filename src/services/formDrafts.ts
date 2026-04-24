@@ -81,6 +81,7 @@ export interface DraftFl100Section {
     establishment: DraftField<'unspecified' | 'established_in_california' | 'not_established_in_california'>;
     californiaResidencyException: DraftField<boolean>;
     sameSexMarriageJurisdictionException: DraftField<boolean>;
+    registrationDate: DraftField<string>;
     partnerSeparationDate: DraftField<string>;
   };
   nullity: {
@@ -287,6 +288,7 @@ function createDefaultFl100Section(): DraftFl100Section {
       sameSexMarriageJurisdictionException: createField(false, {
         ...assumptionFieldConfig,
       }),
+      registrationDate: createField('', { needsReview: true }),
       partnerSeparationDate: createField('', { needsReview: true }),
     },
     nullity: {
@@ -534,6 +536,7 @@ function normalizeWorkspace(workspace: DraftFormsWorkspace): DraftFormsWorkspace
         establishment: workspace.fl100?.domesticPartnership?.establishment ?? defaultFl100.domesticPartnership.establishment,
         californiaResidencyException: workspace.fl100?.domesticPartnership?.californiaResidencyException ?? defaultFl100.domesticPartnership.californiaResidencyException,
         sameSexMarriageJurisdictionException: workspace.fl100?.domesticPartnership?.sameSexMarriageJurisdictionException ?? defaultFl100.domesticPartnership.sameSexMarriageJurisdictionException,
+        registrationDate: workspace.fl100?.domesticPartnership?.registrationDate ?? defaultFl100.domesticPartnership.registrationDate,
         partnerSeparationDate: workspace.fl100?.domesticPartnership?.partnerSeparationDate
           ?? defaultFl100.domesticPartnership.partnerSeparationDate,
       },
@@ -1060,6 +1063,7 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
         `Relationship type: ${relationshipLabel}`,
         `Date of marriage: ${workspace.marriageDate.value || 'Not provided'}`,
         `Date of separation: ${workspace.separationDate.value || 'Not provided'}`,
+        `Domestic partnership registration date: ${workspace.fl100.domesticPartnership.registrationDate.value || 'Not provided'}`,
         `Domestic partnership date of separation: ${workspace.fl100.domesticPartnership.partnerSeparationDate.value || 'Not provided'}`,
       ].join('\n'),
     },
