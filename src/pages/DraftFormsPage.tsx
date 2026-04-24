@@ -147,6 +147,25 @@ export function DraftFormsPage() {
     ) {
       missing.push('Spousal support direction or details');
     }
+    if (workspace.fl100.childSupport.requestAdditionalOrders.value && !workspace.fl100.childSupport.additionalOrdersDetails.value.trim()) {
+      missing.push('Additional child support order details');
+    }
+    if (
+      workspace.requests.childCustody.value
+      && workspace.fl100.childCustodyVisitation.legalCustodyTo.value === 'none'
+      && workspace.fl100.childCustodyVisitation.physicalCustodyTo.value === 'none'
+    ) {
+      missing.push('Legal or physical custody direction');
+    }
+    if (workspace.requests.visitation.value && workspace.fl100.childCustodyVisitation.visitationTo.value === 'none') {
+      missing.push('Visitation direction');
+    }
+    if (workspace.fl100.attorneyFeesAndCosts.requestAward.value && workspace.fl100.attorneyFeesAndCosts.payableBy.value === 'none') {
+      missing.push('Who should pay attorney fees and costs');
+    }
+    if (workspace.fl100.otherRequests.requestOtherRelief.value && !workspace.fl100.otherRequests.details.value.trim()) {
+      missing.push('Other FL-100 request details');
+    }
 
     if (workspace.hasMinorChildren.value) {
       if (workspace.children.length === 0) {
@@ -660,6 +679,200 @@ export function DraftFormsPage() {
                 </div>
 
                 <div className="rounded-2xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5">
+                  <p className="text-sm font-medium text-slate-800 dark:text-slate-100">Child custody and visitation direction</p>
+                  <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Explicitly map FL-100 item 4 and item 5 direction checkboxes instead of assuming defaults.</p>
+                  <div className="mt-4 grid gap-4 md:grid-cols-3">
+                    <div>
+                      <FieldHeader label="Legal custody to" field={workspace.fl100.childCustodyVisitation.legalCustodyTo} />
+                      <select
+                        value={workspace.fl100.childCustodyVisitation.legalCustodyTo.value}
+                        onChange={(e) => updateFl100((fl100) => ({
+                          ...fl100,
+                          childCustodyVisitation: {
+                            ...fl100.childCustodyVisitation,
+                            legalCustodyTo: setDraftFieldValue(fl100.childCustodyVisitation.legalCustodyTo, e.target.value as 'none' | 'petitioner' | 'respondent' | 'joint' | 'other'),
+                          },
+                        }))}
+                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"
+                      >
+                        <option value="none">Not selected</option>
+                        <option value="petitioner">Petitioner</option>
+                        <option value="respondent">Respondent</option>
+                        <option value="joint">Joint</option>
+                        <option value="other">Other</option>
+                      </select>
+                    </div>
+                    <div>
+                      <FieldHeader label="Physical custody to" field={workspace.fl100.childCustodyVisitation.physicalCustodyTo} />
+                      <select
+                        value={workspace.fl100.childCustodyVisitation.physicalCustodyTo.value}
+                        onChange={(e) => updateFl100((fl100) => ({
+                          ...fl100,
+                          childCustodyVisitation: {
+                            ...fl100.childCustodyVisitation,
+                            physicalCustodyTo: setDraftFieldValue(fl100.childCustodyVisitation.physicalCustodyTo, e.target.value as 'none' | 'petitioner' | 'respondent' | 'joint' | 'other'),
+                          },
+                        }))}
+                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"
+                      >
+                        <option value="none">Not selected</option>
+                        <option value="petitioner">Petitioner</option>
+                        <option value="respondent">Respondent</option>
+                        <option value="joint">Joint</option>
+                        <option value="other">Other</option>
+                      </select>
+                    </div>
+                    <div>
+                      <FieldHeader label="Visitation to" field={workspace.fl100.childCustodyVisitation.visitationTo} />
+                      <select
+                        value={workspace.fl100.childCustodyVisitation.visitationTo.value}
+                        onChange={(e) => updateFl100((fl100) => ({
+                          ...fl100,
+                          childCustodyVisitation: {
+                            ...fl100.childCustodyVisitation,
+                            visitationTo: setDraftFieldValue(fl100.childCustodyVisitation.visitationTo, e.target.value as 'none' | 'petitioner' | 'respondent' | 'other'),
+                          },
+                        }))}
+                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"
+                      >
+                        <option value="none">Not selected</option>
+                        <option value="petitioner">Petitioner</option>
+                        <option value="respondent">Respondent</option>
+                        <option value="other">Other</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="mt-4 grid gap-4 md:grid-cols-2">
+                    <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-white/70 p-3 dark:border-white/10 dark:bg-white/5">
+                      <Checkbox
+                        checked={workspace.fl100.childCustodyVisitation.attachments.formFl311.value}
+                        onCheckedChange={(checked) => updateFl100((fl100) => ({
+                          ...fl100,
+                          childCustodyVisitation: {
+                            ...fl100.childCustodyVisitation,
+                            attachments: {
+                              ...fl100.childCustodyVisitation.attachments,
+                              formFl311: setDraftFieldValue(fl100.childCustodyVisitation.attachments.formFl311, checked === true),
+                            },
+                          },
+                        }))}
+                      />
+                      <div>
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="text-sm font-medium text-slate-800 dark:text-slate-100">Attach FL-311</span>
+                          <FieldSourceBadge field={workspace.fl100.childCustodyVisitation.attachments.formFl311} />
+                        </div>
+                      </div>
+                    </label>
+                    <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-white/70 p-3 dark:border-white/10 dark:bg-white/5">
+                      <Checkbox
+                        checked={workspace.fl100.childCustodyVisitation.attachments.formFl312.value}
+                        onCheckedChange={(checked) => updateFl100((fl100) => ({
+                          ...fl100,
+                          childCustodyVisitation: {
+                            ...fl100.childCustodyVisitation,
+                            attachments: {
+                              ...fl100.childCustodyVisitation.attachments,
+                              formFl312: setDraftFieldValue(fl100.childCustodyVisitation.attachments.formFl312, checked === true),
+                            },
+                          },
+                        }))}
+                      />
+                      <div>
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="text-sm font-medium text-slate-800 dark:text-slate-100">Attach FL-312</span>
+                          <FieldSourceBadge field={workspace.fl100.childCustodyVisitation.attachments.formFl312} />
+                        </div>
+                      </div>
+                    </label>
+                    <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-white/70 p-3 dark:border-white/10 dark:bg-white/5">
+                      <Checkbox
+                        checked={workspace.fl100.childCustodyVisitation.attachments.formFl341c.value}
+                        onCheckedChange={(checked) => updateFl100((fl100) => ({
+                          ...fl100,
+                          childCustodyVisitation: {
+                            ...fl100.childCustodyVisitation,
+                            attachments: {
+                              ...fl100.childCustodyVisitation.attachments,
+                              formFl341c: setDraftFieldValue(fl100.childCustodyVisitation.attachments.formFl341c, checked === true),
+                            },
+                          },
+                        }))}
+                      />
+                      <div>
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="text-sm font-medium text-slate-800 dark:text-slate-100">Attach FL-341(C)</span>
+                          <FieldSourceBadge field={workspace.fl100.childCustodyVisitation.attachments.formFl341c} />
+                        </div>
+                      </div>
+                    </label>
+                    <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-white/70 p-3 dark:border-white/10 dark:bg-white/5">
+                      <Checkbox
+                        checked={workspace.fl100.childCustodyVisitation.attachments.formFl341d.value}
+                        onCheckedChange={(checked) => updateFl100((fl100) => ({
+                          ...fl100,
+                          childCustodyVisitation: {
+                            ...fl100.childCustodyVisitation,
+                            attachments: {
+                              ...fl100.childCustodyVisitation.attachments,
+                              formFl341d: setDraftFieldValue(fl100.childCustodyVisitation.attachments.formFl341d, checked === true),
+                            },
+                          },
+                        }))}
+                      />
+                      <div>
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="text-sm font-medium text-slate-800 dark:text-slate-100">Attach FL-341(D)</span>
+                          <FieldSourceBadge field={workspace.fl100.childCustodyVisitation.attachments.formFl341d} />
+                        </div>
+                      </div>
+                    </label>
+                    <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-white/70 p-3 dark:border-white/10 dark:bg-white/5">
+                      <Checkbox
+                        checked={workspace.fl100.childCustodyVisitation.attachments.formFl341e.value}
+                        onCheckedChange={(checked) => updateFl100((fl100) => ({
+                          ...fl100,
+                          childCustodyVisitation: {
+                            ...fl100.childCustodyVisitation,
+                            attachments: {
+                              ...fl100.childCustodyVisitation.attachments,
+                              formFl341e: setDraftFieldValue(fl100.childCustodyVisitation.attachments.formFl341e, checked === true),
+                            },
+                          },
+                        }))}
+                      />
+                      <div>
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="text-sm font-medium text-slate-800 dark:text-slate-100">Attach FL-341(E)</span>
+                          <FieldSourceBadge field={workspace.fl100.childCustodyVisitation.attachments.formFl341e} />
+                        </div>
+                      </div>
+                    </label>
+                    <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-white/70 p-3 dark:border-white/10 dark:bg-white/5">
+                      <Checkbox
+                        checked={workspace.fl100.childCustodyVisitation.attachments.attachment6c1.value}
+                        onCheckedChange={(checked) => updateFl100((fl100) => ({
+                          ...fl100,
+                          childCustodyVisitation: {
+                            ...fl100.childCustodyVisitation,
+                            attachments: {
+                              ...fl100.childCustodyVisitation.attachments,
+                              attachment6c1: setDraftFieldValue(fl100.childCustodyVisitation.attachments.attachment6c1, checked === true),
+                            },
+                          },
+                        }))}
+                      />
+                      <div>
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="text-sm font-medium text-slate-800 dark:text-slate-100">Attach item 6c(1)</span>
+                          <FieldSourceBadge field={workspace.fl100.childCustodyVisitation.attachments.attachment6c1} />
+                        </div>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+
+                <div className="rounded-2xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5">
                   <p className="text-sm font-medium text-slate-800 dark:text-slate-100">Spousal support request detail</p>
                   <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Replace fixed FL-100 support assumptions with explicit direction and reserve-jurisdiction choices.</p>
                   <div className="mt-4 grid gap-4 md:grid-cols-2">
@@ -700,6 +913,25 @@ export function DraftFormsPage() {
                         <option value="both">Reserve for both</option>
                       </select>
                     </div>
+                    <div>
+                      <FieldHeader label="Terminate jurisdiction for support" field={workspace.fl100.spousalSupport.terminateJurisdictionFor} />
+                      <select
+                        value={workspace.fl100.spousalSupport.terminateJurisdictionFor.value}
+                        onChange={(e) => updateFl100((fl100) => ({
+                          ...fl100,
+                          spousalSupport: {
+                            ...fl100.spousalSupport,
+                            terminateJurisdictionFor: setDraftFieldValue(fl100.spousalSupport.terminateJurisdictionFor, e.target.value as 'none' | 'petitioner' | 'respondent' | 'both'),
+                          },
+                        }))}
+                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"
+                      >
+                        <option value="none">Do not terminate jurisdiction</option>
+                        <option value="petitioner">Terminate for petitioner</option>
+                        <option value="respondent">Terminate for respondent</option>
+                        <option value="both">Terminate for both</option>
+                      </select>
+                    </div>
                   </div>
                   <div className="mt-4 grid gap-4 md:grid-cols-2">
                     <div>
@@ -736,6 +968,140 @@ export function DraftFormsPage() {
                         <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Now explicitly editable instead of being auto-checked in generated FL-100.</p>
                       </div>
                     </label>
+                  </div>
+                </div>
+
+                <div className="rounded-2xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5">
+                  <p className="text-sm font-medium text-slate-800 dark:text-slate-100">Child support, fees, and other relief details</p>
+                  <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Map remaining FL-100 relief fields that were previously left blank or inferred.</p>
+                  <div className="mt-4 space-y-4">
+                    <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-white/70 p-3 dark:border-white/10 dark:bg-white/5">
+                      <Checkbox
+                        checked={workspace.fl100.childSupport.requestAdditionalOrders.value}
+                        onCheckedChange={(checked) => updateFl100((fl100) => ({
+                          ...fl100,
+                          childSupport: {
+                            ...fl100.childSupport,
+                            requestAdditionalOrders: setDraftFieldValue(fl100.childSupport.requestAdditionalOrders, checked === true),
+                          },
+                        }))}
+                      />
+                      <div>
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="text-sm font-medium text-slate-800 dark:text-slate-100">Add child-support orders beyond standard guidelines</span>
+                          <FieldSourceBadge field={workspace.fl100.childSupport.requestAdditionalOrders} />
+                        </div>
+                        <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Fills FL-100 item 6c “Other child support” checkbox and text block.</p>
+                      </div>
+                    </label>
+                    <div>
+                      <FieldHeader label="Additional child support order details" field={workspace.fl100.childSupport.additionalOrdersDetails} />
+                      <Textarea
+                        value={workspace.fl100.childSupport.additionalOrdersDetails.value}
+                        onChange={(e) => updateFl100((fl100) => ({
+                          ...fl100,
+                          childSupport: {
+                            ...fl100.childSupport,
+                            additionalOrdersDetails: setDraftFieldValue(fl100.childSupport.additionalOrdersDetails, e.target.value),
+                          },
+                        }))}
+                        className="min-h-[96px]"
+                        placeholder="Example: guideline support plus uninsured health, childcare, and extracurricular split."
+                      />
+                    </div>
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-white/70 p-3 dark:border-white/10 dark:bg-white/5">
+                        <Checkbox
+                          checked={workspace.fl100.attorneyFeesAndCosts.requestAward.value}
+                          onCheckedChange={(checked) => updateFl100((fl100) => ({
+                            ...fl100,
+                            attorneyFeesAndCosts: {
+                              ...fl100.attorneyFeesAndCosts,
+                              requestAward: setDraftFieldValue(fl100.attorneyFeesAndCosts.requestAward, checked === true),
+                            },
+                          }))}
+                        />
+                        <div>
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="text-sm font-medium text-slate-800 dark:text-slate-100">Request attorney fees and costs</span>
+                            <FieldSourceBadge field={workspace.fl100.attorneyFeesAndCosts.requestAward} />
+                          </div>
+                        </div>
+                      </label>
+                      <div>
+                        <FieldHeader label="Fees/costs payable by" field={workspace.fl100.attorneyFeesAndCosts.payableBy} />
+                        <select
+                          value={workspace.fl100.attorneyFeesAndCosts.payableBy.value}
+                          onChange={(e) => updateFl100((fl100) => ({
+                            ...fl100,
+                            attorneyFeesAndCosts: {
+                              ...fl100.attorneyFeesAndCosts,
+                              payableBy: setDraftFieldValue(fl100.attorneyFeesAndCosts.payableBy, e.target.value as 'none' | 'petitioner' | 'respondent' | 'both'),
+                            },
+                          }))}
+                          className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"
+                        >
+                          <option value="none">Not specified</option>
+                          <option value="petitioner">Petitioner</option>
+                          <option value="respondent">Respondent</option>
+                          <option value="both">Both parties</option>
+                        </select>
+                      </div>
+                    </div>
+                    <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-white/70 p-3 dark:border-white/10 dark:bg-white/5">
+                      <Checkbox
+                        checked={workspace.fl100.otherRequests.requestOtherRelief.value}
+                        onCheckedChange={(checked) => updateFl100((fl100) => ({
+                          ...fl100,
+                          otherRequests: {
+                            ...fl100.otherRequests,
+                            requestOtherRelief: setDraftFieldValue(fl100.otherRequests.requestOtherRelief, checked === true),
+                          },
+                        }))}
+                      />
+                      <div>
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="text-sm font-medium text-slate-800 dark:text-slate-100">Request other relief</span>
+                          <FieldSourceBadge field={workspace.fl100.otherRequests.requestOtherRelief} />
+                        </div>
+                        <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Fills FL-100 item 11c with custom text.</p>
+                      </div>
+                    </label>
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div>
+                        <FieldHeader label="Other relief details" field={workspace.fl100.otherRequests.details} />
+                        <Textarea
+                          value={workspace.fl100.otherRequests.details.value}
+                          onChange={(e) => updateFl100((fl100) => ({
+                            ...fl100,
+                            otherRequests: {
+                              ...fl100.otherRequests,
+                              details: setDraftFieldValue(fl100.otherRequests.details, e.target.value),
+                            },
+                          }))}
+                          className="min-h-[96px]"
+                          placeholder="Any additional request language for the petition."
+                        />
+                      </div>
+                      <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-white/70 p-3 dark:border-white/10 dark:bg-white/5">
+                        <Checkbox
+                          checked={workspace.fl100.otherRequests.continuedOnAttachment.value}
+                          onCheckedChange={(checked) => updateFl100((fl100) => ({
+                            ...fl100,
+                            otherRequests: {
+                              ...fl100.otherRequests,
+                              continuedOnAttachment: setDraftFieldValue(fl100.otherRequests.continuedOnAttachment, checked === true),
+                            },
+                          }))}
+                        />
+                        <div>
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="text-sm font-medium text-slate-800 dark:text-slate-100">Continue this request on attachment</span>
+                            <FieldSourceBadge field={workspace.fl100.otherRequests.continuedOnAttachment} />
+                          </div>
+                        </div>
+                      </label>
+                    </div>
                   </div>
                 </div>
               </CardContent>

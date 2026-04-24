@@ -94,8 +94,35 @@ export interface DraftFl100Section {
   spousalSupport: {
     supportOrderDirection: DraftField<'none' | 'petitioner_to_respondent' | 'respondent_to_petitioner'>;
     reserveJurisdictionFor: DraftField<'none' | 'petitioner' | 'respondent' | 'both'>;
+    terminateJurisdictionFor: DraftField<'none' | 'petitioner' | 'respondent' | 'both'>;
     details: DraftField<string>;
     voluntaryDeclarationOfParentageSigned: DraftField<boolean>;
+  };
+  childSupport: {
+    requestAdditionalOrders: DraftField<boolean>;
+    additionalOrdersDetails: DraftField<string>;
+  };
+  childCustodyVisitation: {
+    legalCustodyTo: DraftField<'none' | 'petitioner' | 'respondent' | 'joint' | 'other'>;
+    physicalCustodyTo: DraftField<'none' | 'petitioner' | 'respondent' | 'joint' | 'other'>;
+    visitationTo: DraftField<'none' | 'petitioner' | 'respondent' | 'other'>;
+    attachments: {
+      formFl311: DraftField<boolean>;
+      formFl312: DraftField<boolean>;
+      formFl341c: DraftField<boolean>;
+      formFl341d: DraftField<boolean>;
+      formFl341e: DraftField<boolean>;
+      attachment6c1: DraftField<boolean>;
+    };
+  };
+  attorneyFeesAndCosts: {
+    requestAward: DraftField<boolean>;
+    payableBy: DraftField<'none' | 'petitioner' | 'respondent' | 'both'>;
+  };
+  otherRequests: {
+    requestOtherRelief: DraftField<boolean>;
+    details: DraftField<string>;
+    continuedOnAttachment: DraftField<boolean>;
   };
   formerName: DraftField<string>;
 }
@@ -243,8 +270,53 @@ function createDefaultFl100Section(): DraftFl100Section {
       reserveJurisdictionFor: createField('none', {
         ...assumptionFieldConfig,
       }),
+      terminateJurisdictionFor: createField('none', {
+        ...assumptionFieldConfig,
+      }),
       details: createField('', { needsReview: true }),
       voluntaryDeclarationOfParentageSigned: createField(false, {
+        ...assumptionFieldConfig,
+      }),
+    },
+    childSupport: {
+      requestAdditionalOrders: createField(false, {
+        ...assumptionFieldConfig,
+      }),
+      additionalOrdersDetails: createField('', { needsReview: true }),
+    },
+    childCustodyVisitation: {
+      legalCustodyTo: createField('none', {
+        ...assumptionFieldConfig,
+      }),
+      physicalCustodyTo: createField('none', {
+        ...assumptionFieldConfig,
+      }),
+      visitationTo: createField('none', {
+        ...assumptionFieldConfig,
+      }),
+      attachments: {
+        formFl311: createField(false, { ...assumptionFieldConfig }),
+        formFl312: createField(false, { ...assumptionFieldConfig }),
+        formFl341c: createField(false, { ...assumptionFieldConfig }),
+        formFl341d: createField(false, { ...assumptionFieldConfig }),
+        formFl341e: createField(false, { ...assumptionFieldConfig }),
+        attachment6c1: createField(false, { ...assumptionFieldConfig }),
+      },
+    },
+    attorneyFeesAndCosts: {
+      requestAward: createField(false, {
+        ...assumptionFieldConfig,
+      }),
+      payableBy: createField('none', {
+        ...assumptionFieldConfig,
+      }),
+    },
+    otherRequests: {
+      requestOtherRelief: createField(false, {
+        ...assumptionFieldConfig,
+      }),
+      details: createField('', { needsReview: true }),
+      continuedOnAttachment: createField(false, {
         ...assumptionFieldConfig,
       }),
     },
@@ -388,8 +460,35 @@ function normalizeWorkspace(workspace: DraftFormsWorkspace): DraftFormsWorkspace
       spousalSupport: {
         supportOrderDirection: workspace.fl100?.spousalSupport?.supportOrderDirection ?? defaultFl100.spousalSupport.supportOrderDirection,
         reserveJurisdictionFor: workspace.fl100?.spousalSupport?.reserveJurisdictionFor ?? defaultFl100.spousalSupport.reserveJurisdictionFor,
+        terminateJurisdictionFor: workspace.fl100?.spousalSupport?.terminateJurisdictionFor ?? defaultFl100.spousalSupport.terminateJurisdictionFor,
         details: workspace.fl100?.spousalSupport?.details ?? defaultFl100.spousalSupport.details,
         voluntaryDeclarationOfParentageSigned: workspace.fl100?.spousalSupport?.voluntaryDeclarationOfParentageSigned ?? defaultFl100.spousalSupport.voluntaryDeclarationOfParentageSigned,
+      },
+      childSupport: {
+        requestAdditionalOrders: workspace.fl100?.childSupport?.requestAdditionalOrders ?? defaultFl100.childSupport.requestAdditionalOrders,
+        additionalOrdersDetails: workspace.fl100?.childSupport?.additionalOrdersDetails ?? defaultFl100.childSupport.additionalOrdersDetails,
+      },
+      childCustodyVisitation: {
+        legalCustodyTo: workspace.fl100?.childCustodyVisitation?.legalCustodyTo ?? defaultFl100.childCustodyVisitation.legalCustodyTo,
+        physicalCustodyTo: workspace.fl100?.childCustodyVisitation?.physicalCustodyTo ?? defaultFl100.childCustodyVisitation.physicalCustodyTo,
+        visitationTo: workspace.fl100?.childCustodyVisitation?.visitationTo ?? defaultFl100.childCustodyVisitation.visitationTo,
+        attachments: {
+          formFl311: workspace.fl100?.childCustodyVisitation?.attachments?.formFl311 ?? defaultFl100.childCustodyVisitation.attachments.formFl311,
+          formFl312: workspace.fl100?.childCustodyVisitation?.attachments?.formFl312 ?? defaultFl100.childCustodyVisitation.attachments.formFl312,
+          formFl341c: workspace.fl100?.childCustodyVisitation?.attachments?.formFl341c ?? defaultFl100.childCustodyVisitation.attachments.formFl341c,
+          formFl341d: workspace.fl100?.childCustodyVisitation?.attachments?.formFl341d ?? defaultFl100.childCustodyVisitation.attachments.formFl341d,
+          formFl341e: workspace.fl100?.childCustodyVisitation?.attachments?.formFl341e ?? defaultFl100.childCustodyVisitation.attachments.formFl341e,
+          attachment6c1: workspace.fl100?.childCustodyVisitation?.attachments?.attachment6c1 ?? defaultFl100.childCustodyVisitation.attachments.attachment6c1,
+        },
+      },
+      attorneyFeesAndCosts: {
+        requestAward: workspace.fl100?.attorneyFeesAndCosts?.requestAward ?? defaultFl100.attorneyFeesAndCosts.requestAward,
+        payableBy: workspace.fl100?.attorneyFeesAndCosts?.payableBy ?? defaultFl100.attorneyFeesAndCosts.payableBy,
+      },
+      otherRequests: {
+        requestOtherRelief: workspace.fl100?.otherRequests?.requestOtherRelief ?? defaultFl100.otherRequests.requestOtherRelief,
+        details: workspace.fl100?.otherRequests?.details ?? defaultFl100.otherRequests.details,
+        continuedOnAttachment: workspace.fl100?.otherRequests?.continuedOnAttachment ?? defaultFl100.otherRequests.continuedOnAttachment,
       },
       formerName: workspace.fl100?.formerName ?? defaultFl100.formerName,
     },
@@ -727,10 +826,50 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
       : workspace.fl100.spousalSupport.reserveJurisdictionFor.value === 'both'
         ? 'Reserve jurisdiction for both parties'
         : 'No reserve jurisdiction selected';
+  const spousalSupportTerminateLabel = workspace.fl100.spousalSupport.terminateJurisdictionFor.value === 'petitioner'
+    ? 'Terminate jurisdiction for petitioner'
+    : workspace.fl100.spousalSupport.terminateJurisdictionFor.value === 'respondent'
+      ? 'Terminate jurisdiction for respondent'
+      : workspace.fl100.spousalSupport.terminateJurisdictionFor.value === 'both'
+        ? 'Terminate jurisdiction for both parties'
+        : 'No termination of jurisdiction selected';
 
   const legalGroundLabels = [
     workspace.fl100.legalGrounds.irreconcilableDifferences.value ? 'Irreconcilable differences' : null,
     workspace.fl100.legalGrounds.permanentLegalIncapacity.value ? 'Permanent legal incapacity' : null,
+  ].filter(Boolean) as string[];
+  const legalCustodyLabel = workspace.fl100.childCustodyVisitation.legalCustodyTo.value === 'petitioner'
+    ? 'Petitioner'
+    : workspace.fl100.childCustodyVisitation.legalCustodyTo.value === 'respondent'
+      ? 'Respondent'
+      : workspace.fl100.childCustodyVisitation.legalCustodyTo.value === 'joint'
+        ? 'Joint'
+        : workspace.fl100.childCustodyVisitation.legalCustodyTo.value === 'other'
+          ? 'Other'
+          : 'Not selected';
+  const physicalCustodyLabel = workspace.fl100.childCustodyVisitation.physicalCustodyTo.value === 'petitioner'
+    ? 'Petitioner'
+    : workspace.fl100.childCustodyVisitation.physicalCustodyTo.value === 'respondent'
+      ? 'Respondent'
+      : workspace.fl100.childCustodyVisitation.physicalCustodyTo.value === 'joint'
+        ? 'Joint'
+        : workspace.fl100.childCustodyVisitation.physicalCustodyTo.value === 'other'
+          ? 'Other'
+          : 'Not selected';
+  const visitationLabel = workspace.fl100.childCustodyVisitation.visitationTo.value === 'petitioner'
+    ? 'Petitioner'
+    : workspace.fl100.childCustodyVisitation.visitationTo.value === 'respondent'
+      ? 'Respondent'
+      : workspace.fl100.childCustodyVisitation.visitationTo.value === 'other'
+        ? 'Other'
+        : 'Not selected';
+  const custodyAttachmentLabels = [
+    workspace.fl100.childCustodyVisitation.attachments.formFl311.value ? 'FL-311' : null,
+    workspace.fl100.childCustodyVisitation.attachments.formFl312.value ? 'FL-312' : null,
+    workspace.fl100.childCustodyVisitation.attachments.formFl341c.value ? 'FL-341(C)' : null,
+    workspace.fl100.childCustodyVisitation.attachments.formFl341d.value ? 'FL-341(D)' : null,
+    workspace.fl100.childCustodyVisitation.attachments.formFl341e.value ? 'FL-341(E)' : null,
+    workspace.fl100.childCustodyVisitation.attachments.attachment6c1.value ? 'Attachment 6c(1)' : null,
   ].filter(Boolean) as string[];
 
   const sections: DraftPacketSection[] = [
@@ -777,8 +916,20 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
         `Separate property confirmed to: ${workspace.fl100.propertyDeclarations.separatePropertyAwardedTo.value || 'Not provided'}`,
         `Spousal support direction: ${spousalSupportDirectionLabel}`,
         `Spousal support reserve jurisdiction: ${spousalSupportReserveLabel}`,
+        `Spousal support terminate jurisdiction: ${spousalSupportTerminateLabel}`,
         `Spousal support details: ${workspace.fl100.spousalSupport.details.value || 'Not provided'}`,
         `Voluntary declaration of parentage signed: ${workspace.fl100.spousalSupport.voluntaryDeclarationOfParentageSigned.value ? 'Yes' : 'No'}`,
+        `Legal custody requested to: ${legalCustodyLabel}`,
+        `Physical custody requested to: ${physicalCustodyLabel}`,
+        `Visitation requested to: ${visitationLabel}`,
+        `Custody/visitation attachments selected: ${custodyAttachmentLabels.join(', ') || 'None'}`,
+        `Additional child support orders requested: ${workspace.fl100.childSupport.requestAdditionalOrders.value ? 'Yes' : 'No'}`,
+        `Additional child support order details: ${workspace.fl100.childSupport.additionalOrdersDetails.value || 'Not provided'}`,
+        `Attorney fees and costs requested: ${workspace.fl100.attorneyFeesAndCosts.requestAward.value ? 'Yes' : 'No'}`,
+        `Attorney fees/costs payable by: ${workspace.fl100.attorneyFeesAndCosts.payableBy.value}`,
+        `Other FL-100 requests selected: ${workspace.fl100.otherRequests.requestOtherRelief.value ? 'Yes' : 'No'}`,
+        `Other FL-100 requests detail: ${workspace.fl100.otherRequests.details.value || 'Not provided'}`,
+        `Other requests continued on attachment: ${workspace.fl100.otherRequests.continuedOnAttachment.value ? 'Yes' : 'No'}`,
         `Former name to restore: ${workspace.fl100.formerName.value || 'Not requested'}`,
       ].join('\n'),
     },

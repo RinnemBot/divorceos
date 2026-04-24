@@ -84,8 +84,35 @@ interface StarterPacketWorkspace {
     spousalSupport: {
       supportOrderDirection: StarterPacketField<'none' | 'petitioner_to_respondent' | 'respondent_to_petitioner'>;
       reserveJurisdictionFor: StarterPacketField<'none' | 'petitioner' | 'respondent' | 'both'>;
+      terminateJurisdictionFor: StarterPacketField<'none' | 'petitioner' | 'respondent' | 'both'>;
       details: StarterPacketField<string>;
       voluntaryDeclarationOfParentageSigned: StarterPacketField<boolean>;
+    };
+    childSupport: {
+      requestAdditionalOrders: StarterPacketField<boolean>;
+      additionalOrdersDetails: StarterPacketField<string>;
+    };
+    childCustodyVisitation: {
+      legalCustodyTo: StarterPacketField<'none' | 'petitioner' | 'respondent' | 'joint' | 'other'>;
+      physicalCustodyTo: StarterPacketField<'none' | 'petitioner' | 'respondent' | 'joint' | 'other'>;
+      visitationTo: StarterPacketField<'none' | 'petitioner' | 'respondent' | 'other'>;
+      attachments: {
+        formFl311: StarterPacketField<boolean>;
+        formFl312: StarterPacketField<boolean>;
+        formFl341c: StarterPacketField<boolean>;
+        formFl341d: StarterPacketField<boolean>;
+        formFl341e: StarterPacketField<boolean>;
+        attachment6c1: StarterPacketField<boolean>;
+      };
+    };
+    attorneyFeesAndCosts: {
+      requestAward: StarterPacketField<boolean>;
+      payableBy: StarterPacketField<'none' | 'petitioner' | 'respondent' | 'both'>;
+    };
+    otherRequests: {
+      requestOtherRelief: StarterPacketField<boolean>;
+      details: StarterPacketField<string>;
+      continuedOnAttachment: StarterPacketField<boolean>;
     };
     formerName: StarterPacketField<string>;
   };
@@ -418,11 +445,38 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
   const wantsSeparateProperty = Boolean(workspace.fl100?.propertyDeclarations?.separateProperty?.value);
   const spousalSupportDirection = workspace.fl100?.spousalSupport?.supportOrderDirection?.value ?? 'none';
   const spousalSupportReserveJurisdictionFor = workspace.fl100?.spousalSupport?.reserveJurisdictionFor?.value ?? 'none';
+  const spousalSupportTerminateJurisdictionFor = workspace.fl100?.spousalSupport?.terminateJurisdictionFor?.value ?? 'none';
   const spousalSupportDetails = sanitizeMultilineText(workspace.fl100?.spousalSupport?.details?.value);
+  const childSupportAdditionalOrdersRequested = Boolean(workspace.fl100?.childSupport?.requestAdditionalOrders?.value);
+  const childSupportAdditionalOrdersDetails = sanitizeMultilineText(workspace.fl100?.childSupport?.additionalOrdersDetails?.value);
+  const legalCustodyTo = workspace.fl100?.childCustodyVisitation?.legalCustodyTo?.value ?? 'none';
+  const physicalCustodyTo = workspace.fl100?.childCustodyVisitation?.physicalCustodyTo?.value ?? 'none';
+  const visitationTo = workspace.fl100?.childCustodyVisitation?.visitationTo?.value ?? 'none';
+  const custodyRequested = Boolean(
+    workspace.requests?.childCustody?.value
+    || legalCustodyTo !== 'none'
+    || physicalCustodyTo !== 'none',
+  );
+  const visitationRequested = Boolean(workspace.requests?.visitation?.value || visitationTo !== 'none');
+  const custodyAttachments = {
+    formFl311: Boolean(workspace.fl100?.childCustodyVisitation?.attachments?.formFl311?.value),
+    formFl312: Boolean(workspace.fl100?.childCustodyVisitation?.attachments?.formFl312?.value),
+    formFl341c: Boolean(workspace.fl100?.childCustodyVisitation?.attachments?.formFl341c?.value),
+    formFl341d: Boolean(workspace.fl100?.childCustodyVisitation?.attachments?.formFl341d?.value),
+    formFl341e: Boolean(workspace.fl100?.childCustodyVisitation?.attachments?.formFl341e?.value),
+    attachment6c1: Boolean(workspace.fl100?.childCustodyVisitation?.attachments?.attachment6c1?.value),
+  };
+  const attorneyFeesRequested = Boolean(workspace.fl100?.attorneyFeesAndCosts?.requestAward?.value);
+  const attorneyFeesPayableBy = workspace.fl100?.attorneyFeesAndCosts?.payableBy?.value ?? 'none';
+  const otherRequestsSelected = Boolean(workspace.fl100?.otherRequests?.requestOtherRelief?.value);
+  const otherRequestsDetails = sanitizeMultilineText(workspace.fl100?.otherRequests?.details?.value);
+  const otherRequestsContinuedOnAttachment = Boolean(workspace.fl100?.otherRequests?.continuedOnAttachment?.value);
+  const wantsOtherRequests = Boolean(otherRequestsSelected || otherRequestsDetails || otherRequestsContinuedOnAttachment);
   const wantsSpousalSupport = Boolean(
     workspace.requests?.spousalSupport?.value
     || spousalSupportDirection !== 'none'
     || spousalSupportReserveJurisdictionFor !== 'none'
+    || spousalSupportTerminateJurisdictionFor !== 'none'
     || spousalSupportDetails,
   );
   const voluntaryDeclarationOfParentageSigned = Boolean(workspace.fl100?.spousalSupport?.voluntaryDeclarationOfParentageSigned?.value);
@@ -479,18 +533,47 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
       fillTextFields(fl100Pages, fl100FieldMap, `FL-100[0].Page1[0].MinorChildren_sf[0].Child${number}Age_tf[0]`, formatChildAge(child.birthDate?.value), fontRegular, { size: 8 });
     });
   }
+  if (custodyRequested) {
+    fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].ToPetitioner_cb[0]', legalCustodyTo === 'petitioner');
+    fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].ToRespondent_cb[0]', legalCustodyTo === 'respondent');
+    fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].ToBothJointly_cb[0]', legalCustodyTo === 'joint');
+    fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].ToOther_cb[0]', legalCustodyTo === 'other');
+    fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].ToPetitioner_cb[1]', physicalCustodyTo === 'petitioner');
+    fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].ToRespondent_cb[1]', physicalCustodyTo === 'respondent');
+    fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].ToBothJointly_cb[1]', physicalCustodyTo === 'joint');
+    fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].ToOther_cb[1]', physicalCustodyTo === 'other');
+  }
+  if (visitationRequested) {
+    fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].ForPetitioner_cb[0]', visitationTo === 'petitioner');
+    fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].ForRespondent_cb[0]', visitationTo === 'respondent');
+    fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].ForOther_cb[0]', visitationTo === 'other');
+  }
+  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].FormFL-311_cb[0]', custodyAttachments.formFl311);
+  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].FormFL-312_cb[0]', custodyAttachments.formFl312);
+  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].FormFL-341C_cb[0]', custodyAttachments.formFl341c);
+  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].FormFL-341D_cb[0]', custodyAttachments.formFl341d);
+  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].FormFL-341E[0]', custodyAttachments.formFl341e);
+  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].Attachment6e1[0]', custodyAttachments.attachment6c1);
 
   if (wantsSpousalSupport) {
     fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].PaySupport_cb[0]', true);
     fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].PaySupporttoPetitioner_cb[0]', spousalSupportDirection === 'respondent_to_petitioner');
     fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].PaySupportoRespondent_cb[0]', spousalSupportDirection === 'petitioner_to_respondent');
+    fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].PartiesSignedVoluntaryPaternityDec_cb[0]', spousalSupportReserveJurisdictionFor !== 'none');
     fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].ReserveJurixSupportPet_cb[0]', spousalSupportReserveJurisdictionFor === 'petitioner' || spousalSupportReserveJurisdictionFor === 'both');
     fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].ReserveJurixSupportResp_cb[0]', spousalSupportReserveJurisdictionFor === 'respondent' || spousalSupportReserveJurisdictionFor === 'both');
+    fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].EndJurixReSupport[0]', spousalSupportTerminateJurisdictionFor !== 'none');
+    fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].EndJurixRePetitioner_cb[0]', spousalSupportTerminateJurisdictionFor === 'petitioner' || spousalSupportTerminateJurisdictionFor === 'both');
+    fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].EndJurixReRespondent_cb[0]', spousalSupportTerminateJurisdictionFor === 'respondent' || spousalSupportTerminateJurisdictionFor === 'both');
   }
-  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].PartiesSignedVoluntaryPaternityDec_cb[0]', voluntaryDeclarationOfParentageSigned);
+  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].PartiesSignedVoluntaryPaternityDec_cb[0]', voluntaryDeclarationOfParentageSigned);
   if (spousalSupportDetails) {
     fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].Other_cb[0]', true);
     fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].OtherSupport_ft[0]', spousalSupportDetails, fontRegular, { size: 8, multiline: true });
+  }
+  if (childSupportAdditionalOrdersRequested || childSupportAdditionalOrdersDetails) {
+    fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].OtherChildSupport_cb[0]', true);
+    fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].ChildSupport_ft[0]', childSupportAdditionalOrdersDetails, fontRegular, { size: 8, multiline: true });
   }
 
   if (wantsCommunityProperty) {
@@ -526,6 +609,16 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
 
   fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page3[0].RestoreFormerName_cb[0]', wantsFormerNameRestore);
   fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page3[0].SpecifyFormerName_tf[0]', sanitizeText(workspace.fl100?.formerName?.value), fontRegular);
+  if (attorneyFeesRequested || attorneyFeesPayableBy !== 'none') {
+    fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page3[0].FeesAndCost_cb[0]', true);
+    fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page3[0].AttyFeePay_cb[1]', attorneyFeesPayableBy === 'petitioner' || attorneyFeesPayableBy === 'both');
+    fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page3[0].AttyFeePay_cb[0]', attorneyFeesPayableBy === 'respondent' || attorneyFeesPayableBy === 'both');
+  }
+  if (wantsOtherRequests) {
+    fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page3[0].OtherRequests_cb[0]', true);
+    fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page3[0].SpecifyOtherRequests_tf[0]', otherRequestsDetails, fontRegular, { size: 8, multiline: true });
+    fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page3[0].ContinuedOnAttachment_cb[0]', otherRequestsContinuedOnAttachment);
+  }
 
   fillTextFields(fl110Pages, fl110FieldMap, 'FL-110[0].Page1[0].TextField2[0]', respondentName, fontRegular, { size: 10 });
   fillTextFields(fl110Pages, fl110FieldMap, 'FL-110[0].Page1[0].TextField2[1]', petitionerName, fontRegular, { size: 10 });
