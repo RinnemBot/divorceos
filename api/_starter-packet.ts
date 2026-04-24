@@ -76,7 +76,16 @@ interface StarterPacketWorkspace {
     };
     propertyDeclarations: {
       communityAndQuasiCommunity: StarterPacketField<boolean>;
+      communityAndQuasiCommunityDetails: StarterPacketField<string>;
       separateProperty: StarterPacketField<boolean>;
+      separatePropertyDetails: StarterPacketField<string>;
+      separatePropertyAwardedTo: StarterPacketField<string>;
+    };
+    spousalSupport: {
+      supportOrderDirection: StarterPacketField<'none' | 'petitioner_to_respondent' | 'respondent_to_petitioner'>;
+      reserveJurisdictionFor: StarterPacketField<'none' | 'petitioner' | 'respondent' | 'both'>;
+      details: StarterPacketField<string>;
+      voluntaryDeclarationOfParentageSigned: StarterPacketField<boolean>;
     };
     formerName: StarterPacketField<string>;
   };
@@ -407,7 +416,19 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
     workspace.requests?.propertyRightsDetermination?.value || workspace.fl100?.propertyDeclarations?.communityAndQuasiCommunity?.value,
   );
   const wantsSeparateProperty = Boolean(workspace.fl100?.propertyDeclarations?.separateProperty?.value);
-  const wantsSpousalSupport = Boolean(workspace.requests?.spousalSupport?.value);
+  const spousalSupportDirection = workspace.fl100?.spousalSupport?.supportOrderDirection?.value ?? 'none';
+  const spousalSupportReserveJurisdictionFor = workspace.fl100?.spousalSupport?.reserveJurisdictionFor?.value ?? 'none';
+  const spousalSupportDetails = sanitizeMultilineText(workspace.fl100?.spousalSupport?.details?.value);
+  const wantsSpousalSupport = Boolean(
+    workspace.requests?.spousalSupport?.value
+    || spousalSupportDirection !== 'none'
+    || spousalSupportReserveJurisdictionFor !== 'none'
+    || spousalSupportDetails,
+  );
+  const voluntaryDeclarationOfParentageSigned = Boolean(workspace.fl100?.spousalSupport?.voluntaryDeclarationOfParentageSigned?.value);
+  const communityPropertyDetails = sanitizeMultilineText(workspace.fl100?.propertyDeclarations?.communityAndQuasiCommunityDetails?.value);
+  const separatePropertyDetails = sanitizeMultilineText(workspace.fl100?.propertyDeclarations?.separatePropertyDetails?.value);
+  const separatePropertyAwardedTo = sanitizeText(workspace.fl100?.propertyDeclarations?.separatePropertyAwardedTo?.value);
   const wantsFormerNameRestore = Boolean(workspace.requests?.restoreFormerName?.value);
   const shortTitle = buildShortTitle(petitionerName, respondentName);
   const fl105 = workspace.fl105;
@@ -461,9 +482,15 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
 
   if (wantsSpousalSupport) {
     fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].PaySupport_cb[0]', true);
-    fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].PaySupporttoPetitioner_cb[0]', true);
-    fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].PartiesSignedVoluntaryPaternityDec_cb[0]', true);
-    fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].ReserveJurixSupportPet_cb[0]', true);
+    fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].PaySupporttoPetitioner_cb[0]', spousalSupportDirection === 'respondent_to_petitioner');
+    fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].PaySupportoRespondent_cb[0]', spousalSupportDirection === 'petitioner_to_respondent');
+    fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].ReserveJurixSupportPet_cb[0]', spousalSupportReserveJurisdictionFor === 'petitioner' || spousalSupportReserveJurisdictionFor === 'both');
+    fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].ReserveJurixSupportResp_cb[0]', spousalSupportReserveJurisdictionFor === 'respondent' || spousalSupportReserveJurisdictionFor === 'both');
+  }
+  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].PartiesSignedVoluntaryPaternityDec_cb[0]', voluntaryDeclarationOfParentageSigned);
+  if (spousalSupportDetails) {
+    fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].Other_cb[0]', true);
+    fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].OtherSupport_ft[0]', spousalSupportDetails, fontRegular, { size: 8, multiline: true });
   }
 
   if (wantsCommunityProperty) {
@@ -473,7 +500,7 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
       fl100Pages,
       fl100FieldMap,
       'FL-100[0].Page3[0].CommQuasiProperty_sf[0].ListProperty_ft[0]',
-      'Property division details to be finalized from Draft Forms and supporting schedules.',
+      communityPropertyDetails,
       fontRegular,
       { size: 8 },
     );
@@ -488,11 +515,11 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
       fl100Pages,
       fl100FieldMap,
       'FL-100[0].Page2[0].ConfirmSeparateProperty_sf[0].SeparatePropertyList1_tf[0]',
-      'Separate property claims to be detailed in follow-up schedules.',
+      separatePropertyDetails,
       fontRegular,
       { size: 8 },
     );
-    fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].ConfirmSeparateProperty_sf[0].ConfirmPropertyList1To_tf[0]', 'TBD', fontRegular, { size: 8 });
+    fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].ConfirmSeparateProperty_sf[0].ConfirmPropertyList1To_tf[0]', separatePropertyAwardedTo, fontRegular, { size: 8 });
   } else {
     fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].NoSeparateProperty_cb[0]', true);
   }

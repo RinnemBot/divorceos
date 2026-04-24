@@ -106,6 +106,10 @@ export function DraftFormsPage() {
     commitWorkspace((current) => ({ ...current, fl105: updater(current.fl105) }));
   };
 
+  const updateFl100 = (updater: (fl100: DraftFormsWorkspace['fl100']) => DraftFormsWorkspace['fl100']) => {
+    commitWorkspace((current) => ({ ...current, fl100: updater(current.fl100) }));
+  };
+
   const missingItems = useMemo(() => {
     if (!workspace) return [] as string[];
     const missing: string[] = [];
@@ -121,6 +125,27 @@ export function DraftFormsPage() {
     }
     if (workspace.requests.restoreFormerName.value && !workspace.fl100.formerName.value.trim()) {
       missing.push('Former name to restore');
+    }
+    if (workspace.fl100.propertyDeclarations.communityAndQuasiCommunity.value && !workspace.fl100.propertyDeclarations.communityAndQuasiCommunityDetails.value.trim()) {
+      missing.push('Community / quasi-community property details');
+    }
+    if (workspace.fl100.propertyDeclarations.separateProperty.value && !workspace.fl100.propertyDeclarations.separatePropertyDetails.value.trim()) {
+      missing.push('Separate property details');
+    }
+    if (workspace.fl100.propertyDeclarations.separateProperty.value && !workspace.fl100.propertyDeclarations.separatePropertyAwardedTo.value.trim()) {
+      missing.push('Who separate property should be confirmed to');
+    }
+
+    const spousalSupportDirection = workspace.fl100.spousalSupport.supportOrderDirection.value;
+    const spousalSupportReserve = workspace.fl100.spousalSupport.reserveJurisdictionFor.value;
+    const spousalSupportDetails = workspace.fl100.spousalSupport.details.value.trim();
+    if (
+      workspace.requests.spousalSupport.value
+      && spousalSupportDirection === 'none'
+      && spousalSupportReserve === 'none'
+      && !spousalSupportDetails
+    ) {
+      missing.push('Spousal support direction or details');
     }
 
     if (workspace.hasMinorChildren.value) {
@@ -584,6 +609,134 @@ export function DraftFormsPage() {
                       <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Turn this on if either spouse claims separate property.</p>
                     </div>
                   </label>
+                </div>
+
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div className="rounded-2xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5">
+                    <FieldHeader label="Community / quasi-community property details" field={workspace.fl100.propertyDeclarations.communityAndQuasiCommunityDetails} />
+                    <Textarea
+                      value={workspace.fl100.propertyDeclarations.communityAndQuasiCommunityDetails.value}
+                      onChange={(e) => updateFl100((fl100) => ({
+                        ...fl100,
+                        propertyDeclarations: {
+                          ...fl100.propertyDeclarations,
+                          communityAndQuasiCommunityDetails: setDraftFieldValue(fl100.propertyDeclarations.communityAndQuasiCommunityDetails, e.target.value),
+                        },
+                      }))}
+                      className="min-h-[96px]"
+                      placeholder="Describe community or quasi-community assets/debts to divide."
+                    />
+                    <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">Maps to FL-100 property details text instead of placeholder language.</p>
+                  </div>
+                  <div className="rounded-2xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5">
+                    <FieldHeader label="Separate property details" field={workspace.fl100.propertyDeclarations.separatePropertyDetails} />
+                    <Textarea
+                      value={workspace.fl100.propertyDeclarations.separatePropertyDetails.value}
+                      onChange={(e) => updateFl100((fl100) => ({
+                        ...fl100,
+                        propertyDeclarations: {
+                          ...fl100.propertyDeclarations,
+                          separatePropertyDetails: setDraftFieldValue(fl100.propertyDeclarations.separatePropertyDetails, e.target.value),
+                        },
+                      }))}
+                      className="min-h-[96px]"
+                      placeholder="Describe separate property claims."
+                    />
+                    <div className="mt-3">
+                      <FieldHeader label="Separate property should be confirmed to" field={workspace.fl100.propertyDeclarations.separatePropertyAwardedTo} />
+                      <Input
+                        value={workspace.fl100.propertyDeclarations.separatePropertyAwardedTo.value}
+                        onChange={(e) => updateFl100((fl100) => ({
+                          ...fl100,
+                          propertyDeclarations: {
+                            ...fl100.propertyDeclarations,
+                            separatePropertyAwardedTo: setDraftFieldValue(fl100.propertyDeclarations.separatePropertyAwardedTo, e.target.value),
+                          },
+                        }))}
+                        placeholder="Petitioner / Respondent / mixed allocation"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="rounded-2xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5">
+                  <p className="text-sm font-medium text-slate-800 dark:text-slate-100">Spousal support request detail</p>
+                  <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Replace fixed FL-100 support assumptions with explicit direction and reserve-jurisdiction choices.</p>
+                  <div className="mt-4 grid gap-4 md:grid-cols-2">
+                    <div>
+                      <FieldHeader label="Support order direction" field={workspace.fl100.spousalSupport.supportOrderDirection} />
+                      <select
+                        value={workspace.fl100.spousalSupport.supportOrderDirection.value}
+                        onChange={(e) => updateFl100((fl100) => ({
+                          ...fl100,
+                          spousalSupport: {
+                            ...fl100.spousalSupport,
+                            supportOrderDirection: setDraftFieldValue(fl100.spousalSupport.supportOrderDirection, e.target.value as 'none' | 'petitioner_to_respondent' | 'respondent_to_petitioner'),
+                          },
+                        }))}
+                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"
+                      >
+                        <option value="none">No immediate support order requested</option>
+                        <option value="petitioner_to_respondent">Petitioner pays support to respondent</option>
+                        <option value="respondent_to_petitioner">Respondent pays support to petitioner</option>
+                      </select>
+                    </div>
+                    <div>
+                      <FieldHeader label="Reserve jurisdiction for support" field={workspace.fl100.spousalSupport.reserveJurisdictionFor} />
+                      <select
+                        value={workspace.fl100.spousalSupport.reserveJurisdictionFor.value}
+                        onChange={(e) => updateFl100((fl100) => ({
+                          ...fl100,
+                          spousalSupport: {
+                            ...fl100.spousalSupport,
+                            reserveJurisdictionFor: setDraftFieldValue(fl100.spousalSupport.reserveJurisdictionFor, e.target.value as 'none' | 'petitioner' | 'respondent' | 'both'),
+                          },
+                        }))}
+                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"
+                      >
+                        <option value="none">Do not reserve jurisdiction</option>
+                        <option value="petitioner">Reserve for petitioner</option>
+                        <option value="respondent">Reserve for respondent</option>
+                        <option value="both">Reserve for both</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="mt-4 grid gap-4 md:grid-cols-2">
+                    <div>
+                      <FieldHeader label="Spousal support details" field={workspace.fl100.spousalSupport.details} />
+                      <Textarea
+                        value={workspace.fl100.spousalSupport.details.value}
+                        onChange={(e) => updateFl100((fl100) => ({
+                          ...fl100,
+                          spousalSupport: {
+                            ...fl100.spousalSupport,
+                            details: setDraftFieldValue(fl100.spousalSupport.details, e.target.value),
+                          },
+                        }))}
+                        className="min-h-[96px]"
+                        placeholder="Optional note for support request context."
+                      />
+                    </div>
+                    <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-white/70 p-3 dark:border-white/10 dark:bg-white/5">
+                      <Checkbox
+                        checked={workspace.fl100.spousalSupport.voluntaryDeclarationOfParentageSigned.value}
+                        onCheckedChange={(checked) => updateFl100((fl100) => ({
+                          ...fl100,
+                          spousalSupport: {
+                            ...fl100.spousalSupport,
+                            voluntaryDeclarationOfParentageSigned: setDraftFieldValue(fl100.spousalSupport.voluntaryDeclarationOfParentageSigned, checked === true),
+                          },
+                        }))}
+                      />
+                      <div>
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="text-sm font-medium text-slate-800 dark:text-slate-100">Parties signed voluntary declaration of parentage</span>
+                          <FieldSourceBadge field={workspace.fl100.spousalSupport.voluntaryDeclarationOfParentageSigned} />
+                        </div>
+                        <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Now explicitly editable instead of being auto-checked in generated FL-100.</p>
+                      </div>
+                    </label>
+                  </div>
                 </div>
               </CardContent>
             </Card>

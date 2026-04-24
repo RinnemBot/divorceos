@@ -86,7 +86,16 @@ export interface DraftFl100Section {
   };
   propertyDeclarations: {
     communityAndQuasiCommunity: DraftField<boolean>;
+    communityAndQuasiCommunityDetails: DraftField<string>;
     separateProperty: DraftField<boolean>;
+    separatePropertyDetails: DraftField<string>;
+    separatePropertyAwardedTo: DraftField<string>;
+  };
+  spousalSupport: {
+    supportOrderDirection: DraftField<'none' | 'petitioner_to_respondent' | 'respondent_to_petitioner'>;
+    reserveJurisdictionFor: DraftField<'none' | 'petitioner' | 'respondent' | 'both'>;
+    details: DraftField<string>;
+    voluntaryDeclarationOfParentageSigned: DraftField<boolean>;
   };
   formerName: DraftField<string>;
 }
@@ -182,6 +191,13 @@ function createField<T>(value: T, config?: Omit<DraftField<T>, 'value'>): DraftF
 }
 
 function createDefaultFl100Section(): DraftFl100Section {
+  const assumptionFieldConfig = {
+    sourceType: 'manual' as const,
+    sourceLabel: 'Default FL-100 assumption',
+    confidence: 'low' as const,
+    needsReview: true,
+  };
+
   return {
     relationshipType: createField('marriage', {
       sourceType: 'manual',
@@ -211,16 +227,25 @@ function createDefaultFl100Section(): DraftFl100Section {
     },
     propertyDeclarations: {
       communityAndQuasiCommunity: createField(true, {
-        sourceType: 'manual',
-        sourceLabel: 'Default FL-100 assumption',
-        confidence: 'low',
-        needsReview: true,
+        ...assumptionFieldConfig,
       }),
+      communityAndQuasiCommunityDetails: createField('', { needsReview: true }),
       separateProperty: createField(false, {
-        sourceType: 'manual',
-        sourceLabel: 'Default FL-100 assumption',
-        confidence: 'low',
-        needsReview: true,
+        ...assumptionFieldConfig,
+      }),
+      separatePropertyDetails: createField('', { needsReview: true }),
+      separatePropertyAwardedTo: createField('', { needsReview: true }),
+    },
+    spousalSupport: {
+      supportOrderDirection: createField('none', {
+        ...assumptionFieldConfig,
+      }),
+      reserveJurisdictionFor: createField('none', {
+        ...assumptionFieldConfig,
+      }),
+      details: createField('', { needsReview: true }),
+      voluntaryDeclarationOfParentageSigned: createField(false, {
+        ...assumptionFieldConfig,
       }),
     },
     formerName: createField('', { needsReview: false }),
@@ -355,7 +380,16 @@ function normalizeWorkspace(workspace: DraftFormsWorkspace): DraftFormsWorkspace
       },
       propertyDeclarations: {
         communityAndQuasiCommunity: workspace.fl100?.propertyDeclarations?.communityAndQuasiCommunity ?? defaultFl100.propertyDeclarations.communityAndQuasiCommunity,
+        communityAndQuasiCommunityDetails: workspace.fl100?.propertyDeclarations?.communityAndQuasiCommunityDetails ?? defaultFl100.propertyDeclarations.communityAndQuasiCommunityDetails,
         separateProperty: workspace.fl100?.propertyDeclarations?.separateProperty ?? defaultFl100.propertyDeclarations.separateProperty,
+        separatePropertyDetails: workspace.fl100?.propertyDeclarations?.separatePropertyDetails ?? defaultFl100.propertyDeclarations.separatePropertyDetails,
+        separatePropertyAwardedTo: workspace.fl100?.propertyDeclarations?.separatePropertyAwardedTo ?? defaultFl100.propertyDeclarations.separatePropertyAwardedTo,
+      },
+      spousalSupport: {
+        supportOrderDirection: workspace.fl100?.spousalSupport?.supportOrderDirection ?? defaultFl100.spousalSupport.supportOrderDirection,
+        reserveJurisdictionFor: workspace.fl100?.spousalSupport?.reserveJurisdictionFor ?? defaultFl100.spousalSupport.reserveJurisdictionFor,
+        details: workspace.fl100?.spousalSupport?.details ?? defaultFl100.spousalSupport.details,
+        voluntaryDeclarationOfParentageSigned: workspace.fl100?.spousalSupport?.voluntaryDeclarationOfParentageSigned ?? defaultFl100.spousalSupport.voluntaryDeclarationOfParentageSigned,
       },
       formerName: workspace.fl100?.formerName ?? defaultFl100.formerName,
     },
@@ -680,6 +714,20 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
     workspace.fl100.propertyDeclarations.separateProperty.value ? 'Separate property' : null,
   ].filter(Boolean) as string[];
 
+  const spousalSupportDirectionLabel = workspace.fl100.spousalSupport.supportOrderDirection.value === 'petitioner_to_respondent'
+    ? 'Petitioner pays support to respondent'
+    : workspace.fl100.spousalSupport.supportOrderDirection.value === 'respondent_to_petitioner'
+      ? 'Respondent pays support to petitioner'
+      : 'No immediate support order selected';
+
+  const spousalSupportReserveLabel = workspace.fl100.spousalSupport.reserveJurisdictionFor.value === 'petitioner'
+    ? 'Reserve jurisdiction for petitioner'
+    : workspace.fl100.spousalSupport.reserveJurisdictionFor.value === 'respondent'
+      ? 'Reserve jurisdiction for respondent'
+      : workspace.fl100.spousalSupport.reserveJurisdictionFor.value === 'both'
+        ? 'Reserve jurisdiction for both parties'
+        : 'No reserve jurisdiction selected';
+
   const legalGroundLabels = [
     workspace.fl100.legalGrounds.irreconcilableDifferences.value ? 'Irreconcilable differences' : null,
     workspace.fl100.legalGrounds.permanentLegalIncapacity.value ? 'Permanent legal incapacity' : null,
@@ -724,6 +772,13 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
         `Respondent residency in filing county: ${workspace.fl100.residency.respondentCountyMonths.value || 'Not provided'} month(s)`,
         `Legal grounds: ${legalGroundLabels.join(', ') || 'Not provided'}`,
         `Property declarations: ${propertyLabels.join(', ') || 'None selected'}`,
+        `Community/quasi-community details: ${workspace.fl100.propertyDeclarations.communityAndQuasiCommunityDetails.value || 'Not provided'}`,
+        `Separate property details: ${workspace.fl100.propertyDeclarations.separatePropertyDetails.value || 'Not provided'}`,
+        `Separate property confirmed to: ${workspace.fl100.propertyDeclarations.separatePropertyAwardedTo.value || 'Not provided'}`,
+        `Spousal support direction: ${spousalSupportDirectionLabel}`,
+        `Spousal support reserve jurisdiction: ${spousalSupportReserveLabel}`,
+        `Spousal support details: ${workspace.fl100.spousalSupport.details.value || 'Not provided'}`,
+        `Voluntary declaration of parentage signed: ${workspace.fl100.spousalSupport.voluntaryDeclarationOfParentageSigned.value ? 'Yes' : 'No'}`,
         `Former name to restore: ${workspace.fl100.formerName.value || 'Not requested'}`,
       ].join('\n'),
     },
