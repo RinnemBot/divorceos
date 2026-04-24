@@ -252,6 +252,9 @@ export function DraftFormsPage() {
     }
     const communityWhereListed = workspace.fl100.propertyDeclarations.communityAndQuasiCommunityWhereListed.value;
     const separateWhereListed = workspace.fl100.propertyDeclarations.separatePropertyWhereListed.value;
+    const communityPropertyDetails = workspace.fl100.propertyDeclarations.communityAndQuasiCommunityDetails.value.trim();
+    const separatePropertyDetails = workspace.fl100.propertyDeclarations.separatePropertyDetails.value.trim();
+    const separatePropertyAwardedTo = workspace.fl100.propertyDeclarations.separatePropertyAwardedTo.value.trim();
     const separateInlineEntries = splitNonEmptyLines(workspace.fl100.propertyDeclarations.separatePropertyDetails.value);
     if (workspace.fl100.propertyDeclarations.communityAndQuasiCommunity.value) {
       if (communityWhereListed === 'unspecified') {
@@ -260,10 +263,19 @@ export function DraftFormsPage() {
       if (communityWhereListed === 'inline_list' && !workspace.fl100.propertyDeclarations.communityAndQuasiCommunityDetails.value.trim()) {
         missing.push('Community / quasi-community inline property list');
       }
+      if (communityWhereListed === 'attachment' && !communityPropertyDetails) {
+        missing.push('Community / quasi-community attachment 10b details');
+      }
     }
     if (workspace.fl100.propertyDeclarations.separateProperty.value) {
       if (separateWhereListed === 'unspecified') {
         missing.push('Separate property list location');
+      }
+      if (separateWhereListed === 'attachment' && !separatePropertyDetails) {
+        missing.push('Separate property attachment 9b details');
+      }
+      if (separateWhereListed === 'attachment' && !separatePropertyAwardedTo) {
+        missing.push('Who separate property should be confirmed to (attachment 9b)');
       }
       if (separateWhereListed === 'inline_list' && separateInlineEntries.length === 0) {
         missing.push('Separate property inline list entries');
@@ -313,6 +325,12 @@ export function DraftFormsPage() {
     }
     if (workspace.fl100.otherRequests.requestOtherRelief.value && !workspace.fl100.otherRequests.details.value.trim()) {
       missing.push('Other FL-100 request details');
+    }
+    if (workspace.fl100.otherRequests.continuedOnAttachment.value && !workspace.fl100.otherRequests.requestOtherRelief.value) {
+      missing.push('Enable FL-100 other relief before continuing it on attachment');
+    }
+    if (workspace.fl100.otherRequests.continuedOnAttachment.value && !workspace.fl100.otherRequests.details.value.trim()) {
+      missing.push('FL-100 attachment 11c details');
     }
 
     if (workspace.hasMinorChildren.value) {
@@ -1259,10 +1277,14 @@ export function DraftFormsPage() {
                           },
                         }))}
                         className="min-h-[96px]"
-                        placeholder="If using inline list, enter community/quasi-community assets/debts here."
+                        placeholder="If using inline list or attachment 10b, enter community/quasi-community assets/debts here."
                       />
                     </div>
-                    <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">Generator only checks FL-160 or attachment boxes when you explicitly choose them.</p>
+                    <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
+                      {workspace.fl100.propertyDeclarations.communityAndQuasiCommunityWhereListed.value === 'attachment'
+                        ? 'Starter-packet generation will turn these details into a labeled FL-100 attachment 10b page.'
+                        : 'Generator only checks FL-160 or attachment boxes when you explicitly choose them.'}
+                    </p>
                   </div>
                   <div className="rounded-2xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5">
                     <FieldHeader label="Separate property where listed" field={workspace.fl100.propertyDeclarations.separatePropertyWhereListed} />
@@ -1294,7 +1316,7 @@ export function DraftFormsPage() {
                           },
                         }))}
                         className="min-h-[96px]"
-                        placeholder="If using inline list: one property/debt entry per line."
+                        placeholder="If using inline list or attachment 9b: one property/debt entry per line."
                       />
                     </div>
                     <div className="mt-3">
@@ -1316,6 +1338,8 @@ export function DraftFormsPage() {
                         <p className="mt-2 text-xs text-amber-700 dark:text-amber-300">
                           Inline list exceeds FL-100 visible separate-property rows ({FL100_SEPARATE_PROPERTY_VISIBLE_ROWS}). Choose FL-160 or attachment 9b to continue.
                         </p>
+                      ) : workspace.fl100.propertyDeclarations.separatePropertyWhereListed.value === 'attachment' ? (
+                        <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">Starter-packet generation will create a labeled FL-100 attachment 9b page from these entries and the “confirmed to” field.</p>
                       ) : (
                         <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">Inline separate-property rows are limited to {FL100_SEPARATE_PROPERTY_VISIBLE_ROWS} visible entries in this packet.</p>
                       )}
@@ -1726,6 +1750,9 @@ export function DraftFormsPage() {
                           className="min-h-[96px]"
                           placeholder="Any additional request language for the petition."
                         />
+                        {workspace.fl100.otherRequests.continuedOnAttachment.value && (
+                          <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">Starter-packet generation will put these details on a labeled FL-100 attachment 11c page and reference that attachment from item 11c.</p>
+                        )}
                       </div>
                       <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-white/70 p-3 dark:border-white/10 dark:bg-white/5">
                         <Checkbox

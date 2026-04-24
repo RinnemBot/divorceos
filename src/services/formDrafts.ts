@@ -1065,6 +1065,15 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
     .split(/\r?\n/)
     .map((line) => line.trim())
     .filter(Boolean);
+  const generatesCommunityPropertyAttachment = workspace.fl100.propertyDeclarations.communityAndQuasiCommunity.value
+    && workspace.fl100.propertyDeclarations.communityAndQuasiCommunityWhereListed.value === 'attachment'
+    && workspace.fl100.propertyDeclarations.communityAndQuasiCommunityDetails.value.trim().length > 0;
+  const generatesSeparatePropertyAttachment = workspace.fl100.propertyDeclarations.separateProperty.value
+    && workspace.fl100.propertyDeclarations.separatePropertyWhereListed.value === 'attachment'
+    && workspace.fl100.propertyDeclarations.separatePropertyDetails.value.trim().length > 0
+    && workspace.fl100.propertyDeclarations.separatePropertyAwardedTo.value.trim().length > 0;
+  const generatesOtherRequestsAttachment = workspace.fl100.otherRequests.continuedOnAttachment.value
+    && workspace.fl100.otherRequests.details.value.trim().length > 0;
   const separatePropertyInlineOverflowCount = Math.max(
     separatePropertyInlineEntries.length - FL100_SEPARATE_PROPERTY_VISIBLE_ROWS,
     0,
@@ -1189,9 +1198,11 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
         `Property declarations: ${propertyLabels.join(', ') || 'None selected'}`,
         `Community/quasi-community where listed: ${communityPropertyWhereListedLabel}`,
         `Community/quasi-community details: ${workspace.fl100.propertyDeclarations.communityAndQuasiCommunityDetails.value || 'Not provided'}`,
+        `Generated FL-100 attachment 10b from details: ${generatesCommunityPropertyAttachment ? 'Yes' : workspace.fl100.propertyDeclarations.communityAndQuasiCommunityWhereListed.value === 'attachment' ? 'Not ready yet' : 'No'}`,
         `Separate property where listed: ${separatePropertyWhereListedLabel}`,
         `Separate property details: ${workspace.fl100.propertyDeclarations.separatePropertyDetails.value || 'Not provided'}`,
         `Separate property confirmed to: ${workspace.fl100.propertyDeclarations.separatePropertyAwardedTo.value || 'Not provided'}`,
+        `Generated FL-100 attachment 9b from details: ${generatesSeparatePropertyAttachment ? 'Yes' : workspace.fl100.propertyDeclarations.separatePropertyWhereListed.value === 'attachment' ? 'Not ready yet' : 'No'}`,
         `Separate property inline-row overflow: ${separatePropertyInlineOverflowCount > 0 ? `Yes (${separatePropertyInlineEntries.length} entered, ${FL100_SEPARATE_PROPERTY_VISIBLE_ROWS} visible)` : 'No'}`,
         `Spousal support direction: ${spousalSupportDirectionLabel}`,
         `Spousal support reserve jurisdiction: ${spousalSupportReserveLabel}`,
@@ -1213,6 +1224,7 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
         `Other FL-100 requests selected: ${workspace.fl100.otherRequests.requestOtherRelief.value ? 'Yes' : 'No'}`,
         `Other FL-100 requests detail: ${workspace.fl100.otherRequests.details.value || 'Not provided'}`,
         `Other requests continued on attachment: ${workspace.fl100.otherRequests.continuedOnAttachment.value ? 'Yes' : 'No'}`,
+        `Generated FL-100 attachment 11c from details: ${generatesOtherRequestsAttachment ? 'Yes' : workspace.fl100.otherRequests.continuedOnAttachment.value ? 'Not ready yet' : 'No'}`,
         `FL-100 signature date (page 3): ${workspace.fl100.signatureDate.value || 'Not provided'}`,
         `Former name to restore: ${workspace.fl100.formerName.value || 'Not requested'}`,
       ].join('\n'),

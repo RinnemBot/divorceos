@@ -200,6 +200,11 @@ const GENERATED_CHILD_ATTACHMENT_ENTRIES_PER_PAGE = 6;
 const ATTACHMENT_PAGE_SIZE: [number, number] = [612, 792];
 const ATTACHMENT_PAGE_MARGIN = 48;
 
+interface AttachmentSection {
+  heading?: string;
+  paragraphs: string[];
+}
+
 let templateCache: Promise<{
   fl100Bytes: Uint8Array;
   fl110Bytes: Uint8Array;
@@ -598,6 +603,124 @@ function appendChildAttachmentPages(
   return totalPages;
 }
 
+function appendAttachmentTextPages(
+  output: PDFDocument,
+  fontRegular: PDFFont,
+  fontBold: PDFFont,
+  title: string,
+  shortTitle: string,
+  caseNumber: string,
+  sections: AttachmentSection[],
+) {
+  const maxWidth = ATTACHMENT_PAGE_SIZE[0] - (ATTACHMENT_PAGE_MARGIN * 2);
+  const regularSize = 10;
+  const regularLineHeight = regularSize + 3;
+  const headingSize = 11;
+  const headingLineHeight = headingSize + 4;
+  const bottomY = ATTACHMENT_PAGE_MARGIN;
+  const pageColor = rgb(0.08, 0.16, 0.28);
+
+  type LayoutItem =
+    | { kind: 'spacer'; height: number }
+    | { kind: 'line'; text: string; font: PDFFont; size: number; lineHeight: number };
+
+  const layoutItems: LayoutItem[] = [];
+
+  sections.forEach((section, sectionIndex) => {
+    const heading = sanitizeText(section.heading);
+    const paragraphs = section.paragraphs
+      .map((paragraph) => sanitizeMultilineText(paragraph))
+      .filter(Boolean);
+
+    if (!heading && paragraphs.length === 0) return;
+
+    if (layoutItems.length > 0) {
+      layoutItems.push({ kind: 'spacer', height: sectionIndex === 0 ? 0 : 8 });
+    }
+
+    if (heading) {
+      wrapText(heading, maxWidth, fontBold, headingSize).forEach((line) => {
+        layoutItems.push({
+          kind: 'line',
+          text: line,
+          font: fontBold,
+          size: headingSize,
+          lineHeight: headingLineHeight,
+        });
+      });
+      layoutItems.push({ kind: 'spacer', height: 4 });
+    }
+
+    paragraphs.forEach((paragraph, paragraphIndex) => {
+      wrapText(paragraph, maxWidth, fontRegular, regularSize).forEach((line) => {
+        layoutItems.push({
+          kind: 'line',
+          text: line,
+          font: fontRegular,
+          size: regularSize,
+          lineHeight: regularLineHeight,
+        });
+      });
+      if (paragraphIndex < paragraphs.length - 1) {
+        layoutItems.push({ kind: 'spacer', height: 6 });
+      }
+    });
+  });
+
+  const pages: LayoutItem[][] = [[]];
+  const firstCursorY = ATTACHMENT_PAGE_SIZE[1] - ATTACHMENT_PAGE_MARGIN - 62;
+  let cursorY = firstCursorY;
+
+  const pushNewPage = () => {
+    pages.push([]);
+    cursorY = firstCursorY;
+  };
+
+  layoutItems.forEach((item) => {
+    if (item.kind === 'spacer') {
+      if (pages[pages.length - 1].length === 0) return;
+      if (cursorY - item.height < bottomY) {
+        pushNewPage();
+        return;
+      }
+      pages[pages.length - 1].push(item);
+      cursorY -= item.height;
+      return;
+    }
+
+    if (cursorY - item.lineHeight < bottomY && pages[pages.length - 1].length > 0) {
+      pushNewPage();
+    }
+
+    pages[pages.length - 1].push(item);
+    cursorY -= item.lineHeight;
+  });
+
+  pages.forEach((pageItems, pageIndex) => {
+    const page = output.addPage(ATTACHMENT_PAGE_SIZE);
+    let currentY = addAttachmentHeader(page, title, shortTitle, caseNumber, fontRegular, fontBold, pageIndex + 1, pages.length);
+
+    pageItems.forEach((item) => {
+      if (item.kind === 'spacer') {
+        currentY -= item.height;
+        return;
+      }
+
+      page.drawText(item.text, {
+        x: ATTACHMENT_PAGE_MARGIN,
+        y: currentY,
+        size: item.size,
+        font: item.font,
+        color: pageColor,
+        maxWidth,
+      });
+      currentY -= item.lineHeight;
+    });
+  });
+
+  return pages.length;
+}
+
 function buildShortTitle(petitionerName: string, respondentName: string) {
   const petitioner = sanitizeText(petitionerName);
   const respondent = sanitizeText(respondentName);
@@ -771,6 +894,7 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
   const separatePropertyWhereListed = workspace.fl100?.propertyDeclarations?.separatePropertyWhereListed?.value ?? 'unspecified';
   const separatePropertyEntries = splitNonEmptyLines(separatePropertyDetails);
   const separatePropertyAwardTargets = splitNonEmptyLines(separatePropertyAwardedTo);
+  const communityPropertyAttachmentEntries = splitNonEmptyLines(communityPropertyDetails);
   const wantsFormerNameRestore = Boolean(workspace.requests?.restoreFormerName?.value);
   const shortTitle = buildShortTitle(petitionerName, respondentName);
   const fl105 = workspace.fl105;
@@ -949,6 +1073,9 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
     if (communityPropertyWhereListed === 'unspecified') {
       throw new Error('FL-100 community/quasi-community property is selected, but list location is not specified.');
     }
+    if (communityPropertyWhereListed === 'attachment' && communityPropertyAttachmentEntries.length === 0) {
+      throw new Error('FL-100 community/quasi-community attachment 10b is selected, but no attachment details were provided.');
+    }
     fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page3[0].CommQuasiProperty_sf[0].PropertyListed_cb[0]', true);
     fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page3[0].CommQuasiProperty_sf[0].WhereCPListed_cb[0]', communityPropertyWhereListed === 'attachment');
     fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page3[0].CommQuasiProperty_sf[0].WhereCPListed_cb[1]', communityPropertyWhereListed === 'fl160');
@@ -970,6 +1097,12 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
   if (wantsSeparateProperty) {
     if (separatePropertyWhereListed === 'unspecified') {
       throw new Error('FL-100 separate property is selected, but list location is not specified.');
+    }
+    if (separatePropertyWhereListed === 'attachment' && separatePropertyEntries.length === 0) {
+      throw new Error('FL-100 separate property attachment 9b is selected, but no attachment details were provided.');
+    }
+    if (separatePropertyWhereListed === 'attachment' && separatePropertyAwardTargets.length === 0) {
+      throw new Error('FL-100 separate property attachment 9b needs at least one "confirmed to" value.');
     }
     fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].ConfirmSeparateProperty_sf[0].ConfirmSeparateProperty_cb[0]', true);
     fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].ConfirmSeparateProperty_sf[0].WhereSPListed_cb[0]', separatePropertyWhereListed === 'attachment');
@@ -1022,7 +1155,17 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
   }
   if (wantsOtherRequests) {
     fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page3[0].OtherRequests_cb[0]', true);
-    fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page3[0].SpecifyOtherRequests_tf[0]', otherRequestsDetails, fontRegular, { size: 8, multiline: true });
+    if (otherRequestsContinuedOnAttachment && !otherRequestsDetails) {
+      throw new Error('FL-100 other requests are marked as continued on attachment, but no attachment details were provided.');
+    }
+    fillTextFields(
+      fl100Pages,
+      fl100FieldMap,
+      'FL-100[0].Page3[0].SpecifyOtherRequests_tf[0]',
+      otherRequestsContinuedOnAttachment ? 'See attachment 11c.' : otherRequestsDetails,
+      fontRegular,
+      { size: 8, multiline: true },
+    );
     fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page3[0].ContinuedOnAttachment_cb[0]', otherRequestsContinuedOnAttachment);
   }
 
@@ -1037,6 +1180,62 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
       caseNumber,
       overflowChildren,
       { includeAge: true },
+    );
+  }
+
+  if (wantsSeparateProperty && separatePropertyWhereListed === 'attachment') {
+    appendAttachmentTextPages(
+      output,
+      fontRegular,
+      fontBold,
+      'FL-100 Attachment 9b — Separate Property',
+      shortTitle,
+      caseNumber,
+      [
+        {
+          heading: 'Separate property items and requested confirmation',
+          paragraphs: separatePropertyEntries.map((entry, index) => {
+            const awardTarget = separatePropertyAwardTargets[index] ?? separatePropertyAwardTargets[0] ?? '';
+            return awardTarget
+              ? `${index + 1}. ${entry}\nRequested confirmation to: ${awardTarget}`
+              : `${index + 1}. ${entry}`;
+          }),
+        },
+      ],
+    );
+  }
+
+  if (wantsCommunityProperty && communityPropertyWhereListed === 'attachment') {
+    appendAttachmentTextPages(
+      output,
+      fontRegular,
+      fontBold,
+      'FL-100 Attachment 10b — Community / Quasi-Community Property',
+      shortTitle,
+      caseNumber,
+      [
+        {
+          heading: 'Community / quasi-community property items',
+          paragraphs: communityPropertyAttachmentEntries.map((entry, index) => `${index + 1}. ${entry}`),
+        },
+      ],
+    );
+  }
+
+  if (wantsOtherRequests && otherRequestsContinuedOnAttachment) {
+    appendAttachmentTextPages(
+      output,
+      fontRegular,
+      fontBold,
+      'FL-100 Attachment 11c — Other Requests Continuation',
+      shortTitle,
+      caseNumber,
+      [
+        {
+          heading: 'Continued other relief request',
+          paragraphs: [otherRequestsDetails],
+        },
+      ],
     );
   }
 
