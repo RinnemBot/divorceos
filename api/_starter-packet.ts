@@ -159,6 +159,7 @@ interface StarterPacketWorkspace {
     otherClaimantsKnown: StarterPacketField<boolean>;
     otherClaimants: StarterPacketFl105OtherClaimant[];
     declarantName: StarterPacketField<string>;
+    signatureDate: StarterPacketField<string>;
   };
   requests: {
     propertyRightsDetermination: StarterPacketField<boolean>;
@@ -1037,8 +1038,9 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
     });
 
     const declarantName = sanitizeText(fl105?.declarantName?.value || petitionerName);
+    const declarantSignatureDate = formatDateForCourt(fl105?.signatureDate?.value);
     fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page2[0].PoPDec[0].PrintName[0]', declarantName, fontRegular);
-    fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page2[0].PoPDec[0].SigDate[0]', formatDateForCourt(new Date().toISOString().slice(0, 10)), fontRegular);
+    fillTextFields(fl105Pages, fl105FieldMap, 'FL-105[0].Page2[0].PoPDec[0].SigDate[0]', declarantSignatureDate, fontRegular);
   }
 
   return output.save();

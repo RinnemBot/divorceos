@@ -71,6 +71,7 @@ export interface DraftFl105Section {
   otherClaimantsKnown: DraftField<boolean>;
   otherClaimants: DraftFl105OtherClaimant[];
   declarantName: DraftField<string>;
+  signatureDate: DraftField<string>;
 }
 
 export interface DraftFl100Section {
@@ -490,6 +491,9 @@ function createDefaultFl105Section(petitionerName = ''): DraftFl105Section {
       confidence: petitionerName ? 'high' : undefined,
       needsReview: petitionerName.length === 0,
     }),
+    signatureDate: createField('', {
+      needsReview: true,
+    }),
   };
 }
 
@@ -668,6 +672,7 @@ function normalizeWorkspace(workspace: DraftFormsWorkspace): DraftFormsWorkspace
         }))
         : defaultFl105.otherClaimants,
       declarantName: workspace.fl105?.declarantName ?? defaultFl105.declarantName,
+      signatureDate: workspace.fl105?.signatureDate ?? defaultFl105.signatureDate,
     },
   };
 }
@@ -1185,6 +1190,7 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
       heading: 'FL-105 / GC-120 details',
       body: [
         `Children lived together for past five years: ${workspace.fl105.childrenLivedTogetherPastFiveYears.value ? 'Yes' : 'No / attachment needed'}`,
+        `Declarant signature date: ${workspace.fl105.signatureDate.value || 'Not provided'}`,
         workspace.fl105.residenceHistory.length > 0
           ? `Residence history:\n${workspace.fl105.residenceHistory.map((entry, index) => `${index + 1}. From ${entry.fromDate.value || 'Not provided'}${entry.toDate.value ? ` to ${entry.toDate.value}` : ''} — ${entry.residence.value || 'Residence missing'} — Lived with ${entry.personAndAddress.value || 'Not provided'} (${entry.relationship.value || 'Relationship missing'})`).join('\n')}`
           : 'Residence history not entered yet.',

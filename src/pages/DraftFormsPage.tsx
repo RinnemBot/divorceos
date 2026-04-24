@@ -286,6 +286,9 @@ export function DraftFormsPage() {
       if (workspace.children.length === 0 && !workspace.fl100.minorChildren.hasUnbornChild.value) {
         missing.push('At least one child entry or unborn child selection');
       }
+      if (!workspace.fl105.signatureDate.value.trim()) {
+        missing.push('FL-105 declarant signature date');
+      }
       workspace.children.forEach((child, index) => {
         if (!child.fullName.value.trim()) missing.push(`Child ${index + 1} full name`);
         if (!child.birthDate.value.trim()) missing.push(`Child ${index + 1} birth date`);
@@ -1813,7 +1816,7 @@ export function DraftFormsPage() {
                       <p className="text-sm text-slate-500 dark:text-slate-400">Capture the highest-value UCCJEA fields that map directly into the official form rows.</p>
                     </div>
 
-                    <div className="grid gap-4 md:grid-cols-2">
+                    <div className="grid gap-4 md:grid-cols-3">
                       <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-white/70 p-3 dark:border-white/10 dark:bg-white/5">
                         <Checkbox
                           checked={workspace.fl105.childrenLivedTogetherPastFiveYears.value}
@@ -1839,6 +1842,17 @@ export function DraftFormsPage() {
                             declarantName: setDraftFieldValue(fl105.declarantName, e.target.value),
                           }))}
                           placeholder="Usually petitioner name"
+                        />
+                      </div>
+                      <div>
+                        <FieldHeader label="Declarant signature date (FL-105)" field={workspace.fl105.signatureDate} />
+                        <Input
+                          type="date"
+                          value={workspace.fl105.signatureDate.value}
+                          onChange={(e) => updateFl105((fl105) => ({
+                            ...fl105,
+                            signatureDate: setDraftFieldValue(fl105.signatureDate, e.target.value),
+                          }))}
                         />
                       </div>
                     </div>
