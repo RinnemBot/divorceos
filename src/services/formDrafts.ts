@@ -73,7 +73,23 @@ export interface DraftFl105Section {
 }
 
 export interface DraftFl100Section {
+  proceedingType: DraftField<'dissolution' | 'legal_separation' | 'nullity'>;
   relationshipType: DraftField<'marriage' | 'domestic_partnership' | 'both'>;
+  domesticPartnership: {
+    establishment: DraftField<'unspecified' | 'established_in_california' | 'not_established_in_california'>;
+    californiaResidencyException: DraftField<boolean>;
+    sameSexMarriageJurisdictionException: DraftField<boolean>;
+  };
+  nullity: {
+    basedOnIncest: DraftField<boolean>;
+    basedOnBigamy: DraftField<boolean>;
+    basedOnAge: DraftField<boolean>;
+    basedOnPriorExistingMarriageOrPartnership: DraftField<boolean>;
+    basedOnUnsoundMind: DraftField<boolean>;
+    basedOnFraud: DraftField<boolean>;
+    basedOnForce: DraftField<boolean>;
+    basedOnPhysicalIncapacity: DraftField<boolean>;
+  };
   residency: {
     petitionerCaliforniaMonths: DraftField<string>;
     petitionerCountyMonths: DraftField<string>;
@@ -226,12 +242,42 @@ function createDefaultFl100Section(): DraftFl100Section {
   };
 
   return {
+    proceedingType: createField('dissolution', {
+      sourceType: 'manual',
+      sourceLabel: 'Default starter packet assumption',
+      confidence: 'medium',
+      needsReview: true,
+    }),
     relationshipType: createField('marriage', {
       sourceType: 'manual',
       sourceLabel: 'Default starter packet assumption',
       confidence: 'medium',
       needsReview: true,
     }),
+    domesticPartnership: {
+      establishment: createField('unspecified', {
+        sourceType: 'manual',
+        sourceLabel: 'Default FL-100 assumption',
+        confidence: 'low',
+        needsReview: true,
+      }),
+      californiaResidencyException: createField(false, {
+        ...assumptionFieldConfig,
+      }),
+      sameSexMarriageJurisdictionException: createField(false, {
+        ...assumptionFieldConfig,
+      }),
+    },
+    nullity: {
+      basedOnIncest: createField(false, { ...assumptionFieldConfig }),
+      basedOnBigamy: createField(false, { ...assumptionFieldConfig }),
+      basedOnAge: createField(false, { ...assumptionFieldConfig }),
+      basedOnPriorExistingMarriageOrPartnership: createField(false, { ...assumptionFieldConfig }),
+      basedOnUnsoundMind: createField(false, { ...assumptionFieldConfig }),
+      basedOnFraud: createField(false, { ...assumptionFieldConfig }),
+      basedOnForce: createField(false, { ...assumptionFieldConfig }),
+      basedOnPhysicalIncapacity: createField(false, { ...assumptionFieldConfig }),
+    },
     residency: {
       petitionerCaliforniaMonths: createField('', { needsReview: true }),
       petitionerCountyMonths: createField('', { needsReview: true }),
@@ -439,7 +485,23 @@ function normalizeWorkspace(workspace: DraftFormsWorkspace): DraftFormsWorkspace
       }))
       : [],
     fl100: {
+      proceedingType: workspace.fl100?.proceedingType ?? defaultFl100.proceedingType,
       relationshipType: workspace.fl100?.relationshipType ?? defaultFl100.relationshipType,
+      domesticPartnership: {
+        establishment: workspace.fl100?.domesticPartnership?.establishment ?? defaultFl100.domesticPartnership.establishment,
+        californiaResidencyException: workspace.fl100?.domesticPartnership?.californiaResidencyException ?? defaultFl100.domesticPartnership.californiaResidencyException,
+        sameSexMarriageJurisdictionException: workspace.fl100?.domesticPartnership?.sameSexMarriageJurisdictionException ?? defaultFl100.domesticPartnership.sameSexMarriageJurisdictionException,
+      },
+      nullity: {
+        basedOnIncest: workspace.fl100?.nullity?.basedOnIncest ?? defaultFl100.nullity.basedOnIncest,
+        basedOnBigamy: workspace.fl100?.nullity?.basedOnBigamy ?? defaultFl100.nullity.basedOnBigamy,
+        basedOnAge: workspace.fl100?.nullity?.basedOnAge ?? defaultFl100.nullity.basedOnAge,
+        basedOnPriorExistingMarriageOrPartnership: workspace.fl100?.nullity?.basedOnPriorExistingMarriageOrPartnership ?? defaultFl100.nullity.basedOnPriorExistingMarriageOrPartnership,
+        basedOnUnsoundMind: workspace.fl100?.nullity?.basedOnUnsoundMind ?? defaultFl100.nullity.basedOnUnsoundMind,
+        basedOnFraud: workspace.fl100?.nullity?.basedOnFraud ?? defaultFl100.nullity.basedOnFraud,
+        basedOnForce: workspace.fl100?.nullity?.basedOnForce ?? defaultFl100.nullity.basedOnForce,
+        basedOnPhysicalIncapacity: workspace.fl100?.nullity?.basedOnPhysicalIncapacity ?? defaultFl100.nullity.basedOnPhysicalIncapacity,
+      },
       residency: {
         petitionerCaliforniaMonths: workspace.fl100?.residency?.petitionerCaliforniaMonths ?? defaultFl100.residency.petitionerCaliforniaMonths,
         petitionerCountyMonths: workspace.fl100?.residency?.petitionerCountyMonths ?? defaultFl100.residency.petitionerCountyMonths,
@@ -798,6 +860,26 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
     : workspace.fl100.relationshipType.value === 'both'
       ? 'Marriage and domestic partnership'
       : 'Marriage';
+  const proceedingTypeLabel = workspace.fl100.proceedingType.value === 'legal_separation'
+    ? 'Legal separation'
+    : workspace.fl100.proceedingType.value === 'nullity'
+      ? 'Nullity'
+      : 'Dissolution';
+  const domesticPartnershipEstablishmentLabel = workspace.fl100.domesticPartnership.establishment.value === 'established_in_california'
+    ? 'Established in California'
+    : workspace.fl100.domesticPartnership.establishment.value === 'not_established_in_california'
+      ? 'Not established in California'
+      : 'Not specified';
+  const nullityBasisLabels = [
+    workspace.fl100.nullity.basedOnIncest.value ? 'Incest (void)' : null,
+    workspace.fl100.nullity.basedOnBigamy.value ? 'Bigamy (void)' : null,
+    workspace.fl100.nullity.basedOnAge.value ? 'Age at registration/marriage (voidable)' : null,
+    workspace.fl100.nullity.basedOnPriorExistingMarriageOrPartnership.value ? 'Prior existing marriage/domestic partnership (voidable)' : null,
+    workspace.fl100.nullity.basedOnUnsoundMind.value ? 'Unsound mind (voidable)' : null,
+    workspace.fl100.nullity.basedOnFraud.value ? 'Fraud (voidable)' : null,
+    workspace.fl100.nullity.basedOnForce.value ? 'Force (voidable)' : null,
+    workspace.fl100.nullity.basedOnPhysicalIncapacity.value ? 'Physical incapacity (voidable)' : null,
+  ].filter(Boolean) as string[];
 
   const requestLabels = [
     workspace.requests.childCustody.value ? 'Child custody' : null,
@@ -880,6 +962,7 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
         `Filing county: ${workspace.filingCounty.value || 'Not provided'}`,
         `Petitioner: ${petitionerName}`,
         `Respondent: ${respondentName}`,
+        `Proceeding type: ${proceedingTypeLabel}`,
         `Relationship type: ${relationshipLabel}`,
         `Date of marriage: ${workspace.marriageDate.value || 'Not provided'}`,
         `Date of separation: ${workspace.separationDate.value || 'Not provided'}`,
@@ -909,6 +992,10 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
         `Petitioner residency in filing county: ${workspace.fl100.residency.petitionerCountyMonths.value || 'Not provided'} month(s)`,
         `Respondent residency in California: ${workspace.fl100.residency.respondentCaliforniaMonths.value || 'Not provided'} month(s)`,
         `Respondent residency in filing county: ${workspace.fl100.residency.respondentCountyMonths.value || 'Not provided'} month(s)`,
+        `Domestic partnership establishment: ${domesticPartnershipEstablishmentLabel}`,
+        `Domestic partnership California-residency exception: ${workspace.fl100.domesticPartnership.californiaResidencyException.value ? 'Yes' : 'No'}`,
+        `Same-sex-married-in-California jurisdiction exception: ${workspace.fl100.domesticPartnership.sameSexMarriageJurisdictionException.value ? 'Yes' : 'No'}`,
+        `Nullity basis selections: ${nullityBasisLabels.join(', ') || 'None selected'}`,
         `Legal grounds: ${legalGroundLabels.join(', ') || 'Not provided'}`,
         `Property declarations: ${propertyLabels.join(', ') || 'None selected'}`,
         `Community/quasi-community details: ${workspace.fl100.propertyDeclarations.communityAndQuasiCommunityDetails.value || 'Not provided'}`,

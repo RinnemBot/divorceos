@@ -113,6 +113,20 @@ export function DraftFormsPage() {
   const missingItems = useMemo(() => {
     if (!workspace) return [] as string[];
     const missing: string[] = [];
+    const proceedingType = workspace.fl100.proceedingType.value;
+    const isNullityProceeding = proceedingType === 'nullity';
+    const isDomesticPartnershipRelationship = workspace.fl100.relationshipType.value === 'domestic_partnership'
+      || workspace.fl100.relationshipType.value === 'both';
+    const hasNullityBasis = [
+      workspace.fl100.nullity.basedOnIncest.value,
+      workspace.fl100.nullity.basedOnBigamy.value,
+      workspace.fl100.nullity.basedOnAge.value,
+      workspace.fl100.nullity.basedOnPriorExistingMarriageOrPartnership.value,
+      workspace.fl100.nullity.basedOnUnsoundMind.value,
+      workspace.fl100.nullity.basedOnFraud.value,
+      workspace.fl100.nullity.basedOnForce.value,
+      workspace.fl100.nullity.basedOnPhysicalIncapacity.value,
+    ].some(Boolean);
 
     if (!workspace.filingCounty.value.trim()) missing.push('Filing county');
     if (!workspace.petitionerName.value.trim()) missing.push('Petitioner name');
@@ -120,8 +134,14 @@ export function DraftFormsPage() {
     if (!workspace.marriageDate.value.trim()) missing.push('Date of marriage');
     if (!workspace.fl100.residency.petitionerCaliforniaMonths.value.trim()) missing.push('Petitioner California residency months');
     if (!workspace.fl100.residency.petitionerCountyMonths.value.trim()) missing.push('Petitioner county residency months');
-    if (!workspace.fl100.legalGrounds.irreconcilableDifferences.value && !workspace.fl100.legalGrounds.permanentLegalIncapacity.value) {
+    if (!isNullityProceeding && !workspace.fl100.legalGrounds.irreconcilableDifferences.value && !workspace.fl100.legalGrounds.permanentLegalIncapacity.value) {
       missing.push('At least one legal ground for FL-100');
+    }
+    if (isNullityProceeding && !hasNullityBasis) {
+      missing.push('At least one nullity basis');
+    }
+    if (isDomesticPartnershipRelationship && workspace.fl100.domesticPartnership.establishment.value === 'unspecified') {
+      missing.push('Domestic partnership establishment in California');
     }
     if (workspace.requests.restoreFormerName.value && !workspace.fl100.formerName.value.trim()) {
       missing.push('Former name to restore');
@@ -231,6 +251,9 @@ export function DraftFormsPage() {
   const includedForms = workspace.hasMinorChildren.value
     ? ['FL-100', 'FL-110', 'FL-105/GC-120']
     : ['FL-100', 'FL-110'];
+  const isDomesticPartnershipRelationship = workspace.fl100.relationshipType.value === 'domestic_partnership'
+    || workspace.fl100.relationshipType.value === 'both';
+  const isNullityProceeding = workspace.fl100.proceedingType.value === 'nullity';
 
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_14%_0%,rgba(16,185,129,0.16),transparent_24%),radial-gradient(circle_at_86%_8%,rgba(59,130,246,0.12),transparent_20%),linear-gradient(180deg,#f8fafc_0%,#ecfdf5_45%,#f8fafc_100%)] py-12 dark:bg-[radial-gradient(circle_at_16%_0%,rgba(16,185,129,0.16),transparent_24%),radial-gradient(circle_at_84%_8%,rgba(59,130,246,0.14),transparent_20%),linear-gradient(180deg,#020617_0%,#03111f_50%,#020617_100%)]">
@@ -429,9 +452,27 @@ export function DraftFormsPage() {
                 <CardDescription>These are the first petition-specific fields needed to move from general intake into a real FL-100 packet.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
-                <div className="grid gap-5 md:grid-cols-2">
+                <div className="grid gap-5 md:grid-cols-3">
                   <div>
-                    <FieldHeader label="Legal relationship" field={workspace.fl100.relationshipType} />
+                    <FieldHeader label="Proceeding type" field={workspace.fl100.proceedingType} />
+                    <select
+                      value={workspace.fl100.proceedingType.value}
+                      onChange={(e) => commitWorkspace((current) => ({
+                        ...current,
+                        fl100: {
+                          ...current.fl100,
+                          proceedingType: setDraftFieldValue(current.fl100.proceedingType, e.target.value as 'dissolution' | 'legal_separation' | 'nullity'),
+                        },
+                      }))}
+                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"
+                    >
+                      <option value="dissolution">Dissolution (divorce)</option>
+                      <option value="legal_separation">Legal separation</option>
+                      <option value="nullity">Nullity</option>
+                    </select>
+                  </div>
+                  <div>
+                    <FieldHeader label="Relationship for selected proceeding" field={workspace.fl100.relationshipType} />
                     <select
                       value={workspace.fl100.relationshipType.value}
                       onChange={(e) => commitWorkspace((current) => ({
@@ -463,6 +504,164 @@ export function DraftFormsPage() {
                     />
                   </div>
                 </div>
+
+                {isDomesticPartnershipRelationship && (
+                  <div className="rounded-2xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5">
+                    <p className="text-sm font-medium text-slate-800 dark:text-slate-100">Domestic-partnership nuance</p>
+                    <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Maps FL-100 domestic-partnership California establishment and special jurisdiction checkboxes.</p>
+                    <div className="mt-4 grid gap-4 md:grid-cols-2">
+                      <div>
+                        <FieldHeader label="Domestic partnership establishment" field={workspace.fl100.domesticPartnership.establishment} />
+                        <select
+                          value={workspace.fl100.domesticPartnership.establishment.value}
+                          onChange={(e) => updateFl100((fl100) => ({
+                            ...fl100,
+                            domesticPartnership: {
+                              ...fl100.domesticPartnership,
+                              establishment: setDraftFieldValue(
+                                fl100.domesticPartnership.establishment,
+                                e.target.value as 'unspecified' | 'established_in_california' | 'not_established_in_california',
+                              ),
+                            },
+                          }))}
+                          className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"
+                        >
+                          <option value="unspecified">Not specified yet</option>
+                          <option value="established_in_california">Established in California</option>
+                          <option value="not_established_in_california">Not established in California</option>
+                        </select>
+                      </div>
+                      <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-white/70 p-3 dark:border-white/10 dark:bg-white/5">
+                        <Checkbox
+                          checked={workspace.fl100.domesticPartnership.californiaResidencyException.value}
+                          onCheckedChange={(checked) => updateFl100((fl100) => ({
+                            ...fl100,
+                            domesticPartnership: {
+                              ...fl100.domesticPartnership,
+                              californiaResidencyException: setDraftFieldValue(fl100.domesticPartnership.californiaResidencyException, checked === true),
+                            },
+                          }))}
+                        />
+                        <div>
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="text-sm font-medium text-slate-800 dark:text-slate-100">Use CA domestic-partnership residency exception</span>
+                            <FieldSourceBadge field={workspace.fl100.domesticPartnership.californiaResidencyException} />
+                          </div>
+                        </div>
+                      </label>
+                      <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-white/70 p-3 dark:border-white/10 dark:bg-white/5 md:col-span-2">
+                        <Checkbox
+                          checked={workspace.fl100.domesticPartnership.sameSexMarriageJurisdictionException.value}
+                          onCheckedChange={(checked) => updateFl100((fl100) => ({
+                            ...fl100,
+                            domesticPartnership: {
+                              ...fl100.domesticPartnership,
+                              sameSexMarriageJurisdictionException: setDraftFieldValue(fl100.domesticPartnership.sameSexMarriageJurisdictionException, checked === true),
+                            },
+                          }))}
+                        />
+                        <div>
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="text-sm font-medium text-slate-800 dark:text-slate-100">Same-sex married in California jurisdiction exception</span>
+                            <FieldSourceBadge field={workspace.fl100.domesticPartnership.sameSexMarriageJurisdictionException} />
+                          </div>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+                )}
+
+                {isNullityProceeding && (
+                  <div className="rounded-2xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5">
+                    <p className="text-sm font-medium text-slate-800 dark:text-slate-100">Nullity basis</p>
+                    <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Pick one or more basis options shown in FL-100 for void/voidable nullity proceedings.</p>
+                    <div className="mt-4 grid gap-4 md:grid-cols-2">
+                      <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-white/70 p-3 dark:border-white/10 dark:bg-white/5">
+                        <Checkbox
+                          checked={workspace.fl100.nullity.basedOnIncest.value}
+                          onCheckedChange={(checked) => updateFl100((fl100) => ({
+                            ...fl100,
+                            nullity: { ...fl100.nullity, basedOnIncest: setDraftFieldValue(fl100.nullity.basedOnIncest, checked === true) },
+                          }))}
+                        />
+                        <div><span className="text-sm font-medium text-slate-800 dark:text-slate-100">Void: incest</span></div>
+                      </label>
+                      <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-white/70 p-3 dark:border-white/10 dark:bg-white/5">
+                        <Checkbox
+                          checked={workspace.fl100.nullity.basedOnBigamy.value}
+                          onCheckedChange={(checked) => updateFl100((fl100) => ({
+                            ...fl100,
+                            nullity: { ...fl100.nullity, basedOnBigamy: setDraftFieldValue(fl100.nullity.basedOnBigamy, checked === true) },
+                          }))}
+                        />
+                        <div><span className="text-sm font-medium text-slate-800 dark:text-slate-100">Void: bigamy</span></div>
+                      </label>
+                      <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-white/70 p-3 dark:border-white/10 dark:bg-white/5">
+                        <Checkbox
+                          checked={workspace.fl100.nullity.basedOnAge.value}
+                          onCheckedChange={(checked) => updateFl100((fl100) => ({
+                            ...fl100,
+                            nullity: { ...fl100.nullity, basedOnAge: setDraftFieldValue(fl100.nullity.basedOnAge, checked === true) },
+                          }))}
+                        />
+                        <div><span className="text-sm font-medium text-slate-800 dark:text-slate-100">Voidable: age</span></div>
+                      </label>
+                      <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-white/70 p-3 dark:border-white/10 dark:bg-white/5">
+                        <Checkbox
+                          checked={workspace.fl100.nullity.basedOnPriorExistingMarriageOrPartnership.value}
+                          onCheckedChange={(checked) => updateFl100((fl100) => ({
+                            ...fl100,
+                            nullity: {
+                              ...fl100.nullity,
+                              basedOnPriorExistingMarriageOrPartnership: setDraftFieldValue(fl100.nullity.basedOnPriorExistingMarriageOrPartnership, checked === true),
+                            },
+                          }))}
+                        />
+                        <div><span className="text-sm font-medium text-slate-800 dark:text-slate-100">Voidable: prior existing marriage/DP</span></div>
+                      </label>
+                      <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-white/70 p-3 dark:border-white/10 dark:bg-white/5">
+                        <Checkbox
+                          checked={workspace.fl100.nullity.basedOnUnsoundMind.value}
+                          onCheckedChange={(checked) => updateFl100((fl100) => ({
+                            ...fl100,
+                            nullity: { ...fl100.nullity, basedOnUnsoundMind: setDraftFieldValue(fl100.nullity.basedOnUnsoundMind, checked === true) },
+                          }))}
+                        />
+                        <div><span className="text-sm font-medium text-slate-800 dark:text-slate-100">Voidable: unsound mind</span></div>
+                      </label>
+                      <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-white/70 p-3 dark:border-white/10 dark:bg-white/5">
+                        <Checkbox
+                          checked={workspace.fl100.nullity.basedOnFraud.value}
+                          onCheckedChange={(checked) => updateFl100((fl100) => ({
+                            ...fl100,
+                            nullity: { ...fl100.nullity, basedOnFraud: setDraftFieldValue(fl100.nullity.basedOnFraud, checked === true) },
+                          }))}
+                        />
+                        <div><span className="text-sm font-medium text-slate-800 dark:text-slate-100">Voidable: fraud</span></div>
+                      </label>
+                      <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-white/70 p-3 dark:border-white/10 dark:bg-white/5">
+                        <Checkbox
+                          checked={workspace.fl100.nullity.basedOnForce.value}
+                          onCheckedChange={(checked) => updateFl100((fl100) => ({
+                            ...fl100,
+                            nullity: { ...fl100.nullity, basedOnForce: setDraftFieldValue(fl100.nullity.basedOnForce, checked === true) },
+                          }))}
+                        />
+                        <div><span className="text-sm font-medium text-slate-800 dark:text-slate-100">Voidable: force</span></div>
+                      </label>
+                      <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-white/70 p-3 dark:border-white/10 dark:bg-white/5">
+                        <Checkbox
+                          checked={workspace.fl100.nullity.basedOnPhysicalIncapacity.value}
+                          onCheckedChange={(checked) => updateFl100((fl100) => ({
+                            ...fl100,
+                            nullity: { ...fl100.nullity, basedOnPhysicalIncapacity: setDraftFieldValue(fl100.nullity.basedOnPhysicalIncapacity, checked === true) },
+                          }))}
+                        />
+                        <div><span className="text-sm font-medium text-slate-800 dark:text-slate-100">Voidable: physical incapacity</span></div>
+                      </label>
+                    </div>
+                  </div>
+                )}
 
                 <div className="rounded-2xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5">
                   <p className="text-sm font-medium text-slate-800 dark:text-slate-100">Residency for filing eligibility</p>

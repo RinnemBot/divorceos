@@ -63,7 +63,23 @@ interface StarterPacketWorkspace {
   hasMinorChildren: StarterPacketField<boolean>;
   children: StarterPacketChild[];
   fl100: {
+    proceedingType: StarterPacketField<'dissolution' | 'legal_separation' | 'nullity'>;
     relationshipType: StarterPacketField<'marriage' | 'domestic_partnership' | 'both'>;
+    domesticPartnership: {
+      establishment: StarterPacketField<'unspecified' | 'established_in_california' | 'not_established_in_california'>;
+      californiaResidencyException: StarterPacketField<boolean>;
+      sameSexMarriageJurisdictionException: StarterPacketField<boolean>;
+    };
+    nullity: {
+      basedOnIncest: StarterPacketField<boolean>;
+      basedOnBigamy: StarterPacketField<boolean>;
+      basedOnAge: StarterPacketField<boolean>;
+      basedOnPriorExistingMarriageOrPartnership: StarterPacketField<boolean>;
+      basedOnUnsoundMind: StarterPacketField<boolean>;
+      basedOnFraud: StarterPacketField<boolean>;
+      basedOnForce: StarterPacketField<boolean>;
+      basedOnPhysicalIncapacity: StarterPacketField<boolean>;
+    };
     residency: {
       petitionerCaliforniaMonths: StarterPacketField<string>;
       petitionerCountyMonths: StarterPacketField<string>;
@@ -428,7 +444,29 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
   const address = parseAddress(petitionerAddress);
   const marriageDate = formatDateForCourt(workspace.marriageDate?.value);
   const separationDate = formatDateForCourt(workspace.separationDate?.value);
+  const proceedingType = workspace.fl100?.proceedingType?.value ?? 'dissolution';
   const relationshipType = workspace.fl100?.relationshipType?.value ?? 'marriage';
+  const domesticPartnershipEstablishment = workspace.fl100?.domesticPartnership?.establishment?.value ?? 'unspecified';
+  const domesticPartnershipCaliforniaResidencyException = Boolean(workspace.fl100?.domesticPartnership?.californiaResidencyException?.value);
+  const sameSexMarriageJurisdictionException = Boolean(workspace.fl100?.domesticPartnership?.sameSexMarriageJurisdictionException?.value);
+  const nullityBasedOnIncest = Boolean(workspace.fl100?.nullity?.basedOnIncest?.value);
+  const nullityBasedOnBigamy = Boolean(workspace.fl100?.nullity?.basedOnBigamy?.value);
+  const nullityBasedOnAge = Boolean(workspace.fl100?.nullity?.basedOnAge?.value);
+  const nullityBasedOnPriorExistingMarriageOrPartnership = Boolean(workspace.fl100?.nullity?.basedOnPriorExistingMarriageOrPartnership?.value);
+  const nullityBasedOnUnsoundMind = Boolean(workspace.fl100?.nullity?.basedOnUnsoundMind?.value);
+  const nullityBasedOnFraud = Boolean(workspace.fl100?.nullity?.basedOnFraud?.value);
+  const nullityBasedOnForce = Boolean(workspace.fl100?.nullity?.basedOnForce?.value);
+  const nullityBasedOnPhysicalIncapacity = Boolean(workspace.fl100?.nullity?.basedOnPhysicalIncapacity?.value);
+  const hasVoidNullityBasis = nullityBasedOnIncest || nullityBasedOnBigamy;
+  const hasVoidableNullityBasis = nullityBasedOnAge
+    || nullityBasedOnPriorExistingMarriageOrPartnership
+    || nullityBasedOnUnsoundMind
+    || nullityBasedOnFraud
+    || nullityBasedOnForce
+    || nullityBasedOnPhysicalIncapacity;
+  const isDissolutionProceeding = proceedingType === 'dissolution';
+  const isLegalSeparationProceeding = proceedingType === 'legal_separation';
+  const isNullityProceeding = proceedingType === 'nullity';
   const hasMinorChildren = Boolean(workspace.hasMinorChildren?.value);
   const petitionerQualifies = qualifiesForResidency(
     workspace.fl100?.residency?.petitionerCaliforniaMonths?.value,
@@ -512,15 +550,50 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
   fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page3[0].PrintPetitionerName_tf[0]', petitionerName, fontRegular);
   fillTextFields(fl100Pages, fl100FieldMap, 'FL-100[0].Page3[0].PrintPetitionerAttorneyName_tf[0]', petitionerName, fontRegular);
 
-  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].CaptionP1_sf[0].FormTitle[0].DissolutionOf_cb[0]', true);
-  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].CaptionP1_sf[0].FormTitle[0].Marriage_cb[0]', relationshipType === 'marriage' || relationshipType === 'both');
-  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].CaptionP1_sf[0].FormTitle[0].DomesticPartnership_cb[0]', relationshipType === 'domestic_partnership' || relationshipType === 'both');
+  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].CaptionP1_sf[0].FormTitle[0].DissolutionOf_cb[0]', isDissolutionProceeding);
+  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].CaptionP1_sf[0].FormTitle[0].LegalSeparationOf_cb[0]', isLegalSeparationProceeding);
+  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].CaptionP1_sf[0].FormTitle[0].NullityOf_cb[0]', isNullityProceeding);
+  fillCheckbox(
+    fl100Pages,
+    fl100FieldMap,
+    isDissolutionProceeding
+      ? 'FL-100[0].Page1[0].CaptionP1_sf[0].FormTitle[0].Marriage_cb[0]'
+      : isLegalSeparationProceeding
+        ? 'FL-100[0].Page1[0].CaptionP1_sf[0].FormTitle[0].Marriage_cb[2]'
+        : 'FL-100[0].Page1[0].CaptionP1_sf[0].FormTitle[0].Marriage_cb[1]',
+    relationshipType === 'marriage' || relationshipType === 'both',
+  );
+  fillCheckbox(
+    fl100Pages,
+    fl100FieldMap,
+    isDissolutionProceeding
+      ? 'FL-100[0].Page1[0].CaptionP1_sf[0].FormTitle[0].DomesticPartnership_cb[0]'
+      : isLegalSeparationProceeding
+        ? 'FL-100[0].Page1[0].CaptionP1_sf[0].FormTitle[0].DomesticPartnership_cb[2]'
+        : 'FL-100[0].Page1[0].CaptionP1_sf[0].FormTitle[0].DomesticPartnership_cb[1]',
+    relationshipType === 'domestic_partnership' || relationshipType === 'both',
+  );
   fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].WeAreMarried_cb[0]', relationshipType === 'marriage' || relationshipType === 'both');
-  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].DPEstablishedInCalifornia[0]', relationshipType === 'domestic_partnership' || relationshipType === 'both');
+  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].DPEstablishedInCalifornia[0]', domesticPartnershipEstablishment === 'established_in_california');
+  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].DPNOTEstablishedinCA_cb[0]', domesticPartnershipEstablishment === 'not_established_in_california');
+  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].DPNOTEstablishedinCA_cb[1]', domesticPartnershipCaliforniaResidencyException);
+  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].SameSexMarriedInCA_cb[0]', sameSexMarriageJurisdictionException);
   fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].PetitionerMeetsResidencyReqs_cb[0]', petitionerQualifies);
   fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].RespondentMeetsResidencyReqs_cb[0]', respondentQualifies);
-  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].SepBasis_cb[0]', Boolean(workspace.fl100?.legalGrounds?.irreconcilableDifferences?.value));
-  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].SepBasis_cb[1]', Boolean(workspace.fl100?.legalGrounds?.permanentLegalIncapacity?.value));
+  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].SepTypeDef_cb[1]', isDissolutionProceeding);
+  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].SepTypeDef_cb[0]', isLegalSeparationProceeding);
+  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].SepBasis_cb[0]', !isNullityProceeding && Boolean(workspace.fl100?.legalGrounds?.irreconcilableDifferences?.value));
+  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].SepBasis_cb[1]', !isNullityProceeding && Boolean(workspace.fl100?.legalGrounds?.permanentLegalIncapacity?.value));
+  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].Nullity_cb[0]', isNullityProceeding && hasVoidNullityBasis);
+  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].BasedOnIncest_cb[0]', isNullityProceeding && nullityBasedOnIncest);
+  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].BasedOnBigamy_cb[0]', isNullityProceeding && nullityBasedOnBigamy);
+  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].NullityofVoidableMarriageOrDP_cb[0]', isNullityProceeding && hasVoidableNullityBasis);
+  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].BasedonAge_cb[0]', isNullityProceeding && nullityBasedOnAge);
+  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].PriorExistingMarriageOrDP_cb[0]', isNullityProceeding && nullityBasedOnPriorExistingMarriageOrPartnership);
+  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].BasedOnUnsoundMind_cb[0]', isNullityProceeding && nullityBasedOnUnsoundMind);
+  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].BasedonFraud_cb[0]', isNullityProceeding && nullityBasedOnFraud);
+  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].BasedOnForce_cb[0]', isNullityProceeding && nullityBasedOnForce);
+  fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page2[0].BasedonPhysicalIncapacity_cb[0]', isNullityProceeding && nullityBasedOnPhysicalIncapacity);
 
   if (!hasMinorChildren) {
     fillCheckbox(fl100Pages, fl100FieldMap, 'FL-100[0].Page1[0].ThereAreNoMinorChildren_cb[0]', true);
