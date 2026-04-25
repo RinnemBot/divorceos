@@ -2672,12 +2672,41 @@ function extractMoneyByPatterns(text: string, patterns: RegExp[]) {
   return '';
 }
 
+function extractAnswerAfterMariaPrompt(text: string, questionPatterns: RegExp[]) {
+  const blocks = text
+    .split(/\n\n---\n\n/g)
+    .map((block) => block.trim())
+    .filter(Boolean);
+
+  for (let index = blocks.length - 2; index >= 0; index -= 1) {
+    const mariaBlock = blocks[index];
+    const userBlock = blocks[index + 1];
+    if (!/^Maria:/i.test(mariaBlock) || !/^User:/i.test(userBlock)) continue;
+    if (!questionPatterns.some((pattern) => pattern.test(mariaBlock))) continue;
+    const answer = cleanExtractedValue(userBlock.replace(/^User:\s*/i, ''));
+    if (answer) return answer;
+  }
+
+  return '';
+}
+
+function extractMoneyAfterMariaPrompt(text: string, questionPatterns: RegExp[]) {
+  const answer = extractAnswerAfterMariaPrompt(text, questionPatterns);
+  if (!answer) return '';
+  const money = answer.match(/\$?([\d,]+(?:\.\d{2})?)/)?.[1];
+  return cleanMoney(money);
+}
+
 function extractEmployer(text: string) {
+  const answer = extractAnswerAfterMariaPrompt(text, [/employer/i, /where\s+do\s+you\s+work/i, /who\s+do\s+you\s+work\s+(?:for|at)/i]);
+  if (answer) return answer;
   const match = text.match(/\b(?:my\s+)?(?:employer\s*(?:is|:)|I\s+work\s+(?:at|for))\s+([^\n.;]+?)(?:\s+(?:as|doing|making|earning)\b|[\n.;]|$)/i);
   return cleanExtractedValue(match?.[1]);
 }
 
 function extractOccupation(text: string) {
+  const answer = extractAnswerAfterMariaPrompt(text, [/occupation/i, /job\s+title/i, /what\s+kind\s+of\s+work/i, /what\s+do\s+you\s+do/i]);
+  if (answer) return answer;
   return extractLabelValue(text, ['occupation', 'job(?:\s+title)?', 'work'])
     || cleanExtractedValue(text.match(/\bI\s+work\s+(?:at|for)\s+[^\n.;]+?\s+(?:as|doing)\s+([^,\n.;]+)/i)?.[1])
     || cleanExtractedValue(text.match(/\b(?:I\s+work\s+(?:as|doing)|I\s+am\s+(?:a|an))\s+([^,\n.;]+)/i)?.[1]);
@@ -2690,12 +2719,13 @@ function extractFl150ChatPrefill(text: string): ChatIntakePrefill['fl150'] {
 
   return {
     employer: extractEmployer(text) || extractLabelValue(text, ['employer', 'company']),
-    employerAddress: extractLabelValue(text, ['employer\s+address', 'work\s+address']),
-    employerPhone: extractLabelValue(text, ['employer\s+phone', 'work\s+phone']),
+    employerAddress: extractAnswerAfterMariaPrompt(text, [/employer.*address/i, /work.*address/i]) || extractLabelValue(text, ['employer\s+address', 'work\s+address']),
+    employerPhone: extractAnswerAfterMariaPrompt(text, [/employer.*phone/i, /work.*phone/i]) || extractLabelValue(text, ['employer\s+phone', 'work\s+phone']),
     occupation: extractOccupation(text),
-    hoursPerWeek: cleanExtractedValue(text.match(/\b(\d{1,3})\s+(?:hours|hrs)\s+(?:per\s+)?week\b/i)?.[1]),
-    payAmount,
-    payPeriod,
+    hoursPerWeek: cleanExtractedValue(text.match(/\b(\d{1,3})\s+(?:hours|hrs)\s+(?:per\s+)?week\b/i)?.[1])
+      || cleanExtractedValue(extractAnswerAfterMariaPrompt(text, [/hours.*week/i, /how\s+many\s+hours/i]).match(/\d{1,3}/)?.[0]),
+    payAmount: payAmount || extractMoneyAfterMariaPrompt(text, [/how\s+much\s+do\s+you\s+(?:make|earn|get\s+paid)/i, /income/i, /pay/i, /wages/i, /salary/i]),
+    payPeriod: payPeriod || inferPayPeriod(extractAnswerAfterMariaPrompt(text, [/how\s+much\s+do\s+you\s+(?:make|earn|get\s+paid)/i, /income/i, /pay/i, /wages/i, /salary/i])),
     salaryAverageMonthly: extractMoneyByPatterns(text, [
       /\b(?:monthly\s+income|gross\s+monthly\s+income|income\s+per\s+month)\s*(?:is|:)?\s*\$?([\d,]+(?:\.\d{2})?)/i,
       /\b(?:I\s+)?(?:make|earn|get paid)\s+\$?([\d,]+(?:\.\d{2})?)\s+(?:per\s+month|a\s+month|monthly)\b/i,
@@ -2704,18 +2734,18 @@ function extractFl150ChatPrefill(text: string): ChatIntakePrefill['fl150'] {
       /\b(?:other\s+party|spouse|respondent)\s+(?:makes|earns|income(?:\s+is)?)\s+\$?([\d,]+(?:\.\d{2})?)/i,
       /\b(?:other\s+party|spouse|respondent).*?gross\s+monthly\s+income.*?\$?([\d,]+(?:\.\d{2})?)/i,
     ]),
-    rentOrMortgage: extractMoneyByPatterns(text, [/\b(?:rent|mortgage)\s*(?:is|:|costs?)?\s*\$?([\d,]+(?:\.\d{2})?)/i]),
-    groceriesHousehold: extractMoneyByPatterns(text, [/\b(?:groceries|food|household)\s*(?:are|is|:|costs?)?\s*\$?([\d,]+(?:\.\d{2})?)/i]),
-    utilities: extractMoneyByPatterns(text, [/\butilities\s*(?:are|is|:|costs?)?\s*\$?([\d,]+(?:\.\d{2})?)/i]),
-    phoneExpense: extractMoneyByPatterns(text, [/\b(?:phone\s+bill|cell\s+phone)\s*(?:is|:|costs?)?\s*\$?([\d,]+(?:\.\d{2})?)/i]),
-    auto: extractMoneyByPatterns(text, [/\b(?:car\s+payment|auto\s+payment|vehicle\s+payment)\s*(?:is|:)?\s*\$?([\d,]+(?:\.\d{2})?)/i]),
-    autoInsurance: extractMoneyByPatterns(text, [/\b(?:car|auto|vehicle)\s+insurance\s*(?:is|:|costs?)?\s*\$?([\d,]+(?:\.\d{2})?)/i]),
-    childCareCosts: extractMoneyByPatterns(text, [/\b(?:child\s*care|daycare)\s*(?:is|:|costs?)?\s*\$?([\d,]+(?:\.\d{2})?)/i]),
-    healthCareCostsNotCovered: extractMoneyByPatterns(text, [/\b(?:unreimbursed|uncovered)\s+(?:medical|health(?:\s+care)?)\s*(?:is|:|costs?)?\s*\$?([\d,]+(?:\.\d{2})?)/i]),
-    medicalInsuranceDeduction: extractMoneyByPatterns(text, [/\b(?:health|medical)\s+insurance\s*(?:is|:|costs?)?\s*\$?([\d,]+(?:\.\d{2})?)/i]),
-    cashChecking: extractMoneyByPatterns(text, [/\b(?:cash|checking)\s*(?:is|:)?\s*\$?([\d,]+(?:\.\d{2})?)/i]),
-    savingsCreditUnion: extractMoneyByPatterns(text, [/\b(?:savings|credit\s+union)\s*(?:is|:)?\s*\$?([\d,]+(?:\.\d{2})?)/i]),
-    monthlyDebtPayments: extractMoneyByPatterns(text, [/\b(?:debt\s+payments?|monthly\s+debt)\s*(?:are|is|:)?\s*\$?([\d,]+(?:\.\d{2})?)/i]),
+    rentOrMortgage: extractMoneyByPatterns(text, [/\b(?:rent|mortgage)\s*(?:is|:|costs?)?\s*\$?([\d,]+(?:\.\d{2})?)/i]) || extractMoneyAfterMariaPrompt(text, [/rent/i, /mortgage/i, /housing/i]),
+    groceriesHousehold: extractMoneyByPatterns(text, [/\b(?:groceries|food|household)\s*(?:are|is|:|costs?)?\s*\$?([\d,]+(?:\.\d{2})?)/i]) || extractMoneyAfterMariaPrompt(text, [/groceries/i, /food/i, /household/i]),
+    utilities: extractMoneyByPatterns(text, [/\butilities\s*(?:are|is|:|costs?)?\s*\$?([\d,]+(?:\.\d{2})?)/i]) || extractMoneyAfterMariaPrompt(text, [/utilities/i]),
+    phoneExpense: extractMoneyByPatterns(text, [/\b(?:phone\s+bill|cell\s+phone)\s*(?:is|:|costs?)?\s*\$?([\d,]+(?:\.\d{2})?)/i]) || extractMoneyAfterMariaPrompt(text, [/phone\s+bill/i, /cell\s+phone/i]),
+    auto: extractMoneyByPatterns(text, [/\b(?:car\s+payment|auto\s+payment|vehicle\s+payment)\s*(?:is|:)?\s*\$?([\d,]+(?:\.\d{2})?)/i]) || extractMoneyAfterMariaPrompt(text, [/car\s+payment/i, /auto\s+payment/i, /vehicle\s+payment/i]),
+    autoInsurance: extractMoneyByPatterns(text, [/\b(?:car|auto|vehicle)\s+insurance\s*(?:is|:|costs?)?\s*\$?([\d,]+(?:\.\d{2})?)/i]) || extractMoneyAfterMariaPrompt(text, [/car.*insurance/i, /auto.*insurance/i, /vehicle.*insurance/i]),
+    childCareCosts: extractMoneyByPatterns(text, [/\b(?:child\s*care|daycare)\s*(?:is|:|costs?)?\s*\$?([\d,]+(?:\.\d{2})?)/i]) || extractMoneyAfterMariaPrompt(text, [/child\s*care/i, /daycare/i]),
+    healthCareCostsNotCovered: extractMoneyByPatterns(text, [/\b(?:unreimbursed|uncovered)\s+(?:medical|health(?:\s+care)?)\s*(?:is|:|costs?)?\s*\$?([\d,]+(?:\.\d{2})?)/i]) || extractMoneyAfterMariaPrompt(text, [/unreimbursed/i, /uncovered.*(?:medical|health)/i]),
+    medicalInsuranceDeduction: extractMoneyByPatterns(text, [/\b(?:health|medical)\s+insurance\s*(?:is|:|costs?)?\s*\$?([\d,]+(?:\.\d{2})?)/i]) || extractMoneyAfterMariaPrompt(text, [/(?:health|medical).*insurance/i]),
+    cashChecking: extractMoneyByPatterns(text, [/\b(?:cash|checking)\s*(?:is|:)?\s*\$?([\d,]+(?:\.\d{2})?)/i]) || extractMoneyAfterMariaPrompt(text, [/cash/i, /checking/i]),
+    savingsCreditUnion: extractMoneyByPatterns(text, [/\b(?:savings|credit\s+union)\s*(?:is|:)?\s*\$?([\d,]+(?:\.\d{2})?)/i]) || extractMoneyAfterMariaPrompt(text, [/savings/i, /credit\s+union/i]),
+    monthlyDebtPayments: extractMoneyByPatterns(text, [/\b(?:debt\s+payments?|monthly\s+debt)\s*(?:are|is|:)?\s*\$?([\d,]+(?:\.\d{2})?)/i]) || extractMoneyAfterMariaPrompt(text, [/debt/i]),
   };
 }
 
@@ -2813,7 +2843,7 @@ function applyChatPrefillToFl150(section: DraftFl150Section, prefill: ChatIntake
       ...section.income,
       salaryWages: {
         ...section.income.salaryWages,
-        averageMonthly: withChatValue(section.income.salaryWages.averageMonthly, prefill.salaryAverageMonthly ?? (prefill.payPeriod === 'month' ? prefill.payAmount : undefined)),
+        averageMonthly: withChatValue(section.income.salaryWages.averageMonthly, prefill.salaryAverageMonthly || (prefill.payPeriod === 'month' ? prefill.payAmount : undefined)),
       },
     },
     deductions: {
