@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import type { ChatMessage, User } from '@/services/auth';
 
 const FORM_DRAFTS_KEY = 'divorceos_form_drafts';
+const FORM_DRAFTS_CHAT_HANDOFF_KEY = 'divorceos_form_drafts_latest_chat_handoff';
 
 export type DraftFieldSourceType = 'chat' | 'upload' | 'profile' | 'manual';
 export type DraftFieldConfidence = 'high' | 'medium' | 'low';
@@ -930,6 +931,50 @@ function writeWorkspaces(workspaces: DraftFormsWorkspace[]) {
   const storage = getStorage();
   if (!storage) return;
   storage.setItem(FORM_DRAFTS_KEY, JSON.stringify(workspaces));
+}
+
+function sanitizeHandoffMessage(message: ChatMessage): ChatMessage {
+  return {
+    id: message.id,
+    role: message.role,
+    content: message.content,
+    timestamp: message.timestamp,
+    attachments: message.attachments,
+  };
+}
+
+export function cacheLatestDraftFormsChatHandoff(userId: string, messages: ChatMessage[], sessionId?: string) {
+  const storage = getStorage();
+  if (!storage || !userId || messages.length === 0) return;
+
+  const cache: DraftFormsChatHandoffCache = {
+    userId,
+    sessionId,
+    updatedAt: new Date().toISOString(),
+    messages: messages.slice(-60).map(sanitizeHandoffMessage),
+  };
+
+  storage.setItem(FORM_DRAFTS_CHAT_HANDOFF_KEY, JSON.stringify(cache));
+}
+
+export function getLatestDraftFormsChatHandoff(userId: string): DraftFormsChatHandoffCache | null {
+  const storage = getStorage();
+  if (!storage || !userId) return null;
+
+  try {
+    const raw = storage.getItem(FORM_DRAFTS_CHAT_HANDOFF_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as Partial<DraftFormsChatHandoffCache>;
+    if (parsed.userId !== userId || !Array.isArray(parsed.messages)) return null;
+    return {
+      userId,
+      sessionId: typeof parsed.sessionId === 'string' ? parsed.sessionId : undefined,
+      updatedAt: typeof parsed.updatedAt === 'string' ? parsed.updatedAt : new Date().toISOString(),
+      messages: parsed.messages.filter(Boolean) as ChatMessage[],
+    };
+  } catch {
+    return null;
+  }
 }
 
 function createField<T>(value: T, config?: Omit<DraftField<T>, 'value'>): DraftField<T> {
@@ -2523,6 +2568,13 @@ const CALIFORNIA_COUNTIES = [
   'Shasta', 'Sierra', 'Siskiyou', 'Solano', 'Sonoma', 'Stanislaus', 'Sutter', 'Tehama', 'Trinity', 'Tulare',
   'Tuolumne', 'Ventura', 'Yolo', 'Yuba',
 ];
+
+interface DraftFormsChatHandoffCache {
+  userId: string;
+  sessionId?: string;
+  updatedAt: string;
+  messages: ChatMessage[];
+}
 
 interface ChatIntakePrefill {
   caseNumber?: string;

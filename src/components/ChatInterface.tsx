@@ -41,7 +41,7 @@ import { generateAIResponse, generateWelcomeMessage } from '@/services/api';
 import { extractChatAttachmentContext } from '@/services/chatAttachments';
 import { MariaDocumentError, createMariaDocument } from '@/services/documents';
 import { authService, type User, type ChatSession, type ChatMessage, type ChatAttachment } from '@/services/auth';
-import { createStarterPacketWorkspace } from '@/services/formDrafts';
+import { cacheLatestDraftFormsChatHandoff, createStarterPacketWorkspace } from '@/services/formDrafts';
 import { CALIFORNIA_DIVORCE_TOPICS } from '@/services/personality';
 import { v4 as uuidv4 } from 'uuid';
 import { SUBSCRIPTION_LIMITS } from '@/services/auth';
@@ -769,6 +769,7 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
     };
 
     const savedSession = await authService.saveChatSession(session);
+    cacheLatestDraftFormsChatHandoff(currentUser.id, savedSession.messages, savedSession.id);
     setCurrentSessionId(savedSession.id);
 
     const updatedSessions = await authService.getChatSessions(currentUser.id);

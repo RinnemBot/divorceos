@@ -22,6 +22,7 @@ import {
   FL105_FORM_CAPACITY,
   createStarterPacketWorkspace,
   getDraftWorkspace,
+  getLatestDraftFormsChatHandoff,
   hydrateDraftWorkspaceFromChatContext,
   saveDraftWorkspace,
   setDraftFieldValue,
@@ -240,10 +241,16 @@ export function DraftFormsPage() {
         return;
       }
 
-      const getLatestSession = async () => {
+      const getLatestHandoff = async () => {
+        const cached = getLatestDraftFormsChatHandoff(user.id);
+        if (cached) {
+          return { id: cached.sessionId, messages: cached.messages };
+        }
+
         try {
           const sessions = await authService.getChatSessions(user.id);
-          return sessions[0] ?? null;
+          const latest = sessions[0] ?? null;
+          return latest ? { id: latest.id, messages: latest.messages } : null;
         } catch (error) {
           console.error('Failed to load latest Maria chat for Draft Forms handoff.', error);
           return null;
@@ -255,7 +262,7 @@ export function DraftFormsPage() {
         if (existing?.userId === user.id) {
           const hasCapturedIntake = Boolean(existing.intake.userRequest?.trim() || existing.intake.mariaSummary?.trim());
           if (!hasCapturedIntake) {
-            const latestSession = await getLatestSession();
+            const latestSession = await getLatestHandoff();
             if (latestSession) {
               const hydrated = saveDraftWorkspace(hydrateDraftWorkspaceFromChatContext(existing, latestSession.messages, latestSession.id));
               if (!cancelled) setWorkspace(hydrated);
@@ -271,7 +278,7 @@ export function DraftFormsPage() {
       if (initializedRef.current) return;
       initializedRef.current = true;
 
-      const latestSession = await getLatestSession();
+      const latestSession = await getLatestHandoff();
       const created = createStarterPacketWorkspace({
         user,
         messages: latestSession?.messages ?? [],
