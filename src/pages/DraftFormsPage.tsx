@@ -220,6 +220,28 @@ function FieldHeader({ label, field }: { label: string; field: DraftField<unknow
   );
 }
 
+function CompactFact({ label, value, field }: { label: string; value: string; field?: DraftField<unknown> }) {
+  return (
+    <div className="rounded-2xl border border-slate-200/80 bg-white/70 p-3 dark:border-white/10 dark:bg-white/5">
+      <div className="flex flex-wrap items-center gap-2">
+        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">{label}</p>
+        {field && <FieldSourceBadge field={field} />}
+      </div>
+      <p className="mt-2 text-sm font-medium text-slate-900 dark:text-slate-100">{value || 'Missing'}</p>
+    </div>
+  );
+}
+
+function FormStatusBadge({ status }: { status: 'Ready' | 'Needs review' | 'Not selected' | 'Optional' }) {
+  const className = status === 'Ready'
+    ? 'border-emerald-200 bg-emerald-50 text-emerald-800 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-200'
+    : status === 'Needs review'
+      ? 'border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-400/20 dark:bg-amber-400/10 dark:text-amber-200'
+      : 'border-slate-200 bg-slate-50 text-slate-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-300';
+
+  return <Badge variant="outline" className={cn('rounded-full border', className)}>{status}</Badge>;
+}
+
 export function DraftFormsPage() {
   const navigate = useNavigate();
   const { workspaceId } = useParams();
@@ -228,6 +250,8 @@ export function DraftFormsPage() {
   const [isGeneratingPacket, setIsGeneratingPacket] = useState(false);
   const [generatedPacketName, setGeneratedPacketName] = useState<string | null>(null);
   const [packetError, setPacketError] = useState<string | null>(null);
+  const [formMode, setFormMode] = useState<'simple' | 'advanced'>('simple');
+  const [simplePanelsOpen, setSimplePanelsOpen] = useState({ handoff: false, fl300: false, fl150: false });
   const initializedRef = useRef(false);
 
   useEffect(() => {
@@ -1163,6 +1187,26 @@ export function DraftFormsPage() {
     || fl105OrderOverflowCount > 0
     || fl105ClaimantOverflowCount > 0;
 
+  const missingForForm = (prefixes: string[]) => missingItems.filter((item) => prefixes.some((prefix) => item.startsWith(prefix)));
+  const fl100Missing = missingItems.filter((item) => !item.startsWith('FL-105') && !item.startsWith('FL-300') && !item.startsWith('FL-150') && !item.startsWith('FL-341') && !item.startsWith('FL-311') && !item.startsWith('FL-312') && !item.startsWith('Child '));
+  const fl110Missing: string[] = [];
+  const fl105Missing = workspace.hasMinorChildren.value ? [...missingForForm(['FL-105', 'Child ']), ...(missingItems.includes('At least one child entry or unborn child selection') ? ['At least one child entry or unborn child selection'] : [])] : [];
+  const fl300Missing = workspace.fl300.includeForm.value ? missingForForm(['FL-300']) : [];
+  const fl150Missing = workspace.fl150.includeForm.value ? missingForForm(['FL-150']) : [];
+  const fl341Missing = shouldIncludeFl341 ? missingForForm(['FL-341', 'FL-311', 'FL-312']) : [];
+  const formOverview = [
+    { form: 'FL-100', title: 'Petition', status: fl100Missing.length ? 'Needs review' : 'Ready', note: fl100Missing[0] ?? 'Core petition facts are ready.' },
+    { form: 'FL-110', title: 'Summons', status: fl110Missing.length ? 'Needs review' : 'Ready', note: 'Uses the same caption and party information.' },
+    { form: 'FL-105', title: 'UCCJEA child custody declaration', status: workspace.hasMinorChildren.value ? (fl105Missing.length ? 'Needs review' : 'Ready') : 'Not selected', note: workspace.hasMinorChildren.value ? (fl105Missing[0] ?? 'Child declaration is ready.') : 'Only included when minor children are enabled.' },
+    { form: 'FL-300', title: 'Request for Order', status: workspace.fl300.includeForm.value ? (fl300Missing.length ? 'Needs review' : 'Ready') : 'Optional', note: workspace.fl300.includeForm.value ? (fl300Missing[0] ?? 'Optional RFO is ready.') : 'Leave off unless filing a request for orders now.' },
+    { form: 'FL-150', title: 'Income and Expense Declaration', status: workspace.fl150.includeForm.value ? (fl150Missing.length ? 'Needs review' : 'Ready') : 'Optional', note: workspace.fl150.includeForm.value ? (fl150Missing[0] ?? 'Financial declaration is ready.') : 'Recommended for support or fee requests.' },
+    { form: 'FL-341', title: 'Custody/visitation attachments', status: shouldIncludeFl341 ? (fl341Missing.length ? 'Needs review' : 'Ready') : 'Optional', note: shouldIncludeFl341 ? (fl341Missing[0] ?? 'Selected custody attachments are ready.') : 'Only included when custody attachment boxes are selected.' },
+  ] as const;
+  const supportSnapshotAvailable = workspace.fl150.includeForm.value
+    || workspace.fl300.requestTypes.childSupport.value
+    || workspace.fl300.requestTypes.spousalSupport.value
+    || workspace.fl300.requestTypes.attorneyFeesCosts.value;
+
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_14%_0%,rgba(16,185,129,0.16),transparent_24%),radial-gradient(circle_at_86%_8%,rgba(59,130,246,0.12),transparent_20%),linear-gradient(180deg,#f8fafc_0%,#ecfdf5_45%,#f8fafc_100%)] py-12 dark:bg-[radial-gradient(circle_at_16%_0%,rgba(16,185,129,0.16),transparent_24%),radial-gradient(circle_at_84%_8%,rgba(59,130,246,0.14),transparent_20%),linear-gradient(180deg,#020617_0%,#03111f_50%,#020617_100%)]">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -1176,7 +1220,27 @@ export function DraftFormsPage() {
               Maria can hand facts into an editable workspace before anything becomes a court-ready packet. Structured form data stays the source of truth.
             </p>
           </div>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="flex rounded-full border border-slate-200 bg-white/80 p-1 shadow-sm dark:border-white/10 dark:bg-white/5" aria-label="Draft Forms mode">
+              <Button
+                type="button"
+                variant={formMode === 'simple' ? 'default' : 'ghost'}
+                size="sm"
+                className={cn('rounded-full', formMode === 'simple' && 'bg-emerald-700 text-white hover:bg-emerald-800 dark:bg-emerald-600')}
+                onClick={() => setFormMode('simple')}
+              >
+                Simple mode
+              </Button>
+              <Button
+                type="button"
+                variant={formMode === 'advanced' ? 'default' : 'ghost'}
+                size="sm"
+                className={cn('rounded-full', formMode === 'advanced' && 'bg-slate-900 text-white hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-950')}
+                onClick={() => setFormMode('advanced')}
+              >
+                Advanced field editor
+              </Button>
+            </div>
             <Button asChild variant="outline" className="rounded-full">
               <Link to="/forms">
                 <ArrowLeft className="mr-2 h-4 w-4" />
@@ -1191,44 +1255,115 @@ export function DraftFormsPage() {
 
         <div className="grid gap-6 lg:grid-cols-[1.6fr_0.9fr]">
           <div className="space-y-6">
-            <Card className="rounded-[1.75rem] border-white/70 bg-white/80 shadow-xl backdrop-blur dark:border-white/10 dark:bg-white/5">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-slate-950 dark:text-white">
-                  <Sparkles className="h-5 w-5 text-emerald-600" />
-                  Intake handoff from Maria
-                </CardTitle>
-                <CardDescription>
-                  This is the bridge between chat/uploads and editable form fields.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-5">
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">User request</p>
-                  <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-700 dark:text-slate-200">
-                    {workspace.intake.userRequest || 'No specific chat request was captured yet.'}
-                  </p>
-                </div>
-                <Separator />
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Maria summary</p>
-                  <p className="mt-2 max-h-48 overflow-auto whitespace-pre-wrap text-sm leading-6 text-slate-700 dark:text-slate-200">
-                    {workspace.intake.mariaSummary || 'No Maria summary captured yet.'}
-                  </p>
-                </div>
-                <Separator />
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Uploaded evidence</p>
-                  {workspace.intake.attachmentNames.length > 0 ? (
-                    <div className="mt-3 flex flex-wrap gap-2">
-                      {workspace.intake.attachmentNames.map((name) => (
-                        <Badge key={name} variant="outline" className="rounded-full">{name}</Badge>
-                      ))}
+            {formMode === 'simple' && (
+              <Card className="rounded-[1.75rem] border-white/70 bg-white/85 shadow-xl backdrop-blur dark:border-white/10 dark:bg-white/5">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-slate-950 dark:text-white">
+                    <FileText className="h-5 w-5 text-emerald-600" />
+                    Court-form checklist
+                  </CardTitle>
+                  <CardDescription>
+                    Start with what is on the forms, what Maria already filled, what is missing, then generate.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+                    {formOverview.map((item) => (
+                      <div key={item.form} className="rounded-2xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5">
+                        <div className="flex items-start justify-between gap-3">
+                          <div>
+                            <p className="text-sm font-semibold text-slate-950 dark:text-white">{item.form}</p>
+                            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{item.title}</p>
+                          </div>
+                          <FormStatusBadge status={item.status} />
+                        </div>
+                        <p className="mt-3 text-sm leading-6 text-slate-700 dark:text-slate-200">{item.note}</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Already filled / sourced</p>
+                    <div className="mt-3 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+                      <CompactFact label="Petitioner" value={workspace.petitionerName.value} field={workspace.petitionerName} />
+                      <CompactFact label="Respondent" value={workspace.respondentName.value} field={workspace.respondentName} />
+                      <CompactFact label="County" value={workspace.filingCounty.value} field={workspace.filingCounty} />
+                      <CompactFact label="Marriage date" value={workspace.marriageDate.value} field={workspace.marriageDate} />
+                      <CompactFact label="Separation date" value={workspace.separationDate.value} field={workspace.separationDate} />
+                      <CompactFact label="Children" value={workspace.hasMinorChildren.value ? `${workspace.children.length || 'Unlisted'} child${workspace.children.length === 1 ? '' : 'ren'}` : 'No minor children selected'} field={workspace.hasMinorChildren} />
+                      <CompactFact label="Support snapshot" value={supportSnapshotAvailable ? 'Support/financial facts available' : 'No support snapshot selected'} />
                     </div>
-                  ) : (
-                    <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">No uploaded files were attached to the captured handoff.</p>
-                  )}
-                </div>
-              </CardContent>
+                  </div>
+
+                  <div className="rounded-2xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5">
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Missing before generate</p>
+                    {missingItems.length === 0 ? (
+                      <div className="mt-3 flex items-center gap-2 text-sm font-medium text-emerald-700 dark:text-emerald-200">
+                        <CheckCircle2 className="h-4 w-4" />
+                        Nothing required is missing. You can generate the packet.
+                      </div>
+                    ) : (
+                      <ul className="mt-3 grid gap-2 text-sm text-slate-700 dark:text-slate-200 md:grid-cols-2">
+                        {missingItems.slice(0, 10).map((item) => <li key={item}>• {item}</li>)}
+                      </ul>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            <Card className="rounded-[1.75rem] border-white/70 bg-white/80 shadow-xl backdrop-blur dark:border-white/10 dark:bg-white/5">
+              <details
+                open={formMode === 'advanced' || simplePanelsOpen.handoff}
+                onToggle={(event) => {
+                  if (formMode === 'simple') {
+                    setSimplePanelsOpen((current) => ({ ...current, handoff: event.currentTarget.open }));
+                  }
+                }}
+              >
+                <summary className="cursor-pointer list-none px-6 py-5 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 sm:px-8">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <div>
+                      <div className="flex items-center gap-2 text-lg font-semibold text-slate-950 dark:text-white">
+                        <Sparkles className="h-5 w-5 text-emerald-600" />
+                        View captured chat handoff
+                      </div>
+                      <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                        Raw Maria handoff is available for audit, but the form fields below remain the source of truth.
+                      </p>
+                    </div>
+                    <Badge variant="outline" className="rounded-full">Chat context</Badge>
+                  </div>
+                </summary>
+                <CardContent className="space-y-5 border-t border-slate-200/70 pt-5 dark:border-white/10">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">User request</p>
+                    <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-700 dark:text-slate-200">
+                      {workspace.intake.userRequest || 'No specific chat request was captured yet.'}
+                    </p>
+                  </div>
+                  <Separator />
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Maria summary</p>
+                    <p className="mt-2 max-h-48 overflow-auto whitespace-pre-wrap text-sm leading-6 text-slate-700 dark:text-slate-200">
+                      {workspace.intake.mariaSummary || 'No Maria summary captured yet.'}
+                    </p>
+                  </div>
+                  <Separator />
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Uploaded evidence</p>
+                    {workspace.intake.attachmentNames.length > 0 ? (
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {workspace.intake.attachmentNames.map((name) => (
+                          <Badge key={name} variant="outline" className="rounded-full">{name}</Badge>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">No uploaded files were attached to the captured handoff.</p>
+                    )}
+                  </div>
+                </CardContent>
+              </details>
             </Card>
 
             <Card className="rounded-[1.75rem] border-white/70 bg-white/80 shadow-xl backdrop-blur dark:border-white/10 dark:bg-white/5">
@@ -1252,7 +1387,20 @@ export function DraftFormsPage() {
                 </label>
 
                 {workspace.fl300.includeForm.value && (
-                  <div className="space-y-5 rounded-2xl border border-amber-200/80 bg-amber-50/60 p-4 dark:border-amber-300/20 dark:bg-amber-500/10">
+                  <details
+                    className="rounded-2xl border border-amber-200/80 bg-amber-50/60 dark:border-amber-300/20 dark:bg-amber-500/10"
+                    open={formMode === 'advanced' || simplePanelsOpen.fl300}
+                    onToggle={(event) => {
+                      if (formMode === 'simple') {
+                        setSimplePanelsOpen((current) => ({ ...current, fl300: event.currentTarget.open }));
+                      }
+                    }}
+                  >
+                    <summary className="cursor-pointer list-none px-4 py-3 text-sm font-semibold text-amber-950 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 dark:text-amber-100">
+                      {formMode === 'simple' ? 'Edit exact FL-300 fields' : 'Exact FL-300 field editor'}
+                      <span className="ml-2 text-xs font-normal text-amber-800/80 dark:text-amber-100/70">Optional request-for-order details</span>
+                    </summary>
+                    <div className="space-y-5 border-t border-amber-200/70 p-4 dark:border-amber-300/20">
                     <div>
                       <p className="text-sm font-medium text-slate-800 dark:text-slate-100">Request type flags</p>
                       <div className="mt-3 grid gap-2 md:grid-cols-3">
@@ -1368,7 +1516,8 @@ export function DraftFormsPage() {
                       <div><FieldHeader label="Signature date" field={workspace.fl300.signatureDate} /><Input type="date" value={workspace.fl300.signatureDate.value} onChange={(e) => updateFl300((fl300) => ({ ...fl300, signatureDate: setDraftFieldValue(fl300.signatureDate, e.target.value) }))} /></div>
                       <div><FieldHeader label="Type/print name" field={workspace.fl300.typePrintName} /><Input value={workspace.fl300.typePrintName.value} onChange={(e) => updateFl300((fl300) => ({ ...fl300, typePrintName: setDraftFieldValue(fl300.typePrintName, e.target.value) }))} /></div>
                     </div>
-                  </div>
+                    </div>
+                  </details>
                 )}
               </CardContent>
             </Card>
@@ -1392,7 +1541,20 @@ export function DraftFormsPage() {
                   </div>
                 )}
                 {workspace.fl150.includeForm.value && (
-                  <div className="space-y-5 rounded-2xl border border-emerald-200/80 bg-emerald-50/50 p-4 dark:border-emerald-300/20 dark:bg-emerald-500/10">
+                  <details
+                    className="rounded-2xl border border-emerald-200/80 bg-emerald-50/50 dark:border-emerald-300/20 dark:bg-emerald-500/10"
+                    open={formMode === 'advanced' || simplePanelsOpen.fl150}
+                    onToggle={(event) => {
+                      if (formMode === 'simple') {
+                        setSimplePanelsOpen((current) => ({ ...current, fl150: event.currentTarget.open }));
+                      }
+                    }}
+                  >
+                    <summary className="cursor-pointer list-none px-4 py-3 text-sm font-semibold text-emerald-950 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 dark:text-emerald-100">
+                      {formMode === 'simple' ? 'Edit exact FL-150 fields' : 'Exact FL-150 field editor'}
+                      <span className="ml-2 text-xs font-normal text-emerald-800/80 dark:text-emerald-100/70">Optional income and expense details</span>
+                    </summary>
+                    <div className="space-y-5 border-t border-emerald-200/70 p-4 dark:border-emerald-300/20">
                     <div className="grid gap-4 md:grid-cols-3">
                       <div><FieldHeader label="Employer" field={workspace.fl150.employment.employer} /><Input value={workspace.fl150.employment.employer.value} onChange={(e) => updateFl150((fl150) => ({ ...fl150, employment: { ...fl150.employment, employer: setDraftFieldValue(fl150.employment.employer, e.target.value) } }))} /></div>
                       <div><FieldHeader label="Occupation" field={workspace.fl150.employment.occupation} /><Input value={workspace.fl150.employment.occupation.value} onChange={(e) => updateFl150((fl150) => ({ ...fl150, employment: { ...fl150.employment, occupation: setDraftFieldValue(fl150.employment.occupation, e.target.value) } }))} /></div>
@@ -1457,7 +1619,8 @@ export function DraftFormsPage() {
                       <div><FieldHeader label="Type/print name" field={workspace.fl150.typePrintName} /><Input value={workspace.fl150.typePrintName.value} onChange={(e) => updateFl150((fl150) => ({ ...fl150, typePrintName: setDraftFieldValue(fl150.typePrintName, e.target.value) }))} /></div>
                       <div className="md:col-span-3"><FieldHeader label="Other support information / hardship explanation" field={workspace.fl150.supportOtherInformation} /><Textarea className="min-h-[80px]" value={workspace.fl150.supportOtherInformation.value} onChange={(e) => updateFl150((fl150) => ({ ...fl150, supportOtherInformation: setDraftFieldValue(fl150.supportOtherInformation, e.target.value) }))} /></div>
                     </div>
-                  </div>
+                    </div>
+                  </details>
                 )}
               </CardContent>
             </Card>
