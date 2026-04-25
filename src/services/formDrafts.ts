@@ -1,10 +1,11 @@
 import { v4 as uuidv4 } from 'uuid';
 import type { ChatMessage, User } from '@/services/auth';
+import type { SupportScenario } from '@/services/savedFiles';
 
 const FORM_DRAFTS_KEY = 'divorceos_form_drafts';
 const FORM_DRAFTS_CHAT_HANDOFF_KEY = 'divorceos_form_drafts_latest_chat_handoff';
 
-export type DraftFieldSourceType = 'chat' | 'upload' | 'profile' | 'manual';
+export type DraftFieldSourceType = 'chat' | 'upload' | 'profile' | 'manual' | 'support-snapshot';
 export type DraftFieldConfidence = 'high' | 'medium' | 'low';
 export type DraftWorkspaceStatus = 'not_started' | 'in_review' | 'ready';
 export type DraftFl100PropertyListLocation = 'unspecified' | 'fl160' | 'attachment' | 'inline_list';
@@ -2860,12 +2861,109 @@ function createChatField<T>(value: T, needsReview = true): DraftField<T> {
   return createField(value, { ...CHAT_PREFILL_SOURCE, needsReview });
 }
 
+function createSupportSnapshotField<T>(value: T): DraftField<T> {
+  return createField(value, {
+    sourceType: 'support-snapshot',
+    sourceLabel: 'Saved support estimator snapshot',
+    confidence: 'medium',
+    needsReview: true,
+  });
+}
+
 function withChatValue<T>(field: DraftField<T>, value: T | undefined) {
   if (value === undefined) return field;
   if (typeof value === 'string' && value.trim().length === 0) return field;
   if (typeof field.value === 'string' && field.value.trim().length > 0 && field.value !== 'unspecified') return field;
   if (typeof field.value === 'boolean' && field.value) return field;
   return createChatField(value);
+}
+
+function withSupportSnapshotValue<T>(field: DraftField<T>, value: T | undefined) {
+  if (value === undefined) return field;
+  if (typeof value === 'string' && value.trim().length === 0) return field;
+  if (typeof field.value === 'string' && field.value.trim().length > 0 && field.value !== 'unspecified') return field;
+  if (typeof field.value === 'boolean' && field.value) return field;
+  return createSupportSnapshotField(value);
+}
+
+function formatSupportSnapshotNotes(scenario: SupportScenario) {
+  const snapshot = scenario.snapshot;
+  return [
+    `Saved support estimator snapshot: ${scenario.title}`,
+    `Saved: ${new Date(scenario.createdAt).toLocaleString()}`,
+    `Estimated child support: $${Math.round(scenario.childSupport).toLocaleString()}`,
+    `Estimated temporary spousal support: $${Math.round(scenario.spousalSupport).toLocaleString()}`,
+    `Estimated combined support: $${Math.round(scenario.combinedSupport).toLocaleString()}`,
+    `Estimated payer: ${scenario.estimatePayer}`,
+    `County: ${snapshot.countyName || snapshot.countyId || 'not specified'}`,
+    `Parent A/Petitioner net monthly income: $${Math.round(snapshot.parentAIncome).toLocaleString()}`,
+    `Parent B/Respondent net monthly income: $${Math.round(snapshot.parentBIncome).toLocaleString()}`,
+    `Parent A/Petitioner timeshare: ${snapshot.parentATimeShare}%`,
+    `Children covered: ${snapshot.childrenCount}`,
+    `Childcare add-on: $${Math.round(snapshot.childcare).toLocaleString()}`,
+    `Medical add-on: $${Math.round(snapshot.medical).toLocaleString()}`,
+    `Mode: ${snapshot.mode === 'advanced' ? 'Advanced gross/net capture' : 'Quick net mode'}`,
+    'Review these estimator numbers before filing; they are planning estimates, not certified guideline calculations.',
+  ].join('\n');
+}
+
+export function hydrateDraftWorkspaceFromSupportScenario(workspace: DraftFormsWorkspace, scenario?: SupportScenario | null): DraftFormsWorkspace {
+  if (!scenario) return workspace;
+
+  const snapshot = scenario.snapshot;
+  const childSupportText = scenario.childSupport > 0 ? `$${Math.round(scenario.childSupport).toLocaleString()} estimated guideline child support (${scenario.estimatePayer})` : '';
+  const spousalSupportText = scenario.spousalSupport > 0 ? `$${Math.round(scenario.spousalSupport).toLocaleString()} estimated temporary spousal support (${scenario.estimatePayer})` : '';
+  const notes = formatSupportSnapshotNotes(scenario);
+
+  return {
+    ...workspace,
+    filingCounty: withSupportSnapshotValue(workspace.filingCounty, snapshot.countyName),
+    requests: {
+      ...workspace.requests,
+      childSupport: scenario.childSupport > 0 ? withSupportSnapshotValue(workspace.requests.childSupport, true) : workspace.requests.childSupport,
+      spousalSupport: scenario.spousalSupport > 0 ? withSupportSnapshotValue(workspace.requests.spousalSupport, true) : workspace.requests.spousalSupport,
+    },
+    fl300: {
+      ...workspace.fl300,
+      requestTypes: {
+        ...workspace.fl300.requestTypes,
+        childSupport: scenario.childSupport > 0 ? withSupportSnapshotValue(workspace.fl300.requestTypes.childSupport, true) : workspace.fl300.requestTypes.childSupport,
+        spousalSupport: scenario.spousalSupport > 0 ? withSupportSnapshotValue(workspace.fl300.requestTypes.spousalSupport, true) : workspace.fl300.requestTypes.spousalSupport,
+      },
+      supportRequests: {
+        ...workspace.fl300.supportRequests,
+        childSupportGuideline: scenario.childSupport > 0 ? withSupportSnapshotValue(workspace.fl300.supportRequests.childSupportGuideline, true) : workspace.fl300.supportRequests.childSupportGuideline,
+        childSupportMonthlyAmountText: withSupportSnapshotValue(workspace.fl300.supportRequests.childSupportMonthlyAmountText, childSupportText),
+        childSupportChangeReasons: withSupportSnapshotValue(workspace.fl300.supportRequests.childSupportChangeReasons, notes),
+        spousalSupportAmount: withSupportSnapshotValue(workspace.fl300.supportRequests.spousalSupportAmount, spousalSupportText),
+        spousalSupportChangeReasons: withSupportSnapshotValue(workspace.fl300.supportRequests.spousalSupportChangeReasons, notes),
+      },
+    },
+    fl150: {
+      ...workspace.fl150,
+      income: {
+        ...workspace.fl150.income,
+        salaryWages: {
+          ...workspace.fl150.income.salaryWages,
+          averageMonthly: withSupportSnapshotValue(workspace.fl150.income.salaryWages.averageMonthly, snapshot.parentAIncome ? String(snapshot.parentAIncome) : undefined),
+        },
+      },
+      otherPartyIncome: {
+        ...workspace.fl150.otherPartyIncome,
+        grossMonthlyEstimate: withSupportSnapshotValue(workspace.fl150.otherPartyIncome.grossMonthlyEstimate, snapshot.parentBIncome ? String(snapshot.parentBIncome) : undefined),
+        basis: withSupportSnapshotValue(workspace.fl150.otherPartyIncome.basis, 'Saved support estimator snapshot; verify against current income documents.'),
+      },
+      childrenSupport: {
+        ...workspace.fl150.childrenSupport,
+        numberOfChildren: withSupportSnapshotValue(workspace.fl150.childrenSupport.numberOfChildren, snapshot.childrenCount ? String(snapshot.childrenCount) : undefined),
+        timeshareMePercent: withSupportSnapshotValue(workspace.fl150.childrenSupport.timeshareMePercent, Number.isFinite(snapshot.parentATimeShare) ? String(snapshot.parentATimeShare) : undefined),
+        timeshareOtherParentPercent: withSupportSnapshotValue(workspace.fl150.childrenSupport.timeshareOtherParentPercent, Number.isFinite(snapshot.parentATimeShare) ? String(100 - snapshot.parentATimeShare) : undefined),
+        childCareCosts: withSupportSnapshotValue(workspace.fl150.childrenSupport.childCareCosts, snapshot.childcare ? String(snapshot.childcare) : undefined),
+        healthCareCostsNotCovered: withSupportSnapshotValue(workspace.fl150.childrenSupport.healthCareCostsNotCovered, snapshot.medical ? String(snapshot.medical) : undefined),
+      },
+      supportOtherInformation: withSupportSnapshotValue(workspace.fl150.supportOtherInformation, notes),
+    },
+  };
 }
 
 function applyChatPrefillToFl150(section: DraftFl150Section, prefill: ChatIntakePrefill['fl150']): DraftFl150Section {

@@ -12,6 +12,7 @@ import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import { authService, type User } from '@/services/auth';
+import { getSupportScenarios } from '@/services/savedFiles';
 import { MariaDocumentError, createOfficialStarterPacketDocument } from '@/services/documents';
 import {
   createBlankChild,
@@ -24,6 +25,7 @@ import {
   getDraftWorkspace,
   getLatestDraftFormsChatHandoff,
   hydrateDraftWorkspaceFromChatContext,
+  hydrateDraftWorkspaceFromSupportScenario,
   saveDraftWorkspace,
   setDraftFieldValue,
   type DraftField,
@@ -257,20 +259,35 @@ export function DraftFormsPage() {
         }
       };
 
+      const getLatestSupportScenario = async () => {
+        try {
+          const scenarios = await getSupportScenarios(user.id);
+          return scenarios[0] ?? null;
+        } catch (error) {
+          console.error('Failed to load support estimator snapshots for Draft Forms handoff.', error);
+          return null;
+        }
+      };
+
       if (workspaceId) {
         const existing = getDraftWorkspace(workspaceId);
         if (existing?.userId === user.id) {
-          const hasCapturedIntake = Boolean(existing.intake.userRequest?.trim() || existing.intake.mariaSummary?.trim());
+          const latestSupportScenario = await getLatestSupportScenario();
+          const withSupportSnapshot = latestSupportScenario
+            ? hydrateDraftWorkspaceFromSupportScenario(existing, latestSupportScenario)
+            : existing;
+          const hasCapturedIntake = Boolean(withSupportSnapshot.intake.userRequest?.trim() || withSupportSnapshot.intake.mariaSummary?.trim());
           if (!hasCapturedIntake) {
             const latestSession = await getLatestHandoff();
             if (latestSession) {
-              const hydrated = saveDraftWorkspace(hydrateDraftWorkspaceFromChatContext(existing, latestSession.messages, latestSession.id));
+              const hydrated = saveDraftWorkspace(hydrateDraftWorkspaceFromChatContext(withSupportSnapshot, latestSession.messages, latestSession.id));
               if (!cancelled) setWorkspace(hydrated);
               return;
             }
           }
 
-          if (!cancelled) setWorkspace(existing);
+          const saved = latestSupportScenario ? saveDraftWorkspace(withSupportSnapshot) : withSupportSnapshot;
+          if (!cancelled) setWorkspace(saved);
           return;
         }
       }
@@ -279,11 +296,15 @@ export function DraftFormsPage() {
       initializedRef.current = true;
 
       const latestSession = await getLatestHandoff();
-      const created = createStarterPacketWorkspace({
+      const latestSupportScenario = await getLatestSupportScenario();
+      const createdBase = createStarterPacketWorkspace({
         user,
         messages: latestSession?.messages ?? [],
         sourceSessionId: latestSession?.id,
       });
+      const created = latestSupportScenario
+        ? saveDraftWorkspace(hydrateDraftWorkspaceFromSupportScenario(createdBase, latestSupportScenario))
+        : createdBase;
       if (cancelled) return;
       setWorkspace(created);
       navigate(`/draft-forms/${created.id}`, { replace: true });
