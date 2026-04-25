@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, CheckCircle2, FileText, Loader2, Sparkles, Wand2 } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, Clock3, FileText, Loader2, Save, Sparkles, Wand2 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -1238,6 +1238,22 @@ export function DraftFormsPage() {
     || workspace.fl300.requestTypes.childSupport.value
     || workspace.fl300.requestTypes.spousalSupport.value
     || workspace.fl300.requestTypes.attorneyFeesCosts.value;
+  const lastSavedLabel = workspace.updatedAt
+    ? new Date(workspace.updatedAt).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
+    : null;
+
+  const handleSaveDraftForLater = () => {
+    const saved = saveDraftWorkspace({
+      ...workspace,
+      status: missingItems.length === 0 ? 'ready' : 'in_review',
+    });
+    setWorkspace(saved);
+    toast.success('Draft saved for later.', {
+      description: missingItems.length === 0
+        ? 'This draft is marked ready and can still be edited.'
+        : `${missingItems.length} item${missingItems.length === 1 ? '' : 's'} still need review before generating.`,
+    });
+  };
 
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_14%_0%,rgba(16,185,129,0.16),transparent_24%),radial-gradient(circle_at_86%_8%,rgba(59,130,246,0.12),transparent_20%),linear-gradient(180deg,#f8fafc_0%,#ecfdf5_45%,#f8fafc_100%)] py-12 dark:bg-[radial-gradient(circle_at_16%_0%,rgba(16,185,129,0.16),transparent_24%),radial-gradient(circle_at_84%_8%,rgba(59,130,246,0.14),transparent_20%),linear-gradient(180deg,#020617_0%,#03111f_50%,#020617_100%)]">
@@ -1251,8 +1267,19 @@ export function DraftFormsPage() {
             <p className="mt-3 max-w-3xl text-base leading-7 text-slate-600 dark:text-slate-300">
               Maria can hand facts into an editable workspace before anything becomes a court-ready packet. Structured form data stays the source of truth.
             </p>
+            <div className="mt-3 flex flex-wrap items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
+              <span className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white/70 px-3 py-1 dark:border-white/10 dark:bg-white/5">
+                <Clock3 className="h-3.5 w-3.5" />
+                {lastSavedLabel ? `Last saved ${lastSavedLabel}` : 'Not saved yet'}
+              </span>
+              <span className="text-xs">Incomplete drafts stay saved here so you can finish later.</span>
+            </div>
           </div>
           <div className="flex flex-wrap items-center gap-3">
+            <Button type="button" variant="outline" className="rounded-full" onClick={handleSaveDraftForLater}>
+              <Save className="mr-2 h-4 w-4" />
+              Save draft for later
+            </Button>
             <div className="flex rounded-full border border-slate-200 bg-white/80 p-1 shadow-sm dark:border-white/10 dark:bg-white/5" aria-label="Draft Forms mode">
               <Button
                 type="button"
