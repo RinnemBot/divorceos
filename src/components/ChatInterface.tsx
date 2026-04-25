@@ -804,6 +804,41 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
     }
   };
 
+  const deleteMessage = async (messageId: string) => {
+    const message = messages.find((entry) => entry.id === messageId);
+    const preview = message?.content.trim().slice(0, 80);
+    const confirmDelete = window.confirm(`Delete this message${preview ? `: “${preview}${(message?.content.length ?? 0) > 80 ? '…' : ''}”` : ''}? This cannot be undone.`);
+    if (!confirmDelete) return;
+
+    const nextMessages = messages.filter((entry) => entry.id !== messageId);
+    setMessages(nextMessages);
+    setSavedPdfByMessageId((current) => {
+      const next = { ...current };
+      delete next[messageId];
+      return next;
+    });
+    setPdfSaveErrorByMessageId((current) => {
+      const next = { ...current };
+      delete next[messageId];
+      return next;
+    });
+    if (pdfComposerMessage?.id === messageId) setPdfComposerMessage(null);
+    if (fallbackAudio?.text === message?.content) clearFallbackAudio();
+
+    if (nextMessages.length === 0) {
+      if (currentSessionId) {
+        await authService.deleteChatSession(currentSessionId);
+        setSessions((current) => current.filter((session) => session.id !== currentSessionId));
+      }
+      startNewChat();
+      toast.success('Message deleted.');
+      return;
+    }
+
+    await saveCurrentSession(nextMessages);
+    toast.success('Message deleted.');
+  };
+
   const sendToDraftForms = (message: ChatMessage) => {
     if (!currentUser) {
       toast.message('Sign in to send Maria chat context into Draft Forms.');
@@ -1530,8 +1565,22 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
                     ))}
                   </div>
                 )}
-                <div className={`text-[11px] mt-3 ${message.role === 'user' ? 'text-emerald-200' : 'text-gray-400'}`}>
-                  {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                <div className={`mt-3 flex items-center justify-between gap-3 text-[11px] ${message.role === 'user' ? 'text-emerald-200' : 'text-gray-400'}`}>
+                  <span>{new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                  <button
+                    type="button"
+                    onClick={() => void deleteMessage(message.id)}
+                    className={`inline-flex items-center gap-1 rounded-full px-2 py-1 opacity-70 transition hover:opacity-100 ${
+                      message.role === 'user'
+                        ? 'hover:bg-white/15 hover:text-white'
+                        : 'hover:bg-red-50 hover:text-red-600'
+                    }`}
+                    aria-label="Delete this message"
+                    title="Delete message"
+                  >
+                    <Trash2 className="h-3 w-3" />
+                    <span className="hidden sm:inline">Delete</span>
+                  </button>
                 </div>
               </div>
               {message.role === 'user' && (
