@@ -2594,6 +2594,11 @@ function extractLabelValue(text: string, labels: string[]) {
     const match = text.match(expression);
     const value = cleanExtractedValue(match?.[1]);
     if (value) return value;
+
+    const nextLineExpression = new RegExp(`(?:^|[\\n.;,:])\\s*(?:${label})\\s*\\n\\s*([^\\n.;]+)`, 'i');
+    const nextLineMatch = text.match(nextLineExpression);
+    const nextLineValue = cleanExtractedValue(nextLineMatch?.[1]);
+    if (nextLineValue) return nextLineValue;
   }
   return '';
 }
@@ -3148,6 +3153,29 @@ export function createStarterPacketWorkspace(options: {
 
   saveDraftWorkspace(workspace);
   return workspace;
+}
+
+export function hydrateDraftWorkspaceFromChatContext(
+  workspace: DraftFormsWorkspace,
+  messages: ChatMessage[] = [],
+  sourceSessionId?: string,
+) {
+  if (messages.length === 0) return workspace;
+
+  const { assistantMessage, userContext, conversationContext, attachmentNames } = getSourceMessages(messages);
+  const mergedAttachmentNames = Array.from(new Set([...(workspace.intake.attachmentNames ?? []), ...attachmentNames]));
+  const nextWorkspace: DraftFormsWorkspace = {
+    ...workspace,
+    sourceSessionId: workspace.sourceSessionId ?? sourceSessionId,
+    sourceAssistantMessageId: workspace.sourceAssistantMessageId ?? assistantMessage?.id,
+    intake: {
+      userRequest: workspace.intake.userRequest?.trim() ? workspace.intake.userRequest : conversationContext || userContext || undefined,
+      mariaSummary: workspace.intake.mariaSummary?.trim() ? workspace.intake.mariaSummary : assistantMessage?.content?.trim() || undefined,
+      attachmentNames: mergedAttachmentNames,
+    },
+  };
+
+  return applyChatPrefillToBlankWorkspaceFields(nextWorkspace);
 }
 
 export function listDraftWorkspaces(userId?: string) {

@@ -22,6 +22,7 @@ import {
   FL105_FORM_CAPACITY,
   createStarterPacketWorkspace,
   getDraftWorkspace,
+  hydrateDraftWorkspaceFromChatContext,
   saveDraftWorkspace,
   setDraftFieldValue,
   type DraftField,
@@ -227,28 +228,65 @@ export function DraftFormsPage() {
   const initializedRef = useRef(false);
 
   useEffect(() => {
-    const user = authService.getCurrentUser();
-    setCurrentUser(user);
+    let cancelled = false;
 
-    if (!user) {
-      navigate('/', { replace: true });
-      return;
-    }
+    const initialize = async () => {
+      const user = authService.getCurrentUser();
+      if (cancelled) return;
+      setCurrentUser(user);
 
-    if (workspaceId) {
-      const existing = getDraftWorkspace(workspaceId);
-      if (existing?.userId === user.id) {
-        setWorkspace(existing);
+      if (!user) {
+        navigate('/', { replace: true });
         return;
       }
-    }
 
-    if (initializedRef.current) return;
-    initializedRef.current = true;
+      const getLatestSession = async () => {
+        try {
+          const sessions = await authService.getChatSessions(user.id);
+          return sessions[0] ?? null;
+        } catch (error) {
+          console.error('Failed to load latest Maria chat for Draft Forms handoff.', error);
+          return null;
+        }
+      };
 
-    const created = createStarterPacketWorkspace({ user });
-    setWorkspace(created);
-    navigate(`/draft-forms/${created.id}`, { replace: true });
+      if (workspaceId) {
+        const existing = getDraftWorkspace(workspaceId);
+        if (existing?.userId === user.id) {
+          const hasCapturedIntake = Boolean(existing.intake.userRequest?.trim() || existing.intake.mariaSummary?.trim());
+          if (!hasCapturedIntake) {
+            const latestSession = await getLatestSession();
+            if (latestSession) {
+              const hydrated = saveDraftWorkspace(hydrateDraftWorkspaceFromChatContext(existing, latestSession.messages, latestSession.id));
+              if (!cancelled) setWorkspace(hydrated);
+              return;
+            }
+          }
+
+          if (!cancelled) setWorkspace(existing);
+          return;
+        }
+      }
+
+      if (initializedRef.current) return;
+      initializedRef.current = true;
+
+      const latestSession = await getLatestSession();
+      const created = createStarterPacketWorkspace({
+        user,
+        messages: latestSession?.messages ?? [],
+        sourceSessionId: latestSession?.id,
+      });
+      if (cancelled) return;
+      setWorkspace(created);
+      navigate(`/draft-forms/${created.id}`, { replace: true });
+    };
+
+    void initialize();
+
+    return () => {
+      cancelled = true;
+    };
   }, [workspaceId, navigate]);
 
   const commitWorkspace = (updater: (current: DraftFormsWorkspace) => DraftFormsWorkspace) => {
