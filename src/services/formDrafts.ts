@@ -2507,6 +2507,149 @@ function getPetitionerName(user: User) {
   return combined || user.name?.trim() || '';
 }
 
+const CHAT_PREFILL_SOURCE = Object.freeze({
+  sourceType: 'chat' as const,
+  sourceLabel: 'Maria chat intake',
+  confidence: 'low' as const,
+  needsReview: true,
+});
+
+const CALIFORNIA_COUNTIES = [
+  'Alameda', 'Alpine', 'Amador', 'Butte', 'Calaveras', 'Colusa', 'Contra Costa', 'Del Norte', 'El Dorado',
+  'Fresno', 'Glenn', 'Humboldt', 'Imperial', 'Inyo', 'Kern', 'Kings', 'Lake', 'Lassen', 'Los Angeles',
+  'Madera', 'Marin', 'Mariposa', 'Mendocino', 'Merced', 'Modoc', 'Mono', 'Monterey', 'Napa', 'Nevada',
+  'Orange', 'Placer', 'Plumas', 'Riverside', 'Sacramento', 'San Benito', 'San Bernardino', 'San Diego',
+  'San Francisco', 'San Joaquin', 'San Luis Obispo', 'San Mateo', 'Santa Barbara', 'Santa Clara', 'Santa Cruz',
+  'Shasta', 'Sierra', 'Siskiyou', 'Solano', 'Sonoma', 'Stanislaus', 'Sutter', 'Tehama', 'Trinity', 'Tulare',
+  'Tuolumne', 'Ventura', 'Yolo', 'Yuba',
+];
+
+interface ChatIntakePrefill {
+  caseNumber?: string;
+  filingCounty?: string;
+  petitionerName?: string;
+  respondentName?: string;
+  marriageDate?: string;
+  separationDate?: string;
+  hasMinorChildren?: boolean;
+  children: Array<{ fullName?: string; age?: string }>;
+}
+
+function truncateIntakeText(text: string, maxLength = 6000) {
+  const trimmed = text.trim();
+  return trimmed.length <= maxLength ? trimmed : trimmed.slice(trimmed.length - maxLength).trim();
+}
+
+function cleanExtractedValue(value?: string) {
+  return (value ?? '')
+    .replace(/^[\s:"'“”]+|[\s,"'“”]+$/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function extractLabelValue(text: string, labels: string[]) {
+  for (const label of labels) {
+    const expression = new RegExp(`(?:^|[\\n.;,])\\s*(?:${label})\\s*(?:is|are|:|=|-)\\s*([^\\n.;]+)`, 'i');
+    const match = text.match(expression);
+    const value = cleanExtractedValue(match?.[1]);
+    if (value) return value;
+  }
+  return '';
+}
+
+function extractDateByLabel(text: string, labels: string[]) {
+  const datePattern = '([A-Za-z]+\\s+\\d{1,2},?\\s+\\d{4}|\\d{1,2}[/-]\\d{1,2}[/-]\\d{2,4}|\\d{4}-\\d{2}-\\d{2})';
+  for (const label of labels) {
+    const expression = new RegExp(`(?:${label})[^\\n.]{0,40}?${datePattern}`, 'i');
+    const match = text.match(expression);
+    const normalized = normalizeDateInput(match?.[1]);
+    if (normalized) return normalized;
+  }
+  return '';
+}
+
+function normalizeDateInput(raw?: string) {
+  const value = cleanExtractedValue(raw);
+  if (!value) return '';
+  const isoMatch = value.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (isoMatch) return value;
+
+  const slashMatch = value.match(/^(\d{1,2})[/-](\d{1,2})[/-](\d{2,4})$/);
+  if (slashMatch) {
+    const [, monthRaw, dayRaw, yearRaw] = slashMatch;
+    const year = yearRaw.length === 2 ? `20${yearRaw}` : yearRaw;
+    const month = monthRaw.padStart(2, '0');
+    const day = dayRaw.padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  const parsed = new Date(value.replace(/(\d)(st|nd|rd|th)\b/i, '$1'));
+  if (!Number.isNaN(parsed.getTime())) {
+    const year = parsed.getFullYear();
+    const month = String(parsed.getMonth() + 1).padStart(2, '0');
+    const day = String(parsed.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+  return '';
+}
+
+function extractCounty(text: string) {
+  const explicit = text.match(/\b([A-Z][A-Za-z]+(?:\s+[A-Z][A-Za-z]+){0,2})\s+County\b/);
+  if (explicit?.[1]) return cleanExtractedValue(explicit[1]);
+  const lowerText = text.toLowerCase();
+  return CALIFORNIA_COUNTIES.find((county) => lowerText.includes(county.toLowerCase())) ?? '';
+}
+
+function extractChildrenFromChat(text: string, user: User): ChatIntakePrefill['children'] {
+  const children: ChatIntakePrefill['children'] = [];
+  const namedChildren = extractLabelValue(text, [
+    'children(?:\\s+are|\\s+names?)?',
+    'kids(?:\\s+are|\\s+names?)?',
+    'minor children(?:\\s+are|\\s+names?)?',
+  ]);
+
+  if (namedChildren) {
+    namedChildren
+      .split(/\s*(?:,| and | &)\s*/i)
+      .map((part) => cleanExtractedValue(part).replace(/\b(?:age|aged)\s*\d{1,2}\b/i, '').trim())
+      .filter((part) => part.length > 0 && !/^\d+$/.test(part))
+      .slice(0, 8)
+      .forEach((fullName) => children.push({ fullName }));
+  }
+
+  const countMatch = text.match(/\b(?:we have|have|has)\s+(\d+)\s+(?:minor\s+)?(?:children|kids)\b/i);
+  const profileCount = user.profile?.childrenCount;
+  const count = Number(countMatch?.[1] ?? profileCount ?? 0);
+  if (Number.isFinite(count) && count > children.length) {
+    for (let index = children.length; index < Math.min(count, 8); index += 1) {
+      children.push({ age: user.profile?.childrenAges?.[index]?.toString() });
+    }
+  }
+
+  return children;
+}
+
+function extractChatIntakePrefill(user: User, text: string): ChatIntakePrefill {
+  const combined = truncateIntakeText(text);
+  const children = extractChildrenFromChat(combined, user);
+  const hasChildrenFromText = /\b(?:minor children|children|kids|custody|parenting time|visitation|child support)\b/i.test(combined);
+
+  return {
+    caseNumber: extractLabelValue(combined, ['case(?:\\s+number|\\s+no\\.?)']),
+    filingCounty: extractCounty(combined),
+    petitionerName: extractLabelValue(combined, ['petitioner(?:\\s+name)?', 'my\\s+name']),
+    respondentName: extractLabelValue(combined, ['respondent(?:\\s+name)?', "(?:my\\s+)?spouse(?:'s)?\\s+name", "(?:my\\s+)?husband(?:'s)?\\s+name", "(?:my\\s+)?wife(?:'s)?\\s+name", "(?:the\\s+)?other\\s+party(?:'s)?\\s+name"]),
+    marriageDate: extractDateByLabel(combined, ['married', 'date\\s+of\\s+marriage', 'marriage\\s+date']),
+    separationDate: extractDateByLabel(combined, ['separated', 'date\\s+of\\s+separation', 'separation\\s+date']),
+    hasMinorChildren: typeof user.profile?.hasChildren === 'boolean' ? user.profile.hasChildren : children.length > 0 || hasChildrenFromText || undefined,
+    children,
+  };
+}
+
+function createChatField<T>(value: T, needsReview = true): DraftField<T> {
+  return createField(value, { ...CHAT_PREFILL_SOURCE, needsReview });
+}
+
 function getSourceMessages(messages: ChatMessage[] = [], sourceAssistantMessageId?: string) {
   const assistantIndex = messages.findIndex((message) => message.id === sourceAssistantMessageId);
   const resolvedAssistantIndex = assistantIndex >= 0
@@ -2524,13 +2667,18 @@ function getSourceMessages(messages: ChatMessage[] = [], sourceAssistantMessageI
     ? [...messages.slice(0, actualAssistantIndex)].reverse().find((message) => message.role === 'user')
     : [...messages].reverse().find((message) => message.role === 'user');
 
+  const userContextMessages = (actualAssistantIndex >= 0 ? messages.slice(0, actualAssistantIndex) : messages)
+    .filter((message) => message.role === 'user' && message.content.trim())
+    .slice(-8);
+  const userContext = truncateIntakeText(userContextMessages.map((message) => message.content.trim()).join('\n\n---\n\n'));
+
   const attachmentNames = [...messages]
     .filter((message) => message.role === 'user')
     .flatMap((message) => message.attachments ?? [])
     .map((attachment) => attachment.name)
     .filter(Boolean);
 
-  return { assistantMessage, userMessage, attachmentNames: Array.from(new Set(attachmentNames)) };
+  return { assistantMessage, userMessage, userContext, attachmentNames: Array.from(new Set(attachmentNames)) };
 }
 
 function inferBoolean(text: string, expressions: RegExp[]) {
@@ -2592,9 +2740,28 @@ export function createStarterPacketWorkspace(options: {
 }) {
   const { user, messages = [], sourceSessionId, sourceAssistantMessageId } = options;
   const now = new Date().toISOString();
-  const { assistantMessage, userMessage, attachmentNames } = getSourceMessages(messages, sourceAssistantMessageId);
-  const petitionerName = getPetitionerName(user);
+  const { assistantMessage, userMessage, userContext, attachmentNames } = getSourceMessages(messages, sourceAssistantMessageId);
+  const chatContext = userContext || userMessage?.content?.trim() || '';
+  const chatPrefill = extractChatIntakePrefill(user, [chatContext, assistantMessage?.content ?? ''].join('\n\n'));
+  const petitionerProfileName = getPetitionerName(user);
+  const petitionerName = petitionerProfileName || chatPrefill.petitionerName || '';
   const titleBase = petitionerName || user.email || 'Draft starter packet';
+  const filingCounty = user.profile?.county?.trim() || chatPrefill.filingCounty || '';
+  const marriageDate = user.profile?.marriageDate || chatPrefill.marriageDate || '';
+  const separationDate = user.profile?.separationDate || chatPrefill.separationDate || '';
+  const hasProfileChildren = typeof user.profile?.hasChildren === 'boolean';
+  const hasMinorChildren = hasProfileChildren ? Boolean(user.profile?.hasChildren) : Boolean(chatPrefill.hasMinorChildren);
+  const children = chatPrefill.children.map((child) => ({
+    id: uuidv4(),
+    fullName: child.fullName ? createChatField(child.fullName) : createField('', { needsReview: true }),
+    birthDate: createField('', {
+      sourceType: child.age ? 'chat' : undefined,
+      sourceLabel: child.age ? `Maria chat intake mentioned age ${child.age}; birth date still required` : undefined,
+      confidence: child.age ? 'low' : undefined,
+      needsReview: true,
+    }),
+    placeOfBirth: createField('', { needsReview: true }),
+  }));
 
   const workspace: DraftFormsWorkspace = {
     id: uuidv4(),
@@ -2607,17 +2774,17 @@ export function createStarterPacketWorkspace(options: {
     sourceSessionId,
     sourceAssistantMessageId,
     intake: {
-      userRequest: userMessage?.content?.trim() || undefined,
+      userRequest: chatContext || undefined,
       mariaSummary: assistantMessage?.content?.trim() || undefined,
       attachmentNames,
     },
-    caseNumber: createField('', {
+    caseNumber: chatPrefill.caseNumber ? createChatField(chatPrefill.caseNumber) : createField('', {
       needsReview: false,
     }),
-    filingCounty: createField(user.profile?.county?.trim() || '', {
-      sourceType: user.profile?.county ? 'profile' : undefined,
-      sourceLabel: user.profile?.county ? 'Profile' : undefined,
-      confidence: user.profile?.county ? 'medium' : undefined,
+    filingCounty: createField(filingCounty, {
+      sourceType: user.profile?.county ? 'profile' : chatPrefill.filingCounty ? 'chat' : undefined,
+      sourceLabel: user.profile?.county ? 'Profile' : chatPrefill.filingCounty ? 'Maria chat intake' : undefined,
+      confidence: user.profile?.county ? 'medium' : chatPrefill.filingCounty ? 'low' : undefined,
       needsReview: true,
     }),
     courtStreet: createField('', {
@@ -2633,10 +2800,10 @@ export function createStarterPacketWorkspace(options: {
       needsReview: false,
     }),
     petitionerName: createField(petitionerName, {
-      sourceType: petitionerName ? 'profile' : undefined,
-      sourceLabel: petitionerName ? 'Account profile' : undefined,
-      confidence: petitionerName ? 'high' : undefined,
-      needsReview: petitionerName.length === 0,
+      sourceType: petitionerProfileName ? 'profile' : chatPrefill.petitionerName ? 'chat' : undefined,
+      sourceLabel: petitionerProfileName ? 'Account profile' : chatPrefill.petitionerName ? 'Maria chat intake' : undefined,
+      confidence: petitionerProfileName ? 'high' : chatPrefill.petitionerName ? 'low' : undefined,
+      needsReview: !petitionerProfileName,
     }),
     petitionerAddress: createField('', {
       needsReview: true,
@@ -2654,9 +2821,9 @@ export function createStarterPacketWorkspace(options: {
       needsReview: false,
     }),
     petitionerAttorneyOrPartyName: createField(petitionerName, {
-      sourceType: petitionerName ? 'profile' : 'manual',
-      sourceLabel: petitionerName ? 'Account profile' : 'Default FL-100 assumption',
-      confidence: petitionerName ? 'high' : 'low',
+      sourceType: petitionerProfileName ? 'profile' : chatPrefill.petitionerName ? 'chat' : 'manual',
+      sourceLabel: petitionerProfileName ? 'Account profile' : chatPrefill.petitionerName ? 'Maria chat intake' : 'Default FL-100 assumption',
+      confidence: petitionerProfileName ? 'high' : chatPrefill.petitionerName ? 'low' : 'low',
       needsReview: true,
     }),
     petitionerFirmName: createField('', {
@@ -2671,33 +2838,33 @@ export function createStarterPacketWorkspace(options: {
       confidence: 'low',
       needsReview: true,
     }),
-    respondentName: createField('', {
+    respondentName: chatPrefill.respondentName ? createChatField(chatPrefill.respondentName) : createField('', {
       needsReview: true,
     }),
-    marriageDate: createField(user.profile?.marriageDate || '', {
-      sourceType: user.profile?.marriageDate ? 'profile' : undefined,
-      sourceLabel: user.profile?.marriageDate ? 'Profile' : undefined,
-      confidence: user.profile?.marriageDate ? 'medium' : undefined,
+    marriageDate: createField(marriageDate, {
+      sourceType: user.profile?.marriageDate ? 'profile' : chatPrefill.marriageDate ? 'chat' : undefined,
+      sourceLabel: user.profile?.marriageDate ? 'Profile' : chatPrefill.marriageDate ? 'Maria chat intake' : undefined,
+      confidence: user.profile?.marriageDate ? 'medium' : chatPrefill.marriageDate ? 'low' : undefined,
       needsReview: true,
     }),
-    separationDate: createField(user.profile?.separationDate || '', {
-      sourceType: user.profile?.separationDate ? 'profile' : undefined,
-      sourceLabel: user.profile?.separationDate ? 'Profile' : undefined,
-      confidence: user.profile?.separationDate ? 'medium' : undefined,
+    separationDate: createField(separationDate, {
+      sourceType: user.profile?.separationDate ? 'profile' : chatPrefill.separationDate ? 'chat' : undefined,
+      sourceLabel: user.profile?.separationDate ? 'Profile' : chatPrefill.separationDate ? 'Maria chat intake' : undefined,
+      confidence: user.profile?.separationDate ? 'medium' : chatPrefill.separationDate ? 'low' : undefined,
       needsReview: true,
     }),
-    hasMinorChildren: createField(Boolean(user.profile?.hasChildren), {
-      sourceType: typeof user.profile?.hasChildren === 'boolean' ? 'profile' : undefined,
-      sourceLabel: typeof user.profile?.hasChildren === 'boolean' ? 'Profile' : undefined,
-      confidence: typeof user.profile?.hasChildren === 'boolean' ? 'medium' : undefined,
+    hasMinorChildren: createField(hasMinorChildren, {
+      sourceType: hasProfileChildren ? 'profile' : chatPrefill.hasMinorChildren !== undefined ? 'chat' : undefined,
+      sourceLabel: hasProfileChildren ? 'Profile' : chatPrefill.hasMinorChildren !== undefined ? 'Maria chat intake' : undefined,
+      confidence: hasProfileChildren ? 'medium' : chatPrefill.hasMinorChildren !== undefined ? 'low' : undefined,
       needsReview: true,
     }),
-    children: [],
+    children,
     fl100: createDefaultFl100Section(),
     fl300: createDefaultFl300Section(petitionerName),
     fl150: createDefaultFl150Section(petitionerName),
     fl105: createDefaultFl105Section(petitionerName),
-    requests: inferRequests(user, userMessage?.content, assistantMessage?.content),
+    requests: inferRequests(user, chatContext, assistantMessage?.content),
   };
 
   saveDraftWorkspace(workspace);
