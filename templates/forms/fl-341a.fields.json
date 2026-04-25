@@ -1,0 +1,457 @@
+[
+  {
+    "page": 0,
+    "name": "FL-341A.caption.petitioner",
+    "fullName": "FL-341A.caption.petitioner",
+    "rect": [
+      163.565,
+      732.373,
+      393.967,
+      742.374
+    ],
+    "type": "/Tx",
+    "tooltip": "PETITIONER/PLAINTIFF:"
+  },
+  {
+    "page": 0,
+    "name": "FL-341A.caption.respondent",
+    "fullName": "FL-341A.caption.respondent",
+    "rect": [
+      163.565,
+      721.12,
+      393.967,
+      731.121
+    ],
+    "type": "/Tx",
+    "tooltip": "RESPONDENT/DEFENDANT:"
+  },
+  {
+    "page": 0,
+    "name": "FL-341A.caption.otherParentParty",
+    "fullName": "FL-341A.caption.otherParentParty",
+    "rect": [
+      163.788,
+      711.933,
+      393.967,
+      721.934
+    ],
+    "type": "/Tx",
+    "tooltip": "OTHER PARENT/PARTY:"
+  },
+  {
+    "page": 0,
+    "name": "FL-341A.caption.caseNumber",
+    "fullName": "FL-341A.caption.caseNumber",
+    "rect": [
+      399.172,
+      721.046,
+      571.972,
+      732.646
+    ],
+    "type": "/Tx",
+    "tooltip": "CASE NUMBER:"
+  },
+  {
+    "page": 1,
+    "name": "FL-341A.caption.petitioner",
+    "fullName": "FL-341A.caption.petitioner",
+    "rect": [
+      163.571,
+      731.588,
+      387.95,
+      741.589
+    ],
+    "type": "/Tx",
+    "tooltip": "PETITIONER/PLAINTIFF:"
+  },
+  {
+    "page": 1,
+    "name": "FL-341A.caption.respondent",
+    "fullName": "FL-341A.caption.respondent",
+    "rect": [
+      163.571,
+      720.335,
+      387.95,
+      730.336
+    ],
+    "type": "/Tx",
+    "tooltip": "RESPONDENT/DEFENDANT:"
+  },
+  {
+    "page": 1,
+    "name": "FL-341A.caption.otherParentParty",
+    "fullName": "FL-341A.caption.otherParentParty",
+    "rect": [
+      163.571,
+      711.148,
+      387.95,
+      721.149
+    ],
+    "type": "/Tx",
+    "tooltip": "OTHER PARENT/PARTY:"
+  },
+  {
+    "page": 1,
+    "name": "FL-341A.caption.caseNumber",
+    "fullName": "FL-341A.caption.caseNumber",
+    "rect": [
+      399.178,
+      720.261,
+      571.978,
+      731.861
+    ],
+    "type": "/Tx",
+    "tooltip": "CASE NUMBER:"
+  },
+  {
+    "page": 0,
+    "name": "FL-341A.sourceOrder.fl340",
+    "fullName": "FL-341A.sourceOrder.fl340",
+    "rect": [
+      131.624,
+      679.535,
+      140.624,
+      688.535
+    ],
+    "type": "/Btn",
+    "tooltip": "Child Custody and Visitation (Parenting Time) Order Attachment (form FL-341)"
+  },
+  {
+    "page": 0,
+    "name": "FL-341A.sourceOrder.fl180",
+    "fullName": "FL-341A.sourceOrder.fl180",
+    "rect": [
+      55.275,
+      622.947,
+      65.275,
+      632.947
+    ],
+    "type": "/Btn",
+    "tooltip": "child abduction"
+  },
+  {
+    "page": 0,
+    "name": "FL-341A.sourceOrder.fl250",
+    "fullName": "FL-341A.sourceOrder.fl250",
+    "rect": [
+      162.445,
+      622.947,
+      172.445,
+      632.947
+    ],
+    "type": "/Btn",
+    "tooltip": "physical abuse"
+  },
+  {
+    "page": 0,
+    "name": "FL-341A.sourceOrder.fl355",
+    "fullName": "FL-341A.sourceOrder.fl355",
+    "rect": [
+      276.738,
+      622.947,
+      286.738,
+      632.947
+    ],
+    "type": "/Btn",
+    "tooltip": "drug abuse"
+  },
+  {
+    "page": 0,
+    "name": "FL-341A.sourceOrder.other",
+    "fullName": "FL-341A.sourceOrder.other",
+    "rect": [
+      131.556,
+      666.839,
+      140.556,
+      675.839
+    ],
+    "type": "/Btn",
+    "tooltip": "Other "
+  },
+  {
+    "page": 0,
+    "name": "FL-341A.sourceOrder.otherText",
+    "fullName": "FL-341A.sourceOrder.otherText",
+    "rect": [
+      218.123,
+      666.862,
+      575.379,
+      675.862
+    ],
+    "type": "/Tx",
+    "tooltip": "(specify):"
+  },
+  {
+    "page": 0,
+    "name": "FL-341A.supervisedParty.petitioner",
+    "fullName": "FL-341A.supervisedParty.petitioner",
+    "rect": [
+      55.307,
+      595.538,
+      65.307,
+      605.538
+    ],
+    "type": "/Btn",
+    "tooltip": "Petitioner"
+  },
+  {
+    "page": 0,
+    "name": "FL-341A.supervisedParty.respondent",
+    "fullName": "FL-341A.supervisedParty.respondent",
+    "rect": [
+      127.967,
+      595.538,
+      137.967,
+      605.538
+    ],
+    "type": "/Btn",
+    "tooltip": "Respondent"
+  },
+  {
+    "page": 0,
+    "name": "FL-341A.supervisedParty.other_parent_party",
+    "fullName": "FL-341A.supervisedParty.other_parent_party",
+    "rect": [
+      214.767,
+      595.538,
+      224.767,
+      605.538
+    ],
+    "type": "/Btn",
+    "tooltip": "Other Parent/Party"
+  },
+  {
+    "page": 0,
+    "name": "FL-341A.supervisor.type.professional",
+    "fullName": "FL-341A.supervisor.type.professional",
+    "rect": [
+      55.749,
+      418.824,
+      65.749,
+      428.824
+    ],
+    "type": "/Btn",
+    "tooltip": "PROFESSIONAL SUPERVISED VISITATION WITH CHILDREN"
+  },
+  {
+    "page": 1,
+    "name": "FL-341A.supervisor.type.nonprofessional",
+    "fullName": "FL-341A.supervisor.type.nonprofessional",
+    "rect": [
+      55.412,
+      690.544,
+      65.412,
+      700.544
+    ],
+    "type": "/Btn",
+    "tooltip": "NONPROFESSIONAL SUPERVISED VISITATION WITH CHILDREN"
+  },
+  {
+    "page": 0,
+    "name": "FL-341A.supervisor.type.other",
+    "fullName": "FL-341A.supervisor.type.other",
+    "rect": [
+      69.562,
+      434.979,
+      79.562,
+      444.979
+    ],
+    "type": "/Btn",
+    "tooltip": "The names and birthdates of additional children are attached to the order."
+  },
+  {
+    "page": 1,
+    "name": "FL-341A.supervisor.type.otherText",
+    "fullName": "FL-341A.supervisor.type.otherText",
+    "rect": [
+      51.191,
+      75.994,
+      576.0,
+      109.287
+    ],
+    "type": "/Tx",
+    "tooltip": "specify:"
+  },
+  {
+    "page": 0,
+    "name": "FL-341A.supervisor.name",
+    "fullName": "FL-341A.supervisor.name",
+    "rect": [
+      245.968,
+      389.708,
+      433.168,
+      400.448
+    ],
+    "type": "/Tx",
+    "tooltip": "name:"
+  },
+  {
+    "page": 0,
+    "name": "FL-341A.supervisor.contact",
+    "fullName": "FL-341A.supervisor.contact",
+    "rect": [
+      491.733,
+      387.468,
+      567.516,
+      400.448
+    ],
+    "type": "/Tx",
+    "tooltip": "Telephone:"
+  },
+  {
+    "page": 0,
+    "name": "FL-341A.supervisor.fees.petitioner",
+    "fullName": "FL-341A.supervisor.fees.petitioner",
+    "rect": [
+      121.643,
+      313.796,
+      131.643,
+      323.796
+    ],
+    "type": "/Btn",
+    "tooltip": "Petitioner"
+  },
+  {
+    "page": 0,
+    "name": "FL-341A.supervisor.fees.respondent",
+    "fullName": "FL-341A.supervisor.fees.respondent",
+    "rect": [
+      195.08,
+      313.796,
+      205.08,
+      323.796
+    ],
+    "type": "/Btn",
+    "tooltip": "Respondent"
+  },
+  {
+    "page": 0,
+    "name": "FL-341A.supervisor.fees.shared",
+    "fullName": "FL-341A.supervisor.fees.shared",
+    "rect": [
+      280.8,
+      313.796,
+      290.8,
+      323.796
+    ],
+    "type": "/Btn",
+    "tooltip": "Other Parent/Party  "
+  },
+  {
+    "page": 0,
+    "name": "FL-341A.supervisor.fees.other",
+    "fullName": "FL-341A.supervisor.fees.other",
+    "rect": [
+      342.955,
+      269.467,
+      352.955,
+      279.467
+    ],
+    "type": "/Btn",
+    "tooltip": "Respondent"
+  },
+  {
+    "page": 0,
+    "name": "FL-341A.supervisor.fees.otherText",
+    "fullName": "FL-341A.supervisor.fees.otherText",
+    "rect": [
+      516.866,
+      312.88,
+      573.956,
+      323.836
+    ],
+    "type": "/Tx",
+    "tooltip": "(date):"
+  },
+  {
+    "page": 0,
+    "name": "FL-341A.schedule.mode.fl311",
+    "fullName": "FL-341A.schedule.mode.fl311",
+    "rect": [
+      121.643,
+      154.194,
+      130.643,
+      163.194
+    ],
+    "type": "/Btn",
+    "tooltip": "According to the schedule specified in:"
+  },
+  {
+    "page": 0,
+    "name": "FL-341A.schedule.mode.attachment",
+    "fullName": "FL-341A.schedule.mode.attachment",
+    "rect": [
+      121.643,
+      123.44,
+      130.643,
+      132.44
+    ],
+    "type": "/Btn",
+    "tooltip": "In person at a safe location."
+  },
+  {
+    "page": 0,
+    "name": "FL-341A.schedule.mode.text",
+    "fullName": "FL-341A.schedule.mode.text",
+    "rect": [
+      121.643,
+      97.288,
+      130.643,
+      106.288
+    ],
+    "type": "/Btn",
+    "tooltip": "Other "
+  },
+  {
+    "page": 0,
+    "name": "FL-341A.schedule.attachmentPageCount",
+    "fullName": "FL-341A.schedule.attachmentPageCount",
+    "rect": [
+      482.76,
+      153.044,
+      575.104,
+      163.563
+    ],
+    "type": "/Tx",
+    "tooltip": "(specify):"
+  },
+  {
+    "page": 1,
+    "name": "FL-341A.schedule.text",
+    "fullName": "FL-341A.schedule.text",
+    "rect": [
+      133.146,
+      125.087,
+      574.968,
+      167.471
+    ],
+    "type": "/Tx",
+    "tooltip": "specify:"
+  },
+  {
+    "page": 1,
+    "name": "FL-341A.restrictions",
+    "fullName": "FL-341A.restrictions",
+    "rect": [
+      51.191,
+      75.994,
+      576.0,
+      109.287
+    ],
+    "type": "/Tx",
+    "tooltip": "specify:"
+  },
+  {
+    "page": 1,
+    "name": "FL-341A.otherTerms",
+    "fullName": "FL-341A.otherTerms",
+    "rect": [
+      198.065,
+      182.233,
+      576.002,
+      191.233
+    ],
+    "type": "/Tx",
+    "tooltip": "(specify):"
+  }
+]

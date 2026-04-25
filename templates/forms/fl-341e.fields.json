@@ -1,0 +1,483 @@
+[
+  {
+    "page": 0,
+    "name": "FL-341E.caption.petitioner",
+    "fullName": "FL-341E.caption.petitioner",
+    "rect": [
+      140.675,
+      727.767,
+      400.498,
+      738.352
+    ],
+    "type": "/Tx",
+    "tooltip": "PETITIONER:"
+  },
+  {
+    "page": 0,
+    "name": "FL-341E.caption.respondent",
+    "fullName": "FL-341E.caption.respondent",
+    "rect": [
+      140.35,
+      715.241,
+      400.006,
+      725.826
+    ],
+    "type": "/Tx",
+    "tooltip": "RESPONDENT:"
+  },
+  {
+    "page": 0,
+    "name": "FL-341E.caption.otherParentParty",
+    "fullName": "FL-341E.caption.otherParentParty",
+    "rect": [
+      140.652,
+      702.496,
+      402.879,
+      713.081
+    ],
+    "type": "/Tx",
+    "tooltip": "OTHER PARENT/PARTY:"
+  },
+  {
+    "page": 0,
+    "name": "FL-341E.caption.caseNumber",
+    "fullName": "FL-341E.caption.caseNumber",
+    "rect": [
+      410.4,
+      711.933,
+      568.8,
+      727.345
+    ],
+    "type": "/Tx",
+    "tooltip": "CASE NUMBER:"
+  },
+  {
+    "page": 0,
+    "name": "FL-341E.sourceOrder.fl340",
+    "fullName": "FL-341E.sourceOrder.fl340",
+    "rect": [
+      358.56,
+      656.905,
+      367.56,
+      665.905
+    ],
+    "type": "/Btn",
+    "tooltip": "Findings and Order After Hearing or Judgment"
+  },
+  {
+    "page": 0,
+    "name": "FL-341E.sourceOrder.fl180",
+    "fullName": "FL-341E.sourceOrder.fl180",
+    "rect": [
+      127.001,
+      670.903,
+      136.001,
+      679.903
+    ],
+    "type": "/Btn",
+    "tooltip": "Response"
+  },
+  {
+    "page": 0,
+    "name": "FL-341E.sourceOrder.fl250",
+    "fullName": "FL-341E.sourceOrder.fl250",
+    "rect": [
+      206.64,
+      670.903,
+      215.64,
+      679.903
+    ],
+    "type": "/Btn",
+    "tooltip": "Request for Order"
+  },
+  {
+    "page": 0,
+    "name": "FL-341E.sourceOrder.fl355",
+    "fullName": "FL-341E.sourceOrder.fl355",
+    "rect": [
+      61.744,
+      656.963,
+      70.744,
+      665.963
+    ],
+    "type": "/Btn",
+    "tooltip": "Stipulation and Order for Custody and/or Visitation of Children"
+  },
+  {
+    "page": 0,
+    "name": "FL-341E.sourceOrder.other",
+    "fullName": "FL-341E.sourceOrder.other",
+    "rect": [
+      284.941,
+      644.377,
+      293.941,
+      653.377
+    ],
+    "type": "/Btn",
+    "tooltip": "Other (specify):"
+  },
+  {
+    "page": 0,
+    "name": "FL-341E.sourceOrder.otherText",
+    "fullName": "FL-341E.sourceOrder.otherText",
+    "rect": [
+      374.4,
+      644.377,
+      571.734,
+      653.377
+    ],
+    "type": "/Tx",
+    "tooltip": "SpecifyOtherAttachment_ft"
+  },
+  {
+    "page": 0,
+    "name": "FL-341E.orderJointLegalCustody",
+    "fullName": "FL-341E.orderJointLegalCustody",
+    "rect": [
+      55.476,
+      339.007,
+      64.476,
+      348.007
+    ],
+    "type": "/Btn",
+    "tooltip": "Special decision making designation and access to children's records"
+  },
+  {
+    "page": 0,
+    "name": "FL-341E.decision.education.joint",
+    "fullName": "FL-341E.decision.education.joint",
+    "rect": [
+      70.685,
+      534.166,
+      79.685,
+      543.166
+    ],
+    "type": "/Btn",
+    "tooltip": "Enrollment in or leaving a particular private or public school or daycare center"
+  },
+  {
+    "page": 0,
+    "name": "FL-341E.decision.education.petitioner",
+    "fullName": "FL-341E.decision.education.petitioner",
+    "rect": [
+      148.113,
+      573.715,
+      157.113,
+      582.715
+    ],
+    "type": "/Btn",
+    "tooltip": "Petitioner"
+  },
+  {
+    "page": 0,
+    "name": "FL-341E.decision.education.respondent",
+    "fullName": "FL-341E.decision.education.respondent",
+    "rect": [
+      218.418,
+      573.715,
+      227.418,
+      582.715
+    ],
+    "type": "/Btn",
+    "tooltip": "Respondent"
+  },
+  {
+    "page": 0,
+    "name": "FL-341E.decision.education.other_parent_party",
+    "fullName": "FL-341E.decision.education.other_parent_party",
+    "rect": [
+      301.481,
+      573.715,
+      310.481,
+      582.715
+    ],
+    "type": "/Btn",
+    "tooltip": "Other Parent/Party"
+  },
+  {
+    "page": 0,
+    "name": "FL-341E.decision.nonEmergencyHealthcare.joint",
+    "fullName": "FL-341E.decision.nonEmergencyHealthcare.joint",
+    "rect": [
+      70.685,
+      492.216,
+      79.685,
+      501.216
+    ],
+    "type": "/Btn",
+    "tooltip": "Selection of a doctor, dentist, or other health professional (except in emergency situations)"
+  },
+  {
+    "page": 0,
+    "name": "FL-341E.decision.nonEmergencyHealthcare.petitioner",
+    "fullName": "FL-341E.decision.nonEmergencyHealthcare.petitioner",
+    "rect": [
+      148.113,
+      573.715,
+      157.113,
+      582.715
+    ],
+    "type": "/Btn",
+    "tooltip": "Petitioner"
+  },
+  {
+    "page": 0,
+    "name": "FL-341E.decision.nonEmergencyHealthcare.respondent",
+    "fullName": "FL-341E.decision.nonEmergencyHealthcare.respondent",
+    "rect": [
+      218.418,
+      573.715,
+      227.418,
+      582.715
+    ],
+    "type": "/Btn",
+    "tooltip": "Respondent"
+  },
+  {
+    "page": 0,
+    "name": "FL-341E.decision.nonEmergencyHealthcare.other_parent_party",
+    "fullName": "FL-341E.decision.nonEmergencyHealthcare.other_parent_party",
+    "rect": [
+      301.481,
+      573.715,
+      310.481,
+      582.715
+    ],
+    "type": "/Btn",
+    "tooltip": "Other Parent/Party"
+  },
+  {
+    "page": 0,
+    "name": "FL-341E.decision.mentalHealth.joint",
+    "fullName": "FL-341E.decision.mentalHealth.joint",
+    "rect": [
+      70.685,
+      519.426,
+      79.685,
+      528.426
+    ],
+    "type": "/Btn",
+    "tooltip": "Beginning or ending of psychiatric, psychological, or other mental health counseling or therapy"
+  },
+  {
+    "page": 0,
+    "name": "FL-341E.decision.mentalHealth.petitioner",
+    "fullName": "FL-341E.decision.mentalHealth.petitioner",
+    "rect": [
+      148.113,
+      573.715,
+      157.113,
+      582.715
+    ],
+    "type": "/Btn",
+    "tooltip": "Petitioner"
+  },
+  {
+    "page": 0,
+    "name": "FL-341E.decision.mentalHealth.respondent",
+    "fullName": "FL-341E.decision.mentalHealth.respondent",
+    "rect": [
+      218.418,
+      573.715,
+      227.418,
+      582.715
+    ],
+    "type": "/Btn",
+    "tooltip": "Respondent"
+  },
+  {
+    "page": 0,
+    "name": "FL-341E.decision.mentalHealth.other_parent_party",
+    "fullName": "FL-341E.decision.mentalHealth.other_parent_party",
+    "rect": [
+      301.481,
+      573.715,
+      310.481,
+      582.715
+    ],
+    "type": "/Btn",
+    "tooltip": "Other Parent/Party"
+  },
+  {
+    "page": 0,
+    "name": "FL-341E.decision.extracurricular.joint",
+    "fullName": "FL-341E.decision.extracurricular.joint",
+    "rect": [
+      70.685,
+      505.366,
+      79.685,
+      514.366
+    ],
+    "type": "/Btn",
+    "tooltip": "Participation in extracurricular activities"
+  },
+  {
+    "page": 0,
+    "name": "FL-341E.decision.extracurricular.petitioner",
+    "fullName": "FL-341E.decision.extracurricular.petitioner",
+    "rect": [
+      148.113,
+      573.715,
+      157.113,
+      582.715
+    ],
+    "type": "/Btn",
+    "tooltip": "Petitioner"
+  },
+  {
+    "page": 0,
+    "name": "FL-341E.decision.extracurricular.respondent",
+    "fullName": "FL-341E.decision.extracurricular.respondent",
+    "rect": [
+      218.418,
+      573.715,
+      227.418,
+      582.715
+    ],
+    "type": "/Btn",
+    "tooltip": "Respondent"
+  },
+  {
+    "page": 0,
+    "name": "FL-341E.decision.extracurricular.other_parent_party",
+    "fullName": "FL-341E.decision.extracurricular.other_parent_party",
+    "rect": [
+      301.481,
+      573.715,
+      310.481,
+      582.715
+    ],
+    "type": "/Btn",
+    "tooltip": "Other Parent/Party"
+  },
+  {
+    "page": 0,
+    "name": "FL-341E.term.recordsAccess",
+    "fullName": "FL-341E.term.recordsAccess",
+    "rect": [
+      55.836,
+      149.958,
+      64.836,
+      158.958
+    ],
+    "type": "/Btn",
+    "tooltip": "School notification. Each party will be designated as a person the children's school will contact in the event of an emergency."
+  },
+  {
+    "page": 0,
+    "name": "FL-341E.term.emergencyNotice",
+    "fullName": "FL-341E.term.emergencyNotice",
+    "rect": [
+      55.836,
+      251.515,
+      64.836,
+      260.515
+    ],
+    "type": "/Btn",
+    "tooltip": "Health-care notification."
+  },
+  {
+    "page": 0,
+    "name": "FL-341E.term.portalAccess",
+    "fullName": "FL-341E.term.portalAccess",
+    "rect": [
+      97.602,
+      239.187,
+      106.602,
+      248.187
+    ],
+    "type": "/Btn",
+    "tooltip": "Each party must notify the other of the name and address of each health practitioner who examines or treats the children; such notification must be made within (specify number):  days of the first treatment or examination."
+  },
+  {
+    "page": 0,
+    "name": "FL-341E.term.contactUpdates",
+    "fullName": "FL-341E.term.contactUpdates",
+    "rect": [
+      97.602,
+      165.101,
+      106.602,
+      174.101
+    ],
+    "type": "/Btn",
+    "tooltip": "The parties are required to administer any prescribed medications for the children."
+  },
+  {
+    "page": 0,
+    "name": "FL-341E.dispute.meetAndConfer",
+    "fullName": "FL-341E.dispute.meetAndConfer",
+    "rect": [
+      97.602,
+      211.81,
+      106.602,
+      220.81
+    ],
+    "type": "/Btn",
+    "tooltip": "Each party is authorized to take any and all actions necessary to protect the health and welfare of the children,  including but not limited to consent to emergency surgical procedures or treatment.The party authorizing such  emergency treatment must notify the other party as soon as possible of the emergency situation and of all  procedures or treatment administered to the children."
+  },
+  {
+    "page": 0,
+    "name": "FL-341E.dispute.mediation",
+    "fullName": "FL-341E.dispute.mediation",
+    "rect": [
+      55.836,
+      122.632,
+      64.836,
+      131.632
+    ],
+    "type": "/Btn",
+    "tooltip": "Name. The parties will not change the last name of the children or have a different name used on the children's medical,  school, or other records without the written consent of the other party."
+  },
+  {
+    "page": 0,
+    "name": "FL-341E.dispute.court",
+    "fullName": "FL-341E.dispute.court",
+    "rect": [
+      70.586,
+      375.101,
+      79.586,
+      384.101
+    ],
+    "type": "/Btn",
+    "tooltip": "Other consequences (specify):"
+  },
+  {
+    "page": 0,
+    "name": "FL-341E.dispute.other",
+    "fullName": "FL-341E.dispute.other",
+    "rect": [
+      55.975,
+      93.302,
+      64.975,
+      102.302
+    ],
+    "type": "/Btn",
+    "tooltip": "Other (specify):"
+  },
+  {
+    "page": 0,
+    "name": "FL-341E.dispute.otherText",
+    "fullName": "FL-341E.dispute.otherText",
+    "rect": [
+      93.6,
+      350.895,
+      575.28,
+      383.652
+    ],
+    "type": "/Tx",
+    "tooltip": "OtherConsequences_ft"
+  },
+  {
+    "page": 0,
+    "name": "FL-341E.additionalTerms",
+    "fullName": "FL-341E.additionalTerms",
+    "rect": [
+      75.809,
+      70.432,
+      574.95,
+      102.832
+    ],
+    "type": "/Tx",
+    "tooltip": "OtherSpecify_ft"
+  }
+]

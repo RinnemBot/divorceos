@@ -1,0 +1,3148 @@
+[
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].PxCaption_sf[0].CaseSub[0].CaseNumber[0].CaseNumber_ft[0]",
+    "fullName": "FL-341[0].Page1[0].PxCaption_sf[0].CaseSub[0].CaseNumber[0].CaseNumber_ft[0]",
+    "rect": [
+      399.883,
+      712.12,
+      572.683,
+      724.439
+    ],
+    "type": "/Tx",
+    "tooltip": "CASE NUMBER:"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].PxCaption_sf[0].PartySub[0].TitlePartyName[0].Petitioner_ft[0]",
+    "fullName": "FL-341[0].Page1[0].PxCaption_sf[0].PartySub[0].TitlePartyName[0].Petitioner_ft[0]",
+    "rect": [
+      149.116,
+      730.055,
+      390.991,
+      740.217
+    ],
+    "type": "/Tx",
+    "tooltip": "PETITIONER:"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].PxCaption_sf[0].PartySub[0].TitlePartyName[0].Respondent_ft[0]",
+    "fullName": "FL-341[0].Page1[0].PxCaption_sf[0].PartySub[0].TitlePartyName[0].Respondent_ft[0]",
+    "rect": [
+      150.204,
+      717.702,
+      391.206,
+      727.864
+    ],
+    "type": "/Tx",
+    "tooltip": "RESPONDENT:"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].PxCaption_sf[0].PartySub[0].TitlePartyName[0].OtherParentParty_ft[0]",
+    "fullName": "FL-341[0].Page1[0].PxCaption_sf[0].PartySub[0].TitlePartyName[0].OtherParentParty_ft[0]",
+    "rect": [
+      149.706,
+      705.944,
+      391.994,
+      716.106
+    ],
+    "type": "/Tx",
+    "tooltip": "OTHER PARENT/PARTY:"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].TitleSub[0].FindingsAndOrderAfterHearing_cb[0]",
+    "fullName": "FL-341[0].Page1[0].TitleSub[0].FindingsAndOrderAfterHearing_cb[0]",
+    "rect": [
+      61.41,
+      669.829,
+      70.41,
+      678.829
+    ],
+    "type": "/Btn",
+    "tooltip": "Findings and Order After Hearing (form FL-340)"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].TitleSub[0].Response_cb1[0]",
+    "fullName": "FL-341[0].Page1[0].TitleSub[0].Response_cb1[0]",
+    "rect": [
+      303.483,
+      669.829,
+      312.483,
+      678.829
+    ],
+    "type": "/Btn",
+    "tooltip": "Judgment (form FL-180)"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].TitleSub[0].Response_cb2[0]",
+    "fullName": "FL-341[0].Page1[0].TitleSub[0].Response_cb2[0]",
+    "rect": [
+      441.011,
+      669.829,
+      450.011,
+      678.829
+    ],
+    "type": "/Btn",
+    "tooltip": "Judgment (form FL-250)"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].TitleSub[0].StipAndOrderForCustodyVisitation_cb[0]",
+    "fullName": "FL-341[0].Page1[0].TitleSub[0].StipAndOrderForCustodyVisitation_cb[0]",
+    "rect": [
+      61.41,
+      657.612,
+      70.41,
+      666.612
+    ],
+    "type": "/Btn",
+    "tooltip": "Stipulation and Order for Custody and/or Visitation of Children (form FL-355)"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].TitleSub[0].Other_cb[0]",
+    "fullName": "FL-341[0].Page1[0].TitleSub[0].Other_cb[0]",
+    "rect": [
+      60.78,
+      645.865,
+      69.78,
+      654.865
+    ],
+    "type": "/Btn",
+    "tooltip": "Other (specify):  "
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].TitleSub[0].OtherSpecify_ft[0]",
+    "fullName": "FL-341[0].Page1[0].TitleSub[0].OtherSpecify_ft[0]",
+    "rect": [
+      147.427,
+      645.208,
+      561.274,
+      655.52
+    ],
+    "type": "/Tx",
+    "tooltip": "specify"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List3[0].Li1[0].US_cb[0]",
+    "fullName": "FL-341[0].Page1[0].List3[0].Li1[0].US_cb[0]",
+    "rect": [
+      54.675,
+      560.464,
+      63.675,
+      569.464
+    ],
+    "type": "/Btn",
+    "tooltip": "the United States"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List3[0].Li1[0].OtherResidence_cb[0]",
+    "fullName": "FL-341[0].Page1[0].List3[0].Li1[0].OtherResidence_cb[0]",
+    "rect": [
+      161.583,
+      560.464,
+      170.583,
+      569.464
+    ],
+    "type": "/Btn",
+    "tooltip": "Other"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List3[0].Li1[0].Specify_ft[0]",
+    "fullName": "FL-341[0].Page1[0].List3[0].Li1[0].Specify_ft[0]",
+    "rect": [
+      249.337,
+      560.617,
+      573.435,
+      570.785
+    ],
+    "type": "/Tx",
+    "tooltip": "(specify):"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List5[0].Li1[0].ChildAbductionPrevention_cb[0]",
+    "fullName": "FL-341[0].Page1[0].List5[0].Li1[0].ChildAbductionPrevention_cb[0]",
+    "rect": [
+      54.675,
+      525.557,
+      63.675,
+      534.557
+    ],
+    "type": "/Btn",
+    "tooltip": "Child abduction prevention. There is a risk that one of the parties will take the children out of California without the other party's permission. (Child Abduction Prevention Order Attachment (form FL-341(B)) is attached and must be obeyed.)"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List5[0].Li1[0].fl311A[0]",
+    "fullName": "FL-341[0].Page1[0].List5[0].Li1[0].fl311A[0]",
+    "rect": [
+      359.572,
+      513.221,
+      403.083,
+      522.221
+    ],
+    "type": "/Btn",
+    "tooltip": "form FL-105"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List6[0].Li1[0].PartiesAttendMediationOrCCRC_cb[0]",
+    "fullName": "FL-341[0].Page1[0].List6[0].Li1[0].PartiesAttendMediationOrCCRC_cb[0]",
+    "rect": [
+      54.675,
+      496.697,
+      63.675,
+      505.697
+    ],
+    "type": "/Btn",
+    "tooltip": "The court refers the parties to child custody mediation or child custody recommending counseling as follows:"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List6[0].Li1[0].T141[0]",
+    "fullName": "FL-341[0].Page1[0].List6[0].Li1[0].T141[0]",
+    "rect": [
+      72.896,
+      471.855,
+      574.997,
+      496.046
+    ],
+    "type": "/Tx",
+    "tooltip": "The court refers the parties to child custody mediation or child custody recommending counseling as follows:"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List7[0].Custody_cb[0]",
+    "fullName": "FL-341[0].Page1[0].List7[0].Custody_cb[0]",
+    "rect": [
+      55.332,
+      456.522,
+      64.332,
+      465.522
+    ],
+    "type": "/Btn",
+    "tooltip": "Child custody. Custody of the minor children of the parties is awarded as follows:"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List7[0].Li1[0].Child1Name_ft[0]",
+    "fullName": "FL-341[0].Page1[0].List7[0].Li1[0].Child1Name_ft[0]",
+    "rect": [
+      50.751,
+      411.499,
+      219.951,
+      420.499
+    ],
+    "type": "/Tx",
+    "tooltip": "Child's Name"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List7[0].Li1[0].Child1BirthDate_dt[0]",
+    "fullName": "FL-341[0].Page1[0].List7[0].Li1[0].Child1BirthDate_dt[0]",
+    "rect": [
+      221.655,
+      411.499,
+      285.837,
+      420.499
+    ],
+    "type": "/Tx",
+    "tooltip": "Birth Date"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List7[0].Li1[0].Child1LegalCustody_ft[0]",
+    "fullName": "FL-341[0].Page1[0].List7[0].Li1[0].Child1LegalCustody_ft[0]",
+    "rect": [
+      291.727,
+      411.499,
+      448.472,
+      420.499
+    ],
+    "type": "/Tx",
+    "tooltip": "Legal custody to: \r(person who decides about the child's\rhealth, education, and welfare)"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List7[0].Li1[0].Child1PhysicalCustody_ft[0]",
+    "fullName": "FL-341[0].Page1[0].List7[0].Li1[0].Child1PhysicalCustody_ft[0]",
+    "rect": [
+      453.455,
+      411.499,
+      575.305,
+      420.499
+    ],
+    "type": "/Tx",
+    "tooltip": "Physical custody to:\r(person the child \r regularly lives with)"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List7[0].Li1[0].Child2Name_ft[0]",
+    "fullName": "FL-341[0].Page1[0].List7[0].Li1[0].Child2Name_ft[0]",
+    "rect": [
+      50.751,
+      398.69,
+      219.951,
+      407.69
+    ],
+    "type": "/Tx",
+    "tooltip": "Child's Name"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List7[0].Li1[0].Child2BirthDate_dt[0]",
+    "fullName": "FL-341[0].Page1[0].List7[0].Li1[0].Child2BirthDate_dt[0]",
+    "rect": [
+      221.655,
+      398.69,
+      285.837,
+      407.69
+    ],
+    "type": "/Tx",
+    "tooltip": "Birth Date"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List7[0].Li1[0].Child2LegalCustody_ft[0]",
+    "fullName": "FL-341[0].Page1[0].List7[0].Li1[0].Child2LegalCustody_ft[0]",
+    "rect": [
+      291.727,
+      398.69,
+      448.472,
+      407.69
+    ],
+    "type": "/Tx",
+    "tooltip": "Legal custody to: \r(person who decides about the child's\rhealth, education, and welfare)"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List7[0].Li1[0].Child2PhysicalCustody_ft[0]",
+    "fullName": "FL-341[0].Page1[0].List7[0].Li1[0].Child2PhysicalCustody_ft[0]",
+    "rect": [
+      453.455,
+      398.69,
+      575.305,
+      407.69
+    ],
+    "type": "/Tx",
+    "tooltip": "Physical custody to:\r(person the child \r regularly lives with)"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List7[0].Li1[0].Child3Name_ft[0]",
+    "fullName": "FL-341[0].Page1[0].List7[0].Li1[0].Child3Name_ft[0]",
+    "rect": [
+      50.751,
+      385.877,
+      219.951,
+      394.877
+    ],
+    "type": "/Tx",
+    "tooltip": "Child's Name"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List7[0].Li1[0].Child3BirthDate_dt[0]",
+    "fullName": "FL-341[0].Page1[0].List7[0].Li1[0].Child3BirthDate_dt[0]",
+    "rect": [
+      221.655,
+      385.877,
+      285.837,
+      394.877
+    ],
+    "type": "/Tx",
+    "tooltip": "Birth Date"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List7[0].Li1[0].Child3LegalCustody_ft[0]",
+    "fullName": "FL-341[0].Page1[0].List7[0].Li1[0].Child3LegalCustody_ft[0]",
+    "rect": [
+      291.727,
+      385.877,
+      448.472,
+      394.877
+    ],
+    "type": "/Tx",
+    "tooltip": "Legal custody to: \r(person who decides about the child's\rhealth, education, and welfare)"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List7[0].Li1[0].Child3PhysicalCustody_ft[0]",
+    "fullName": "FL-341[0].Page1[0].List7[0].Li1[0].Child3PhysicalCustody_ft[0]",
+    "rect": [
+      453.455,
+      385.877,
+      575.305,
+      394.877
+    ],
+    "type": "/Tx",
+    "tooltip": "Physical custody to:\r(person the child \r regularly lives with)"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List7[0].Li1[0].Child4Name_ft[0]",
+    "fullName": "FL-341[0].Page1[0].List7[0].Li1[0].Child4Name_ft[0]",
+    "rect": [
+      50.751,
+      373.067,
+      219.951,
+      382.067
+    ],
+    "type": "/Tx",
+    "tooltip": "Child's Name"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List7[0].Li1[0].Child4BirthDate_dt[0]",
+    "fullName": "FL-341[0].Page1[0].List7[0].Li1[0].Child4BirthDate_dt[0]",
+    "rect": [
+      221.655,
+      373.067,
+      285.837,
+      382.067
+    ],
+    "type": "/Tx",
+    "tooltip": "Birth Date"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List7[0].Li1[0].Child4LegalCustody_ft[0]",
+    "fullName": "FL-341[0].Page1[0].List7[0].Li1[0].Child4LegalCustody_ft[0]",
+    "rect": [
+      291.727,
+      373.067,
+      448.472,
+      382.067
+    ],
+    "type": "/Tx",
+    "tooltip": "Legal custody to: \r(person who decides about the child's\rhealth, education, and welfare)"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List7[0].Li1[0].Child4PhysicalCustody_ft[0]",
+    "fullName": "FL-341[0].Page1[0].List7[0].Li1[0].Child4PhysicalCustody_ft[0]",
+    "rect": [
+      453.455,
+      373.067,
+      575.305,
+      382.067
+    ],
+    "type": "/Tx",
+    "tooltip": "Physical custody to:\r(person the child \r regularly lives with)"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List7[0].Li2[0].ChildCustodyOrdersWithAllegationsofAbuseorSubstanceAbuse_cb[0]",
+    "fullName": "FL-341[0].Page1[0].List7[0].Li2[0].ChildCustodyOrdersWithAllegationsofAbuseorSubstanceAbuse_cb[0]",
+    "rect": [
+      72.394,
+      350.12,
+      81.394,
+      359.12
+    ],
+    "type": "/Btn",
+    "tooltip": "Joint legal custody of the child or children will be exercised as specified in the following order:"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List7[0].Li2[0].ChildCustodyOrdersWithAllegationsofAbuseorSubstanceAbuse_cb[1]",
+    "fullName": "FL-341[0].Page1[0].List7[0].Li2[0].ChildCustodyOrdersWithAllegationsofAbuseorSubstanceAbuse_cb[1]",
+    "rect": [
+      91.525,
+      337.234,
+      100.525,
+      346.234
+    ],
+    "type": "/Btn",
+    "tooltip": "Joint Legal Custody Attachment (form FL-341(E))"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List7[0].Li2[0].ChildCustodyOrdersWithAllegationsofAbuseorSubstanceAbuse_cb[2]",
+    "fullName": "FL-341[0].Page1[0].List7[0].Li2[0].ChildCustodyOrdersWithAllegationsofAbuseorSubstanceAbuse_cb[2]",
+    "rect": [
+      477.207,
+      350.015,
+      486.207,
+      359.015
+    ],
+    "type": "/Btn",
+    "tooltip": "Attachment 7b"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List8[0].ChildCustodyOrdersWithAllegationsofAbuseorSubstanceAbuse_cb[0]",
+    "fullName": "FL-341[0].Page1[0].List8[0].ChildCustodyOrdersWithAllegationsofAbuseorSubstanceAbuse_cb[0]",
+    "rect": [
+      55.046,
+      319.498,
+      64.046,
+      328.498
+    ],
+    "type": "/Btn",
+    "tooltip": "Child custody orders with allegations of a history of abuse or substance abuse"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List8[0].Li1[0].List[0].Li1[0].AbuseAllegationsAboutPetitioner_cb[0]",
+    "fullName": "FL-341[0].Page1[0].List8[0].Li1[0].List[0].Li1[0].AbuseAllegationsAboutPetitioner_cb[0]",
+    "rect": [
+      113.02,
+      293.193,
+      122.02,
+      302.193
+    ],
+    "type": "/Btn",
+    "tooltip": "Petitioner"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List8[0].Li1[0].List[0].Li1[0].AbuseAllegationsAboutRespondent_cb[0]",
+    "fullName": "FL-341[0].Page1[0].List8[0].Li1[0].List[0].Li1[0].AbuseAllegationsAboutRespondent_cb[0]",
+    "rect": [
+      190.457,
+      292.725,
+      199.457,
+      301.725
+    ],
+    "type": "/Btn",
+    "tooltip": "Respondent  "
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List8[0].Li1[0].List[0].Li1[0].AbuseAllegationsAboutOtherParentOrParty_cb[0]",
+    "fullName": "FL-341[0].Page1[0].List8[0].Li1[0].List[0].Li1[0].AbuseAllegationsAboutOtherParentOrParty_cb[0]",
+    "rect": [
+      270.629,
+      292.429,
+      279.629,
+      301.429
+    ],
+    "type": "/Btn",
+    "tooltip": "Other parent/party"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List8[0].Li1[0].List[0].Li2[0].SubstanceAbuseAllegationsAboutPetitioner_cb[0]",
+    "fullName": "FL-341[0].Page1[0].List8[0].Li1[0].List[0].Li2[0].SubstanceAbuseAllegationsAboutPetitioner_cb[0]",
+    "rect": [
+      113.02,
+      252.672,
+      122.02,
+      261.672
+    ],
+    "type": "/Btn",
+    "tooltip": "Petitioner"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List8[0].Li1[0].List[0].Li2[0].SubstanceAbuseAllegationsAboutRespondent_cb[0]",
+    "fullName": "FL-341[0].Page1[0].List8[0].Li1[0].List[0].Li2[0].SubstanceAbuseAllegationsAboutRespondent_cb[0]",
+    "rect": [
+      190.457,
+      252.941,
+      199.457,
+      261.941
+    ],
+    "type": "/Btn",
+    "tooltip": "Respondent  "
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List8[0].Li1[0].List[0].Li2[0].SubstanceAbuseAllegationsAboutOtherParentOrParty_cb[0]",
+    "fullName": "FL-341[0].Page1[0].List8[0].Li1[0].List[0].Li2[0].SubstanceAbuseAllegationsAboutOtherParentOrParty_cb[0]",
+    "rect": [
+      270.629,
+      253.382,
+      279.629,
+      262.382
+    ],
+    "type": "/Btn",
+    "tooltip": "Other parent/party"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List8[0].Li2[0].checkbox[0]",
+    "fullName": "FL-341[0].Page1[0].List8[0].Li2[0].checkbox[0]",
+    "rect": [
+      96.877,
+      212.84,
+      105.877,
+      221.84
+    ],
+    "type": "/Btn",
+    "tooltip": "The court does NOT grant sole or joint custody of the minor children to "
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List8[0].Li2[0].NoCustodytoOtherParent_Party_cb[0]",
+    "fullName": "FL-341[0].Page1[0].List8[0].Li2[0].NoCustodytoOtherParent_Party_cb[0]",
+    "rect": [
+      285.372,
+      199.271,
+      294.372,
+      208.271
+    ],
+    "type": "/Btn",
+    "tooltip": "other parent/party"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List8[0].NoCustodyToPetitioner_cb[0]",
+    "fullName": "FL-341[0].Page1[0].List8[0].NoCustodyToPetitioner_cb[0]",
+    "rect": [
+      120.036,
+      199.63,
+      129.036,
+      208.63
+    ],
+    "type": "/Btn",
+    "tooltip": "petitioner"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List8[0].NoCustodyToRespondent_cb[0]",
+    "fullName": "FL-341[0].Page1[0].List8[0].NoCustodyToRespondent_cb[0]",
+    "rect": [
+      200.591,
+      199.389,
+      209.591,
+      208.389
+    ],
+    "type": "/Btn",
+    "tooltip": "respondent  "
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List8[0].Li3[0].List[0].Li1[0].ChildAbductionPrevention_cb[0]",
+    "fullName": "FL-341[0].Page1[0].List8[0].Li3[0].List[0].Li1[0].ChildAbductionPrevention_cb[0]",
+    "rect": [
+      96.876,
+      183.912,
+      105.876,
+      192.912
+    ],
+    "type": "/Btn",
+    "tooltip": "(1)  Even though there are allegations of a history of abuse or substance abuse, the court GRANTS sole or joint         custody of the minor child as set out in item 7. "
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List8[0].Li3[0].List[0].Li2[0].List[0].Li2[0].Choice2[0]",
+    "fullName": "FL-341[0].Page1[0].List8[0].Li3[0].List[0].Li2[0].List[0].Li2[0].Choice2[0]",
+    "rect": [
+      151.959,
+      131.6,
+      160.959,
+      140.6
+    ],
+    "type": "/Btn",
+    "tooltip": "Were recorded as follows:"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List8[0].Li3[0].List[0].Li2[0].List[0].Li2[0].Choice2[1]",
+    "fullName": "FL-341[0].Page1[0].List8[0].Li3[0].List[0].Li2[0].List[0].Li2[0].Choice2[1]",
+    "rect": [
+      287.526,
+      131.229,
+      296.526,
+      140.229
+    ],
+    "type": "/Btn",
+    "tooltip": "In a minute order "
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List8[0].Li3[0].List[0].Li2[0].List[0].Li2[0].Choice2[2]",
+    "fullName": "FL-341[0].Page1[0].List8[0].Li3[0].List[0].Li2[0].List[0].Li2[0].Choice2[2]",
+    "rect": [
+      398.724,
+      132.289,
+      407.724,
+      141.289
+    ],
+    "type": "/Btn",
+    "tooltip": "By a court reporter "
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List8[0].Li3[0].List[0].Li2[0].List[0].Li2[0].OtherResidence_cb[0]",
+    "fullName": "FL-341[0].Page1[0].List8[0].Li3[0].List[0].Li2[0].List[0].Li2[0].OtherResidence_cb[0]",
+    "rect": [
+      287.526,
+      117.468,
+      296.526,
+      126.468
+    ],
+    "type": "/Btn",
+    "tooltip": "Other"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List8[0].Li3[0].List[0].Li2[0].List[0].Li2[0].Specify_ft[0]",
+    "fullName": "FL-341[0].Page1[0].List8[0].Li3[0].List[0].Li2[0].List[0].Li2[0].Specify_ft[0]",
+    "rect": [
+      374.953,
+      116.3,
+      573.32,
+      126.468
+    ],
+    "type": "/Tx",
+    "tooltip": "(specify):"
+  },
+  {
+    "page": 0,
+    "name": "FL-341[0].Page1[0].List8[0].Li3[0].List[0].Li2[0].List[0].Li1[0].Choice2[0]",
+    "fullName": "FL-341[0].Page1[0].List8[0].Li3[0].List[0].Li2[0].List[0].Li1[0].Choice2[0]",
+    "rect": [
+      151.959,
+      146.378,
+      160.959,
+      155.378
+    ],
+    "type": "/Btn",
+    "tooltip": "Are in writing and filed separately (form FL-351 may be used for this purpose.)"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].PxCaption_sf[0].CaseSub[0].CaseNumber[0].CaseNumber_ft[0]",
+    "fullName": "FL-341[0].Page2[0].PxCaption_sf[0].CaseSub[0].CaseNumber[0].CaseNumber_ft[0]",
+    "rect": [
+      399.883,
+      711.706,
+      572.683,
+      723.146
+    ],
+    "type": "/Tx",
+    "tooltip": "CASE NUMBER:"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].PxCaption_sf[0].PartySub[0].TitlePartyName[0].Petitioner_ft[0]",
+    "fullName": "FL-341[0].Page2[0].PxCaption_sf[0].PartySub[0].TitlePartyName[0].Petitioner_ft[0]",
+    "rect": [
+      149.116,
+      729.641,
+      390.991,
+      739.803
+    ],
+    "type": "/Tx",
+    "tooltip": "PETITIONER:"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].PxCaption_sf[0].PartySub[0].TitlePartyName[0].Respondent_ft[0]",
+    "fullName": "FL-341[0].Page2[0].PxCaption_sf[0].PartySub[0].TitlePartyName[0].Respondent_ft[0]",
+    "rect": [
+      150.204,
+      717.288,
+      391.206,
+      727.45
+    ],
+    "type": "/Tx",
+    "tooltip": "RESPONDENT:"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].PxCaption_sf[0].PartySub[0].TitlePartyName[0].OtherParentParty_ft[0]",
+    "fullName": "FL-341[0].Page2[0].PxCaption_sf[0].PartySub[0].TitlePartyName[0].OtherParentParty_ft[0]",
+    "rect": [
+      149.706,
+      705.53,
+      391.994,
+      715.692
+    ],
+    "type": "/Tx",
+    "tooltip": "OTHER PARENT/PARTY:"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Visitation_cb[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Visitation_cb[0]",
+    "rect": [
+      56.767,
+      685.517,
+      65.767,
+      694.517
+    ],
+    "type": "/Btn",
+    "tooltip": "Visitation (parenting time)"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li1[0].ReasonableVisitation_cb[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li1[0].ReasonableVisitation_cb[0]",
+    "rect": [
+      92.613,
+      673.481,
+      101.613,
+      682.481
+    ],
+    "type": "/Btn",
+    "tooltip": "Reasonable right of visitation to the party without physical custody (not appropriate in cases involving domestic  violence)"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li2[0].CheckBox2b[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li2[0].CheckBox2b[0]",
+    "rect": [
+      94.314,
+      647.247,
+      103.314,
+      656.247
+    ],
+    "type": "/Btn",
+    "tooltip": "See the attached                 "
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li2[0].SpecifyNumberPagesAttached_ft[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li2[0].SpecifyNumberPagesAttached_ft[0]",
+    "rect": [
+      185.572,
+      647.247,
+      218.542,
+      656.247
+    ],
+    "type": "/Tx",
+    "tooltip": " -page document "
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li3[0].NoVisitation_cb[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li3[0].NoVisitation_cb[0]",
+    "rect": [
+      94.487,
+      633.243,
+      103.487,
+      642.243
+    ],
+    "type": "/Btn",
+    "tooltip": "No Visitation (parenting time)"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li4[0].NoVisitation_cb[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li4[0].NoVisitation_cb[0]",
+    "rect": [
+      94.453,
+      621.012,
+      103.453,
+      630.012
+    ],
+    "type": "/Btn",
+    "tooltip": "The visitation (parenting time) will be supervised as specified in the attached Supervised Visitation Order (FL-341(A))."
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].VisitationFor_cb[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].VisitationFor_cb[0]",
+    "rect": [
+      94.24,
+      598.731,
+      103.24,
+      607.731
+    ],
+    "type": "/Btn",
+    "tooltip": "Visitation (parenting time) for the"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].VisitsFor_cb[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].VisitsFor_cb[0]",
+    "rect": [
+      260.413,
+      598.808,
+      269.413,
+      607.808
+    ],
+    "type": "/Btn",
+    "tooltip": "petitioner"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].VisitsFor_cb[1]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].VisitsFor_cb[1]",
+    "rect": [
+      331.217,
+      598.34,
+      340.217,
+      607.34
+    ],
+    "type": "/Btn",
+    "tooltip": "respondent  "
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].VisitsFor_cb[2]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].VisitsFor_cb[2]",
+    "rect": [
+      409.169,
+      598.34,
+      418.169,
+      607.34
+    ],
+    "type": "/Btn",
+    "tooltip": "other "
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].SpecifyName_ft[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].SpecifyName_ft[0]",
+    "rect": [
+      485.882,
+      598.34,
+      576,
+      607.34
+    ],
+    "type": "/Tx",
+    "tooltip": "(name):"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].CheckBox1[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].CheckBox1[0]",
+    "rect": [
+      112.098,
+      574.056,
+      121.098,
+      583.056
+    ],
+    "type": "/Btn",
+    "tooltip": "In person, as follows"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].CheckBoxWeekends[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].CheckBoxWeekends[0]",
+    "rect": [
+      135.489,
+      559.337,
+      144.489,
+      568.337
+    ],
+    "type": "/Btn",
+    "tooltip": "Weekends starting "
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].WeekendVisitsStartingDate_ft[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].WeekendVisitsStartingDate_ft[0]",
+    "rect": [
+      270.03,
+      558.437,
+      389.595,
+      569.237
+    ],
+    "type": "/Tx",
+    "tooltip": "(date):"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].FirstWeekEnd_cb[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].FirstWeekEnd_cb[0]",
+    "rect": [
+      140.812,
+      512.414,
+      149.812,
+      521.414
+    ],
+    "type": "/Btn",
+    "tooltip": "1st  "
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].SecondWeekend_cb[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].SecondWeekend_cb[0]",
+    "rect": [
+      140.812,
+      483.707,
+      149.812,
+      492.707
+    ],
+    "type": "/Btn",
+    "tooltip": "2nd"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].ThirdWeekend_cb[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].ThirdWeekend_cb[0]",
+    "rect": [
+      140.812,
+      452.824,
+      149.812,
+      461.824
+    ],
+    "type": "/Btn",
+    "tooltip": "3rd"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].FourthWeekend_cb[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].FourthWeekend_cb[0]",
+    "rect": [
+      140.812,
+      423.017,
+      149.812,
+      432.017
+    ],
+    "type": "/Btn",
+    "tooltip": "4th"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].FifthWeekend_cb[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].FifthWeekend_cb[0]",
+    "rect": [
+      140.812,
+      391.247,
+      149.812,
+      400.247
+    ],
+    "type": "/Btn",
+    "tooltip": "5th"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].DayOfWeekVisistsStart_ft[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].DayOfWeekVisistsStart_ft[0]",
+    "rect": [
+      213.043,
+      512.567,
+      279.993,
+      521.567
+    ],
+    "type": "/Tx",
+    "tooltip": "from"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeVisitsStart_ft[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeVisitsStart_ft[0]",
+    "rect": [
+      303.45,
+      512.057,
+      339.648,
+      521.057
+    ],
+    "type": "/Tx",
+    "tooltip": "at"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].DayOfWeekVisitsEnd1_ft[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].DayOfWeekVisitsEnd1_ft[0]",
+    "rect": [
+      204.969,
+      499.165,
+      279.5,
+      508.165
+    ],
+    "type": "/Tx",
+    "tooltip": "to"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeVisitsEnd1_ft[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeVisitsEnd1_ft[0]",
+    "rect": [
+      303.45,
+      498.654,
+      339.648,
+      507.654
+    ],
+    "type": "/Tx",
+    "tooltip": "at"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].SchoolTime_cb[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].SchoolTime_cb[0]",
+    "rect": [
+      464.6,
+      510.214,
+      473.6,
+      519.214
+    ],
+    "type": "/Btn",
+    "tooltip": "start of school"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].SchoolTime_cb[1]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].SchoolTime_cb[1]",
+    "rect": [
+      531.202,
+      509.837,
+      540.202,
+      518.837
+    ],
+    "type": "/Btn",
+    "tooltip": "after school"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].SchoolTime1_cb[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].SchoolTime1_cb[0]",
+    "rect": [
+      465.11,
+      496.883,
+      474.11,
+      505.883
+    ],
+    "type": "/Btn",
+    "tooltip": "start of school"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].SchoolTime1_cb[1]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].SchoolTime1_cb[1]",
+    "rect": [
+      532.39,
+      497.016,
+      541.39,
+      506.016
+    ],
+    "type": "/Btn",
+    "tooltip": "after school"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].DayOfWeekVisistsStart2_ft[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].DayOfWeekVisistsStart2_ft[0]",
+    "rect": [
+      213.043,
+      482.888,
+      279.993,
+      491.888
+    ],
+    "type": "/Tx",
+    "tooltip": "from"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeVisitsStart2_ft[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeVisitsStart2_ft[0]",
+    "rect": [
+      303.45,
+      481.221,
+      339.648,
+      490.221
+    ],
+    "type": "/Tx",
+    "tooltip": "at"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].DayOfWeekVisitsEnd3_ft[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].DayOfWeekVisitsEnd3_ft[0]",
+    "rect": [
+      204.969,
+      471.187,
+      279.5,
+      480.187
+    ],
+    "type": "/Tx",
+    "tooltip": "to"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeVisitsEnd3_ft[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeVisitsEnd3_ft[0]",
+    "rect": [
+      303.45,
+      469.52,
+      339.648,
+      478.52
+    ],
+    "type": "/Tx",
+    "tooltip": "at"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].DayOfWeekVisistsStart4_ft[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].DayOfWeekVisistsStart4_ft[0]",
+    "rect": [
+      213.043,
+      452.739,
+      279.993,
+      461.739
+    ],
+    "type": "/Tx",
+    "tooltip": "from"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeVisitsStart4_ft[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeVisitsStart4_ft[0]",
+    "rect": [
+      303.45,
+      451.65,
+      339.648,
+      460.65
+    ],
+    "type": "/Tx",
+    "tooltip": "at"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].DayOfWeekVisitsEnd5_ft[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].DayOfWeekVisitsEnd5_ft[0]",
+    "rect": [
+      204.969,
+      441.037,
+      279.5,
+      450.037
+    ],
+    "type": "/Tx",
+    "tooltip": "to"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeVisitsEnd5_ft[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeVisitsEnd5_ft[0]",
+    "rect": [
+      303.45,
+      439.949,
+      339.648,
+      448.949
+    ],
+    "type": "/Tx",
+    "tooltip": "at"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].DayOfWeekVisistsStar6t_ft[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].DayOfWeekVisistsStar6t_ft[0]",
+    "rect": [
+      213.043,
+      423.394,
+      279.993,
+      432.394
+    ],
+    "type": "/Tx",
+    "tooltip": "from"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeVisitsStart6_ft[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeVisitsStart6_ft[0]",
+    "rect": [
+      302.633,
+      422.884,
+      339.648,
+      431.884
+    ],
+    "type": "/Tx",
+    "tooltip": "at"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].DayOfWeekVisitsEnd7_ft[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].DayOfWeekVisitsEnd7_ft[0]",
+    "rect": [
+      204.969,
+      411.693,
+      279.5,
+      420.693
+    ],
+    "type": "/Tx",
+    "tooltip": "to"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeVisitsEnd7_ft[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeVisitsEnd7_ft[0]",
+    "rect": [
+      303.287,
+      411.183,
+      339.648,
+      420.183
+    ],
+    "type": "/Tx",
+    "tooltip": "at"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].DayOfWeekVisistsStart8_ft[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].DayOfWeekVisistsStart8_ft[0]",
+    "rect": [
+      213.043,
+      391.629,
+      279.993,
+      400.629
+    ],
+    "type": "/Tx",
+    "tooltip": "from"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeVisitsStart8_ft[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeVisitsStart8_ft[0]",
+    "rect": [
+      303.348,
+      391.119,
+      339.648,
+      400.119
+    ],
+    "type": "/Tx",
+    "tooltip": "at"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].DayOfWeekVisitsEnd9_ft[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].DayOfWeekVisitsEnd9_ft[0]",
+    "rect": [
+      204.969,
+      379.928,
+      279.5,
+      388.928
+    ],
+    "type": "/Tx",
+    "tooltip": "to"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeVisitsEnd9_ft[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeVisitsEnd9_ft[0]",
+    "rect": [
+      303.45,
+      379.418,
+      339.648,
+      388.418
+    ],
+    "type": "/Tx",
+    "tooltip": "at"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].CheckBox1a[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].CheckBox1a[0]",
+    "rect": [
+      182.941,
+      363.102,
+      191.941,
+      372.102
+    ],
+    "type": "/Btn",
+    "tooltip": "The parties will alternate the fifth weekends, with the"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].CheckBox1apetitioner[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].CheckBox1apetitioner[0]",
+    "rect": [
+      427.656,
+      363.102,
+      436.656,
+      372.102
+    ],
+    "type": "/Btn",
+    "tooltip": "petitioner"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].CheckBoxResp[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].CheckBoxResp[0]",
+    "rect": [
+      499.616,
+      363.102,
+      508.616,
+      372.102
+    ],
+    "type": "/Btn",
+    "tooltip": "respondent   "
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].CheckBox61[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].CheckBox61[0]",
+    "rect": [
+      209.887,
+      350.414,
+      218.887,
+      359.414
+    ],
+    "type": "/Btn",
+    "tooltip": "other parent/party"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].DateFifthWeekendViistsStart_dt[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].DateFifthWeekendViistsStart_dt[0]",
+    "rect": [
+      502.484,
+      350.261,
+      572.432,
+      360.341
+    ],
+    "type": "/Tx",
+    "tooltip": "having the initial fifth weekend, which starts (date):"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].CheckBox1b[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].CheckBox1b[0]",
+    "rect": [
+      183.544,
+      335.861,
+      192.544,
+      344.861
+    ],
+    "type": "/Btn",
+    "tooltip": "The "
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].CheckBox1bpetitioner[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].CheckBox1bpetitioner[0]",
+    "rect": [
+      237.692,
+      335.41,
+      246.692,
+      344.41
+    ],
+    "type": "/Btn",
+    "tooltip": "petitioner"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].CheckBox1brespondent[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].CheckBox1brespondent[0]",
+    "rect": [
+      306.599,
+      335.621,
+      315.599,
+      344.621
+    ],
+    "type": "/Btn",
+    "tooltip": "respondent"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].CheckBox1otherparent[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].CheckBox1otherparent[0]",
+    "rect": [
+      400.919,
+      335.583,
+      409.919,
+      344.583
+    ],
+    "type": "/Btn",
+    "tooltip": "other parent/party    will have the fifth "
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].WeekendsOdd_cb[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].WeekendsOdd_cb[0]",
+    "rect": [
+      237.856,
+      323.292,
+      246.856,
+      332.292
+    ],
+    "type": "/Btn",
+    "tooltip": "odd"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].WeekendsEven_cb[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].WeekendsEven_cb[0]",
+    "rect": [
+      306.599,
+      322.382,
+      315.599,
+      331.382
+    ],
+    "type": "/Btn",
+    "tooltip": "even   numbered months."
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeOfDay_cb1[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeOfDay_cb1[0]",
+    "rect": [
+      348.578,
+      511.697,
+      357.578,
+      520.697
+    ],
+    "type": "/Btn",
+    "tooltip": "a.m."
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeOfDay_cb1[1]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeOfDay_cb1[1]",
+    "rect": [
+      401.322,
+      511.697,
+      410.322,
+      520.697
+    ],
+    "type": "/Btn",
+    "tooltip": "p.m."
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeOfDay1_cb1[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeOfDay1_cb1[0]",
+    "rect": [
+      349.221,
+      496.602,
+      358.221,
+      505.602
+    ],
+    "type": "/Btn",
+    "tooltip": "a.m."
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeOfDay1_cb1[1]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeOfDay1_cb1[1]",
+    "rect": [
+      401.322,
+      496.948,
+      410.322,
+      505.948
+    ],
+    "type": "/Btn",
+    "tooltip": "p.m."
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeOfDay2_cb1[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeOfDay2_cb1[0]",
+    "rect": [
+      347.982,
+      481.448,
+      356.982,
+      490.448
+    ],
+    "type": "/Btn",
+    "tooltip": "a.m."
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeOfDay2_cb1[1]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeOfDay2_cb1[1]",
+    "rect": [
+      400.727,
+      481.448,
+      409.727,
+      490.448
+    ],
+    "type": "/Btn",
+    "tooltip": "p.m."
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeOfDay3_cb1[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeOfDay3_cb1[0]",
+    "rect": [
+      347.982,
+      468.947,
+      356.982,
+      477.947
+    ],
+    "type": "/Btn",
+    "tooltip": "a.m."
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeOfDay3_cb1[1]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeOfDay3_cb1[1]",
+    "rect": [
+      400.727,
+      468.4,
+      409.727,
+      477.4
+    ],
+    "type": "/Btn",
+    "tooltip": "p.m."
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeOfDay4_cb1[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeOfDay4_cb1[0]",
+    "rect": [
+      348.521,
+      452.047,
+      357.521,
+      461.047
+    ],
+    "type": "/Btn",
+    "tooltip": "a.m."
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeOfDay4_cb1[1]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeOfDay4_cb1[1]",
+    "rect": [
+      401.265,
+      452.047,
+      410.265,
+      461.047
+    ],
+    "type": "/Btn",
+    "tooltip": "p.m."
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeOfDay5_cb1[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeOfDay5_cb1[0]",
+    "rect": [
+      348.521,
+      439.546,
+      357.521,
+      448.546
+    ],
+    "type": "/Btn",
+    "tooltip": "a.m."
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeOfDay5_cb1[1]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeOfDay5_cb1[1]",
+    "rect": [
+      401.265,
+      438.999,
+      410.265,
+      447.999
+    ],
+    "type": "/Btn",
+    "tooltip": "p.m."
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeOfDay6_cb1[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeOfDay6_cb1[0]",
+    "rect": [
+      347.982,
+      422.771,
+      356.982,
+      431.771
+    ],
+    "type": "/Btn",
+    "tooltip": "a.m."
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeOfDay6_cb1[1]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeOfDay6_cb1[1]",
+    "rect": [
+      400.727,
+      422.771,
+      409.727,
+      431.771
+    ],
+    "type": "/Btn",
+    "tooltip": "p.m."
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeOfDay7_cb1[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeOfDay7_cb1[0]",
+    "rect": [
+      347.982,
+      410.27,
+      356.982,
+      419.27
+    ],
+    "type": "/Btn",
+    "tooltip": "a.m."
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeOfDay7_cb1[1]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeOfDay7_cb1[1]",
+    "rect": [
+      400.727,
+      409.723,
+      409.727,
+      418.723
+    ],
+    "type": "/Btn",
+    "tooltip": "p.m."
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeOfDay8_cb1[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeOfDay8_cb1[0]",
+    "rect": [
+      348.175,
+      391.902,
+      357.175,
+      400.902
+    ],
+    "type": "/Btn",
+    "tooltip": "a.m."
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeOfDay8_cb1[1]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeOfDay8_cb1[1]",
+    "rect": [
+      400.919,
+      391.902,
+      409.919,
+      400.902
+    ],
+    "type": "/Btn",
+    "tooltip": "p.m."
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeOfDay9_cb1[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeOfDay9_cb1[0]",
+    "rect": [
+      348.175,
+      379.401,
+      357.175,
+      388.401
+    ],
+    "type": "/Btn",
+    "tooltip": "a.m."
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeOfDay9_cb1[1]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].TimeOfDay9_cb1[1]",
+    "rect": [
+      400.919,
+      378.854,
+      409.919,
+      387.854
+    ],
+    "type": "/Btn",
+    "tooltip": "p.m."
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].SchoolTime2_cb[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].SchoolTime2_cb[0]",
+    "rect": [
+      464.943,
+      481.817,
+      473.943,
+      490.817
+    ],
+    "type": "/Btn",
+    "tooltip": "start of school"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].SchoolTime2_cb[1]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].SchoolTime2_cb[1]",
+    "rect": [
+      531.202,
+      481.44,
+      540.202,
+      490.44
+    ],
+    "type": "/Btn",
+    "tooltip": "after school"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].SchoolTime3_cb[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].SchoolTime3_cb[0]",
+    "rect": [
+      465.11,
+      468.519,
+      474.11,
+      477.519
+    ],
+    "type": "/Btn",
+    "tooltip": "start of school"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].SchoolTime3_cb[1]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].SchoolTime3_cb[1]",
+    "rect": [
+      532.39,
+      468.652,
+      541.39,
+      477.652
+    ],
+    "type": "/Btn",
+    "tooltip": "after school"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].SchoolTime4_cb[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].SchoolTime4_cb[0]",
+    "rect": [
+      465.424,
+      451.781,
+      474.424,
+      460.781
+    ],
+    "type": "/Btn",
+    "tooltip": "start of school"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].SchoolTime4_cb[1]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].SchoolTime4_cb[1]",
+    "rect": [
+      531.202,
+      451.404,
+      540.202,
+      460.404
+    ],
+    "type": "/Btn",
+    "tooltip": "after school"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].SchoolTime5_cb[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].SchoolTime5_cb[0]",
+    "rect": [
+      465.11,
+      439.606,
+      474.11,
+      448.606
+    ],
+    "type": "/Btn",
+    "tooltip": "start of school"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].SchoolTime5_cb[1]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].SchoolTime5_cb[1]",
+    "rect": [
+      532.39,
+      439.739,
+      541.39,
+      448.739
+    ],
+    "type": "/Btn",
+    "tooltip": "after school"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].SchoolTime6_cb[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].SchoolTime6_cb[0]",
+    "rect": [
+      465.767,
+      421.648,
+      474.767,
+      430.648
+    ],
+    "type": "/Btn",
+    "tooltip": "start of school"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].SchoolTime6_cb[1]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].SchoolTime6_cb[1]",
+    "rect": [
+      531.202,
+      421.271,
+      540.202,
+      430.271
+    ],
+    "type": "/Btn",
+    "tooltip": "after school"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].SchoolTime7_cb[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].SchoolTime7_cb[0]",
+    "rect": [
+      465.11,
+      409.508,
+      474.11,
+      418.508
+    ],
+    "type": "/Btn",
+    "tooltip": "start of school"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].SchoolTime7_cb[1]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].SchoolTime7_cb[1]",
+    "rect": [
+      532.39,
+      409.641,
+      541.39,
+      418.641
+    ],
+    "type": "/Btn",
+    "tooltip": "after school"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].SchoolTime8_cb[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].SchoolTime8_cb[0]",
+    "rect": [
+      465.11,
+      392.213,
+      474.11,
+      401.213
+    ],
+    "type": "/Btn",
+    "tooltip": "start of school"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].SchoolTime8_cb[1]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].SchoolTime8_cb[1]",
+    "rect": [
+      531.202,
+      391.836,
+      540.202,
+      400.836
+    ],
+    "type": "/Btn",
+    "tooltip": "after school"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].SchoolTime9_cb[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].SchoolTime9_cb[0]",
+    "rect": [
+      465.11,
+      378.916,
+      474.11,
+      387.916
+    ],
+    "type": "/Btn",
+    "tooltip": "start of school"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].SchoolTime9_cb[1]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li1[0].SchoolTime9_cb[1]",
+    "rect": [
+      532.39,
+      379.049,
+      541.39,
+      388.049
+    ],
+    "type": "/Btn",
+    "tooltip": "after school"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li2[0].DayOfWeekAlternateWeekendVisitsStart_ft[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li2[0].DayOfWeekAlternateWeekendVisitsStart_ft[0]",
+    "rect": [
+      211.482,
+      294.693,
+      278.432,
+      303.693
+    ],
+    "type": "/Tx",
+    "tooltip": "from"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li2[0].TimeVisitsStart10_ft[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li2[0].TimeVisitsStart10_ft[0]",
+    "rect": [
+      302.614,
+      294.693,
+      338.914,
+      303.693
+    ],
+    "type": "/Tx",
+    "tooltip": "at"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li2[0].DayOfWeekAlternateWeekendVisitsEnd_ft[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li2[0].DayOfWeekAlternateWeekendVisitsEnd_ft[0]",
+    "rect": [
+      204.972,
+      282.992,
+      279.503,
+      291.992
+    ],
+    "type": "/Tx",
+    "tooltip": "to"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li2[0].TimeVisitsEnd11_ft[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li2[0].TimeVisitsEnd11_ft[0]",
+    "rect": [
+      302.553,
+      282.992,
+      338.914,
+      291.992
+    ],
+    "type": "/Tx",
+    "tooltip": "at"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li2[0].CheckBoxAlternateWeekends[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li2[0].CheckBoxAlternateWeekends[0]",
+    "rect": [
+      140.815,
+      308.424,
+      149.815,
+      317.424
+    ],
+    "type": "/Btn",
+    "tooltip": "Alternate weekends starting "
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li2[0].DateAlternateWeekendsStart_ft[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li2[0].DateAlternateWeekendsStart_ft[0]",
+    "rect": [
+      311.416,
+      307.361,
+      413.044,
+      318.161
+    ],
+    "type": "/Tx",
+    "tooltip": "(date):"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li2[0].TimeOfDay10_cb1[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li2[0].TimeOfDay10_cb1[0]",
+    "rect": [
+      348.178,
+      295.152,
+      357.178,
+      304.152
+    ],
+    "type": "/Btn",
+    "tooltip": "a.m."
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li2[0].TimeOfDay10_cb1[1]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li2[0].TimeOfDay10_cb1[1]",
+    "rect": [
+      400.922,
+      295.152,
+      409.922,
+      304.152
+    ],
+    "type": "/Btn",
+    "tooltip": "p.m."
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li2[0].TimeOfDay11_cb1[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li2[0].TimeOfDay11_cb1[0]",
+    "rect": [
+      348.178,
+      282.651,
+      357.178,
+      291.651
+    ],
+    "type": "/Btn",
+    "tooltip": "a.m."
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li2[0].TimeOfDay11_cb1[1]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li2[0].TimeOfDay11_cb1[1]",
+    "rect": [
+      400.922,
+      282.104,
+      409.922,
+      291.104
+    ],
+    "type": "/Btn",
+    "tooltip": "p.m."
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li2[0].SchoolTime10_cb[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li2[0].SchoolTime10_cb[0]",
+    "rect": [
+      465.113,
+      296.621,
+      474.113,
+      305.621
+    ],
+    "type": "/Btn",
+    "tooltip": "start of "
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li2[0].SchoolTime10_cb[1]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li2[0].SchoolTime10_cb[1]",
+    "rect": [
+      532.393,
+      296.244,
+      541.393,
+      305.244
+    ],
+    "type": "/Btn",
+    "tooltip": "after "
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li2[0].SchoolTime11_cb[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li2[0].SchoolTime11_cb[0]",
+    "rect": [
+      465.113,
+      283.323,
+      474.113,
+      292.323
+    ],
+    "type": "/Btn",
+    "tooltip": "start of "
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li2[0].SchoolTime11_cb[1]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li2[0].SchoolTime11_cb[1]",
+    "rect": [
+      532.393,
+      283.456,
+      541.393,
+      292.456
+    ],
+    "type": "/Btn",
+    "tooltip": "after "
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li3[0].CheckBox61[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li3[0].CheckBox61[0]",
+    "rect": [
+      140.815,
+      260.28,
+      149.815,
+      269.28
+    ],
+    "type": "/Btn",
+    "tooltip": "Weekdays starting "
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li3[0].DateWeekdayVisitsStart_dt[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li3[0].DateWeekdayVisitsStart_dt[0]",
+    "rect": [
+      271.664,
+      260.1,
+      398.638,
+      269.46
+    ],
+    "type": "/Tx",
+    "tooltip": "(date):"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li3[0].DayOfWeekDayVisitsStart_ft[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li3[0].DayOfWeekDayVisitsStart_ft[0]",
+    "rect": [
+      214.951,
+      245.487,
+      281.901,
+      254.487
+    ],
+    "type": "/Tx",
+    "tooltip": "from"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li3[0].TimeVisitsStart12_ft[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li3[0].TimeVisitsStart12_ft[0]",
+    "rect": [
+      302.614,
+      245.487,
+      338.914,
+      254.487
+    ],
+    "type": "/Tx",
+    "tooltip": "at"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li3[0].DayOfWeekDayVisitsEnd_ft[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li3[0].DayOfWeekDayVisitsEnd_ft[0]",
+    "rect": [
+      206.877,
+      233.786,
+      281.408,
+      242.786
+    ],
+    "type": "/Tx",
+    "tooltip": "to"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li3[0].TimeVisitsEnd13_ft[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li3[0].TimeVisitsEnd13_ft[0]",
+    "rect": [
+      302.553,
+      233.786,
+      338.914,
+      242.786
+    ],
+    "type": "/Tx",
+    "tooltip": "at"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li3[0].item9e1c_from_ampm[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li3[0].item9e1c_from_ampm[0]",
+    "rect": [
+      348.178,
+      245.062,
+      357.178,
+      254.062
+    ],
+    "type": "/Btn",
+    "tooltip": "start of school"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li3[0].item9e1c_to_ampm[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li3[0].item9e1c_to_ampm[0]",
+    "rect": [
+      348.178,
+      232.949,
+      357.178,
+      241.949
+    ],
+    "type": "/Btn",
+    "tooltip": "after school"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li3[0].item9e1c_from_ampm[1]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li3[0].item9e1c_from_ampm[1]",
+    "rect": [
+      400.922,
+      244.353,
+      409.922,
+      253.353
+    ],
+    "type": "/Btn",
+    "tooltip": "p.m."
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li3[0].item9e1c_to_ampm[1]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li3[0].item9e1c_to_ampm[1]",
+    "rect": [
+      400.922,
+      232.462,
+      409.922,
+      241.462
+    ],
+    "type": "/Btn",
+    "tooltip": "p.m."
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li3[0].SchoolTime12_cb[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li3[0].SchoolTime12_cb[0]",
+    "rect": [
+      465.113,
+      244.929,
+      474.113,
+      253.929
+    ],
+    "type": "/Btn",
+    "tooltip": "start of "
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li3[0].SchoolTime12_cb[1]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li3[0].SchoolTime12_cb[1]",
+    "rect": [
+      532.393,
+      244.552,
+      541.393,
+      253.552
+    ],
+    "type": "/Btn",
+    "tooltip": "after "
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li3[0].SchoolTime13_cb[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li3[0].SchoolTime13_cb[0]",
+    "rect": [
+      465.113,
+      232.788,
+      474.113,
+      241.788
+    ],
+    "type": "/Btn",
+    "tooltip": "start of "
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li3[0].SchoolTime13_cb[1]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li3[0].SchoolTime13_cb[1]",
+    "rect": [
+      532.393,
+      232.921,
+      541.393,
+      241.921
+    ],
+    "type": "/Btn",
+    "tooltip": "after "
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li4[0].OtherVists_cb[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li4[0].OtherVists_cb[0]",
+    "rect": [
+      140.815,
+      214.679,
+      149.815,
+      223.679
+    ],
+    "type": "/Btn",
+    "tooltip": "Other visitation (parenting time) days and restrictions are:"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li4[0].checkbox1[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li4[0].checkbox1[0]",
+    "rect": [
+      433.053,
+      214.712,
+      442.053,
+      223.712
+    ],
+    "type": "/Btn",
+    "tooltip": " listed in Attachment 9e(1)(D) "
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li4[0].Checkbox2[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li4[0].Checkbox2[0]",
+    "rect": [
+      366.935,
+      203.532,
+      375.935,
+      212.532
+    ],
+    "type": "/Btn",
+    "tooltip": "as follows:"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li4[0].OtherVisitationInfo_tf[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li1[0].List[0].Li4[0].OtherVisitationInfo_tf[0]",
+    "rect": [
+      136.3,
+      178.552,
+      575.202,
+      202.522
+    ],
+    "type": "/Tx",
+    "tooltip": "Other visitation (parenting time) days and restrictions"
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li2[0].CheckBox1[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li2[0].CheckBox1[0]",
+    "rect": [
+      94.764,
+      164.209,
+      103.764,
+      173.209
+    ],
+    "type": "/Btn",
+    "tooltip": "Virtual visitation, as follows: "
+  },
+  {
+    "page": 1,
+    "name": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li2[0].VirtualVisitationOrder_cb[0]",
+    "fullName": "FL-341[0].Page2[0].List9[0].Li5[0].List[0].Li2[0].VirtualVisitationOrder_cb[0]",
+    "rect": [
+      114.476,
+      79.966,
+      575.999,
+      163.242
+    ],
+    "type": "/Tx",
+    "tooltip": "Virtual visitation, as follows: "
+  },
+  {
+    "page": 2,
+    "name": "FL-341[0].Page3[0].PxCaption_sf[0].CaseSub[0].CaseNumber[0].CaseNumber_ft[0]",
+    "fullName": "FL-341[0].Page3[0].PxCaption_sf[0].CaseSub[0].CaseNumber[0].CaseNumber_ft[0]",
+    "rect": [
+      399.883,
+      711.261,
+      572.683,
+      722.701
+    ],
+    "type": "/Tx",
+    "tooltip": "CASE NUMBER:"
+  },
+  {
+    "page": 2,
+    "name": "FL-341[0].Page3[0].PxCaption_sf[0].PartySub[0].TitlePartyName[0].Petitioner_ft[0]",
+    "fullName": "FL-341[0].Page3[0].PxCaption_sf[0].PartySub[0].TitlePartyName[0].Petitioner_ft[0]",
+    "rect": [
+      149.116,
+      729.196,
+      390.991,
+      739.358
+    ],
+    "type": "/Tx",
+    "tooltip": "PETITIONER:"
+  },
+  {
+    "page": 2,
+    "name": "FL-341[0].Page3[0].PxCaption_sf[0].PartySub[0].TitlePartyName[0].Respondent_ft[0]",
+    "fullName": "FL-341[0].Page3[0].PxCaption_sf[0].PartySub[0].TitlePartyName[0].Respondent_ft[0]",
+    "rect": [
+      150.204,
+      716.843,
+      391.206,
+      727.005
+    ],
+    "type": "/Tx",
+    "tooltip": "RESPONDENT:"
+  },
+  {
+    "page": 2,
+    "name": "FL-341[0].Page3[0].PxCaption_sf[0].PartySub[0].TitlePartyName[0].OtherParentParty_ft[0]",
+    "fullName": "FL-341[0].Page3[0].PxCaption_sf[0].PartySub[0].TitlePartyName[0].OtherParentParty_ft[0]",
+    "rect": [
+      149.706,
+      705.085,
+      391.994,
+      715.247
+    ],
+    "type": "/Tx",
+    "tooltip": "OTHER PARENT/PARTY:"
+  },
+  {
+    "page": 2,
+    "name": "FL-341[0].Page3[0].List9Cont[0].Li1[0].OtherWaysVisitationCanHappen_cb[0]",
+    "fullName": "FL-341[0].Page3[0].List9Cont[0].Li1[0].OtherWaysVisitationCanHappen_cb[0]",
+    "rect": [
+      95.133,
+      681.009,
+      104.133,
+      690.009
+    ],
+    "type": "/Btn",
+    "tooltip": "Other ways visitation can happen that are in the best interests of the child are as follows:"
+  },
+  {
+    "page": 2,
+    "name": "FL-341[0].Page3[0].List9Cont[0].Li1[0].OtherVisitationInfo_tf[0]",
+    "fullName": "FL-341[0].Page3[0].List9Cont[0].Li1[0].OtherVisitationInfo_tf[0]",
+    "rect": [
+      114.165,
+      573.851,
+      575.688,
+      677.945
+    ],
+    "type": "/Tx",
+    "tooltip": "Other ways visitation can happen that are in the best interests of the child are as follows:"
+  },
+  {
+    "page": 2,
+    "name": "FL-341[0].Page3[0].List10[0].Li1[0].SupervisedVisits_cb[0]",
+    "fullName": "FL-341[0].Page3[0].List10[0].Li1[0].SupervisedVisits_cb[0]",
+    "rect": [
+      55.327,
+      560.287,
+      64.327,
+      569.287
+    ],
+    "type": "/Btn",
+    "tooltip": "Supervised visitation (parenting time). "
+  },
+  {
+    "page": 2,
+    "name": "FL-341[0].Page3[0].List10[0].Li1[0].SupervisedVisitsUntilFurtherCourtOrder_cb[0]",
+    "fullName": "FL-341[0].Page3[0].List10[0].Li1[0].SupervisedVisitsUntilFurtherCourtOrder_cb[0]",
+    "rect": [
+      107.204,
+      544.47,
+      116.204,
+      553.47
+    ],
+    "type": "/Btn",
+    "tooltip": "further order of the court"
+  },
+  {
+    "page": 2,
+    "name": "FL-341[0].Page3[0].List10[0].Li1[0].SpecifyWhenSupervisedVisitsEnd_ft[0]",
+    "fullName": "FL-341[0].Page3[0].List10[0].Li1[0].SpecifyWhenSupervisedVisitsEnd_ft[0]",
+    "rect": [
+      242.294,
+      544.244,
+      251.294,
+      553.244
+    ],
+    "type": "/Btn",
+    "tooltip": "other "
+  },
+  {
+    "page": 2,
+    "name": "FL-341[0].Page3[0].List10[0].Li1[0].T201[0]",
+    "fullName": "FL-341[0].Page3[0].List10[0].Li1[0].T201[0]",
+    "rect": [
+      321.976,
+      544.244,
+      561.997,
+      553.244
+    ],
+    "type": "/Tx",
+    "tooltip": "(specify):"
+  },
+  {
+    "page": 2,
+    "name": "FL-341[0].Page3[0].List10[0].Li1[0].WhoSupVisitation_cb[0]",
+    "fullName": "FL-341[0].Page3[0].List10[0].Li1[0].WhoSupVisitation_cb[0]",
+    "rect": [
+      81.873,
+      532.074,
+      90.873,
+      541.074
+    ],
+    "type": "/Btn",
+    "tooltip": "petitioner   "
+  },
+  {
+    "page": 2,
+    "name": "FL-341[0].Page3[0].List10[0].Li1[0].WhoSupVisitation_cb[1]",
+    "fullName": "FL-341[0].Page3[0].List10[0].Li1[0].WhoSupVisitation_cb[1]",
+    "rect": [
+      155.642,
+      532.074,
+      164.642,
+      541.074
+    ],
+    "type": "/Btn",
+    "tooltip": "respondent   "
+  },
+  {
+    "page": 2,
+    "name": "FL-341[0].Page3[0].List10[0].Li1[0].WhoSupVisitation_cb[2]",
+    "fullName": "FL-341[0].Page3[0].List10[0].Li1[0].WhoSupVisitation_cb[2]",
+    "rect": [
+      242.104,
+      531.95,
+      251.104,
+      540.95
+    ],
+    "type": "/Btn",
+    "tooltip": "other parent/party"
+  },
+  {
+    "page": 2,
+    "name": "FL-341[0].Page3[0].List10[0].Li1[0].T481[0]",
+    "fullName": "FL-341[0].Page3[0].List10[0].Li1[0].T481[0]",
+    "rect": [
+      372.563,
+      531.95,
+      518.344,
+      540.95
+    ],
+    "type": "/Tx",
+    "tooltip": "(name):"
+  },
+  {
+    "page": 2,
+    "name": "FL-341[0].Page3[0].List11[0].CheckBox61[0]",
+    "fullName": "FL-341[0].Page3[0].List11[0].CheckBox61[0]",
+    "rect": [
+      56.54,
+      474.069,
+      65.54,
+      483.069
+    ],
+    "type": "/Btn",
+    "tooltip": "Transportation for visitation (parenting time) and place of exchange"
+  },
+  {
+    "page": 2,
+    "name": "FL-341[0].Page3[0].List11[0].Li2[0].PartyToProvideTransportationToTheVisits_cb[0]",
+    "fullName": "FL-341[0].Page3[0].List11[0].Li2[0].PartyToProvideTransportationToTheVisits_cb[0]",
+    "rect": [
+      97.121,
+      432.816,
+      106.121,
+      441.816
+    ],
+    "type": "/Btn",
+    "tooltip": "Transportation to begin the visits will be provided by the   "
+  },
+  {
+    "page": 2,
+    "name": "FL-341[0].Page3[0].List11[0].Li2[0].TransportToBy_cb[0]",
+    "fullName": "FL-341[0].Page3[0].List11[0].Li2[0].TransportToBy_cb[0]",
+    "rect": [
+      352.29,
+      433.312,
+      361.29,
+      442.312
+    ],
+    "type": "/Btn",
+    "tooltip": "petitioner    "
+  },
+  {
+    "page": 2,
+    "name": "FL-341[0].Page3[0].List11[0].Li2[0].TransportToBy_cb[1]",
+    "fullName": "FL-341[0].Page3[0].List11[0].Li2[0].TransportToBy_cb[1]",
+    "rect": [
+      423.482,
+      433.312,
+      432.482,
+      442.312
+    ],
+    "type": "/Btn",
+    "tooltip": "respondent    "
+  },
+  {
+    "page": 2,
+    "name": "FL-341[0].Page3[0].List11[0].Li2[0].TransportToBy_cb[2]",
+    "fullName": "FL-341[0].Page3[0].List11[0].Li2[0].TransportToBy_cb[2]",
+    "rect": [
+      352.29,
+      420.125,
+      361.29,
+      429.125
+    ],
+    "type": "/Btn",
+    "tooltip": "other "
+  },
+  {
+    "page": 2,
+    "name": "FL-341[0].Page3[0].List11[0].Li2[0].SpecifyName_ft[0]",
+    "fullName": "FL-341[0].Page3[0].List11[0].Li2[0].SpecifyName_ft[0]",
+    "rect": [
+      435.824,
+      420.125,
+      575.15,
+      429.125
+    ],
+    "type": "/Tx",
+    "tooltip": "(specify):"
+  },
+  {
+    "page": 2,
+    "name": "FL-341[0].Page3[0].List11[0].Li3[0].PartyToProvideTransportFromVisits_cb[0]",
+    "fullName": "FL-341[0].Page3[0].List11[0].Li3[0].PartyToProvideTransportFromVisits_cb[0]",
+    "rect": [
+      97.121,
+      406.732,
+      106.121,
+      415.732
+    ],
+    "type": "/Btn",
+    "tooltip": "Transportation from the visits will be provided by the "
+  },
+  {
+    "page": 2,
+    "name": "FL-341[0].Page3[0].List11[0].Li3[0].TransportationFromBy_cb[0]",
+    "fullName": "FL-341[0].Page3[0].List11[0].Li3[0].TransportationFromBy_cb[0]",
+    "rect": [
+      352.418,
+      405.099,
+      361.418,
+      414.099
+    ],
+    "type": "/Btn",
+    "tooltip": "petitioner    "
+  },
+  {
+    "page": 2,
+    "name": "FL-341[0].Page3[0].List11[0].Li3[0].TransportationFromBy_cb[1]",
+    "fullName": "FL-341[0].Page3[0].List11[0].Li3[0].TransportationFromBy_cb[1]",
+    "rect": [
+      423.61,
+      405.099,
+      432.61,
+      414.099
+    ],
+    "type": "/Btn",
+    "tooltip": "respondent    "
+  },
+  {
+    "page": 2,
+    "name": "FL-341[0].Page3[0].List11[0].Li3[0].TransportationFromBy_cb[2]",
+    "fullName": "FL-341[0].Page3[0].List11[0].Li3[0].TransportationFromBy_cb[2]",
+    "rect": [
+      352.418,
+      391.912,
+      361.418,
+      400.912
+    ],
+    "type": "/Btn",
+    "tooltip": "other "
+  },
+  {
+    "page": 2,
+    "name": "FL-341[0].Page3[0].List11[0].Li3[0].SpecifyName_ft[0]",
+    "fullName": "FL-341[0].Page3[0].List11[0].Li3[0].SpecifyName_ft[0]",
+    "rect": [
+      435.824,
+      391.912,
+      575.15,
+      400.912
+    ],
+    "type": "/Tx",
+    "tooltip": "(specify):"
+  },
+  {
+    "page": 2,
+    "name": "FL-341[0].Page3[0].List11[0].Li4[0].BeginVisitationExchangePoint_cb[0]",
+    "fullName": "FL-341[0].Page3[0].List11[0].Li4[0].BeginVisitationExchangePoint_cb[0]",
+    "rect": [
+      97.121,
+      379.425,
+      107.121,
+      389.425
+    ],
+    "type": "/Btn",
+    "tooltip": "The exchange point at the beginning of the visit will be at "
+  },
+  {
+    "page": 2,
+    "name": "FL-341[0].Page3[0].List11[0].Li4[0].SpecifyAddressOfBeginningExchangePoint_ft[0]",
+    "fullName": "FL-341[0].Page3[0].List11[0].Li4[0].SpecifyAddressOfBeginningExchangePoint_ft[0]",
+    "rect": [
+      388.61,
+      379.925,
+      575.997,
+      388.925
+    ],
+    "type": "/Tx",
+    "tooltip": "(address):"
+  },
+  {
+    "page": 2,
+    "name": "FL-341[0].Page3[0].List11[0].Li5[0].EndVisitExchangePoint_cb[0]",
+    "fullName": "FL-341[0].Page3[0].List11[0].Li5[0].EndVisitExchangePoint_cb[0]",
+    "rect": [
+      97.121,
+      366.72,
+      107.121,
+      376.72
+    ],
+    "type": "/Btn",
+    "tooltip": "The exchange point at the end of the visit will be at "
+  },
+  {
+    "page": 2,
+    "name": "FL-341[0].Page3[0].List11[0].Li5[0].LocationofEndVisitExchangePoint_ft[0]",
+    "fullName": "FL-341[0].Page3[0].List11[0].Li5[0].LocationofEndVisitExchangePoint_ft[0]",
+    "rect": [
+      364.754,
+      367.22,
+      575.998,
+      376.22
+    ],
+    "type": "/Tx",
+    "tooltip": "(address):"
+  },
+  {
+    "page": 2,
+    "name": "FL-341[0].Page3[0].List11[0].Li6[0].PartiesWaitChildrenGo_cb[0]",
+    "fullName": "FL-341[0].Page3[0].List11[0].Li6[0].PartiesWaitChildrenGo_cb[0]",
+    "rect": [
+      97.121,
+      353.112,
+      107.121,
+      363.112
+    ],
+    "type": "/Btn",
+    "tooltip": "During the exchanges, the party driving the children will wait in the car and the other party will wait in the home (or exchange location) while the children go between the car and the home (or exchange location)."
+  },
+  {
+    "page": 2,
+    "name": "FL-341[0].Page3[0].List11[0].Li7[0].OherTransportationMatters_cb[0]",
+    "fullName": "FL-341[0].Page3[0].List11[0].Li7[0].OherTransportationMatters_cb[0]",
+    "rect": [
+      97.121,
+      328.059,
+      106.121,
+      337.059
+    ],
+    "type": "/Btn",
+    "tooltip": "Other (specify):"
+  },
+  {
+    "page": 2,
+    "name": "FL-341[0].Page3[0].List11[0].Li7[0].SpecifyOtherTransportIssues_ft[0]",
+    "fullName": "FL-341[0].Page3[0].List11[0].Li7[0].SpecifyOtherTransportIssues_ft[0]",
+    "rect": [
+      115.898,
+      254.977,
+      574.722,
+      327
+    ],
+    "type": "/Tx",
+    "tooltip": "specify"
+  },
+  {
+    "page": 2,
+    "name": "FL-341[0].Page3[0].List12[0].TravelWithChildren_cb[0]",
+    "fullName": "FL-341[0].Page3[0].List12[0].TravelWithChildren_cb[0]",
+    "rect": [
+      56.353,
+      240.403,
+      65.353,
+      249.403
+    ],
+    "type": "/Btn",
+    "tooltip": "Travel with children. The       "
+  },
+  {
+    "page": 2,
+    "name": "FL-341[0].Page3[0].List12[0].PetitionerMustHaveWrittenPermission_cb[0]",
+    "fullName": "FL-341[0].Page3[0].List12[0].PetitionerMustHaveWrittenPermission_cb[0]",
+    "rect": [
+      195.948,
+      240.404,
+      204.948,
+      249.404
+    ],
+    "type": "/Btn",
+    "tooltip": "petitioner    "
+  },
+  {
+    "page": 2,
+    "name": "FL-341[0].Page3[0].List12[0].RespondentMustHaveWrittenPermission_cb[0]",
+    "fullName": "FL-341[0].Page3[0].List12[0].RespondentMustHaveWrittenPermission_cb[0]",
+    "rect": [
+      268.478,
+      240.404,
+      277.478,
+      249.404
+    ],
+    "type": "/Btn",
+    "tooltip": "respondent   "
+  },
+  {
+    "page": 2,
+    "name": "FL-341[0].Page3[0].List12[0].OtherParentPartyMustHaveWrittenPermission_cb[0]",
+    "fullName": "FL-341[0].Page3[0].List12[0].OtherParentPartyMustHaveWrittenPermission_cb[0]",
+    "rect": [
+      350.518,
+      240.404,
+      359.518,
+      249.404
+    ],
+    "type": "/Btn",
+    "tooltip": "other parent/party"
+  },
+  {
+    "page": 2,
+    "name": "FL-341[0].Page3[0].List12[0].SpecifyName_ft[0]",
+    "fullName": "FL-341[0].Page3[0].List12[0].SpecifyName_ft[0]",
+    "rect": [
+      475.022,
+      240.404,
+      575.997,
+      249.404
+    ],
+    "type": "/Tx",
+    "tooltip": "(name):"
+  },
+  {
+    "page": 2,
+    "name": "FL-341[0].Page3[0].List12[0].Li1[0].TakeChilrenOutOfCalifornia_cb[0]",
+    "fullName": "FL-341[0].Page3[0].List12[0].Li1[0].TakeChilrenOutOfCalifornia_cb[0]",
+    "rect": [
+      99.125,
+      213.942,
+      108.125,
+      222.942
+    ],
+    "type": "/Btn",
+    "tooltip": "the state of California."
+  },
+  {
+    "page": 2,
+    "name": "FL-341[0].Page3[0].List12[0].Li2[0].TakeChildrenFromTheseCounties_cb[0]",
+    "fullName": "FL-341[0].Page3[0].List12[0].Li2[0].TakeChildrenFromTheseCounties_cb[0]",
+    "rect": [
+      99.125,
+      200.078,
+      108.125,
+      209.078
+    ],
+    "type": "/Btn",
+    "tooltip": "the following counties "
+  },
+  {
+    "page": 2,
+    "name": "FL-341[0].Page3[0].List12[0].Li2[0].SpecifyCounties_ft[0]",
+    "fullName": "FL-341[0].Page3[0].List12[0].Li2[0].SpecifyCounties_ft[0]",
+    "rect": [
+      245.328,
+      200.078,
+      571.59,
+      209.078
+    ],
+    "type": "/Tx",
+    "tooltip": "(specify):"
+  },
+  {
+    "page": 2,
+    "name": "FL-341[0].Page3[0].List12[0].Li3[0].TakeChildrenFromOtherPlaces_cb[0]",
+    "fullName": "FL-341[0].Page3[0].List12[0].Li3[0].TakeChildrenFromOtherPlaces_cb[0]",
+    "rect": [
+      99.125,
+      186.14,
+      108.125,
+      195.14
+    ],
+    "type": "/Btn",
+    "tooltip": "other places (specify):"
+  },
+  {
+    "page": 2,
+    "name": "FL-341[0].Page3[0].List12[0].Li3[0].IdentifyOtherPlaces_ft[0]",
+    "fullName": "FL-341[0].Page3[0].List12[0].Li3[0].IdentifyOtherPlaces_ft[0]",
+    "rect": [
+      118.242,
+      80.924,
+      575.215,
+      185.437
+    ],
+    "type": "/Tx",
+    "tooltip": "(specify):"
+  },
+  {
+    "page": 3,
+    "name": "FL-341[0].#pageSet[0].LastPage[0].#area[0].Print[0]",
+    "fullName": "FL-341[0].#pageSet[0].LastPage[0].#area[0].Print[0]",
+    "rect": [
+      259.175,
+      11.435,
+      340.175,
+      28.443
+    ],
+    "type": "/Btn",
+    "tooltip": "Print"
+  },
+  {
+    "page": 3,
+    "name": "FL-341[0].#pageSet[0].LastPage[0].#area[0].Save[0]",
+    "fullName": "FL-341[0].#pageSet[0].LastPage[0].#area[0].Save[0]",
+    "rect": [
+      345.714,
+      11.435,
+      426.819,
+      28.443
+    ],
+    "type": "/Btn",
+    "tooltip": "Save"
+  },
+  {
+    "page": 3,
+    "name": "FL-341[0].#pageSet[0].LastPage[0].#area[0].Reset[0]",
+    "fullName": "FL-341[0].#pageSet[0].LastPage[0].#area[0].Reset[0]",
+    "rect": [
+      495.403,
+      11.435,
+      576.4,
+      28.443
+    ],
+    "type": "/Btn",
+    "tooltip": "Clear"
+  },
+  {
+    "page": 3,
+    "name": "FL-341[0].Page4[0].PxCaption_sf[0].CaseSub[0].CaseNumber[0].CaseNumber_ft[0]",
+    "fullName": "FL-341[0].Page4[0].PxCaption_sf[0].CaseSub[0].CaseNumber[0].CaseNumber_ft[0]",
+    "rect": [
+      399.883,
+      711.196,
+      572.683,
+      722.636
+    ],
+    "type": "/Tx",
+    "tooltip": "CASE NUMBER:"
+  },
+  {
+    "page": 3,
+    "name": "FL-341[0].Page4[0].PxCaption_sf[0].PartySub[0].TitlePartyName[0].Petitioner_ft[0]",
+    "fullName": "FL-341[0].Page4[0].PxCaption_sf[0].PartySub[0].TitlePartyName[0].Petitioner_ft[0]",
+    "rect": [
+      149.116,
+      729.131,
+      390.991,
+      739.293
+    ],
+    "type": "/Tx",
+    "tooltip": "PETITIONER:"
+  },
+  {
+    "page": 3,
+    "name": "FL-341[0].Page4[0].PxCaption_sf[0].PartySub[0].TitlePartyName[0].Respondent_ft[0]",
+    "fullName": "FL-341[0].Page4[0].PxCaption_sf[0].PartySub[0].TitlePartyName[0].Respondent_ft[0]",
+    "rect": [
+      150.204,
+      716.778,
+      391.206,
+      726.94
+    ],
+    "type": "/Tx",
+    "tooltip": "RESPONDENT:"
+  },
+  {
+    "page": 3,
+    "name": "FL-341[0].Page4[0].PxCaption_sf[0].PartySub[0].TitlePartyName[0].OtherParentParty_ft[0]",
+    "fullName": "FL-341[0].Page4[0].PxCaption_sf[0].PartySub[0].TitlePartyName[0].OtherParentParty_ft[0]",
+    "rect": [
+      149.706,
+      705.02,
+      391.994,
+      715.182
+    ],
+    "type": "/Tx",
+    "tooltip": "OTHER PARENT/PARTY:"
+  },
+  {
+    "page": 3,
+    "name": "FL-341[0].Page4[0].List13[0].Li1[0].HolidaySchedule_cb[0]",
+    "fullName": "FL-341[0].Page4[0].List13[0].Li1[0].HolidaySchedule_cb[0]",
+    "rect": [
+      55.99,
+      678.892,
+      64.99,
+      687.892
+    ],
+    "type": "/Btn",
+    "tooltip": "Holiday schedule. "
+  },
+  {
+    "page": 3,
+    "name": "FL-341[0].Page4[0].List13[0].Li1[0].HolidayScheWhere_cb[0]",
+    "fullName": "FL-341[0].Page4[0].List13[0].Li1[0].HolidayScheWhere_cb[0]",
+    "rect": [
+      346.895,
+      679.629,
+      355.895,
+      688.629
+    ],
+    "type": "/Btn",
+    "tooltip": "below "
+  },
+  {
+    "page": 3,
+    "name": "FL-341[0].Page4[0].List13[0].Li1[0].HolidayScheWhere_cb[1]",
+    "fullName": "FL-341[0].Page4[0].List13[0].Li1[0].HolidayScheWhere_cb[1]",
+    "rect": [
+      403.2,
+      679.629,
+      412.2,
+      688.629
+    ],
+    "type": "/Btn",
+    "tooltip": " in the attached schedule. (Children's Holiday Schedule Attachment (form FL-341(C)) may be used for this purpose.)"
+  },
+  {
+    "page": 3,
+    "name": "FL-341[0].Page4[0].List13[0].Li1[0].SpecifyHolidayScheduleHere_ft[0]",
+    "fullName": "FL-341[0].Page4[0].List13[0].Li1[0].SpecifyHolidayScheduleHere_ft[0]",
+    "rect": [
+      77.939,
+      488.494,
+      576,
+      666.89
+    ],
+    "type": "/Tx",
+    "tooltip": "list how the children will spend holiday time                                          "
+  },
+  {
+    "page": 3,
+    "name": "FL-341[0].Page4[0].LIst14[0].Li1[0].AdditionalCustodyProvisions_cb[0]",
+    "fullName": "FL-341[0].Page4[0].LIst14[0].Li1[0].AdditionalCustodyProvisions_cb[0]",
+    "rect": [
+      55.244,
+      468.245,
+      64.244,
+      477.245
+    ],
+    "type": "/Btn",
+    "tooltip": "Additional custody provisions. "
+  },
+  {
+    "page": 3,
+    "name": "FL-341[0].Page4[0].LIst14[0].Li1[0].AddlProvWhere_cb[0]",
+    "fullName": "FL-341[0].Page4[0].LIst14[0].Li1[0].AddlProvWhere_cb[0]",
+    "rect": [
+      463.096,
+      469.72,
+      472.096,
+      478.72
+    ],
+    "type": "/Btn",
+    "tooltip": "below "
+  },
+  {
+    "page": 3,
+    "name": "FL-341[0].Page4[0].LIst14[0].Li1[0].AddlProvWhere_cb[1]",
+    "fullName": "FL-341[0].Page4[0].LIst14[0].Li1[0].AddlProvWhere_cb[1]",
+    "rect": [
+      521.836,
+      469.719,
+      530.836,
+      478.719
+    ],
+    "type": "/Btn",
+    "tooltip": " in the attached schedule. (Additional Provisions—Physical Custody Attachment  (form FL-341(D)) may be used for this purpose.)"
+  },
+  {
+    "page": 3,
+    "name": "FL-341[0].Page4[0].LIst14[0].Li1[0].ListAdditionalCustodyProvisionsHere_ft[0]",
+    "fullName": "FL-341[0].Page4[0].LIst14[0].Li1[0].ListAdditionalCustodyProvisionsHere_ft[0]",
+    "rect": [
+      77.939,
+      254.31,
+      576,
+      454.804
+    ],
+    "type": "/Tx",
+    "tooltip": "list additional custody provisions"
+  },
+  {
+    "page": 3,
+    "name": "FL-341[0].Page4[0].List16[0].Li1[0].OtherChildCustodyOrders_cb[0]",
+    "fullName": "FL-341[0].Page4[0].List16[0].Li1[0].OtherChildCustodyOrders_cb[0]",
+    "rect": [
+      55.253,
+      193.387,
+      64.253,
+      202.387
+    ],
+    "type": "/Btn",
+    "tooltip": "Other (specify):"
+  },
+  {
+    "page": 3,
+    "name": "FL-341[0].Page4[0].List16[0].Li1[0].other[0]",
+    "fullName": "FL-341[0].Page4[0].List16[0].Li1[0].other[0]",
+    "rect": [
+      73.695,
+      79.511,
+      575.263,
+      192.534
+    ],
+    "type": "/Tx",
+    "tooltip": "specify"
+  }
+]

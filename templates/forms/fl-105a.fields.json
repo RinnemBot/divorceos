@@ -1,0 +1,860 @@
+[
+  {
+    "page": 0,
+    "name": "Print[0]",
+    "fullName": "FL-105A[0].#pageSet[0].Page1[0].FooterButtons[0].Print[0]",
+    "rect": [
+      258.826,
+      763.818,
+      339.826,
+      780.826
+    ],
+    "type": "/Btn",
+    "tooltip": "Print this form"
+  },
+  {
+    "page": 0,
+    "name": "Save[0]",
+    "fullName": "FL-105A[0].#pageSet[0].Page1[0].FooterButtons[0].Save[0]",
+    "rect": [
+      345.365,
+      763.818,
+      426.47,
+      780.826
+    ],
+    "type": "/Btn",
+    "tooltip": "Save this form"
+  },
+  {
+    "page": 0,
+    "name": "Reset[0]",
+    "fullName": "FL-105A[0].#pageSet[0].Page1[0].FooterButtons[0].Reset[0]",
+    "rect": [
+      495.054,
+      763.818,
+      576.051,
+      780.826
+    ],
+    "type": "/Btn",
+    "tooltip": "Clear this form"
+  },
+  {
+    "page": 0,
+    "name": "Warning[0]",
+    "fullName": "FL-105A[0].#pageSet[0].Page1[0].FooterButtons[0].Warning[0]",
+    "rect": [
+      36.136,
+      757.647,
+      247.43,
+      780.826
+    ],
+    "type": "/Btn",
+    "tooltip": "For your protection and privacy, please press the Clear This Form button after you have printed the form."
+  },
+  {
+    "page": 0,
+    "name": "ShortTitle_ft[0]",
+    "fullName": "FL-105A[0].Page1[0].P1Caption[0].Parties[0].ShortTitle_ft[0]",
+    "rect": [
+      38.058,
+      58.14,
+      392.61,
+      71.64
+    ],
+    "type": "/Tx",
+    "tooltip": "CASE NAME:"
+  },
+  {
+    "page": 0,
+    "name": "CaseNumber_ft[0]",
+    "fullName": "FL-105A[0].Page1[0].P1Caption[0].CaseNumber[0].CaseNumber_ft[0]",
+    "rect": [
+      399.742,
+      56.249,
+      572.542,
+      71.64
+    ],
+    "type": "/Tx",
+    "tooltip": "CASE NUMBER"
+  },
+  {
+    "page": 0,
+    "name": "Checkbox[0]",
+    "fullName": "FL-105A[0].Page1[0].List1[0].Li1[0].Checkbox[0]",
+    "rect": [
+      66.349,
+      140.4,
+      75.349,
+      149.4
+    ],
+    "type": "/Btn",
+    "tooltip": "Checkbox"
+  },
+  {
+    "page": 0,
+    "name": "ChildXName[0]",
+    "fullName": "FL-105A[0].Page1[0].List1[0].Li1[0].ChildXName[0]",
+    "rect": [
+      144.649,
+      140.4,
+      348.806,
+      149.4
+    ],
+    "type": "/Tx",
+    "tooltip": "Name of child:"
+  },
+  {
+    "page": 0,
+    "name": "ResInfo2a_cb[0]",
+    "fullName": "FL-105A[0].Page1[0].List1[0].Li1[0].ResidenceInfo2a[0].ResInfo2a_cb[0]",
+    "rect": [
+      88.14,
+      174.6,
+      97.14,
+      183.6
+    ],
+    "type": "/Btn",
+    "tooltip": "Residence information is the same as given for the child listed in item 2a on form FL-105/GC-120. (If not the same, provide the information below.)"
+  },
+  {
+    "page": 0,
+    "name": "From1[0]",
+    "fullName": "FL-105A[0].Page1[0].List1[0].Li1[0].Table3bX_sf[0].Table3bX[0].Row1[0].From1[0]",
+    "rect": [
+      86.643,
+      237.586,
+      145.769,
+      259.603
+    ],
+    "type": "/Tx",
+    "tooltip": "From:"
+  },
+  {
+    "page": 0,
+    "name": "Residence1[0]",
+    "fullName": "FL-105A[0].Page1[0].List1[0].Li1[0].Table3bX_sf[0].Table3bX[0].Row1[0].Residence1[0]",
+    "rect": [
+      216.241,
+      229.275,
+      347.371,
+      259.605
+    ],
+    "type": "/Tx",
+    "tooltip": "Residence \r(City, State)"
+  },
+  {
+    "page": 0,
+    "name": "PersonStreet1[0]",
+    "fullName": "FL-105A[0].Page1[0].List1[0].Li1[0].Table3bX_sf[0].Table3bX[0].Row1[0].PersonStreet1[0]",
+    "rect": [
+      353.041,
+      229.275,
+      500.731,
+      259.605
+    ],
+    "type": "/Tx",
+    "tooltip": "Person child lived with (name and complete current address)"
+  },
+  {
+    "page": 0,
+    "name": "Relationship1[0]",
+    "fullName": "FL-105A[0].Page1[0].List1[0].Li1[0].Table3bX_sf[0].Table3bX[0].Row1[0].Relationship1[0]",
+    "rect": [
+      506.401,
+      229.275,
+      573.163,
+      259.605
+    ],
+    "type": "/Tx",
+    "tooltip": "Relationship"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox3[0]",
+    "fullName": "FL-105A[0].Page1[0].List1[0].Li1[0].Table3bX_sf[0].Table3bX[0].Row1a[0].Condifential1a3[0].CheckBox3[0]",
+    "rect": [
+      221.292,
+      262.675,
+      230.292,
+      271.675
+    ],
+    "type": "/Btn",
+    "tooltip": "Confidential (list state only)"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox3[0]",
+    "fullName": "FL-105A[0].Page1[0].List1[0].Li1[0].Table3bX_sf[0].Table3bX[0].Row1a[0].Confidential1a4[0].CheckBox3[0]",
+    "rect": [
+      358.679,
+      262.675,
+      367.679,
+      271.675
+    ],
+    "type": "/Btn",
+    "tooltip": "Confidential (list state only)"
+  },
+  {
+    "page": 0,
+    "name": "From2[0]",
+    "fullName": "FL-105A[0].Page1[0].List1[0].Li1[0].Table3bX_sf[0].Table3bX[0].Row2[0].From2[0]",
+    "rect": [
+      86.643,
+      284.422,
+      145.769,
+      306.437
+    ],
+    "type": "/Tx",
+    "tooltip": "From:"
+  },
+  {
+    "page": 0,
+    "name": "To2[0]",
+    "fullName": "FL-105A[0].Page1[0].List1[0].Li1[0].Table3bX_sf[0].Table3bX[0].Row2[0].To2[0]",
+    "rect": [
+      151.443,
+      284.422,
+      210.569,
+      306.437
+    ],
+    "type": "/Tx",
+    "tooltip": "To:"
+  },
+  {
+    "page": 0,
+    "name": "Residence2[0]",
+    "fullName": "FL-105A[0].Page1[0].List1[0].Li1[0].Table3bX_sf[0].Table3bX[0].Row2[0].Residence2[0]",
+    "rect": [
+      216.241,
+      276.109,
+      347.371,
+      306.439
+    ],
+    "type": "/Tx",
+    "tooltip": "Residence \r(City, State)"
+  },
+  {
+    "page": 0,
+    "name": "PersonStreet2[0]",
+    "fullName": "FL-105A[0].Page1[0].List1[0].Li1[0].Table3bX_sf[0].Table3bX[0].Row2[0].PersonStreet2[0]",
+    "rect": [
+      353.041,
+      276.109,
+      500.731,
+      306.439
+    ],
+    "type": "/Tx",
+    "tooltip": "Person child lived with (name and complete current address)"
+  },
+  {
+    "page": 0,
+    "name": "Relationship2[0]",
+    "fullName": "FL-105A[0].Page1[0].List1[0].Li1[0].Table3bX_sf[0].Table3bX[0].Row2[0].Relationship2[0]",
+    "rect": [
+      506.401,
+      276.109,
+      573.163,
+      306.439
+    ],
+    "type": "/Tx",
+    "tooltip": "Relationship"
+  },
+  {
+    "page": 0,
+    "name": "From3[0]",
+    "fullName": "FL-105A[0].Page1[0].List1[0].Li1[0].Table3bX_sf[0].Table3bX[0].Row3[0].From3[0]",
+    "rect": [
+      86.643,
+      320.422,
+      145.769,
+      342.437
+    ],
+    "type": "/Tx",
+    "tooltip": "From:"
+  },
+  {
+    "page": 0,
+    "name": "To3[0]",
+    "fullName": "FL-105A[0].Page1[0].List1[0].Li1[0].Table3bX_sf[0].Table3bX[0].Row3[0].To3[0]",
+    "rect": [
+      151.443,
+      320.422,
+      210.569,
+      342.437
+    ],
+    "type": "/Tx",
+    "tooltip": "To:"
+  },
+  {
+    "page": 0,
+    "name": "Residence3[0]",
+    "fullName": "FL-105A[0].Page1[0].List1[0].Li1[0].Table3bX_sf[0].Table3bX[0].Row3[0].Residence3[0]",
+    "rect": [
+      216.241,
+      312.109,
+      347.371,
+      342.439
+    ],
+    "type": "/Tx",
+    "tooltip": "Residence \r(City, State)"
+  },
+  {
+    "page": 0,
+    "name": "PersonStreet3[0]",
+    "fullName": "FL-105A[0].Page1[0].List1[0].Li1[0].Table3bX_sf[0].Table3bX[0].Row3[0].PersonStreet3[0]",
+    "rect": [
+      353.041,
+      312.109,
+      500.731,
+      342.439
+    ],
+    "type": "/Tx",
+    "tooltip": "Person child lived with (name and complete current address)"
+  },
+  {
+    "page": 0,
+    "name": "Relationship3[0]",
+    "fullName": "FL-105A[0].Page1[0].List1[0].Li1[0].Table3bX_sf[0].Table3bX[0].Row3[0].Relationship3[0]",
+    "rect": [
+      506.401,
+      312.109,
+      573.163,
+      342.439
+    ],
+    "type": "/Tx",
+    "tooltip": "Relationship"
+  },
+  {
+    "page": 0,
+    "name": "From4[0]",
+    "fullName": "FL-105A[0].Page1[0].List1[0].Li1[0].Table3bX_sf[0].Table3bX[0].Row4[0].From4[0]",
+    "rect": [
+      86.643,
+      356.42,
+      145.769,
+      378.437
+    ],
+    "type": "/Tx",
+    "tooltip": "From:"
+  },
+  {
+    "page": 0,
+    "name": "To4[0]",
+    "fullName": "FL-105A[0].Page1[0].List1[0].Li1[0].Table3bX_sf[0].Table3bX[0].Row4[0].To4[0]",
+    "rect": [
+      151.443,
+      356.422,
+      210.569,
+      378.437
+    ],
+    "type": "/Tx",
+    "tooltip": "To:"
+  },
+  {
+    "page": 0,
+    "name": "Residence4[0]",
+    "fullName": "FL-105A[0].Page1[0].List1[0].Li1[0].Table3bX_sf[0].Table3bX[0].Row4[0].Residence4[0]",
+    "rect": [
+      216.241,
+      348.109,
+      347.371,
+      378.439
+    ],
+    "type": "/Tx",
+    "tooltip": "Residence \r(City, State)"
+  },
+  {
+    "page": 0,
+    "name": "PersonStreet4[0]",
+    "fullName": "FL-105A[0].Page1[0].List1[0].Li1[0].Table3bX_sf[0].Table3bX[0].Row4[0].PersonStreet4[0]",
+    "rect": [
+      353.041,
+      348.109,
+      500.731,
+      378.439
+    ],
+    "type": "/Tx",
+    "tooltip": "Person child lived with (name and complete current address)"
+  },
+  {
+    "page": 0,
+    "name": "Relationship4[0]",
+    "fullName": "FL-105A[0].Page1[0].List1[0].Li1[0].Table3bX_sf[0].Table3bX[0].Row4[0].Relationship4[0]",
+    "rect": [
+      506.401,
+      348.109,
+      573.163,
+      378.439
+    ],
+    "type": "/Tx",
+    "tooltip": "Relationship"
+  },
+  {
+    "page": 0,
+    "name": "From5[0]",
+    "fullName": "FL-105A[0].Page1[0].List1[0].Li1[0].Table3bX_sf[0].Table3bX[0].Row5[0].From5[0]",
+    "rect": [
+      86.643,
+      392.42,
+      145.769,
+      414.437
+    ],
+    "type": "/Tx",
+    "tooltip": "From:"
+  },
+  {
+    "page": 0,
+    "name": "To5[0]",
+    "fullName": "FL-105A[0].Page1[0].List1[0].Li1[0].Table3bX_sf[0].Table3bX[0].Row5[0].To5[0]",
+    "rect": [
+      151.443,
+      392.422,
+      210.569,
+      414.437
+    ],
+    "type": "/Tx",
+    "tooltip": "To:"
+  },
+  {
+    "page": 0,
+    "name": "Residence5[0]",
+    "fullName": "FL-105A[0].Page1[0].List1[0].Li1[0].Table3bX_sf[0].Table3bX[0].Row5[0].Residence5[0]",
+    "rect": [
+      216.241,
+      384.109,
+      347.371,
+      414.439
+    ],
+    "type": "/Tx",
+    "tooltip": "Residence \r(City, State)"
+  },
+  {
+    "page": 0,
+    "name": "PersonStreet5[0]",
+    "fullName": "FL-105A[0].Page1[0].List1[0].Li1[0].Table3bX_sf[0].Table3bX[0].Row5[0].PersonStreet5[0]",
+    "rect": [
+      353.041,
+      384.109,
+      500.731,
+      414.439
+    ],
+    "type": "/Tx",
+    "tooltip": "Person child lived with (name and complete current address)"
+  },
+  {
+    "page": 0,
+    "name": "Relationship5[0]",
+    "fullName": "FL-105A[0].Page1[0].List1[0].Li1[0].Table3bX_sf[0].Table3bX[0].Row5[0].Relationship5[0]",
+    "rect": [
+      506.401,
+      384.109,
+      573.163,
+      414.439
+    ],
+    "type": "/Tx",
+    "tooltip": "Relationship"
+  },
+  {
+    "page": 0,
+    "name": "Checkbox[0]",
+    "fullName": "FL-105A[0].Page1[0].List2[0].Li1[0].Checkbox[0]",
+    "rect": [
+      66.349,
+      428.4,
+      75.349,
+      437.4
+    ],
+    "type": "/Btn",
+    "tooltip": "Checkbox"
+  },
+  {
+    "page": 0,
+    "name": "ChildYName[0]",
+    "fullName": "FL-105A[0].Page1[0].List2[0].Li1[0].ChildYName[0]",
+    "rect": [
+      144.649,
+      428.4,
+      348.806,
+      437.4
+    ],
+    "type": "/Tx",
+    "tooltip": "Name of child:"
+  },
+  {
+    "page": 0,
+    "name": "ResInfo2a_cb[0]",
+    "fullName": "FL-105A[0].Page1[0].List2[0].Li1[0].ResidenceInfo2a[0].ResInfo2a_cb[0]",
+    "rect": [
+      88.14,
+      462.6,
+      97.14,
+      471.6
+    ],
+    "type": "/Btn",
+    "tooltip": "Residence information is the same as given for the child listed in item 2a on form FL-105/GC-120. (If not the same, provide the information below.)"
+  },
+  {
+    "page": 0,
+    "name": "From1[0]",
+    "fullName": "FL-105A[0].Page1[0].List2[0].Li1[0].Table3bY_sf[0].Table3bY[0].Row1[0].From1[0]",
+    "rect": [
+      86.643,
+      525.699,
+      145.769,
+      547.603
+    ],
+    "type": "/Tx",
+    "tooltip": "From:"
+  },
+  {
+    "page": 0,
+    "name": "Residence1[0]",
+    "fullName": "FL-105A[0].Page1[0].List2[0].Li1[0].Table3bY_sf[0].Table3bY[0].Row1[0].Residence1[0]",
+    "rect": [
+      216.241,
+      517.275,
+      347.371,
+      547.605
+    ],
+    "type": "/Tx",
+    "tooltip": "Residence \r(City, State)"
+  },
+  {
+    "page": 0,
+    "name": "PersonStreet1[0]",
+    "fullName": "FL-105A[0].Page1[0].List2[0].Li1[0].Table3bY_sf[0].Table3bY[0].Row1[0].PersonStreet1[0]",
+    "rect": [
+      353.041,
+      517.275,
+      500.731,
+      547.605
+    ],
+    "type": "/Tx",
+    "tooltip": "Person child lived with (name and complete current address)"
+  },
+  {
+    "page": 0,
+    "name": "Relationship1[0]",
+    "fullName": "FL-105A[0].Page1[0].List2[0].Li1[0].Table3bY_sf[0].Table3bY[0].Row1[0].Relationship1[0]",
+    "rect": [
+      506.401,
+      517.275,
+      573.163,
+      547.605
+    ],
+    "type": "/Tx",
+    "tooltip": "Relationship"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1a3[0]",
+    "fullName": "FL-105A[0].Page1[0].List2[0].Li1[0].Table3bY_sf[0].Table3bY[0].Row1a[0].Confidential1a3_sf[0].CheckBox1a3[0]",
+    "rect": [
+      221.363,
+      550.675,
+      230.363,
+      559.675
+    ],
+    "type": "/Btn",
+    "tooltip": "Confidential (list state only)"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1a4[0]",
+    "fullName": "FL-105A[0].Page1[0].List2[0].Li1[0].Table3bY_sf[0].Table3bY[0].Row1a[0].Confidential1a4_sf[0].CheckBox1a4[0]",
+    "rect": [
+      358.523,
+      550.675,
+      367.523,
+      559.675
+    ],
+    "type": "/Btn",
+    "tooltip": "Confidential (list state only)"
+  },
+  {
+    "page": 0,
+    "name": "From2[0]",
+    "fullName": "FL-105A[0].Page1[0].List2[0].Li1[0].Table3bY_sf[0].Table3bY[0].Row2[0].From2[0]",
+    "rect": [
+      86.643,
+      572.025,
+      145.769,
+      594.04
+    ],
+    "type": "/Tx",
+    "tooltip": "From:"
+  },
+  {
+    "page": 0,
+    "name": "To2[0]",
+    "fullName": "FL-105A[0].Page1[0].List2[0].Li1[0].Table3bY_sf[0].Table3bY[0].Row2[0].To2[0]",
+    "rect": [
+      151.443,
+      572.025,
+      210.569,
+      594.04
+    ],
+    "type": "/Tx",
+    "tooltip": "b. Name and address of person"
+  },
+  {
+    "page": 0,
+    "name": "Residence2[0]",
+    "fullName": "FL-105A[0].Page1[0].List2[0].Li1[0].Table3bY_sf[0].Table3bY[0].Row2[0].Residence2[0]",
+    "rect": [
+      216.241,
+      563.712,
+      347.371,
+      594.042
+    ],
+    "type": "/Tx",
+    "tooltip": "Residence \r(City, State)"
+  },
+  {
+    "page": 0,
+    "name": "PersonStreet2[0]",
+    "fullName": "FL-105A[0].Page1[0].List2[0].Li1[0].Table3bY_sf[0].Table3bY[0].Row2[0].PersonStreet2[0]",
+    "rect": [
+      353.041,
+      563.712,
+      500.731,
+      594.042
+    ],
+    "type": "/Tx",
+    "tooltip": "Person child lived with (name and complete current address)"
+  },
+  {
+    "page": 0,
+    "name": "Relationship2[0]",
+    "fullName": "FL-105A[0].Page1[0].List2[0].Li1[0].Table3bY_sf[0].Table3bY[0].Row2[0].Relationship2[0]",
+    "rect": [
+      506.401,
+      563.712,
+      573.163,
+      594.042
+    ],
+    "type": "/Tx",
+    "tooltip": "Relationship"
+  },
+  {
+    "page": 0,
+    "name": "From3[0]",
+    "fullName": "FL-105A[0].Page1[0].List2[0].Li1[0].Table3bY_sf[0].Table3bY[0].Row3[0].From3[0]",
+    "rect": [
+      86.643,
+      608.025,
+      145.769,
+      630.04
+    ],
+    "type": "/Tx",
+    "tooltip": "From:"
+  },
+  {
+    "page": 0,
+    "name": "To3[0]",
+    "fullName": "FL-105A[0].Page1[0].List2[0].Li1[0].Table3bY_sf[0].Table3bY[0].Row3[0].To3[0]",
+    "rect": [
+      151.443,
+      608.025,
+      210.569,
+      630.04
+    ],
+    "type": "/Tx",
+    "tooltip": "To:"
+  },
+  {
+    "page": 0,
+    "name": "Residence3[0]",
+    "fullName": "FL-105A[0].Page1[0].List2[0].Li1[0].Table3bY_sf[0].Table3bY[0].Row3[0].Residence3[0]",
+    "rect": [
+      216.241,
+      599.712,
+      347.371,
+      630.042
+    ],
+    "type": "/Tx",
+    "tooltip": "Residence \r(City, State)"
+  },
+  {
+    "page": 0,
+    "name": "PersonStreet3[0]",
+    "fullName": "FL-105A[0].Page1[0].List2[0].Li1[0].Table3bY_sf[0].Table3bY[0].Row3[0].PersonStreet3[0]",
+    "rect": [
+      353.041,
+      599.712,
+      500.731,
+      630.042
+    ],
+    "type": "/Tx",
+    "tooltip": "Person child lived with (name and complete current address)"
+  },
+  {
+    "page": 0,
+    "name": "Relationship3[0]",
+    "fullName": "FL-105A[0].Page1[0].List2[0].Li1[0].Table3bY_sf[0].Table3bY[0].Row3[0].Relationship3[0]",
+    "rect": [
+      506.401,
+      599.712,
+      573.163,
+      630.042
+    ],
+    "type": "/Tx",
+    "tooltip": "Relationship"
+  },
+  {
+    "page": 0,
+    "name": "From4[0]",
+    "fullName": "FL-105A[0].Page1[0].List2[0].Li1[0].Table3bY_sf[0].Table3bY[0].Row4[0].From4[0]",
+    "rect": [
+      86.643,
+      643.835,
+      145.769,
+      666.04
+    ],
+    "type": "/Tx",
+    "tooltip": "From:"
+  },
+  {
+    "page": 0,
+    "name": "To4[0]",
+    "fullName": "FL-105A[0].Page1[0].List2[0].Li1[0].Table3bY_sf[0].Table3bY[0].Row4[0].To4[0]",
+    "rect": [
+      151.443,
+      644.025,
+      210.569,
+      666.04
+    ],
+    "type": "/Tx",
+    "tooltip": "To:"
+  },
+  {
+    "page": 0,
+    "name": "Residnce4[0]",
+    "fullName": "FL-105A[0].Page1[0].List2[0].Li1[0].Table3bY_sf[0].Table3bY[0].Row4[0].Residnce4[0]",
+    "rect": [
+      216.241,
+      635.712,
+      347.371,
+      666.042
+    ],
+    "type": "/Tx",
+    "tooltip": "Residence \r(City, State)"
+  },
+  {
+    "page": 0,
+    "name": "PersonStreet4[0]",
+    "fullName": "FL-105A[0].Page1[0].List2[0].Li1[0].Table3bY_sf[0].Table3bY[0].Row4[0].PersonStreet4[0]",
+    "rect": [
+      353.041,
+      635.712,
+      500.731,
+      666.042
+    ],
+    "type": "/Tx",
+    "tooltip": "Person child lived with (name and complete current address)"
+  },
+  {
+    "page": 0,
+    "name": "Relationship4[0]",
+    "fullName": "FL-105A[0].Page1[0].List2[0].Li1[0].Table3bY_sf[0].Table3bY[0].Row4[0].Relationship4[0]",
+    "rect": [
+      506.401,
+      635.712,
+      573.163,
+      666.042
+    ],
+    "type": "/Tx",
+    "tooltip": "Relationship"
+  },
+  {
+    "page": 0,
+    "name": "From5[0]",
+    "fullName": "FL-105A[0].Page1[0].List2[0].Li1[0].Table3bY_sf[0].Table3bY[0].Row5[0].From5[0]",
+    "rect": [
+      86.643,
+      679.835,
+      145.769,
+      702.04
+    ],
+    "type": "/Tx",
+    "tooltip": "From:"
+  },
+  {
+    "page": 0,
+    "name": "To5[0]",
+    "fullName": "FL-105A[0].Page1[0].List2[0].Li1[0].Table3bY_sf[0].Table3bY[0].Row5[0].To5[0]",
+    "rect": [
+      151.443,
+      680.025,
+      210.569,
+      702.04
+    ],
+    "type": "/Tx",
+    "tooltip": "To:"
+  },
+  {
+    "page": 0,
+    "name": "Residence5[0]",
+    "fullName": "FL-105A[0].Page1[0].List2[0].Li1[0].Table3bY_sf[0].Table3bY[0].Row5[0].Residence5[0]",
+    "rect": [
+      216.241,
+      671.712,
+      347.371,
+      702.042
+    ],
+    "type": "/Tx",
+    "tooltip": "Residence \r(City, State)"
+  },
+  {
+    "page": 0,
+    "name": "PersonStreet5[0]",
+    "fullName": "FL-105A[0].Page1[0].List2[0].Li1[0].Table3bY_sf[0].Table3bY[0].Row5[0].PersonStreet5[0]",
+    "rect": [
+      353.041,
+      671.712,
+      500.731,
+      702.042
+    ],
+    "type": "/Tx",
+    "tooltip": "Person child lived with (name and complete current address)"
+  },
+  {
+    "page": 0,
+    "name": "Relationship5[0]",
+    "fullName": "FL-105A[0].Page1[0].List2[0].Li1[0].Table3bY_sf[0].Table3bY[0].Row5[0].Relationship5[0]",
+    "rect": [
+      506.401,
+      671.712,
+      573.163,
+      702.042
+    ],
+    "type": "/Tx",
+    "tooltip": "Relationship"
+  },
+  {
+    "page": 0,
+    "name": "PageX[0]",
+    "fullName": "FL-105A[0].Page1[0].PageXofX_sf[0].PageX[0]",
+    "rect": [
+      545.329,
+      711.0,
+      556.129,
+      718.0
+    ],
+    "type": "/Tx",
+    "tooltip": "Page"
+  },
+  {
+    "page": 0,
+    "name": "OfX[0]",
+    "fullName": "FL-105A[0].Page1[0].PageXofX_sf[0].OfX[0]",
+    "rect": [
+      565.201,
+      711.0,
+      576.0,
+      717.999
+    ],
+    "type": "/Tx",
+    "tooltip": " of"
+  }
+]
