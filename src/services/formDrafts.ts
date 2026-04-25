@@ -2536,6 +2536,29 @@ interface ChatIntakePrefill {
   separationDate?: string;
   hasMinorChildren?: boolean;
   children: Array<{ fullName?: string; age?: string }>;
+  fl150: {
+    employer?: string;
+    employerAddress?: string;
+    employerPhone?: string;
+    occupation?: string;
+    hoursPerWeek?: string;
+    payAmount?: string;
+    payPeriod?: DraftFl150PayPeriod;
+    salaryAverageMonthly?: string;
+    otherPartyIncome?: string;
+    rentOrMortgage?: string;
+    groceriesHousehold?: string;
+    utilities?: string;
+    phoneExpense?: string;
+    auto?: string;
+    autoInsurance?: string;
+    childCareCosts?: string;
+    healthCareCostsNotCovered?: string;
+    medicalInsuranceDeduction?: string;
+    cashChecking?: string;
+    savingsCreditUnion?: string;
+    monthlyDebtPayments?: string;
+  };
 }
 
 function truncateIntakeText(text: string, maxLength = 16000) {
@@ -2629,6 +2652,73 @@ function extractPhoneByLabel(text: string) {
   return cleanExtractedValue(text.match(/\b(?:\+?1[-.\s]?)?(?:\(?\d{3}\)?[-.\s]?)\d{3}[-.\s]?\d{4}\b/)?.[0]);
 }
 
+function cleanMoney(value?: string) {
+  return cleanExtractedValue(value).replace(/^\$/, '').trim();
+}
+
+function inferPayPeriod(text: string): DraftFl150PayPeriod | undefined {
+  if (/\b(?:per|a|each)\s+month\b|\bmonthly\b/i.test(text)) return 'month';
+  if (/\b(?:per|a|each)\s+week\b|\bweekly\b/i.test(text)) return 'week';
+  if (/\b(?:per|an|each)\s+hour\b|\bhourly\b/i.test(text)) return 'hour';
+  return undefined;
+}
+
+function extractMoneyByPatterns(text: string, patterns: RegExp[]) {
+  for (const pattern of patterns) {
+    const match = text.match(pattern);
+    const value = cleanMoney(match?.[1]);
+    if (value) return value;
+  }
+  return '';
+}
+
+function extractEmployer(text: string) {
+  const match = text.match(/\b(?:my\s+)?(?:employer\s*(?:is|:)|I\s+work\s+(?:at|for))\s+([^\n.;]+?)(?:\s+(?:as|doing|making|earning)\b|[\n.;]|$)/i);
+  return cleanExtractedValue(match?.[1]);
+}
+
+function extractOccupation(text: string) {
+  return extractLabelValue(text, ['occupation', 'job(?:\s+title)?', 'work'])
+    || cleanExtractedValue(text.match(/\bI\s+work\s+(?:at|for)\s+[^\n.;]+?\s+(?:as|doing)\s+([^,\n.;]+)/i)?.[1])
+    || cleanExtractedValue(text.match(/\b(?:I\s+work\s+(?:as|doing)|I\s+am\s+(?:a|an))\s+([^,\n.;]+)/i)?.[1]);
+}
+
+function extractFl150ChatPrefill(text: string): ChatIntakePrefill['fl150'] {
+  const paySentence = text.match(/\b(?:I\s+)?(?:make|earn|get paid|gross|income(?:\s+is)?)\s+\$?([\d,]+(?:\.\d{2})?)([^\n.;]{0,40})/i);
+  const payAmount = cleanMoney(paySentence?.[1]);
+  const payPeriod = inferPayPeriod(paySentence?.[0] ?? text);
+
+  return {
+    employer: extractEmployer(text) || extractLabelValue(text, ['employer', 'company']),
+    employerAddress: extractLabelValue(text, ['employer\s+address', 'work\s+address']),
+    employerPhone: extractLabelValue(text, ['employer\s+phone', 'work\s+phone']),
+    occupation: extractOccupation(text),
+    hoursPerWeek: cleanExtractedValue(text.match(/\b(\d{1,3})\s+(?:hours|hrs)\s+(?:per\s+)?week\b/i)?.[1]),
+    payAmount,
+    payPeriod,
+    salaryAverageMonthly: extractMoneyByPatterns(text, [
+      /\b(?:monthly\s+income|gross\s+monthly\s+income|income\s+per\s+month)\s*(?:is|:)?\s*\$?([\d,]+(?:\.\d{2})?)/i,
+      /\b(?:I\s+)?(?:make|earn|get paid)\s+\$?([\d,]+(?:\.\d{2})?)\s+(?:per\s+month|a\s+month|monthly)\b/i,
+    ]),
+    otherPartyIncome: extractMoneyByPatterns(text, [
+      /\b(?:other\s+party|spouse|respondent)\s+(?:makes|earns|income(?:\s+is)?)\s+\$?([\d,]+(?:\.\d{2})?)/i,
+      /\b(?:other\s+party|spouse|respondent).*?gross\s+monthly\s+income.*?\$?([\d,]+(?:\.\d{2})?)/i,
+    ]),
+    rentOrMortgage: extractMoneyByPatterns(text, [/\b(?:rent|mortgage)\s*(?:is|:|costs?)?\s*\$?([\d,]+(?:\.\d{2})?)/i]),
+    groceriesHousehold: extractMoneyByPatterns(text, [/\b(?:groceries|food|household)\s*(?:are|is|:|costs?)?\s*\$?([\d,]+(?:\.\d{2})?)/i]),
+    utilities: extractMoneyByPatterns(text, [/\butilities\s*(?:are|is|:|costs?)?\s*\$?([\d,]+(?:\.\d{2})?)/i]),
+    phoneExpense: extractMoneyByPatterns(text, [/\b(?:phone\s+bill|cell\s+phone)\s*(?:is|:|costs?)?\s*\$?([\d,]+(?:\.\d{2})?)/i]),
+    auto: extractMoneyByPatterns(text, [/\b(?:car\s+payment|auto\s+payment|vehicle\s+payment)\s*(?:is|:)?\s*\$?([\d,]+(?:\.\d{2})?)/i]),
+    autoInsurance: extractMoneyByPatterns(text, [/\b(?:car|auto|vehicle)\s+insurance\s*(?:is|:|costs?)?\s*\$?([\d,]+(?:\.\d{2})?)/i]),
+    childCareCosts: extractMoneyByPatterns(text, [/\b(?:child\s*care|daycare)\s*(?:is|:|costs?)?\s*\$?([\d,]+(?:\.\d{2})?)/i]),
+    healthCareCostsNotCovered: extractMoneyByPatterns(text, [/\b(?:unreimbursed|uncovered)\s+(?:medical|health(?:\s+care)?)\s*(?:is|:|costs?)?\s*\$?([\d,]+(?:\.\d{2})?)/i]),
+    medicalInsuranceDeduction: extractMoneyByPatterns(text, [/\b(?:health|medical)\s+insurance\s*(?:is|:|costs?)?\s*\$?([\d,]+(?:\.\d{2})?)/i]),
+    cashChecking: extractMoneyByPatterns(text, [/\b(?:cash|checking)\s*(?:is|:)?\s*\$?([\d,]+(?:\.\d{2})?)/i]),
+    savingsCreditUnion: extractMoneyByPatterns(text, [/\b(?:savings|credit\s+union)\s*(?:is|:)?\s*\$?([\d,]+(?:\.\d{2})?)/i]),
+    monthlyDebtPayments: extractMoneyByPatterns(text, [/\b(?:debt\s+payments?|monthly\s+debt)\s*(?:are|is|:)?\s*\$?([\d,]+(?:\.\d{2})?)/i]),
+  };
+}
+
 function extractChildrenFromChat(text: string, user: User): ChatIntakePrefill['children'] {
   const children: ChatIntakePrefill['children'] = [];
   const namedChildren = extractLabelValue(text, [
@@ -2675,11 +2765,83 @@ function extractChatIntakePrefill(user: User, text: string): ChatIntakePrefill {
     separationDate: extractDateByLabel(combined, ['separated', 'date\\s+of\\s+separation', 'separation\\s+date']),
     hasMinorChildren: typeof user.profile?.hasChildren === 'boolean' ? user.profile.hasChildren : children.length > 0 || hasChildrenFromText || undefined,
     children,
+    fl150: extractFl150ChatPrefill(combined),
   };
 }
 
 function createChatField<T>(value: T, needsReview = true): DraftField<T> {
   return createField(value, { ...CHAT_PREFILL_SOURCE, needsReview });
+}
+
+function withChatValue<T>(field: DraftField<T>, value: T | undefined) {
+  if (value === undefined) return field;
+  if (typeof value === 'string' && value.trim().length === 0) return field;
+  return createChatField(value);
+}
+
+function applyChatPrefillToFl150(section: DraftFl150Section, prefill: ChatIntakePrefill['fl150']): DraftFl150Section {
+  const hasFinancialPrefill = Object.values(prefill).some((value) => typeof value === 'string' ? value.trim().length > 0 : Boolean(value));
+  const hasExpensePrefill = [
+    prefill.rentOrMortgage,
+    prefill.groceriesHousehold,
+    prefill.utilities,
+    prefill.phoneExpense,
+    prefill.auto,
+    prefill.autoInsurance,
+    prefill.monthlyDebtPayments,
+  ].some((value) => value?.trim());
+
+  return {
+    ...section,
+    includeForm: hasFinancialPrefill ? createChatField(false) : section.includeForm,
+    employment: {
+      ...section.employment,
+      employer: withChatValue(section.employment.employer, prefill.employer),
+      employerAddress: withChatValue(section.employment.employerAddress, prefill.employerAddress),
+      employerPhone: withChatValue(section.employment.employerPhone, prefill.employerPhone),
+      occupation: withChatValue(section.employment.occupation, prefill.occupation),
+      hoursPerWeek: withChatValue(section.employment.hoursPerWeek, prefill.hoursPerWeek),
+      payAmount: withChatValue(section.employment.payAmount, prefill.payAmount),
+      payPeriod: withChatValue(section.employment.payPeriod, prefill.payPeriod),
+    },
+    otherPartyIncome: {
+      ...section.otherPartyIncome,
+      grossMonthlyEstimate: withChatValue(section.otherPartyIncome.grossMonthlyEstimate, prefill.otherPartyIncome),
+      basis: prefill.otherPartyIncome ? createChatField('Maria chat intake estimate; review source before filing.') : section.otherPartyIncome.basis,
+    },
+    income: {
+      ...section.income,
+      salaryWages: {
+        ...section.income.salaryWages,
+        averageMonthly: withChatValue(section.income.salaryWages.averageMonthly, prefill.salaryAverageMonthly ?? (prefill.payPeriod === 'month' ? prefill.payAmount : undefined)),
+      },
+    },
+    deductions: {
+      ...section.deductions,
+      medicalInsurance: withChatValue(section.deductions.medicalInsurance, prefill.medicalInsuranceDeduction),
+    },
+    assets: {
+      ...section.assets,
+      cashChecking: withChatValue(section.assets.cashChecking, prefill.cashChecking),
+      savingsCreditUnion: withChatValue(section.assets.savingsCreditUnion, prefill.savingsCreditUnion),
+    },
+    expenses: {
+      ...section.expenses,
+      basis: hasExpensePrefill ? createChatField('estimated' as DraftFl150ExpenseBasis) : section.expenses.basis,
+      rentOrMortgage: withChatValue(section.expenses.rentOrMortgage, prefill.rentOrMortgage),
+      groceriesHousehold: withChatValue(section.expenses.groceriesHousehold, prefill.groceriesHousehold),
+      utilities: withChatValue(section.expenses.utilities, prefill.utilities),
+      phone: withChatValue(section.expenses.phone, prefill.phoneExpense),
+      auto: withChatValue(section.expenses.auto, prefill.auto),
+      autoInsurance: withChatValue(section.expenses.autoInsurance, prefill.autoInsurance),
+      monthlyDebtPayments: withChatValue(section.expenses.monthlyDebtPayments, prefill.monthlyDebtPayments),
+    },
+    childrenSupport: {
+      ...section.childrenSupport,
+      childCareCosts: withChatValue(section.childrenSupport.childCareCosts, prefill.childCareCosts),
+      healthCareCostsNotCovered: withChatValue(section.childrenSupport.healthCareCostsNotCovered, prefill.healthCareCostsNotCovered),
+    },
+  };
 }
 
 function getSourceMessages(messages: ChatMessage[] = [], sourceAssistantMessageId?: string) {
@@ -2896,7 +3058,7 @@ export function createStarterPacketWorkspace(options: {
     children,
     fl100: createDefaultFl100Section(),
     fl300: createDefaultFl300Section(petitionerName),
-    fl150: createDefaultFl150Section(petitionerName),
+    fl150: applyChatPrefillToFl150(createDefaultFl150Section(petitionerName), chatPrefill.fl150),
     fl105: createDefaultFl105Section(petitionerName),
     requests: inferRequests(user, chatContext, assistantMessage?.content),
   };
