@@ -778,17 +778,29 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
 
   const deleteSession = async (e: React.MouseEvent, sessionId: string) => {
     e.stopPropagation();
-    await authService.deleteChatSession(sessionId);
+    const session = sessions.find((entry) => entry.id === sessionId);
+    const confirmDelete = window.confirm(`Delete this chat${session?.title ? `: ${session.title}` : ''}? This cannot be undone.`);
+    if (!confirmDelete) return;
 
-    const updatedSessions = sessions.filter(s => s.id !== sessionId);
-    setSessions(updatedSessions);
+    try {
+      await authService.deleteChatSession(sessionId);
 
-    if (currentSessionId === sessionId) {
-      if (updatedSessions.length > 0) {
-        loadSession(updatedSessions[0].id);
-      } else {
-        startNewChat();
+      const updatedSessions = sessions.filter(s => s.id !== sessionId);
+      setSessions(updatedSessions);
+
+      if (currentSessionId === sessionId) {
+        if (updatedSessions.length > 0) {
+          loadSession(updatedSessions[0].id);
+        } else {
+          startNewChat();
+        }
       }
+
+      toast.success('Chat deleted.');
+    } catch (error) {
+      toast.error('Unable to delete chat', {
+        description: error instanceof Error ? error.message : 'Please try again.',
+      });
     }
   };
 
@@ -1356,18 +1368,29 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
                 <div
                   key={session.id}
                   onClick={() => loadSession(session.id)}
-                  className={`flex items-center justify-between p-2 rounded cursor-pointer text-sm ${
+                  className={`group flex items-center justify-between gap-2 rounded p-2 text-sm ${
                     currentSessionId === session.id 
                       ? 'bg-emerald-100 text-emerald-700' 
                       : 'hover:bg-gray-100 text-gray-700'
                   }`}
                 >
-                  <span className="truncate flex-1">{session.title}</span>
                   <button
+                    type="button"
+                    onClick={() => loadSession(session.id)}
+                    className="min-w-0 flex-1 truncate text-left"
+                    title={session.title}
+                  >
+                    {session.title}
+                  </button>
+                  <button
+                    type="button"
+                    aria-label={`Delete chat ${session.title}`}
+                    title="Delete chat"
                     onClick={(e) => deleteSession(e, session.id)}
-                    className="ml-2 p-1 hover:bg-red-100 hover:text-red-600 rounded"
+                    className="ml-2 inline-flex items-center gap-1 rounded px-2 py-1 text-xs text-slate-400 opacity-80 transition hover:bg-red-100 hover:text-red-600 group-hover:opacity-100"
                   >
                     <Trash2 className="h-3 w-3" />
+                    <span className="hidden sm:inline">Delete</span>
                   </button>
                 </div>
               ))}
