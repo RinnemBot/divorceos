@@ -2806,6 +2806,8 @@ function createChatField<T>(value: T, needsReview = true): DraftField<T> {
 function withChatValue<T>(field: DraftField<T>, value: T | undefined) {
   if (value === undefined) return field;
   if (typeof value === 'string' && value.trim().length === 0) return field;
+  if (typeof field.value === 'string' && field.value.trim().length > 0 && field.value !== 'unspecified') return field;
+  if (typeof field.value === 'boolean' && field.value) return field;
   return createChatField(value);
 }
 
@@ -2871,6 +2873,57 @@ function applyChatPrefillToFl150(section: DraftFl150Section, prefill: ChatIntake
       childCareCosts: withChatValue(section.childrenSupport.childCareCosts, prefill.childCareCosts),
       healthCareCostsNotCovered: withChatValue(section.childrenSupport.healthCareCostsNotCovered, prefill.healthCareCostsNotCovered),
     },
+  };
+}
+
+function applyChatPrefillToBlankWorkspaceFields(workspace: DraftFormsWorkspace): DraftFormsWorkspace {
+  const intakeText = [
+    workspace.intake?.userRequest ?? '',
+    workspace.intake?.mariaSummary ?? '',
+  ].filter(Boolean).join('\n\n---\n\n');
+  if (!intakeText.trim()) return workspace;
+
+  const syntheticUser: User = {
+    id: workspace.userId,
+    email: '',
+    subscription: 'free',
+    chatCount: 0,
+    chatCountResetDate: new Date().toISOString(),
+    emailVerified: true,
+    profile: {},
+  };
+  const prefill = extractChatIntakePrefill(syntheticUser, intakeText);
+  const nextChildren = workspace.children.length > 0 || prefill.children.length === 0
+    ? workspace.children
+    : prefill.children.map((child) => ({
+      id: uuidv4(),
+      fullName: child.fullName ? createChatField(child.fullName) : createField('', { needsReview: true }),
+      birthDate: createField('', {
+        sourceType: child.age ? 'chat' : undefined,
+        sourceLabel: child.age ? `Maria chat intake mentioned age ${child.age}; birth date still required` : undefined,
+        confidence: child.age ? 'low' : undefined,
+        needsReview: true,
+      }),
+      placeOfBirth: createField('', { needsReview: true }),
+    }));
+
+  return {
+    ...workspace,
+    caseNumber: withChatValue(workspace.caseNumber, prefill.caseNumber),
+    filingCounty: withChatValue(workspace.filingCounty, prefill.filingCounty),
+    petitionerName: withChatValue(workspace.petitionerName, prefill.petitionerName),
+    petitionerAddress: withChatValue(workspace.petitionerAddress, prefill.petitionerAddress),
+    petitionerPhone: withChatValue(workspace.petitionerPhone, prefill.petitionerPhone),
+    petitionerEmail: withChatValue(workspace.petitionerEmail, prefill.petitionerEmail),
+    petitionerAttorneyOrPartyName: withChatValue(workspace.petitionerAttorneyOrPartyName, prefill.petitionerName),
+    respondentName: withChatValue(workspace.respondentName, prefill.respondentName),
+    marriageDate: withChatValue(workspace.marriageDate, prefill.marriageDate),
+    separationDate: withChatValue(workspace.separationDate, prefill.separationDate),
+    hasMinorChildren: prefill.hasMinorChildren !== undefined && !workspace.hasMinorChildren.value
+      ? createChatField(prefill.hasMinorChildren)
+      : workspace.hasMinorChildren,
+    children: nextChildren,
+    fl150: applyChatPrefillToFl150(workspace.fl150, prefill.fl150),
   };
 }
 
@@ -3105,7 +3158,8 @@ export function listDraftWorkspaces(userId?: string) {
 }
 
 export function getDraftWorkspace(workspaceId: string) {
-  return readWorkspaces().find((workspace) => workspace.id === workspaceId) ?? null;
+  const workspace = readWorkspaces().find((entry) => entry.id === workspaceId) ?? null;
+  return workspace ? applyChatPrefillToBlankWorkspaceFields(workspace) : null;
 }
 
 export function saveDraftWorkspace(workspace: DraftFormsWorkspace) {
