@@ -2528,6 +2528,9 @@ interface ChatIntakePrefill {
   caseNumber?: string;
   filingCounty?: string;
   petitionerName?: string;
+  petitionerAddress?: string;
+  petitionerPhone?: string;
+  petitionerEmail?: string;
   respondentName?: string;
   marriageDate?: string;
   separationDate?: string;
@@ -2535,9 +2538,24 @@ interface ChatIntakePrefill {
   children: Array<{ fullName?: string; age?: string }>;
 }
 
-function truncateIntakeText(text: string, maxLength = 6000) {
+function truncateIntakeText(text: string, maxLength = 16000) {
   const trimmed = text.trim();
   return trimmed.length <= maxLength ? trimmed : trimmed.slice(trimmed.length - maxLength).trim();
+}
+
+function formatChatHandoffMessages(messages: ChatMessage[]) {
+  const transcript = messages
+    .filter((message) => message.content.trim() || (message.attachments?.length ?? 0) > 0)
+    .map((message) => {
+      const speaker = message.role === 'assistant' ? 'Maria' : 'User';
+      const attachments = message.attachments?.length
+        ? `\nAttachments: ${message.attachments.map((attachment) => attachment.name).join(', ')}`
+        : '';
+      return `${speaker}: ${message.content.trim()}${attachments}`.trim();
+    })
+    .join('\n\n---\n\n');
+
+  return truncateIntakeText(transcript);
 }
 
 function cleanExtractedValue(value?: string) {
@@ -2549,7 +2567,7 @@ function cleanExtractedValue(value?: string) {
 
 function extractLabelValue(text: string, labels: string[]) {
   for (const label of labels) {
-    const expression = new RegExp(`(?:^|[\\n.;,])\\s*(?:${label})\\s*(?:is|are|:|=|-)\\s*([^\\n.;]+)`, 'i');
+    const expression = new RegExp(`(?:^|[\\n.;,:])\\s*(?:${label})\\s*(?:is|are|:|=|-)\\s*([^\\n.;]+)`, 'i');
     const match = text.match(expression);
     const value = cleanExtractedValue(match?.[1]);
     if (value) return value;
@@ -2600,6 +2618,17 @@ function extractCounty(text: string) {
   return CALIFORNIA_COUNTIES.find((county) => lowerText.includes(county.toLowerCase())) ?? '';
 }
 
+function extractEmail(text: string) {
+  return cleanExtractedValue(text.match(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i)?.[0]);
+}
+
+function extractPhoneByLabel(text: string) {
+  const labelled = extractLabelValue(text, ['(?:my\\s+)?phone(?:\\s+number)?', 'petitioner\\s+phone(?:\\s+number)?']);
+  const fromLabel = labelled.match(/(?:\+?1[-.\s]?)?(?:\(?\d{3}\)?[-.\s]?)\d{3}[-.\s]?\d{4}/)?.[0];
+  if (fromLabel) return cleanExtractedValue(fromLabel);
+  return cleanExtractedValue(text.match(/\b(?:\+?1[-.\s]?)?(?:\(?\d{3}\)?[-.\s]?)\d{3}[-.\s]?\d{4}\b/)?.[0]);
+}
+
 function extractChildrenFromChat(text: string, user: User): ChatIntakePrefill['children'] {
   const children: ChatIntakePrefill['children'] = [];
   const namedChildren = extractLabelValue(text, [
@@ -2638,6 +2667,9 @@ function extractChatIntakePrefill(user: User, text: string): ChatIntakePrefill {
     caseNumber: extractLabelValue(combined, ['case(?:\\s+number|\\s+no\\.?)']),
     filingCounty: extractCounty(combined),
     petitionerName: extractLabelValue(combined, ['petitioner(?:\\s+name)?', 'my\\s+name']),
+    petitionerAddress: extractLabelValue(combined, ['(?:my\\s+)?address', 'petitioner\\s+address', 'mailing\\s+address']),
+    petitionerPhone: extractPhoneByLabel(combined),
+    petitionerEmail: extractLabelValue(combined, ['(?:my\\s+)?email', 'petitioner\\s+email']) || extractEmail(combined),
     respondentName: extractLabelValue(combined, ['respondent(?:\\s+name)?', "(?:my\\s+)?spouse(?:'s)?\\s+name", "(?:my\\s+)?husband(?:'s)?\\s+name", "(?:my\\s+)?wife(?:'s)?\\s+name", "(?:the\\s+)?other\\s+party(?:'s)?\\s+name"]),
     marriageDate: extractDateByLabel(combined, ['married', 'date\\s+of\\s+marriage', 'marriage\\s+date']),
     separationDate: extractDateByLabel(combined, ['separated', 'date\\s+of\\s+separation', 'separation\\s+date']),
@@ -2667,10 +2699,12 @@ function getSourceMessages(messages: ChatMessage[] = [], sourceAssistantMessageI
     ? [...messages.slice(0, actualAssistantIndex)].reverse().find((message) => message.role === 'user')
     : [...messages].reverse().find((message) => message.role === 'user');
 
-  const userContextMessages = (actualAssistantIndex >= 0 ? messages.slice(0, actualAssistantIndex) : messages)
+  const priorMessages = actualAssistantIndex >= 0 ? messages.slice(0, actualAssistantIndex + 1) : messages;
+  const userContextMessages = priorMessages
     .filter((message) => message.role === 'user' && message.content.trim())
-    .slice(-8);
+    .slice(-24);
   const userContext = truncateIntakeText(userContextMessages.map((message) => message.content.trim()).join('\n\n---\n\n'));
+  const conversationContext = formatChatHandoffMessages(priorMessages.slice(-40));
 
   const attachmentNames = [...messages]
     .filter((message) => message.role === 'user')
@@ -2678,7 +2712,7 @@ function getSourceMessages(messages: ChatMessage[] = [], sourceAssistantMessageI
     .map((attachment) => attachment.name)
     .filter(Boolean);
 
-  return { assistantMessage, userMessage, userContext, attachmentNames: Array.from(new Set(attachmentNames)) };
+  return { assistantMessage, userMessage, userContext, conversationContext, attachmentNames: Array.from(new Set(attachmentNames)) };
 }
 
 function inferBoolean(text: string, expressions: RegExp[]) {
@@ -2740,9 +2774,9 @@ export function createStarterPacketWorkspace(options: {
 }) {
   const { user, messages = [], sourceSessionId, sourceAssistantMessageId } = options;
   const now = new Date().toISOString();
-  const { assistantMessage, userMessage, userContext, attachmentNames } = getSourceMessages(messages, sourceAssistantMessageId);
-  const chatContext = userContext || userMessage?.content?.trim() || '';
-  const chatPrefill = extractChatIntakePrefill(user, [chatContext, assistantMessage?.content ?? ''].join('\n\n'));
+  const { assistantMessage, userMessage, userContext, conversationContext, attachmentNames } = getSourceMessages(messages, sourceAssistantMessageId);
+  const chatContext = conversationContext || userContext || userMessage?.content?.trim() || '';
+  const chatPrefill = extractChatIntakePrefill(user, chatContext);
   const petitionerProfileName = getPetitionerName(user);
   const petitionerName = petitionerProfileName || chatPrefill.petitionerName || '';
   const titleBase = petitionerName || user.email || 'Draft starter packet';
@@ -2805,17 +2839,17 @@ export function createStarterPacketWorkspace(options: {
       confidence: petitionerProfileName ? 'high' : chatPrefill.petitionerName ? 'low' : undefined,
       needsReview: !petitionerProfileName,
     }),
-    petitionerAddress: createField('', {
+    petitionerAddress: chatPrefill.petitionerAddress ? createChatField(chatPrefill.petitionerAddress) : createField('', {
       needsReview: true,
     }),
-    petitionerPhone: createField('', {
+    petitionerPhone: chatPrefill.petitionerPhone ? createChatField(chatPrefill.petitionerPhone) : createField('', {
       needsReview: true,
     }),
-    petitionerEmail: createField(user.email || '', {
-      sourceType: user.email ? 'profile' : undefined,
-      sourceLabel: user.email ? 'Account email' : undefined,
-      confidence: user.email ? 'high' : undefined,
-      needsReview: false,
+    petitionerEmail: createField(user.email || chatPrefill.petitionerEmail || '', {
+      sourceType: user.email ? 'profile' : chatPrefill.petitionerEmail ? 'chat' : undefined,
+      sourceLabel: user.email ? 'Account email' : chatPrefill.petitionerEmail ? 'Maria chat intake' : undefined,
+      confidence: user.email ? 'high' : chatPrefill.petitionerEmail ? 'low' : undefined,
+      needsReview: !user.email,
     }),
     petitionerFax: createField('', {
       needsReview: false,
