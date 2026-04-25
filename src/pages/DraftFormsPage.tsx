@@ -242,6 +242,38 @@ function FormStatusBadge({ status }: { status: 'Ready' | 'Needs review' | 'Not s
   return <Badge variant="outline" className={cn('rounded-full border', className)}>{status}</Badge>;
 }
 
+function ScopeToggle({
+  title,
+  description,
+  checked,
+  field,
+  onCheckedChange,
+}: {
+  title: string;
+  description: string;
+  checked: boolean;
+  field?: DraftField<unknown>;
+  onCheckedChange: (checked: boolean) => void;
+}) {
+  return (
+    <label className={cn(
+      'flex cursor-pointer items-start gap-3 rounded-2xl border p-4 transition',
+      checked
+        ? 'border-emerald-200 bg-emerald-50/80 dark:border-emerald-400/20 dark:bg-emerald-400/10'
+        : 'border-slate-200/80 bg-white/70 hover:border-emerald-200 dark:border-white/10 dark:bg-white/5',
+    )}>
+      <Checkbox checked={checked} onCheckedChange={(value) => onCheckedChange(value === true)} />
+      <span className="min-w-0 flex-1">
+        <span className="flex flex-wrap items-center gap-2 text-sm font-semibold text-slate-900 dark:text-slate-100">
+          {title}
+          {field && <FieldSourceBadge field={field} />}
+        </span>
+        <span className="mt-1 block text-xs leading-5 text-slate-500 dark:text-slate-400">{description}</span>
+      </span>
+    </label>
+  );
+}
+
 export function DraftFormsPage() {
   const navigate = useNavigate();
   const { workspaceId } = useParams();
@@ -1280,6 +1312,129 @@ export function DraftFormsPage() {
                         <p className="mt-3 text-sm leading-6 text-slate-700 dark:text-slate-200">{item.note}</p>
                       </div>
                     ))}
+                  </div>
+
+                  <div className="rounded-2xl border border-emerald-200/80 bg-emerald-50/60 p-4 dark:border-emerald-400/20 dark:bg-emerald-400/10">
+                    <div className="flex flex-wrap items-start justify-between gap-3">
+                      <div>
+                        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-800 dark:text-emerald-200">Forms in scope</p>
+                        <p className="mt-1 text-sm leading-6 text-slate-700 dark:text-slate-200">
+                          Add or remove optional forms here. Required starter-packet forms stay on unless their facts make them inapplicable.
+                        </p>
+                      </div>
+                      <Badge variant="outline" className="rounded-full border-emerald-200 bg-white/70 text-emerald-800 dark:border-emerald-400/20 dark:bg-white/10 dark:text-emerald-100">
+                        {includedForms.length} included
+                      </Badge>
+                    </div>
+
+                    <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+                      <ScopeToggle
+                        title="FL-105 / GC-120"
+                        description="Included when minor children are part of the case. Turning this off also removes the UCCJEA declaration."
+                        checked={workspace.hasMinorChildren.value}
+                        field={workspace.hasMinorChildren}
+                        onCheckedChange={(checked) => commitWorkspace((current) => ({
+                          ...current,
+                          hasMinorChildren: setDraftFieldValue(current.hasMinorChildren, checked),
+                        }))}
+                      />
+                      <ScopeToggle
+                        title="FL-300 Request for Order"
+                        description="Use when asking the court for temporary/new/changed orders now."
+                        checked={workspace.fl300.includeForm.value}
+                        field={workspace.fl300.includeForm}
+                        onCheckedChange={(checked) => updateFl300((fl300) => ({ ...fl300, includeForm: setDraftFieldValue(fl300.includeForm, checked) }))}
+                      />
+                      <ScopeToggle
+                        title="FL-150 Income & Expense"
+                        description="Recommended for child support, spousal support, or fee requests."
+                        checked={workspace.fl150.includeForm.value}
+                        field={workspace.fl150.includeForm}
+                        onCheckedChange={(checked) => updateFl150((fl150) => ({ ...fl150, includeForm: setDraftFieldValue(fl150.includeForm, checked) }))}
+                      />
+                      <ScopeToggle
+                        title="FL-311 Custody/Visitation"
+                        description="Add custody and parenting-time request details."
+                        checked={workspace.fl100.childCustodyVisitation.attachments.formFl311.value}
+                        field={workspace.fl100.childCustodyVisitation.attachments.formFl311}
+                        onCheckedChange={(checked) => updateFl100((fl100) => ({
+                          ...fl100,
+                          childCustodyVisitation: {
+                            ...fl100.childCustodyVisitation,
+                            attachments: {
+                              ...fl100.childCustodyVisitation.attachments,
+                              formFl311: setDraftFieldValue(fl100.childCustodyVisitation.attachments.formFl311, checked),
+                            },
+                          },
+                        }))}
+                      />
+                      <ScopeToggle
+                        title="FL-312 Abduction Prevention"
+                        description="Use only when there are specific child-abduction prevention concerns."
+                        checked={workspace.fl100.childCustodyVisitation.attachments.formFl312.value}
+                        field={workspace.fl100.childCustodyVisitation.attachments.formFl312}
+                        onCheckedChange={(checked) => updateFl100((fl100) => ({
+                          ...fl100,
+                          childCustodyVisitation: {
+                            ...fl100.childCustodyVisitation,
+                            attachments: {
+                              ...fl100.childCustodyVisitation.attachments,
+                              formFl312: setDraftFieldValue(fl100.childCustodyVisitation.attachments.formFl312, checked),
+                            },
+                          },
+                        }))}
+                      />
+                      <ScopeToggle
+                        title="FL-341 custody order set"
+                        description="Master switch for FL-341(A/B/C/D/E). Turning off removes all selected 341 attachments."
+                        checked={shouldIncludeFl341}
+                        onCheckedChange={(checked) => updateFl100((fl100) => ({
+                          ...fl100,
+                          childCustodyVisitation: {
+                            ...fl100.childCustodyVisitation,
+                            attachments: {
+                              ...fl100.childCustodyVisitation.attachments,
+                              formFl341a: setDraftFieldValue(fl100.childCustodyVisitation.attachments.formFl341a, checked ? fl100.childCustodyVisitation.attachments.formFl341a.value : false),
+                              formFl341b: setDraftFieldValue(fl100.childCustodyVisitation.attachments.formFl341b, checked ? fl100.childCustodyVisitation.attachments.formFl341b.value : false),
+                              formFl341c: setDraftFieldValue(fl100.childCustodyVisitation.attachments.formFl341c, checked ? fl100.childCustodyVisitation.attachments.formFl341c.value : false),
+                              formFl341d: setDraftFieldValue(fl100.childCustodyVisitation.attachments.formFl341d, checked ? fl100.childCustodyVisitation.attachments.formFl341d.value : false),
+                              formFl341e: setDraftFieldValue(fl100.childCustodyVisitation.attachments.formFl341e, checked ? fl100.childCustodyVisitation.attachments.formFl341e.value : false),
+                            },
+                          },
+                        }))}
+                      />
+                    </div>
+
+                    <details className="mt-4 rounded-2xl border border-white/70 bg-white/60 p-3 dark:border-white/10 dark:bg-white/5">
+                      <summary className="cursor-pointer text-sm font-semibold text-slate-800 dark:text-slate-100">Choose individual FL-341 attachments</summary>
+                      <div className="mt-3 grid gap-2 md:grid-cols-2 xl:grid-cols-5">
+                        {([
+                          ['formFl341a', 'FL-341(A)', 'Supervised visitation'],
+                          ['formFl341b', 'FL-341(B)', 'Child abduction prevention'],
+                          ['formFl341c', 'FL-341(C)', 'Holiday schedule'],
+                          ['formFl341d', 'FL-341(D)', 'Physical custody provisions'],
+                          ['formFl341e', 'FL-341(E)', 'Joint legal custody'],
+                        ] as const).map(([key, label, description]) => (
+                          <ScopeToggle
+                            key={key}
+                            title={label}
+                            description={description}
+                            checked={workspace.fl100.childCustodyVisitation.attachments[key].value}
+                            field={workspace.fl100.childCustodyVisitation.attachments[key]}
+                            onCheckedChange={(checked) => updateFl100((fl100) => ({
+                              ...fl100,
+                              childCustodyVisitation: {
+                                ...fl100.childCustodyVisitation,
+                                attachments: {
+                                  ...fl100.childCustodyVisitation.attachments,
+                                  [key]: setDraftFieldValue(fl100.childCustodyVisitation.attachments[key], checked),
+                                },
+                              },
+                            }))}
+                          />
+                        ))}
+                      </div>
+                    </details>
                   </div>
 
                   <div>
