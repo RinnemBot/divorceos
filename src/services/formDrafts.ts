@@ -939,6 +939,7 @@ function sanitizeHandoffMessage(message: ChatMessage): ChatMessage {
     id: message.id,
     role: message.role,
     content: message.content,
+    draftContext: message.draftContext,
     timestamp: message.timestamp,
     attachments: message.attachments,
   };
@@ -2627,7 +2628,10 @@ function formatChatHandoffMessages(messages: ChatMessage[]) {
       const attachments = message.attachments?.length
         ? `\nAttachments: ${message.attachments.map((attachment) => attachment.name).join(', ')}`
         : '';
-      return `${speaker}: ${message.content.trim()}${attachments}`.trim();
+      const draftContext = message.draftContext?.trim()
+        ? `\nUploaded/extracted form context:\n${message.draftContext.trim()}`
+        : '';
+      return `${speaker}: ${message.content.trim()}${attachments}${draftContext}`.trim();
     })
     .join('\n\n---\n\n');
 
@@ -2643,7 +2647,7 @@ function cleanExtractedValue(value?: string) {
 
 function extractLabelValue(text: string, labels: string[]) {
   for (const label of labels) {
-    const expression = new RegExp(`(?:^|[\\n.;,:])\\s*(?:${label})\\s*(?:is|are|:|=|-)\\s*([^\\n.;]+)`, 'i');
+    const expression = new RegExp(`(?:^|[\\n.;,:])\\s*(?:${label})(?:\\s*\\([^\\n)]{1,80}\\))?\\s*(?:is|are|:|=|-)\\s*([^\\n.;]+)`, 'i');
     const match = text.match(expression);
     const value = cleanExtractedValue(match?.[1]);
     if (value) return value;
@@ -2776,28 +2780,30 @@ function extractFl150ChatPrefill(text: string): ChatIntakePrefill['fl150'] {
   const payPeriod = inferPayPeriod(paySentence?.[0] ?? text);
 
   return {
-    employer: extractEmployer(text) || extractLabelValue(text, ['employer', 'company']),
-    employerAddress: extractAnswerAfterMariaPrompt(text, [/employer.*address/i, /work.*address/i]) || extractLabelValue(text, ['employer\s+address', 'work\s+address']),
-    employerPhone: extractAnswerAfterMariaPrompt(text, [/employer.*phone/i, /work.*phone/i]) || extractLabelValue(text, ['employer\s+phone', 'work\s+phone']),
-    occupation: extractOccupation(text),
-    hoursPerWeek: cleanExtractedValue(text.match(/\b(\d{1,3})\s+(?:hours|hrs)\s+(?:per\s+)?week\b/i)?.[1])
+    employer: extractEmployer(text) || extractLabelValue(text, ['FL-150\\.employer', 'Employer_tf\\[0\\]', 'employer', 'company']),
+    employerAddress: extractAnswerAfterMariaPrompt(text, [/employer.*address/i, /work.*address/i]) || extractLabelValue(text, ['FL-150\\.employerAddress', 'Employer_address_tf\\[0\\]', 'employer\s+address', 'work\s+address']),
+    employerPhone: extractAnswerAfterMariaPrompt(text, [/employer.*phone/i, /work.*phone/i]) || extractLabelValue(text, ['FL-150\\.employerPhone', 'ft\\[0\\]', 'employer\s+phone', 'work\s+phone']),
+    occupation: extractOccupation(text) || extractLabelValue(text, ['FL-150\\.occupation', 'Party_occupation_tf\\[0\\]']),
+    hoursPerWeek: extractLabelValue(text, ['FL-150\\.hoursPerWeek', 'hours_tf\\[0\\]']) || cleanExtractedValue(text.match(/\b(\d{1,3})\s+(?:hours|hrs)\s+(?:per\s+)?week\b/i)?.[1])
       || cleanExtractedValue(extractAnswerAfterMariaPrompt(text, [/hours.*week/i, /how\s+many\s+hours/i]).match(/\d{1,3}/)?.[0]),
-    payAmount: payAmount || extractMoneyAfterMariaPrompt(text, [/how\s+much\s+do\s+you\s+(?:make|earn|get\s+paid)/i, /income/i, /pay/i, /wages/i, /salary/i]),
+    payAmount: payAmount || cleanMoney(extractLabelValue(text, ['FL-150\\.payAmount', 'gross_tf\\[0\\]'])) || extractMoneyAfterMariaPrompt(text, [/how\s+much\s+do\s+you\s+(?:make|earn|get\s+paid)/i, /income/i, /pay/i, /wages/i, /salary/i]),
     payPeriod: payPeriod || inferPayPeriod(extractAnswerAfterMariaPrompt(text, [/how\s+much\s+do\s+you\s+(?:make|earn|get\s+paid)/i, /income/i, /pay/i, /wages/i, /salary/i])),
     salaryAverageMonthly: extractMoneyByPatterns(text, [
+      /FL-150\.income\.salaryWages\.averageMonthly(?:\s*\([^)]*\))?\s*(?::|=|-)\s*\$?([\d,]+(?:\.\d{2})?)/i,
       /\b(?:monthly\s+income|gross\s+monthly\s+income|income\s+per\s+month)\s*(?:is|:)?\s*\$?([\d,]+(?:\.\d{2})?)/i,
       /\b(?:I\s+)?(?:make|earn|get paid)\s+\$?([\d,]+(?:\.\d{2})?)\s+(?:per\s+month|a\s+month|monthly)\b/i,
     ]),
     otherPartyIncome: extractMoneyByPatterns(text, [
+      /(?:FL-150\.otherPartyGrossMonthlyIncome|FillTextincm\[0\])(?:\s*\([^)]*\))?\s*(?::|=|-)\s*\$?([\d,]+(?:\.\d{2})?)/i,
       /\b(?:other\s+party|spouse|respondent)\s+(?:makes|earns|income(?:\s+is)?)\s+\$?([\d,]+(?:\.\d{2})?)/i,
       /\b(?:other\s+party|spouse|respondent).*?gross\s+monthly\s+income.*?\$?([\d,]+(?:\.\d{2})?)/i,
     ]),
-    rentOrMortgage: extractMoneyByPatterns(text, [/\b(?:rent|mortgage)\s*(?:is|:|costs?)?\s*\$?([\d,]+(?:\.\d{2})?)/i]) || extractMoneyAfterMariaPrompt(text, [/rent/i, /mortgage/i, /housing/i]),
+    rentOrMortgage: extractMoneyByPatterns(text, [/FL-150\.expenses\.rentOrMortgage(?:\s*\([^)]*\))?\s*(?::|=|-)\s*\$?([\d,]+(?:\.\d{2})?)/i, /\b(?:rent|mortgage)\s*(?:is|:|costs?)?\s*\$?([\d,]+(?:\.\d{2})?)/i]) || extractMoneyAfterMariaPrompt(text, [/rent/i, /mortgage/i, /housing/i]),
     groceriesHousehold: extractMoneyByPatterns(text, [/\b(?:groceries|food|household)\s*(?:are|is|:|costs?)?\s*\$?([\d,]+(?:\.\d{2})?)/i]) || extractMoneyAfterMariaPrompt(text, [/groceries/i, /food/i, /household/i]),
-    utilities: extractMoneyByPatterns(text, [/\butilities\s*(?:are|is|:|costs?)?\s*\$?([\d,]+(?:\.\d{2})?)/i]) || extractMoneyAfterMariaPrompt(text, [/utilities/i]),
-    phoneExpense: extractMoneyByPatterns(text, [/\b(?:phone\s+bill|cell\s+phone)\s*(?:is|:|costs?)?\s*\$?([\d,]+(?:\.\d{2})?)/i]) || extractMoneyAfterMariaPrompt(text, [/phone\s+bill/i, /cell\s+phone/i]),
+    utilities: extractMoneyByPatterns(text, [/FL-150\.expenses\.utilities(?:\s*\([^)]*\))?\s*(?::|=|-)\s*\$?([\d,]+(?:\.\d{2})?)/i, /\butilities\s*(?:are|is|:|costs?)?\s*\$?([\d,]+(?:\.\d{2})?)/i]) || extractMoneyAfterMariaPrompt(text, [/utilities/i]),
+    phoneExpense: extractMoneyByPatterns(text, [/FL-150\.expenses\.telephone(?:\s*\([^)]*\))?\s*(?::|=|-)\s*\$?([\d,]+(?:\.\d{2})?)/i, /\b(?:phone\s+bill|cell\s+phone)\s*(?:is|:|costs?)?\s*\$?([\d,]+(?:\.\d{2})?)/i]) || extractMoneyAfterMariaPrompt(text, [/phone\s+bill/i, /cell\s+phone/i]),
     auto: extractMoneyByPatterns(text, [/\b(?:car\s+payment|auto\s+payment|vehicle\s+payment)\s*(?:is|:)?\s*\$?([\d,]+(?:\.\d{2})?)/i]) || extractMoneyAfterMariaPrompt(text, [/car\s+payment/i, /auto\s+payment/i, /vehicle\s+payment/i]),
-    autoInsurance: extractMoneyByPatterns(text, [/\b(?:car|auto|vehicle)\s+insurance\s*(?:is|:|costs?)?\s*\$?([\d,]+(?:\.\d{2})?)/i]) || extractMoneyAfterMariaPrompt(text, [/car.*insurance/i, /auto.*insurance/i, /vehicle.*insurance/i]),
+    autoInsurance: extractMoneyByPatterns(text, [/FL-150\.expenses\.autoInsurance(?:\s*\([^)]*\))?\s*(?::|=|-)\s*\$?([\d,]+(?:\.\d{2})?)/i, /\b(?:car|auto|vehicle)\s+insurance\s*(?:is|:|costs?)?\s*\$?([\d,]+(?:\.\d{2})?)/i]) || extractMoneyAfterMariaPrompt(text, [/car.*insurance/i, /auto.*insurance/i, /vehicle.*insurance/i]),
     childCareCosts: extractMoneyByPatterns(text, [/\b(?:child\s*care|daycare)\s*(?:is|:|costs?)?\s*\$?([\d,]+(?:\.\d{2})?)/i]) || extractMoneyAfterMariaPrompt(text, [/child\s*care/i, /daycare/i]),
     healthCareCostsNotCovered: extractMoneyByPatterns(text, [/\b(?:unreimbursed|uncovered)\s+(?:medical|health(?:\s+care)?)\s*(?:is|:|costs?)?\s*\$?([\d,]+(?:\.\d{2})?)/i]) || extractMoneyAfterMariaPrompt(text, [/unreimbursed/i, /uncovered.*(?:medical|health)/i]),
     medicalInsuranceDeduction: extractMoneyByPatterns(text, [/\b(?:health|medical)\s+insurance\s*(?:is|:|costs?)?\s*\$?([\d,]+(?:\.\d{2})?)/i]) || extractMoneyAfterMariaPrompt(text, [/(?:health|medical).*insurance/i]),
@@ -3104,6 +3110,9 @@ function getSourceMessages(messages: ChatMessage[] = [], sourceAssistantMessageI
     .filter((message) => message.role === 'user' && message.content.trim())
     .slice(-24);
   const userContext = truncateIntakeText(userContextMessages.map((message) => message.content.trim()).join('\n\n---\n\n'));
+  const userContextWithUploads = truncateIntakeText(userContextMessages
+    .map((message) => [message.content.trim(), message.draftContext?.trim()].filter(Boolean).join('\n\n'))
+    .join('\n\n---\n\n'));
   const conversationContext = formatChatHandoffMessages(priorMessages.slice(-40));
 
   const attachmentNames = [...messages]
@@ -3112,7 +3121,7 @@ function getSourceMessages(messages: ChatMessage[] = [], sourceAssistantMessageI
     .map((attachment) => attachment.name)
     .filter(Boolean);
 
-  return { assistantMessage, userMessage, userContext, conversationContext, attachmentNames: Array.from(new Set(attachmentNames)) };
+  return { assistantMessage, userMessage, userContext: userContextWithUploads || userContext, conversationContext, attachmentNames: Array.from(new Set(attachmentNames)) };
 }
 
 function inferBoolean(text: string, expressions: RegExp[]) {

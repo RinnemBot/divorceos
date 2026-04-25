@@ -26,6 +26,7 @@ import {
   getLatestDraftFormsChatHandoff,
   hydrateDraftWorkspaceFromChatContext,
   hydrateDraftWorkspaceFromSupportScenario,
+  listDraftWorkspaces,
   saveDraftWorkspace,
   setDraftFieldValue,
   type DraftField,
@@ -350,6 +351,12 @@ export function DraftFormsPage() {
 
       if (initializedRef.current) return;
       initializedRef.current = true;
+
+      const latestSavedDraft = listDraftWorkspaces(user.id)[0] ?? null;
+      if (latestSavedDraft) {
+        navigate(`/draft-forms/${latestSavedDraft.id}`, { replace: true });
+        return;
+      }
 
       const latestSession = await getLatestHandoff();
       const latestSupportScenario = await getLatestSupportScenario();

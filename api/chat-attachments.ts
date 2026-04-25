@@ -215,6 +215,37 @@ async function extractPdfText(buffer: Buffer) {
   }
 }
 
+async function extractPdfFormFieldText(buffer: Buffer) {
+  try {
+    const { PDFDocument } = await import('pdf-lib');
+    const pdf = await PDFDocument.load(buffer, { ignoreEncryption: true });
+    const form = pdf.getForm();
+    const rows = form.getFields().flatMap((field) => {
+      const name = field.getName();
+      const label = (field as any).acroField?.getAlternateName?.() || '';
+      let value = '';
+
+      if (typeof (field as any).getText === 'function') {
+        value = (field as any).getText() || '';
+      } else if (typeof (field as any).getSelected === 'function') {
+        const selected = (field as any).getSelected();
+        value = Array.isArray(selected) ? selected.join(', ') : String(selected ?? '');
+      } else if (typeof (field as any).getIsChecked === 'function') {
+        value = (field as any).getIsChecked() ? 'checked' : '';
+      }
+
+      const cleanValue = String(value).trim();
+      if (!cleanValue) return [];
+      return [`${name}${label ? ` (${label})` : ''}: ${cleanValue}`];
+    });
+
+    return rows.length ? `PDF form field values:\n${rows.join('\n')}` : '';
+  } catch (error) {
+    console.warn('PDF form field extraction skipped', error);
+    return '';
+  }
+}
+
 async function extractDocxText(buffer: Buffer) {
   const mammothModule = await import('mammoth');
   const mammoth = (mammothModule.default ?? mammothModule) as typeof import('mammoth');
@@ -233,7 +264,11 @@ async function extractAttachment(file: FormidableFile): Promise<AttachmentExtrac
     let extracted = '';
 
     if (mimeType === PDF_MIME || extension === PDF_EXTENSION) {
-      extracted = await extractPdfText(buffer);
+      const [pageText, formFieldText] = await Promise.all([
+        extractPdfText(buffer),
+        extractPdfFormFieldText(buffer),
+      ]);
+      extracted = [formFieldText, pageText].filter(Boolean).join('\n\n');
     } else if (mimeType === DOCX_MIME || extension === DOCX_EXTENSION) {
       extracted = await extractDocxText(buffer);
     } else if (isHeicImage(mimeType, extension)) {

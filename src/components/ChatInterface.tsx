@@ -1093,6 +1093,8 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
       const userName = currentUser?.name || currentUser?.email?.split('@')[0] || 'Guest';
       const plan = currentUser?.subscription ?? 'free';
       let aiUserMessage = userMessage.content;
+      let savedUserMessage = userMessage;
+      let savedUpdatedMessages = updatedMessages;
 
       if (selectedAttachments.length > 0) {
         try {
@@ -1100,6 +1102,9 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
           const basePrompt = baseContent || 'Please help me review the uploaded file and tell me what matters most.';
 
           if (attachmentContext.context) {
+            savedUserMessage = { ...userMessage, draftContext: attachmentContext.context };
+            savedUpdatedMessages = [...messages, savedUserMessage];
+            setMessages(savedUpdatedMessages);
             aiUserMessage = [
               basePrompt,
               `[Uploaded file context]\n${attachmentContext.context}`,
@@ -1134,7 +1139,7 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
         shouldOfferPdfSave,
       };
       
-      const finalMessages = [...updatedMessages, assistantMessage];
+      const finalMessages = [...savedUpdatedMessages, assistantMessage];
       shouldAutoScrollRef.current = true;
       setMessages(finalMessages);
       void saveCurrentSession(finalMessages);
