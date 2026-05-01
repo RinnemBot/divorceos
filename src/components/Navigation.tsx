@@ -34,6 +34,7 @@ const navLinks = [
   { path: '/forms', label: 'Forms' },
   { path: '/draft-forms', label: 'Draft Forms' },
   { path: '/concierge', label: 'Concierge' },
+  { path: '/efile-assistant', label: 'E-File' },
   { path: '/pricing', label: 'Pricing' },
 ];
 

@@ -150,13 +150,11 @@ export function CountyConciergePage() {
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-3">
-                {county.clerk.efilePortal && (
-                  <Button asChild variant="outline" className="rounded-full border-slate-300 bg-white text-slate-950 hover:bg-slate-50 dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10">
-                    <a href={county.clerk.efilePortal} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="mr-2 h-4 w-4" /> Open e-filing portal
-                    </a>
-                  </Button>
-                )}
+                <Button asChild variant="outline" className="rounded-full border-slate-300 bg-white text-slate-950 hover:bg-slate-50 dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10">
+                  <Link to={`/efile-assistant?county=${county.id}`}>
+                    <ExternalLink className="mr-2 h-4 w-4" /> Guided e-file assistant
+                  </Link>
+                </Button>
                 <Button onClick={handleCopyLink} className="rounded-full bg-emerald-700 text-white hover:bg-emerald-800 dark:bg-emerald-700 dark:text-white dark:hover:bg-emerald-600">
                   <Share2 className="mr-2 h-4 w-4" /> Copy share link
                 </Button>
