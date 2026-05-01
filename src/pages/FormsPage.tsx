@@ -30,6 +30,7 @@ const categoryIcons: Record<string, React.ElementType> = {
   petition: FileText,
   response: Scale,
   financial: DollarSign,
+  'fee-waiver': DollarSign,
   custody: Users,
   support: DollarSign,
   property: Home,
@@ -285,9 +286,9 @@ export function FormsPage() {
               <p className="mb-4 text-sm leading-6 text-slate-600 dark:text-slate-300">
                 If court fees are a problem, start with the fee waiver paperwork.
               </p>
-              <a href="https://www.courts.ca.gov/documents/fw001.pdf" target="_blank" rel="noopener noreferrer">
+              <a href="/forms/fw-001.pdf" target="_blank" rel="noopener noreferrer">
                 <Button variant="outline" size="sm" className="w-full rounded-full">
-                  Download Fee Waiver Form
+                  Download FW-001 Fee Waiver
                   <Download className="ml-1 h-4 w-4" />
                 </Button>
               </a>
