@@ -1,0 +1,1185 @@
+[
+  {
+    "page": 0,
+    "name": "CaseNumber_ft[0]",
+    "fullName": "FL-312[0].Page1[0].PxCaption_sf[0].CaseNumber[0].CaseNumber_ft[0]",
+    "rect": [
+      399.005,
+      60.403,
+      571.805,
+      72.003
+    ],
+    "type": "/Tx",
+    "tooltip": "CASE NUMBER"
+  },
+  {
+    "page": 0,
+    "name": "Petitioner_ft[0]",
+    "fullName": "FL-312[0].Page1[0].PxCaption_sf[0].Parties[0].Petitioner_ft[0]",
+    "rect": [
+      150.83,
+      48.586,
+      393.208,
+      58.748
+    ],
+    "type": "/Tx",
+    "tooltip": "PETITIONER"
+  },
+  {
+    "page": 0,
+    "name": "Respondent_ft[0]",
+    "fullName": "FL-312[0].Page1[0].PxCaption_sf[0].Parties[0].Respondent_ft[0]",
+    "rect": [
+      150.77,
+      59.748,
+      393.387,
+      69.91
+    ],
+    "type": "/Tx",
+    "tooltip": "RESPONDENT"
+  },
+  {
+    "page": 0,
+    "name": "OtherParentParty_ft[0]",
+    "fullName": "FL-312[0].Page1[0].PxCaption_sf[0].Parties[0].OtherParentParty_ft[0]",
+    "rect": [
+      150.721,
+      70.911,
+      394.211,
+      81.073
+    ],
+    "type": "/Tx",
+    "tooltip": "OTHER PARENT/PARTY"
+  },
+  {
+    "page": 0,
+    "name": "Petition_cb[0]",
+    "fullName": "FL-312[0].Page1[0].Form_Sub[0].Petition_cb[0]",
+    "rect": [
+      65.112,
+      128.276,
+      74.112,
+      137.276
+    ],
+    "type": "/Btn",
+    "tooltip": "Petition"
+  },
+  {
+    "page": 0,
+    "name": "Response_cb[0]",
+    "fullName": "FL-312[0].Page1[0].Form_Sub[0].Response_cb[0]",
+    "rect": [
+      137.089,
+      128.514,
+      146.089,
+      137.514
+    ],
+    "type": "/Btn",
+    "tooltip": "Response"
+  },
+  {
+    "page": 0,
+    "name": "RFO_cb[0]",
+    "fullName": "FL-312[0].Page1[0].Form_Sub[0].RFO_cb[0]",
+    "rect": [
+      217.976,
+      129.013,
+      226.976,
+      138.013
+    ],
+    "type": "/Btn",
+    "tooltip": "Request for Order"
+  },
+  {
+    "page": 0,
+    "name": "ResponsiveDecToRFO_cb[0]",
+    "fullName": "FL-312[0].Page1[0].Form_Sub[0].ResponsiveDecToRFO_cb[0]",
+    "rect": [
+      333.666,
+      129.166,
+      342.666,
+      138.166
+    ],
+    "type": "/Btn",
+    "tooltip": "Responsive Declaration to Request for Order"
+  },
+  {
+    "page": 0,
+    "name": "OtherForm_cb[0]",
+    "fullName": "FL-312[0].Page1[0].Form_Sub[0].OtherForm_cb[0]",
+    "rect": [
+      64.811,
+      141.118,
+      73.811,
+      150.118
+    ],
+    "type": "/Btn",
+    "tooltip": "Other"
+  },
+  {
+    "page": 0,
+    "name": "SpecifyOtherForm_ft[0]",
+    "fullName": "FL-312[0].Page1[0].Form_Sub[0].SpecifyOtherForm_ft[0]",
+    "rect": [
+      152.134,
+      140.805,
+      573.877,
+      150.885
+    ],
+    "type": "/Tx",
+    "tooltip": "(specify)"
+  },
+  {
+    "page": 0,
+    "name": "YourName_ft[0]",
+    "fullName": "FL-312[0].Page1[0].List1[0].LI1[0].YourName_ft[0]",
+    "rect": [
+      102.036,
+      158.392,
+      573.996,
+      168.472
+    ],
+    "type": "/Tx",
+    "tooltip": "Your name"
+  },
+  {
+    "page": 0,
+    "name": "NoAbductionByPetitioner_cb[0]",
+    "fullName": "FL-312[0].Page1[0].List2[0].LI1[0].NoAbductionByPetitioner_cb[0]",
+    "rect": [
+      303.273,
+      173.905,
+      312.273,
+      182.905
+    ],
+    "type": "/Btn",
+    "tooltip": "Petitioner"
+  },
+  {
+    "page": 0,
+    "name": "NoAbductionByRespondent_cb[0]",
+    "fullName": "FL-312[0].Page1[0].List2[0].LI1[0].NoAbductionByRespondent_cb[0]",
+    "rect": [
+      380.88,
+      173.905,
+      389.88,
+      182.905
+    ],
+    "type": "/Btn",
+    "tooltip": "Respondent"
+  },
+  {
+    "page": 0,
+    "name": "NoAbductionByOtherParentParty_cb[0]",
+    "fullName": "FL-312[0].Page1[0].List2[0].LI1[0].NoAbductionByOtherParentParty_cb[0]",
+    "rect": [
+      468.828,
+      173.905,
+      477.828,
+      182.905
+    ],
+    "type": "/Btn",
+    "tooltip": "Other Parent/Party   "
+  },
+  {
+    "page": 0,
+    "name": "AnotherCountyInCalifornia_cb[0]",
+    "fullName": "FL-312[0].Page1[0].List3[0].LI1[0].AnotherCountyInCalifornia_cb[0]",
+    "rect": [
+      72.66,
+      203.973,
+      81.66,
+      212.973
+    ],
+    "type": "/Btn",
+    "tooltip": "another county in California"
+  },
+  {
+    "page": 0,
+    "name": "AnotherCounty_ft[0]",
+    "fullName": "FL-312[0].Page1[0].List3[0].LI1[0].AnotherCounty_ft[0]",
+    "rect": [
+      287.543,
+      203.984,
+      574.506,
+      213.517
+    ],
+    "type": "/Tx",
+    "tooltip": "(specify the county)"
+  },
+  {
+    "page": 0,
+    "name": "AnotherState_cb[0]",
+    "fullName": "FL-312[0].Page1[0].List3[0].LI2[0].AnotherState_cb[0]",
+    "rect": [
+      72.51,
+      217.82,
+      81.51,
+      226.82
+    ],
+    "type": "/Btn",
+    "tooltip": "another state"
+  },
+  {
+    "page": 0,
+    "name": "SpecifyOtherState_ft[0]",
+    "fullName": "FL-312[0].Page1[0].List3[0].LI2[0].SpecifyOtherState_ft[0]",
+    "rect": [
+      225.275,
+      217.245,
+      572.995,
+      226.778
+    ],
+    "type": "/Tx",
+    "tooltip": "(specify the state)"
+  },
+  {
+    "page": 0,
+    "name": "ForeignCountry_cb[0]",
+    "fullName": "FL-312[0].Page1[0].List3[0].LI3[0].ForeignCountry_cb[0]",
+    "rect": [
+      72.51,
+      230.922,
+      81.51,
+      239.922
+    ],
+    "type": "/Btn",
+    "tooltip": "a foreign country"
+  },
+  {
+    "page": 0,
+    "name": "SpecifyForeignCountry_ft[0]",
+    "fullName": "FL-312[0].Page1[0].List3[0].LI3[0].SpecifyForeignCountry_ft[0]",
+    "rect": [
+      278.038,
+      230.922,
+      573.996,
+      240.455
+    ],
+    "type": "/Tx",
+    "tooltip": "(specify the foreign country)"
+  },
+  {
+    "page": 0,
+    "name": "CitizenOfThatCountry_cb[0]",
+    "fullName": "FL-312[0].Page1[0].List3[0].LI3[0].List1[0].LI1[0].CitizenOfThatCountry_cb[0]",
+    "rect": [
+      117.394,
+      244.914,
+      126.394,
+      253.914
+    ],
+    "type": "/Btn",
+    "tooltip": "He or she is a citizen of that country."
+  },
+  {
+    "page": 0,
+    "name": "TiesToThatCountry_cb[0]",
+    "fullName": "FL-312[0].Page1[0].List3[0].LI3[0].List1[0].LI2[0].TiesToThatCountry_cb[0]",
+    "rect": [
+      117.499,
+      258.963,
+      126.499,
+      267.963
+    ],
+    "type": "/Btn",
+    "tooltip": "He or she has family or emotional ties to that country "
+  },
+  {
+    "page": 0,
+    "name": "explain[0]",
+    "fullName": "FL-312[0].Page1[0].List3[0].LI3[0].List1[0].LI2[0].explain[0]",
+    "rect": [
+      391.059,
+      259.096,
+      574.393,
+      268.122
+    ],
+    "type": "/Tx",
+    "tooltip": "He or she has family or emotional ties to that country (explain):"
+  },
+  {
+    "page": 0,
+    "name": "SpecifyTiesToThatCountry_ft[0]",
+    "fullName": "FL-312[0].Page1[0].List3[0].LI3[0].List1[0].LI2[0].SpecifyTiesToThatCountry_ft[0]",
+    "rect": [
+      139.805,
+      268.648,
+      574.903,
+      319.938
+    ],
+    "type": "/Tx",
+    "tooltip": "(explain)"
+  },
+  {
+    "page": 0,
+    "name": "QuitJob_cb[0]",
+    "fullName": "FL-312[0].Page1[0].List4[0].LI1[0].QuitJob_cb[0]",
+    "rect": [
+      73.876,
+      336.614,
+      82.876,
+      345.614
+    ],
+    "type": "/Btn",
+    "tooltip": "I think that he or she might take the children without my permission because he or she (check all that apply) 1 has violated\u2014or threatened to violate\u2014a custody or visitation (parenting time) order in the past."
+  },
+  {
+    "page": 0,
+    "name": "TextField1[0]",
+    "fullName": "FL-312[0].Page1[0].List4[0].LI1[0].TextField1[0]",
+    "rect": [
+      130.884,
+      345.645,
+      574.903,
+      355.011
+    ],
+    "type": "/Tx",
+    "tooltip": "Explain:"
+  },
+  {
+    "page": 0,
+    "name": "SpecifyExplain[0]",
+    "fullName": "FL-312[0].Page1[0].List4[0].LI1[0].SpecifyExplain[0]",
+    "rect": [
+      95.916,
+      355.552,
+      575.445,
+      388.235
+    ],
+    "type": "/Tx",
+    "tooltip": "(explain)"
+  },
+  {
+    "page": 0,
+    "name": "QuitJob_cb[0]",
+    "fullName": "FL-312[0].Page1[0].List4[0].LI2[0].QuitJob_cb[0]",
+    "rect": [
+      73.876,
+      393.902,
+      82.876,
+      402.902
+    ],
+    "type": "/Btn",
+    "tooltip": "does not have strong ties to California."
+  },
+  {
+    "page": 0,
+    "name": "SpecifyWhyEasyForPartyToLeaveCalifornia_ft[0]",
+    "fullName": "FL-312[0].Page1[0].List4[0].LI2[0].SpecifyWhyEasyForPartyToLeaveCalifornia_ft[0]",
+    "rect": [
+      95.196,
+      413.732,
+      574.416,
+      448.803
+    ],
+    "type": "/Tx",
+    "tooltip": "Explain any work, financial, social, or family situation that makes it easy for the party to leave California."
+  },
+  {
+    "page": 0,
+    "name": "QuitJob_cb[0]",
+    "fullName": "FL-312[0].Page1[0].List4[0].LI3[0].QuitJob_cb[0]",
+    "rect": [
+      73.876,
+      453.061,
+      82.876,
+      462.061
+    ],
+    "type": "/Btn",
+    "tooltip": "has recently done things that make it easy for him or her to take the children away without permission. He or she has (check all that apply)"
+  },
+  {
+    "page": 0,
+    "name": "QuitJob_cb1[0]",
+    "fullName": "FL-312[0].Page1[0].List4[0].LI3[0].#area[0].QuitJob_cb1[0]",
+    "rect": [
+      99.697,
+      475.336,
+      108.697,
+      484.336
+    ],
+    "type": "/Btn",
+    "tooltip": "quit his or her job."
+  },
+  {
+    "page": 0,
+    "name": "SoldHome_cb[0]",
+    "fullName": "FL-312[0].Page1[0].List4[0].LI3[0].#area[1].SoldHome_cb[0]",
+    "rect": [
+      256.34,
+      475.509,
+      265.34,
+      484.509
+    ],
+    "type": "/Btn",
+    "tooltip": "sold his or her home."
+  },
+  {
+    "page": 0,
+    "name": "ClosedBankAccount_cb[0]",
+    "fullName": "FL-312[0].Page1[0].List4[0].LI3[0].#area[2].ClosedBankAccount_cb[0]",
+    "rect": [
+      99.697,
+      488.698,
+      108.697,
+      497.698
+    ],
+    "type": "/Btn",
+    "tooltip": "closed a bank account."
+  },
+  {
+    "page": 0,
+    "name": "EndedLease_cb[0]",
+    "fullName": "FL-312[0].Page1[0].List4[0].LI3[0].#area[3].EndedLease_cb[0]",
+    "rect": [
+      256.994,
+      488.698,
+      265.994,
+      497.698
+    ],
+    "type": "/Btn",
+    "tooltip": "ended a lease."
+  },
+  {
+    "page": 0,
+    "name": "SoldAssets_cb[0]",
+    "fullName": "FL-312[0].Page1[0].List4[0].LI3[0].#area[4].SoldAssets_cb[0]",
+    "rect": [
+      99.697,
+      503.484,
+      108.697,
+      512.484
+    ],
+    "type": "/Btn",
+    "tooltip": "sold or gotten rid of assets."
+  },
+  {
+    "page": 0,
+    "name": "HidOrDestroyedDocuments_cb[0]",
+    "fullName": "FL-312[0].Page1[0].List4[0].LI3[0].#area[5].HidOrDestroyedDocuments_cb[0]",
+    "rect": [
+      256.994,
+      503.487,
+      265.994,
+      512.487
+    ],
+    "type": "/Btn",
+    "tooltip": "hidden or destroyed documents."
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "FL-312[0].Page1[0].List4[0].LI3[0].#area[6].CheckBox1[0]",
+    "rect": [
+      99.697,
+      517.32,
+      108.697,
+      526.32
+    ],
+    "type": "/Btn",
+    "tooltip": "applied for a passport, birth certificate, or school or medical records. "
+  },
+  {
+    "page": 0,
+    "name": "CheckBox61[0]",
+    "fullName": "FL-312[0].Page1[0].List4[0].LI3[0].#area[7].CheckBox61[0]",
+    "rect": [
+      99.697,
+      531.112,
+      108.697,
+      540.112
+    ],
+    "type": "/Btn",
+    "tooltip": "Other"
+  },
+  {
+    "page": 0,
+    "name": "OtherSpecify_ft[0]",
+    "fullName": "FL-312[0].Page1[0].List4[0].LI3[0].OtherSpecify_ft[0]",
+    "rect": [
+      95.196,
+      540.989,
+      574.209,
+      553.07
+    ],
+    "type": "/Tx",
+    "tooltip": "(specify)"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "FL-312[0].Page1[0].List4[0].LI4[0].#area[0].CheckBox1[0]",
+    "rect": [
+      72.51,
+      557.508,
+      81.51,
+      566.508
+    ],
+    "type": "/Btn",
+    "tooltip": "has a history of (check all that apply and explain your answers in the space provided in this section)"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox2[0]",
+    "fullName": "FL-312[0].Page1[0].List4[0].LI4[0].#area[1].CheckBox2[0]",
+    "rect": [
+      99.697,
+      569.163,
+      108.697,
+      578.163
+    ],
+    "type": "/Btn",
+    "tooltip": "domestic violence."
+  },
+  {
+    "page": 0,
+    "name": "CheckBox3[0]",
+    "fullName": "FL-312[0].Page1[0].List4[0].LI4[0].#area[2].CheckBox3[0]",
+    "rect": [
+      256.679,
+      568.976,
+      265.679,
+      577.976
+    ],
+    "type": "/Btn",
+    "tooltip": "child abuse."
+  },
+  {
+    "page": 0,
+    "name": "CheckBox4[0]",
+    "fullName": "FL-312[0].Page1[0].List4[0].LI4[0].#area[3].CheckBox4[0]",
+    "rect": [
+      379.023,
+      568.299,
+      388.023,
+      577.299
+    ],
+    "type": "/Btn",
+    "tooltip": "not cooperating with me in parenting. "
+  },
+  {
+    "page": 0,
+    "name": "CheckBox5[0]",
+    "fullName": "FL-312[0].Page1[0].List4[0].LI4[0].#area[4].CheckBox5[0]",
+    "rect": [
+      99.697,
+      582.174,
+      108.697,
+      591.174
+    ],
+    "type": "/Btn",
+    "tooltip": "taking the children without my permission."
+  },
+  {
+    "page": 0,
+    "name": "TextField2[0]",
+    "fullName": "FL-312[0].Page1[0].List4[0].LI4[0].TextField2[0]",
+    "rect": [
+      94.544,
+      605.741,
+      576.0,
+      667.635
+    ],
+    "type": "/Tx",
+    "tooltip": "Explain your answers to item d."
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "FL-312[0].Page1[0].List4[0].LI5[0].CheckBox1[0]",
+    "rect": [
+      72.51,
+      671.103,
+      82.51,
+      681.103
+    ],
+    "type": "/Btn",
+    "tooltip": "has a criminal record."
+  },
+  {
+    "page": 0,
+    "name": "explain[0]",
+    "fullName": "FL-312[0].Page1[0].List4[0].LI5[0].explain[0]",
+    "rect": [
+      218.84,
+      671.423,
+      573.851,
+      680.449
+    ],
+    "type": "/Tx",
+    "tooltip": "has a criminal record. Explain:"
+  },
+  {
+    "page": 0,
+    "name": "ExplainCriminalRecord_ft[0]",
+    "fullName": "FL-312[0].Page1[0].List4[0].LI5[0].ExplainCriminalRecord_ft[0]",
+    "rect": [
+      95.195,
+      680.344,
+      573.916,
+      724.808
+    ],
+    "type": "/Tx",
+    "tooltip": " Explain"
+  },
+  {
+    "page": 1,
+    "name": "Print[0]",
+    "fullName": "FL-312[0].#pageSet[0].Page3[0].#area[0].Print[0]",
+    "rect": [
+      258.735,
+      763.356,
+      339.735,
+      780.364
+    ],
+    "type": "/Btn",
+    "tooltip": "Print this form"
+  },
+  {
+    "page": 1,
+    "name": "Save[0]",
+    "fullName": "FL-312[0].#pageSet[0].Page3[0].#area[0].Save[0]",
+    "rect": [
+      345.274,
+      763.356,
+      426.379,
+      780.364
+    ],
+    "type": "/Btn",
+    "tooltip": "Save this form"
+  },
+  {
+    "page": 1,
+    "name": "Reset[0]",
+    "fullName": "FL-312[0].#pageSet[0].Page3[0].#area[0].Reset[0]",
+    "rect": [
+      494.963,
+      763.356,
+      575.96,
+      780.364
+    ],
+    "type": "/Btn",
+    "tooltip": "Clear this form"
+  },
+  {
+    "page": 1,
+    "name": "CaseNumber_ft[0]",
+    "fullName": "FL-312[0].Page2[0].PxCaption_sf[0].CaseNumber[0].CaseNumber_ft[0]",
+    "rect": [
+      399.005,
+      60.403,
+      571.805,
+      72.003
+    ],
+    "type": "/Tx",
+    "tooltip": "CASE NUMBER"
+  },
+  {
+    "page": 1,
+    "name": "Petitioner_ft[0]",
+    "fullName": "FL-312[0].Page2[0].PxCaption_sf[0].Parties[0].Petitioner_ft[0]",
+    "rect": [
+      150.83,
+      48.586,
+      393.208,
+      58.748
+    ],
+    "type": "/Tx",
+    "tooltip": "PETITIONER"
+  },
+  {
+    "page": 1,
+    "name": "Respondent_ft[0]",
+    "fullName": "FL-312[0].Page2[0].PxCaption_sf[0].Parties[0].Respondent_ft[0]",
+    "rect": [
+      150.77,
+      59.748,
+      393.387,
+      69.91
+    ],
+    "type": "/Tx",
+    "tooltip": "RESPONDENT"
+  },
+  {
+    "page": 1,
+    "name": "OtherParentParty_ft[0]",
+    "fullName": "FL-312[0].Page2[0].PxCaption_sf[0].Parties[0].OtherParentParty_ft[0]",
+    "rect": [
+      150.721,
+      70.911,
+      394.211,
+      81.073
+    ],
+    "type": "/Tx",
+    "tooltip": "OTHER PARENT/PARTY"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox1[0]",
+    "fullName": "FL-312[0].Page2[0].Request_Sub[0].CheckBox1[0]",
+    "rect": [
+      301.003,
+      104.289,
+      310.003,
+      113.289
+    ],
+    "type": "/Btn",
+    "tooltip": "Petitioner"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox2[0]",
+    "fullName": "FL-312[0].Page2[0].Request_Sub[0].CheckBox2[0]",
+    "rect": [
+      380.82,
+      104.289,
+      389.82,
+      113.289
+    ],
+    "type": "/Btn",
+    "tooltip": "Respondent"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox3[0]",
+    "fullName": "FL-312[0].Page2[0].Request_Sub[0].CheckBox3[0]",
+    "rect": [
+      469.505,
+      104.289,
+      478.505,
+      113.289
+    ],
+    "type": "/Btn",
+    "tooltip": "Other Parent/Party   "
+  },
+  {
+    "page": 1,
+    "name": "CheckBox1[0]",
+    "fullName": "FL-312[0].Page2[0].List5[0].LI1[0].#area[0].CheckBox1[0]",
+    "rect": [
+      55.389,
+      120.271,
+      64.389,
+      129.271
+    ],
+    "type": "/Btn",
+    "tooltip": "Supervised Visitation (Parenting Time)"
+  },
+  {
+    "page": 1,
+    "name": "TextField3[0]",
+    "fullName": "FL-312[0].Page2[0].List5[0].LI1[0].TextField3[0]",
+    "rect": [
+      77.136,
+      163.807,
+      573.851,
+      205.053
+    ],
+    "type": "/Tx",
+    "tooltip": "The specific terms are attached (check one):"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox2[0]",
+    "fullName": "FL-312[0].Page2[0].List5[0].LI1[0].#area[1].CheckBox2[0]",
+    "rect": [
+      267.179,
+      153.38,
+      276.179,
+      162.38
+    ],
+    "type": "/Btn",
+    "tooltip": "I ask the court to order supervised visitation (parenting time). I understand that the person I request to supervise the visits  must meet the qualifications listed in Declaration of Supervised Visitation Provider (form FL-324) The specific terms are attached (check one) form FL-311"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox3[0]",
+    "fullName": "FL-312[0].Page2[0].List5[0].LI1[0].#area[2].CheckBox3[0]",
+    "rect": [
+      352.525,
+      153.38,
+      361.525,
+      162.38
+    ],
+    "type": "/Btn",
+    "tooltip": "as follows"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox1[0]",
+    "fullName": "FL-312[0].Page2[0].List6[0].LI1[0].CheckBox1[0]",
+    "rect": [
+      55.389,
+      208.1,
+      64.389,
+      217.1
+    ],
+    "type": "/Btn",
+    "tooltip": "Post a Bond"
+  },
+  {
+    "page": 1,
+    "name": "TotalOrderAmount_dc[0]",
+    "fullName": "FL-312[0].Page2[0].List6[0].LI1[0].TotalOrderAmount_dc[0]",
+    "rect": [
+      274.442,
+      220.845,
+      345.728,
+      229.845
+    ],
+    "type": "/Tx",
+    "tooltip": "I ask the court to order the posting of a bond for $"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox1[0]",
+    "fullName": "FL-312[0].Page2[0].List7[0].LI1[0].#area[0].CheckBox1[0]",
+    "rect": [
+      55.389,
+      251.116,
+      64.389,
+      260.116
+    ],
+    "type": "/Btn",
+    "tooltip": "Do Not Move Without My Permission or Court Order "
+  },
+  {
+    "page": 1,
+    "name": "CheckBox1[0]",
+    "fullName": "FL-312[0].Page2[0].List8[0].LI1[0].#area[0].CheckBox1[0]",
+    "rect": [
+      54.652,
+      282.631,
+      63.652,
+      291.631
+    ],
+    "type": "/Btn",
+    "tooltip": "No Travel Without My Permission or Court Order "
+  },
+  {
+    "page": 1,
+    "name": "CheckBox2[0]",
+    "fullName": "FL-312[0].Page2[0].List8[0].LI1[0].CheckBox2[0]",
+    "rect": [
+      80.994,
+      309.257,
+      89.994,
+      318.257
+    ],
+    "type": "/Btn",
+    "tooltip": "this county"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox3[0]",
+    "fullName": "FL-312[0].Page2[0].List8[0].LI1[0].CheckBox3[0]",
+    "rect": [
+      171.587,
+      308.783,
+      180.587,
+      317.783
+    ],
+    "type": "/Btn",
+    "tooltip": "the United States"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox4[0]",
+    "fullName": "FL-312[0].Page2[0].List8[0].LI1[0].CheckBox4[0]",
+    "rect": [
+      80.972,
+      320.933,
+      89.972,
+      329.933
+    ],
+    "type": "/Btn",
+    "tooltip": "California"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox5[0]",
+    "fullName": "FL-312[0].Page2[0].List8[0].LI1[0].CheckBox5[0]",
+    "rect": [
+      171.179,
+      320.934,
+      180.179,
+      329.934
+    ],
+    "type": "/Btn",
+    "tooltip": "Other"
+  },
+  {
+    "page": 1,
+    "name": "SpeicifyOtherTravelRestrictions_ft[0]",
+    "fullName": "FL-312[0].Page2[0].List8[0].LI1[0].SpeicifyOtherTravelRestrictions_ft[0]",
+    "rect": [
+      259.921,
+      319.657,
+      574.88,
+      329.737
+    ],
+    "type": "/Tx",
+    "tooltip": "(specify)"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox1[0]",
+    "fullName": "FL-312[0].Page2[0].List9[0].LI1[0].#area[0].CheckBox1[0]",
+    "rect": [
+      55.389,
+      350.552,
+      64.389,
+      359.552
+    ],
+    "type": "/Btn",
+    "tooltip": "Notify Other State of Travel Restrictions"
+  },
+  {
+    "page": 1,
+    "name": "SpecifyStateToRegisterOrder_ft[0]",
+    "fullName": "FL-312[0].Page2[0].List9[0].LI1[0].SpecifyStateToRegisterOrder_ft[0]",
+    "rect": [
+      349.527,
+      360.459,
+      505.652,
+      372.41
+    ],
+    "type": "/Tx",
+    "tooltip": "I ask the court to order the party to register this order in the state of   "
+  },
+  {
+    "page": 1,
+    "name": "CheckBox1[0]",
+    "fullName": "FL-312[0].Page2[0].List10[0].LI1[0].#area[0].CheckBox1[0]",
+    "rect": [
+      54.652,
+      392.746,
+      63.652,
+      401.746
+    ],
+    "type": "/Btn",
+    "tooltip": "Turn In and Do Not Apply for Passports or Other Vital Documents "
+  },
+  {
+    "page": 1,
+    "name": "CheckBox2[0]",
+    "fullName": "FL-312[0].Page2[0].List10[0].LI1[0].CheckBox2[0]",
+    "rect": [
+      81.38,
+      414.766,
+      90.38,
+      423.766
+    ],
+    "type": "/Btn",
+    "tooltip": "requiring the party to turn in all the children's passports and other documents (such as visas, birth certificates, and other documents used for travel) that are in his or her possession and control."
+  },
+  {
+    "page": 1,
+    "name": "CheckBox3[0]",
+    "fullName": "FL-312[0].Page2[0].List10[0].LI1[0].CheckBox3[0]",
+    "rect": [
+      81.445,
+      438.472,
+      90.445,
+      447.472
+    ],
+    "type": "/Btn",
+    "tooltip": "preventing the party from applying for passports or other documents (such as visas or birth certificates) that can be  used to travel with the children."
+  },
+  {
+    "page": 1,
+    "name": "CheckBox1[0]",
+    "fullName": "FL-312[0].Page2[0].List11[0].LI1[0].#area[0].CheckBox1[0]",
+    "rect": [
+      55.389,
+      464.479,
+      64.389,
+      473.479
+    ],
+    "type": "/Btn",
+    "tooltip": "Provide Itinerary and Other Travel Documents "
+  },
+  {
+    "page": 1,
+    "name": "CheckBox2[0]",
+    "fullName": "FL-312[0].Page2[0].List11[0].LI1[0].#area[1].CheckBox2[0]",
+    "rect": [
+      81.175,
+      489.427,
+      90.175,
+      498.427
+    ],
+    "type": "/Btn",
+    "tooltip": "If the party is allowed to travel with the children, I ask the court to order the party to give me before leaving (specify) 1 the children\u2019s travel itinerary."
+  },
+  {
+    "page": 1,
+    "name": "CheckBox3[0]",
+    "fullName": "FL-312[0].Page2[0].List11[0].LI1[0].#area[2].CheckBox3[0]",
+    "rect": [
+      81.175,
+      503.501,
+      90.175,
+      512.501
+    ],
+    "type": "/Btn",
+    "tooltip": "copies of round-trip airline tickets."
+  },
+  {
+    "page": 1,
+    "name": "CheckBox4[0]",
+    "fullName": "FL-312[0].Page2[0].List11[0].LI1[0].#area[3].CheckBox4[0]",
+    "rect": [
+      81.175,
+      517.572,
+      90.175,
+      526.572
+    ],
+    "type": "/Btn",
+    "tooltip": "addresses and telephone numbers where the children can be reached at all times."
+  },
+  {
+    "page": 1,
+    "name": "CheckBox5[0]",
+    "fullName": "FL-312[0].Page2[0].List11[0].LI1[0].#area[4].CheckBox5[0]",
+    "rect": [
+      81.175,
+      531.646,
+      90.175,
+      540.646
+    ],
+    "type": "/Btn",
+    "tooltip": "an open airline ticket for me in case the children are not returned."
+  },
+  {
+    "page": 1,
+    "name": "CheckBox6[0]",
+    "fullName": "FL-312[0].Page2[0].List11[0].LI1[0].#area[5].CheckBox6[0]",
+    "rect": [
+      81.175,
+      545.751,
+      90.175,
+      554.751
+    ],
+    "type": "/Btn",
+    "tooltip": "other "
+  },
+  {
+    "page": 1,
+    "name": "OtherSpecify_tf[0]",
+    "fullName": "FL-312[0].Page2[0].List11[0].LI1[0].OtherSpecify_tf[0]",
+    "rect": [
+      164.87,
+      545.72,
+      573.503,
+      555.08
+    ],
+    "type": "/Tx",
+    "tooltip": "(specify)"
+  },
+  {
+    "page": 1,
+    "name": "OtherSpecify_tfCont[0]",
+    "fullName": "FL-312[0].Page2[0].List11[0].LI1[0].OtherSpecify_tfCont[0]",
+    "rect": [
+      103.236,
+      555.318,
+      573.505,
+      566.135
+    ],
+    "type": "/Tx",
+    "tooltip": "(specify)"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox1[0]",
+    "fullName": "FL-312[0].Page2[0].List12[0].LI1[0].#area[0].CheckBox1[0]",
+    "rect": [
+      55.389,
+      568.261,
+      64.389,
+      577.261
+    ],
+    "type": "/Btn",
+    "tooltip": "Notify Foreign Embassy or Consulate of Passport Restrictions"
+  },
+  {
+    "page": 1,
+    "name": "IdentifyEmbassyOrConsulate_ft[0]",
+    "fullName": "FL-312[0].Page2[0].List12[0].LI1[0].IdentifyEmbassyOrConsulate_ft[0]",
+    "rect": [
+      357.808,
+      580.212,
+      526.073,
+      592.163
+    ],
+    "type": "/Tx",
+    "tooltip": "I ask the court to order the party to notify the embassy or consulate of"
+  },
+  {
+    "page": 1,
+    "name": "FillText1[0]",
+    "fullName": "FL-312[0].Page2[0].List12[0].LI1[0].FillText1[0]",
+    "rect": [
+      338.179,
+      592.234,
+      381.526,
+      604.185
+    ],
+    "type": "/Tx",
+    "tooltip": "order and to provide the court with proof of that notification within       calendar days."
+  },
+  {
+    "page": 1,
+    "name": "CheckBox1[0]",
+    "fullName": "FL-312[0].Page2[0].List13[0].LI1[0].#area[0].CheckBox1[0]",
+    "rect": [
+      55.389,
+      608.525,
+      64.389,
+      617.525
+    ],
+    "type": "/Btn",
+    "tooltip": "Foreign Custody and Visitation (Parenting Time) Order "
+  },
+  {
+    "page": 1,
+    "name": "CheckBox1[0]",
+    "fullName": "FL-312[0].Page2[0].List14[0].LI1[0].CheckBox1[0]",
+    "rect": [
+      56.296,
+      657.602,
+      65.296,
+      666.602
+    ],
+    "type": "/Btn",
+    "tooltip": "Other"
+  },
+  {
+    "page": 1,
+    "name": "OtherSpecify_ft[0]",
+    "fullName": "FL-312[0].Page2[0].List14[0].LI1[0].OtherSpecify_ft[0]",
+    "rect": [
+      75.796,
+      667.097,
+      576.0,
+      699.724
+    ],
+    "type": "/Tx",
+    "tooltip": " (specify)"
+  },
+  {
+    "page": 1,
+    "name": "SigDate[0]",
+    "fullName": "FL-312[0].Page2[0].Sig_Sub[0].SigDate[0]",
+    "rect": [
+      61.2,
+      724.303,
+      169.2,
+      734.57
+    ],
+    "type": "/Tx",
+    "tooltip": "Date"
+  }
+]

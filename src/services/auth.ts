@@ -42,6 +42,7 @@ export interface ChatMessage {
   id: string;
   role: 'user' | 'assistant';
   content: string;
+  draftContext?: string;
   timestamp: string;
   attachments?: ChatAttachment[];
   suggestedActions?: { label: string; href: string }[];

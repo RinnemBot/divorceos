@@ -484,13 +484,22 @@ export function DashboardPage() {
                   </div>
                   {latestDraftWorkspace ? (
                     <div className="rounded-2xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5">
-                      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Latest draft</p>
-                      <p className="mt-2 font-medium text-slate-900 dark:text-white">{latestDraftWorkspace.title}</p>
-                      <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                        {latestDraftWorkspace.intake.attachmentNames.length > 0
-                          ? `${latestDraftWorkspace.intake.attachmentNames.length} uploaded file${latestDraftWorkspace.intake.attachmentNames.length === 1 ? '' : 's'} included`
-                          : 'No uploaded files captured yet'}
-                      </p>
+                      <div className="flex flex-wrap items-start justify-between gap-3">
+                        <div>
+                          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Latest saved draft</p>
+                          <p className="mt-2 font-medium text-slate-900 dark:text-white">{latestDraftWorkspace.title}</p>
+                          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                            Saved {new Date(latestDraftWorkspace.updatedAt).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                            {' · '}
+                            {latestDraftWorkspace.intake.attachmentNames.length > 0
+                              ? `${latestDraftWorkspace.intake.attachmentNames.length} uploaded file${latestDraftWorkspace.intake.attachmentNames.length === 1 ? '' : 's'} included`
+                              : 'No uploaded files captured yet'}
+                          </p>
+                        </div>
+                        <Button asChild size="sm" className="rounded-full bg-emerald-700 text-white hover:bg-emerald-800">
+                          <Link to={`/draft-forms/${latestDraftWorkspace.id}`}>Resume</Link>
+                        </Button>
+                      </div>
                     </div>
                   ) : (
                     <p className="text-sm text-slate-500 dark:text-slate-400">

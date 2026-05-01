@@ -41,7 +41,7 @@ import { generateAIResponse, generateWelcomeMessage } from '@/services/api';
 import { extractChatAttachmentContext } from '@/services/chatAttachments';
 import { MariaDocumentError, createMariaDocument } from '@/services/documents';
 import { authService, type User, type ChatSession, type ChatMessage, type ChatAttachment } from '@/services/auth';
-import { createStarterPacketWorkspace } from '@/services/formDrafts';
+import { cacheLatestDraftFormsChatHandoff, createStarterPacketWorkspace } from '@/services/formDrafts';
 import { CALIFORNIA_DIVORCE_TOPICS } from '@/services/personality';
 import { v4 as uuidv4 } from 'uuid';
 import { SUBSCRIPTION_LIMITS } from '@/services/auth';
@@ -769,6 +769,7 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
     };
 
     const savedSession = await authService.saveChatSession(session);
+    cacheLatestDraftFormsChatHandoff(currentUser.id, savedSession.messages, savedSession.id);
     setCurrentSessionId(savedSession.id);
 
     const updatedSessions = await authService.getChatSessions(currentUser.id);
@@ -777,18 +778,65 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
 
   const deleteSession = async (e: React.MouseEvent, sessionId: string) => {
     e.stopPropagation();
-    await authService.deleteChatSession(sessionId);
+    const session = sessions.find((entry) => entry.id === sessionId);
+    const confirmDelete = window.confirm(`Delete this chat${session?.title ? `: ${session.title}` : ''}? This cannot be undone.`);
+    if (!confirmDelete) return;
 
-    const updatedSessions = sessions.filter(s => s.id !== sessionId);
-    setSessions(updatedSessions);
+    try {
+      await authService.deleteChatSession(sessionId);
 
-    if (currentSessionId === sessionId) {
-      if (updatedSessions.length > 0) {
-        loadSession(updatedSessions[0].id);
-      } else {
-        startNewChat();
+      const updatedSessions = sessions.filter(s => s.id !== sessionId);
+      setSessions(updatedSessions);
+
+      if (currentSessionId === sessionId) {
+        if (updatedSessions.length > 0) {
+          loadSession(updatedSessions[0].id);
+        } else {
+          startNewChat();
+        }
       }
+
+      toast.success('Chat deleted.');
+    } catch (error) {
+      toast.error('Unable to delete chat', {
+        description: error instanceof Error ? error.message : 'Please try again.',
+      });
     }
+  };
+
+  const deleteMessage = async (messageId: string) => {
+    const message = messages.find((entry) => entry.id === messageId);
+    const preview = message?.content.trim().slice(0, 80);
+    const confirmDelete = window.confirm(`Delete this message${preview ? `: “${preview}${(message?.content.length ?? 0) > 80 ? '…' : ''}”` : ''}? This cannot be undone.`);
+    if (!confirmDelete) return;
+
+    const nextMessages = messages.filter((entry) => entry.id !== messageId);
+    setMessages(nextMessages);
+    setSavedPdfByMessageId((current) => {
+      const next = { ...current };
+      delete next[messageId];
+      return next;
+    });
+    setPdfSaveErrorByMessageId((current) => {
+      const next = { ...current };
+      delete next[messageId];
+      return next;
+    });
+    if (pdfComposerMessage?.id === messageId) setPdfComposerMessage(null);
+    if (fallbackAudio?.text === message?.content) clearFallbackAudio();
+
+    if (nextMessages.length === 0) {
+      if (currentSessionId) {
+        await authService.deleteChatSession(currentSessionId);
+        setSessions((current) => current.filter((session) => session.id !== currentSessionId));
+      }
+      startNewChat();
+      toast.success('Message deleted.');
+      return;
+    }
+
+    await saveCurrentSession(nextMessages);
+    toast.success('Message deleted.');
   };
 
   const sendToDraftForms = (message: ChatMessage) => {
@@ -1045,6 +1093,8 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
       const userName = currentUser?.name || currentUser?.email?.split('@')[0] || 'Guest';
       const plan = currentUser?.subscription ?? 'free';
       let aiUserMessage = userMessage.content;
+      let savedUserMessage = userMessage;
+      let savedUpdatedMessages = updatedMessages;
 
       if (selectedAttachments.length > 0) {
         try {
@@ -1052,6 +1102,9 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
           const basePrompt = baseContent || 'Please help me review the uploaded file and tell me what matters most.';
 
           if (attachmentContext.context) {
+            savedUserMessage = { ...userMessage, draftContext: attachmentContext.context };
+            savedUpdatedMessages = [...messages, savedUserMessage];
+            setMessages(savedUpdatedMessages);
             aiUserMessage = [
               basePrompt,
               `[Uploaded file context]\n${attachmentContext.context}`,
@@ -1086,7 +1139,7 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
         shouldOfferPdfSave,
       };
       
-      const finalMessages = [...updatedMessages, assistantMessage];
+      const finalMessages = [...savedUpdatedMessages, assistantMessage];
       shouldAutoScrollRef.current = true;
       setMessages(finalMessages);
       void saveCurrentSession(finalMessages);
@@ -1355,18 +1408,29 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
                 <div
                   key={session.id}
                   onClick={() => loadSession(session.id)}
-                  className={`flex items-center justify-between p-2 rounded cursor-pointer text-sm ${
+                  className={`group flex items-center justify-between gap-2 rounded p-2 text-sm ${
                     currentSessionId === session.id 
                       ? 'bg-emerald-100 text-emerald-700' 
                       : 'hover:bg-gray-100 text-gray-700'
                   }`}
                 >
-                  <span className="truncate flex-1">{session.title}</span>
                   <button
+                    type="button"
+                    onClick={() => loadSession(session.id)}
+                    className="min-w-0 flex-1 truncate text-left"
+                    title={session.title}
+                  >
+                    {session.title}
+                  </button>
+                  <button
+                    type="button"
+                    aria-label={`Delete chat ${session.title}`}
+                    title="Delete chat"
                     onClick={(e) => deleteSession(e, session.id)}
-                    className="ml-2 p-1 hover:bg-red-100 hover:text-red-600 rounded"
+                    className="ml-2 inline-flex items-center gap-1 rounded px-2 py-1 text-xs text-slate-400 opacity-80 transition hover:bg-red-100 hover:text-red-600 group-hover:opacity-100"
                   >
                     <Trash2 className="h-3 w-3" />
+                    <span className="hidden sm:inline">Delete</span>
                   </button>
                 </div>
               ))}
@@ -1506,8 +1570,22 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
                     ))}
                   </div>
                 )}
-                <div className={`text-[11px] mt-3 ${message.role === 'user' ? 'text-emerald-200' : 'text-gray-400'}`}>
-                  {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                <div className={`mt-3 flex items-center justify-between gap-3 text-[11px] ${message.role === 'user' ? 'text-emerald-200' : 'text-gray-400'}`}>
+                  <span>{new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                  <button
+                    type="button"
+                    onClick={() => void deleteMessage(message.id)}
+                    className={`inline-flex items-center gap-1 rounded-full px-2 py-1 opacity-70 transition hover:opacity-100 ${
+                      message.role === 'user'
+                        ? 'hover:bg-white/15 hover:text-white'
+                        : 'hover:bg-red-50 hover:text-red-600'
+                    }`}
+                    aria-label="Delete this message"
+                    title="Delete message"
+                  >
+                    <Trash2 className="h-3 w-3" />
+                    <span className="hidden sm:inline">Delete</span>
+                  </button>
                 </div>
               </div>
               {message.role === 'user' && (

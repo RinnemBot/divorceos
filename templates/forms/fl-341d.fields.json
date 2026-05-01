@@ -1,0 +1,366 @@
+[
+  {
+    "page": 0,
+    "name": "FL-341D.caption.petitioner",
+    "fullName": "FL-341D.caption.petitioner",
+    "rect": [
+      149.275,
+      730.752,
+      391.15,
+      740.914
+    ],
+    "type": "/Tx",
+    "tooltip": "PETITIONER:"
+  },
+  {
+    "page": 0,
+    "name": "FL-341D.caption.respondent",
+    "fullName": "FL-341D.caption.respondent",
+    "rect": [
+      149.307,
+      718.399,
+      391.365,
+      728.561
+    ],
+    "type": "/Tx",
+    "tooltip": "RESPONDENT:"
+  },
+  {
+    "page": 0,
+    "name": "FL-341D.caption.otherParentParty",
+    "fullName": "FL-341D.caption.otherParentParty",
+    "rect": [
+      149.128,
+      706.641,
+      391.416,
+      716.803
+    ],
+    "type": "/Tx",
+    "tooltip": "OTHER PARENT/PARTY:"
+  },
+  {
+    "page": 0,
+    "name": "FL-341D.caption.caseNumber",
+    "fullName": "FL-341D.caption.caseNumber",
+    "rect": [
+      400.164,
+      712.817,
+      572.964,
+      725.136
+    ],
+    "type": "/Tx",
+    "tooltip": "CASE NUMBER:"
+  },
+  {
+    "page": 1,
+    "name": "FL-341D.caption.petitioner",
+    "fullName": "FL-341D.caption.petitioner",
+    "rect": [
+      149.116,
+      730.752,
+      390.991,
+      740.914
+    ],
+    "type": "/Tx",
+    "tooltip": "PETITIONER:"
+  },
+  {
+    "page": 1,
+    "name": "FL-341D.caption.respondent",
+    "fullName": "FL-341D.caption.respondent",
+    "rect": [
+      149.403,
+      719.343,
+      391.461,
+      729.505
+    ],
+    "type": "/Tx",
+    "tooltip": "RESPONDENT:"
+  },
+  {
+    "page": 1,
+    "name": "FL-341D.caption.otherParentParty",
+    "fullName": "FL-341D.caption.otherParentParty",
+    "rect": [
+      149.706,
+      706.641,
+      391.994,
+      716.803
+    ],
+    "type": "/Tx",
+    "tooltip": "OTHER PARENT/PARTY:"
+  },
+  {
+    "page": 1,
+    "name": "FL-341D.caption.caseNumber",
+    "fullName": "FL-341D.caption.caseNumber",
+    "rect": [
+      400.005,
+      712.817,
+      572.805,
+      725.136
+    ],
+    "type": "/Tx",
+    "tooltip": "CASE NUMBER:"
+  },
+  {
+    "page": 0,
+    "name": "FL-341D.sourceOrder.fl340",
+    "fullName": "FL-341D.sourceOrder.fl340",
+    "rect": [
+      358.52,
+      656.364,
+      367.52,
+      665.364
+    ],
+    "type": "/Btn",
+    "tooltip": "Findings and Order After Hearing or Judgment"
+  },
+  {
+    "page": 0,
+    "name": "FL-341D.sourceOrder.fl180",
+    "fullName": "FL-341D.sourceOrder.fl180",
+    "rect": [
+      126.527,
+      668.692,
+      135.527,
+      677.692
+    ],
+    "type": "/Btn",
+    "tooltip": "Response"
+  },
+  {
+    "page": 0,
+    "name": "FL-341D.sourceOrder.fl250",
+    "fullName": "FL-341D.sourceOrder.fl250",
+    "rect": [
+      205.387,
+      668.692,
+      214.387,
+      677.692
+    ],
+    "type": "/Btn",
+    "tooltip": "Request for Order"
+  },
+  {
+    "page": 0,
+    "name": "FL-341D.sourceOrder.fl355",
+    "fullName": "FL-341D.sourceOrder.fl355",
+    "rect": [
+      62.51,
+      656.422,
+      71.51,
+      665.422
+    ],
+    "type": "/Btn",
+    "tooltip": "Stipulation and Order for Custody and/or Visitation of Children"
+  },
+  {
+    "page": 0,
+    "name": "FL-341D.sourceOrder.other",
+    "fullName": "FL-341D.sourceOrder.other",
+    "rect": [
+      283.45,
+      642.419,
+      292.45,
+      651.419
+    ],
+    "type": "/Btn",
+    "tooltip": "Other (specify):"
+  },
+  {
+    "page": 0,
+    "name": "FL-341D.sourceOrder.otherText",
+    "fullName": "FL-341D.sourceOrder.otherText",
+    "rect": [
+      373.476,
+      642.419,
+      570.81,
+      651.419
+    ],
+    "type": "/Tx",
+    "tooltip": "SpecifyOtherAttachment_tf"
+  },
+  {
+    "page": 0,
+    "name": "FL-341D.provision.exchangeSchedule.selected",
+    "fullName": "FL-341D.provision.exchangeSchedule.selected",
+    "rect": [
+      92.208,
+      348.69,
+      101.208,
+      357.69
+    ],
+    "type": "/Btn",
+    "tooltip": "If the noncustodial party fails to arrive at the appointed time and fails to notify the custodial party that he or she will be late, then the custodial party need wait for only                                          minutes before considering the visitation (parenting time) canceled."
+  },
+  {
+    "page": 0,
+    "name": "FL-341D.provision.exchangeSchedule.details",
+    "fullName": "FL-341D.provision.exchangeSchedule.details",
+    "rect": [
+      203.713,
+      272.769,
+      572.55,
+      281.769
+    ],
+    "type": "/Tx",
+    "tooltip": "(specify):"
+  },
+  {
+    "page": 0,
+    "name": "FL-341D.provision.transportation.selected",
+    "fullName": "FL-341D.provision.transportation.selected",
+    "rect": [
+      55.301,
+      463.286,
+      64.301,
+      472.286
+    ],
+    "type": "/Btn",
+    "tooltip": "Child care."
+  },
+  {
+    "page": 0,
+    "name": "FL-341D.provision.transportation.details",
+    "fullName": "FL-341D.provision.transportation.details",
+    "rect": [
+      203.713,
+      207.604,
+      572.55,
+      216.604
+    ],
+    "type": "/Tx",
+    "tooltip": "(specify):"
+  },
+  {
+    "page": 0,
+    "name": "FL-341D.provision.makeupTime.selected",
+    "fullName": "FL-341D.provision.makeupTime.selected",
+    "rect": [
+      55.301,
+      361.874,
+      64.301,
+      370.874
+    ],
+    "type": "/Btn",
+    "tooltip": "Canceled visitation (parenting time)."
+  },
+  {
+    "page": 0,
+    "name": "FL-341D.provision.makeupTime.details",
+    "fullName": "FL-341D.provision.makeupTime.details",
+    "rect": [
+      387.92,
+      337.314,
+      411.743,
+      347.394
+    ],
+    "type": "/Tx",
+    "tooltip": "(specify number): "
+  },
+  {
+    "page": 0,
+    "name": "FL-341D.provision.communication.selected",
+    "fullName": "FL-341D.provision.communication.selected",
+    "rect": [
+      55.301,
+      188.73,
+      64.301,
+      197.73
+    ],
+    "type": "/Btn",
+    "tooltip": "Phone contact between parties and children."
+  },
+  {
+    "page": 0,
+    "name": "FL-341D.provision.communication.details",
+    "fullName": "FL-341D.provision.communication.details",
+    "rect": [
+      113.213,
+      104.522,
+      571.995,
+      138.029
+    ],
+    "type": "/Tx",
+    "tooltip": "(specify child's telephone contact with each party):"
+  },
+  {
+    "page": 0,
+    "name": "FL-341D.provision.rightOfFirstRefusal.selected",
+    "fullName": "FL-341D.provision.rightOfFirstRefusal.selected",
+    "rect": [
+      55.301,
+      411.928,
+      64.301,
+      420.928
+    ],
+    "type": "/Btn",
+    "tooltip": "Right of first option of child care. "
+  },
+  {
+    "page": 0,
+    "name": "FL-341D.provision.rightOfFirstRefusal.details",
+    "fullName": "FL-341D.provision.rightOfFirstRefusal.details",
+    "rect": [
+      468.031,
+      411.585,
+      497.517,
+      421.665
+    ],
+    "type": "/Tx",
+    "tooltip": "(specify number):"
+  },
+  {
+    "page": 1,
+    "name": "FL-341D.provision.temporaryChangesByAgreement.selected",
+    "fullName": "FL-341D.provision.temporaryChangesByAgreement.selected",
+    "rect": [
+      55.732,
+      333.944,
+      64.732,
+      342.944
+    ],
+    "type": "/Btn",
+    "tooltip": "Terms and conditions of order may be changed. The terms and conditions of this order may be added to or changed as  the needs of the children and parties change. Such changes will be in writing, dated and signed by the parties; each party will retain a copy. If the parties want a change to be a court order, it must be filed with the court in the form of a court  document. "
+  },
+  {
+    "page": 1,
+    "name": "FL-341D.provision.temporaryChangesByAgreement.details",
+    "fullName": "FL-341D.provision.temporaryChangesByAgreement.details",
+    "rect": [
+      78.679,
+      65.393,
+      566.47,
+      291.115
+    ],
+    "type": "/Tx",
+    "tooltip": "OtheProvisions_ft"
+  },
+  {
+    "page": 1,
+    "name": "FL-341D.provision.other.selected",
+    "fullName": "FL-341D.provision.other.selected",
+    "rect": [
+      55.732,
+      284.95,
+      64.732,
+      293.95
+    ],
+    "type": "/Btn",
+    "tooltip": "Other (specify):"
+  },
+  {
+    "page": 1,
+    "name": "FL-341D.provision.other.details",
+    "fullName": "FL-341D.provision.other.details",
+    "rect": [
+      78.679,
+      65.393,
+      566.47,
+      291.115
+    ],
+    "type": "/Tx",
+    "tooltip": "OtheProvisions_ft"
+  }
+]

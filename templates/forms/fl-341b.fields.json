@@ -1,0 +1,938 @@
+[
+  {
+    "page": 0,
+    "name": "FL-341B.caption.petitioner",
+    "fullName": "FL-341B.caption.petitioner",
+    "rect": [
+      149.116,
+      730.752,
+      390.991,
+      740.914
+    ],
+    "type": "/Tx",
+    "tooltip": "PETITIONER:"
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.caption.respondent",
+    "fullName": "FL-341B.caption.respondent",
+    "rect": [
+      149.148,
+      718.399,
+      391.206,
+      728.561
+    ],
+    "type": "/Tx",
+    "tooltip": "RESPONDENT:"
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.caption.otherParentParty",
+    "fullName": "FL-341B.caption.otherParentParty",
+    "rect": [
+      149.706,
+      706.641,
+      391.994,
+      716.803
+    ],
+    "type": "/Tx",
+    "tooltip": "OTHER PARENT/PARTY:"
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.caption.caseNumber",
+    "fullName": "FL-341B.caption.caseNumber",
+    "rect": [
+      400.005,
+      712.817,
+      572.805,
+      725.136
+    ],
+    "type": "/Tx",
+    "tooltip": "CASE NUMBER:"
+  },
+  {
+    "page": 1,
+    "name": "FL-341B.caption.petitioner",
+    "fullName": "FL-341B.caption.petitioner",
+    "rect": [
+      149.116,
+      730.752,
+      390.991,
+      740.914
+    ],
+    "type": "/Tx",
+    "tooltip": "PETITIONER:"
+  },
+  {
+    "page": 1,
+    "name": "FL-341B.caption.respondent",
+    "fullName": "FL-341B.caption.respondent",
+    "rect": [
+      149.148,
+      718.399,
+      391.206,
+      728.561
+    ],
+    "type": "/Tx",
+    "tooltip": "RESPONDENT:"
+  },
+  {
+    "page": 1,
+    "name": "FL-341B.caption.otherParentParty",
+    "fullName": "FL-341B.caption.otherParentParty",
+    "rect": [
+      149.706,
+      706.641,
+      391.994,
+      716.803
+    ],
+    "type": "/Tx",
+    "tooltip": "OTHER PARENT/PARTY:"
+  },
+  {
+    "page": 1,
+    "name": "FL-341B.caption.caseNumber",
+    "fullName": "FL-341B.caption.caseNumber",
+    "rect": [
+      400.005,
+      712.817,
+      572.805,
+      725.136
+    ],
+    "type": "/Tx",
+    "tooltip": "CASE NUMBER:"
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.sourceOrder.fl341",
+    "fullName": "FL-341B.sourceOrder.fl341",
+    "rect": [
+      107.342,
+      677.959,
+      116.342,
+      686.959
+    ],
+    "type": "/Btn",
+    "tooltip": "Child Custody and Visitation (Parenting Time) Order Attachment (form FL-341)"
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.sourceOrder.jv200",
+    "fullName": "FL-341B.sourceOrder.jv200",
+    "rect": [
+      107.342,
+      664.021,
+      116.342,
+      673.021
+    ],
+    "type": "/Btn",
+    "tooltip": "Custody Order\u2014Juvenile\u2014Final Judgment (form JV-200)"
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.sourceOrder.other",
+    "fullName": "FL-341B.sourceOrder.other",
+    "rect": [
+      107.342,
+      650.854,
+      116.342,
+      659.854
+    ],
+    "type": "/Btn",
+    "tooltip": "Other"
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.sourceOrder.otherText",
+    "fullName": "FL-341B.sourceOrder.otherText",
+    "rect": [
+      197.44,
+      649.89,
+      571.55,
+      660.149
+    ],
+    "type": "/Tx",
+    "tooltip": "(specify):"
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.restrainedPartyName",
+    "fullName": "FL-341B.restrainedPartyName",
+    "rect": [
+      297.528,
+      633.217,
+      465.253,
+      642.217
+    ],
+    "type": "/Tx",
+    "tooltip": "(specify name of party): "
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.risk.violatedPastOrders",
+    "fullName": "FL-341B.risk.violatedPastOrders",
+    "rect": [
+      70.353,
+      611.022,
+      79.353,
+      620.022
+    ],
+    "type": "/Btn",
+    "tooltip": "has violated\u2014or threatened to violate\u2014a custody or visitation (parenting time) order in the past."
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.risk.noStrongCaliforniaTies",
+    "fullName": "FL-341B.risk.noStrongCaliforniaTies",
+    "rect": [
+      70.353,
+      596.409,
+      79.353,
+      605.409
+    ],
+    "type": "/Btn",
+    "tooltip": "does not have strong ties to California."
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.risk.preparationActions",
+    "fullName": "FL-341B.risk.preparationActions",
+    "rect": [
+      70.353,
+      582.732,
+      79.353,
+      591.732
+    ],
+    "type": "/Btn",
+    "tooltip": "has done things that make it easy for him or her to take the children away without any permission, such as (check all that apply):"
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.risk.preparation.quitJob",
+    "fullName": "FL-341B.risk.preparation.quitJob",
+    "rect": [
+      95.819,
+      559.377,
+      104.819,
+      568.377
+    ],
+    "type": "/Btn",
+    "tooltip": "quit a job."
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.risk.preparation.soldHome",
+    "fullName": "FL-341B.risk.preparation.soldHome",
+    "rect": [
+      245.33,
+      559.377,
+      254.33,
+      568.377
+    ],
+    "type": "/Btn",
+    "tooltip": "sold his or her home."
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.risk.preparation.closedBankAccount",
+    "fullName": "FL-341B.risk.preparation.closedBankAccount",
+    "rect": [
+      95.819,
+      545.72,
+      104.819,
+      554.72
+    ],
+    "type": "/Btn",
+    "tooltip": "closed a bank account."
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.risk.preparation.endedLease",
+    "fullName": "FL-341B.risk.preparation.endedLease",
+    "rect": [
+      245.984,
+      545.72,
+      254.984,
+      554.72
+    ],
+    "type": "/Btn",
+    "tooltip": "ended a lease."
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.risk.preparation.soldAssets",
+    "fullName": "FL-341B.risk.preparation.soldAssets",
+    "rect": [
+      95.819,
+      531.343,
+      104.819,
+      540.343
+    ],
+    "type": "/Btn",
+    "tooltip": "sold or gotten rid of assets."
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.risk.preparation.hiddenOrDestroyedDocuments",
+    "fullName": "FL-341B.risk.preparation.hiddenOrDestroyedDocuments",
+    "rect": [
+      245.984,
+      531.343,
+      254.984,
+      540.343
+    ],
+    "type": "/Btn",
+    "tooltip": "hidden or destroyed documents."
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.risk.preparation.appliedForPassport",
+    "fullName": "FL-341B.risk.preparation.appliedForPassport",
+    "rect": [
+      95.819,
+      518.133,
+      104.819,
+      527.133
+    ],
+    "type": "/Btn",
+    "tooltip": "applied for a passport, birth certificate, or school or medical records."
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.risk.preparation.other",
+    "fullName": "FL-341B.risk.preparation.other",
+    "rect": [
+      95.819,
+      503.207,
+      104.819,
+      512.207
+    ],
+    "type": "/Btn",
+    "tooltip": "Other (specify):"
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.risk.preparation.otherDetails",
+    "fullName": "FL-341B.risk.preparation.otherDetails",
+    "rect": [
+      116.352,
+      479.812,
+      573.732,
+      502.58
+    ],
+    "type": "/Tx",
+    "tooltip": "Other (specify):"
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.risk.history",
+    "fullName": "FL-341B.risk.history",
+    "rect": [
+      70.353,
+      467.035,
+      79.353,
+      476.035
+    ],
+    "type": "/Btn",
+    "tooltip": "has a history of (check all that apply):"
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.risk.history.domesticViolence",
+    "fullName": "FL-341B.risk.history.domesticViolence",
+    "rect": [
+      95.819,
+      455.538,
+      104.819,
+      464.538
+    ],
+    "type": "/Btn",
+    "tooltip": "domestic violence."
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.risk.history.childAbuse",
+    "fullName": "FL-341B.risk.history.childAbuse",
+    "rect": [
+      95.819,
+      441.861,
+      104.819,
+      450.861
+    ],
+    "type": "/Btn",
+    "tooltip": "child abuse."
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.risk.history.nonCooperation",
+    "fullName": "FL-341B.risk.history.nonCooperation",
+    "rect": [
+      95.819,
+      428.184,
+      104.819,
+      437.184
+    ],
+    "type": "/Btn",
+    "tooltip": "not cooperating with the other parent or party in parenting."
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.risk.criminalRecord",
+    "fullName": "FL-341B.risk.criminalRecord",
+    "rect": [
+      70.353,
+      412.65,
+      79.353,
+      421.65
+    ],
+    "type": "/Btn",
+    "tooltip": "has a criminal record. "
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.risk.tiesToOtherJurisdiction",
+    "fullName": "FL-341B.risk.tiesToOtherJurisdiction",
+    "rect": [
+      70.353,
+      398.61,
+      79.353,
+      407.61
+    ],
+    "type": "/Btn",
+    "tooltip": "has family or emotional ties to another county, state, or foreign country."
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.order.supervisedVisitation",
+    "fullName": "FL-341B.order.supervisedVisitation",
+    "rect": [
+      55.752,
+      350.396,
+      64.752,
+      359.396
+    ],
+    "type": "/Btn",
+    "tooltip": "Supervised visitation (parenting time). The terms are (check one):"
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.order.supervisedVisitationTerms.fl341a",
+    "fullName": "FL-341B.order.supervisedVisitationTerms.fl341a",
+    "rect": [
+      82.219,
+      337.493,
+      91.219,
+      346.493
+    ],
+    "type": "/Btn",
+    "tooltip": "as specified on attached form FL-341(A)"
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.order.supervisedVisitationTerms.asFollows",
+    "fullName": "FL-341B.order.supervisedVisitationTerms.asFollows",
+    "rect": [
+      278.306,
+      337.493,
+      287.306,
+      346.493
+    ],
+    "type": "/Btn",
+    "tooltip": "as follows:"
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.order.supervisedVisitationTerms.details",
+    "fullName": "FL-341B.order.supervisedVisitationTerms.details",
+    "rect": [
+      77.37,
+      304.552,
+      575.799,
+      337.003
+    ],
+    "type": "/Tx",
+    "tooltip": "Supervised visitation (parenting time). The terms are as follows:"
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.order.postBond",
+    "fullName": "FL-341B.order.postBond",
+    "rect": [
+      55.857,
+      290.925,
+      64.857,
+      299.925
+    ],
+    "type": "/Btn",
+    "tooltip": "The party in item 1 must post a bond for"
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.order.postBondAmount",
+    "fullName": "FL-341B.order.postBondAmount",
+    "rect": [
+      247.17,
+      290.925,
+      306.403,
+      299.925
+    ],
+    "type": "/Tx",
+    "tooltip": "The party in item 1 must post a bond for $:"
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.order.postBondTerms",
+    "fullName": "FL-341B.order.postBondTerms",
+    "rect": [
+      51.517,
+      238.207,
+      575.932,
+      289.219
+    ],
+    "type": "/Tx",
+    "tooltip": ". The terms of the bond are (specify):"
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.order.noMoveWithoutPermission",
+    "fullName": "FL-341B.order.noMoveWithoutPermission",
+    "rect": [
+      55.752,
+      223.174,
+      64.752,
+      232.174
+    ],
+    "type": "/Btn",
+    "tooltip": "The party in item 1 must not move from the following locations with the children without permission in writing from the other parent or party or a court order:"
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.order.noMove.currentResidence",
+    "fullName": "FL-341B.order.noMove.currentResidence",
+    "rect": [
+      82.757,
+      198.649,
+      91.757,
+      207.649
+    ],
+    "type": "/Btn",
+    "tooltip": "Current residence"
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.order.noMove.currentSchoolDistrict",
+    "fullName": "FL-341B.order.noMove.currentSchoolDistrict",
+    "rect": [
+      190.14,
+      198.649,
+      199.14,
+      207.649
+    ],
+    "type": "/Btn",
+    "tooltip": "Current school district "
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.order.noMove.other",
+    "fullName": "FL-341B.order.noMove.other",
+    "rect": [
+      190.14,
+      184.504,
+      199.14,
+      193.504
+    ],
+    "type": "/Btn",
+    "tooltip": "Other "
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.order.noMove.otherDetails",
+    "fullName": "FL-341B.order.noMove.otherDetails",
+    "rect": [
+      342.365,
+      198.649,
+      575.798,
+      208.006
+    ],
+    "type": "/Tx",
+    "tooltip": "(specify):"
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.order.noMove.thisCounty",
+    "fullName": "FL-341B.order.noMove.thisCounty",
+    "rect": [
+      82.757,
+      184.971,
+      91.757,
+      193.971
+    ],
+    "type": "/Btn",
+    "tooltip": "This county"
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.order.noMove.otherPlace",
+    "fullName": "FL-341B.order.noMove.otherPlace",
+    "rect": [
+      190.14,
+      184.504,
+      199.14,
+      193.504
+    ],
+    "type": "/Btn",
+    "tooltip": "Other "
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.order.noMove.otherPlaceDetails",
+    "fullName": "FL-341B.order.noMove.otherPlaceDetails",
+    "rect": [
+      274.943,
+      184.504,
+      574.041,
+      193.504
+    ],
+    "type": "/Tx",
+    "tooltip": "(specify):"
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.order.noTravelWithoutPermission",
+    "fullName": "FL-341B.order.noTravelWithoutPermission",
+    "rect": [
+      55.752,
+      166.733,
+      64.752,
+      175.733
+    ],
+    "type": "/Btn",
+    "tooltip": "The party in item 1 must not travel with the children out of (check all that apply):"
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.order.noTravel.thisCounty",
+    "fullName": "FL-341B.order.noTravel.thisCounty",
+    "rect": [
+      82.757,
+      154.278,
+      91.757,
+      163.278
+    ],
+    "type": "/Btn",
+    "tooltip": "this county."
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.order.noTravel.california",
+    "fullName": "FL-341B.order.noTravel.california",
+    "rect": [
+      82.757,
+      142.495,
+      91.757,
+      151.495
+    ],
+    "type": "/Btn",
+    "tooltip": "California."
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.order.noTravel.unitedStates",
+    "fullName": "FL-341B.order.noTravel.unitedStates",
+    "rect": [
+      165.305,
+      154.278,
+      174.305,
+      163.278
+    ],
+    "type": "/Btn",
+    "tooltip": "the United States."
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.order.noTravel.other",
+    "fullName": "FL-341B.order.noTravel.other",
+    "rect": [
+      165.019,
+      142.027,
+      174.019,
+      151.027
+    ],
+    "type": "/Btn",
+    "tooltip": "Other "
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.order.noTravel.otherDetails",
+    "fullName": "FL-341B.order.noTravel.otherDetails",
+    "rect": [
+      249.964,
+      142.027,
+      573.267,
+      151.027
+    ],
+    "type": "/Tx",
+    "tooltip": "(specify):"
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.order.registerInOtherState",
+    "fullName": "FL-341B.order.registerInOtherState",
+    "rect": [
+      55.749,
+      120.824,
+      64.749,
+      129.824
+    ],
+    "type": "/Btn",
+    "tooltip": "The party in item 1 must register this order in the state of "
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.order.registerInOtherStateName",
+    "fullName": "FL-341B.order.registerInOtherStateName",
+    "rect": [
+      361.242,
+      120.94,
+      453.796,
+      129.94
+    ],
+    "type": "/Tx",
+    "tooltip": "(specify):                                                                 "
+  },
+  {
+    "page": 0,
+    "name": "FL-341B.order.noPassportApplications",
+    "fullName": "FL-341B.order.noPassportApplications",
+    "rect": [
+      55.749,
+      91.193,
+      64.749,
+      100.193
+    ],
+    "type": "/Btn",
+    "tooltip": "The party in item 1 must not apply for a passport or any other vital document, such as a visa or birth certificate, that can be used for travel."
+  },
+  {
+    "page": 1,
+    "name": "FL-341B.order.turnInPassportsAndVitalDocs",
+    "fullName": "FL-341B.order.turnInPassportsAndVitalDocs",
+    "rect": [
+      57.912,
+      681.673,
+      66.912,
+      690.673
+    ],
+    "type": "/Btn",
+    "tooltip": "The party in item 1 must turn in all the children's passports and other vital documents in the party's possession or control as specified below "
+  },
+  {
+    "page": 1,
+    "name": "FL-341B.order.turnInPassportsAndVitalDocsList",
+    "fullName": "FL-341B.order.turnInPassportsAndVitalDocsList",
+    "rect": [
+      78.5,
+      594.046,
+      576.0,
+      658.345
+    ],
+    "type": "/Tx",
+    "tooltip": "(List the documents that must be turned in. Include the details for turning in the documents to the court, one of the attorneys, the other party, or another person):"
+  },
+  {
+    "page": 1,
+    "name": "FL-341B.order.provideTravelInfo",
+    "fullName": "FL-341B.order.provideTravelInfo",
+    "rect": [
+      57.912,
+      580.689,
+      66.912,
+      589.689
+    ],
+    "type": "/Btn",
+    "tooltip": "The party in item 1 must give the other parent or party the following before traveling with the children:"
+  },
+  {
+    "page": 1,
+    "name": "FL-341B.order.provideTravelItinerary",
+    "fullName": "FL-341B.order.provideTravelItinerary",
+    "rect": [
+      85.527,
+      567.652,
+      94.527,
+      576.652
+    ],
+    "type": "/Btn",
+    "tooltip": "The children's travel itinerary"
+  },
+  {
+    "page": 1,
+    "name": "FL-341B.order.provideRoundTripTickets",
+    "fullName": "FL-341B.order.provideRoundTripTickets",
+    "rect": [
+      85.527,
+      553.995,
+      94.527,
+      562.995
+    ],
+    "type": "/Btn",
+    "tooltip": "Copies of round-trip airline tickets"
+  },
+  {
+    "page": 1,
+    "name": "FL-341B.order.provideAddressesAndTelephone",
+    "fullName": "FL-341B.order.provideAddressesAndTelephone",
+    "rect": [
+      85.527,
+      539.617,
+      94.527,
+      548.617
+    ],
+    "type": "/Btn",
+    "tooltip": "Addresses and telephone numbers where the children can be reached at all times"
+  },
+  {
+    "page": 1,
+    "name": "FL-341B.order.provideOpenReturnTicket",
+    "fullName": "FL-341B.order.provideOpenReturnTicket",
+    "rect": [
+      85.527,
+      526.408,
+      94.527,
+      535.408
+    ],
+    "type": "/Btn",
+    "tooltip": "An open airline ticket for the other parent in case the children are not returned"
+  },
+  {
+    "page": 1,
+    "name": "FL-341B.order.provideOtherTravelInfo",
+    "fullName": "FL-341B.order.provideOtherTravelInfo",
+    "rect": [
+      85.527,
+      511.808,
+      94.527,
+      520.808
+    ],
+    "type": "/Btn",
+    "tooltip": "Other (specify):"
+  },
+  {
+    "page": 1,
+    "name": "FL-341B.order.provideOtherTravelInfoDetails",
+    "fullName": "FL-341B.order.provideOtherTravelInfoDetails",
+    "rect": [
+      105.25,
+      474.038,
+      575.203,
+      511.237
+    ],
+    "type": "/Tx",
+    "tooltip": "Other (specify):"
+  },
+  {
+    "page": 1,
+    "name": "FL-341B.order.notifyEmbassyOrConsulate",
+    "fullName": "FL-341B.order.notifyEmbassyOrConsulate",
+    "rect": [
+      57.427,
+      460.44,
+      66.427,
+      469.44
+    ],
+    "type": "/Btn",
+    "tooltip": "The party in item 1 must notify the embassy or consulate of (specify country): "
+  },
+  {
+    "page": 1,
+    "name": "FL-341B.order.notifyEmbassyOrConsulateCountry",
+    "fullName": "FL-341B.order.notifyEmbassyOrConsulateCountry",
+    "rect": [
+      408.138,
+      460.153,
+      546.273,
+      469.153
+    ],
+    "type": "/Tx",
+    "tooltip": "about this order and provide the court with proof of that notification within (specify number):               "
+  },
+  {
+    "page": 1,
+    "name": "FL-341B.order.notifyEmbassyWithinDays",
+    "fullName": "FL-341B.order.notifyEmbassyWithinDays",
+    "rect": [
+      416.761,
+      449.257,
+      446.122,
+      458.257
+    ],
+    "type": "/Tx",
+    "tooltip": "days."
+  },
+  {
+    "page": 1,
+    "name": "FL-341B.order.obtainForeignOrderBeforeTravel",
+    "fullName": "FL-341B.order.obtainForeignOrderBeforeTravel",
+    "rect": [
+      57.427,
+      427.995,
+      66.427,
+      436.995
+    ],
+    "type": "/Btn",
+    "tooltip": "The party in item 1 must get a custody and visitation (parenting time) order equivalent to the most recent U.S. order before the children may travel to that country for visits. The court recognizes that foreign orders may be changed or enforced according to the laws of that country."
+  },
+  {
+    "page": 1,
+    "name": "FL-341B.order.enforceOrder",
+    "fullName": "FL-341B.order.enforceOrder",
+    "rect": [
+      57.991,
+      387.998,
+      66.991,
+      396.998
+    ],
+    "type": "/Btn",
+    "tooltip": "Enforcing the order. The court authorizes any law enforcement officer to enforce this order. In this county, contact the Child Abduction Unit of the Office of the District Attorney at (phone number and address):"
+  },
+  {
+    "page": 1,
+    "name": "FL-341B.order.enforceOrderContactInfo",
+    "fullName": "FL-341B.order.enforceOrderContactInfo",
+    "rect": [
+      77.128,
+      351.199,
+      576.0,
+      375.815
+    ],
+    "type": "/Tx",
+    "tooltip": "phone number and address:"
+  },
+  {
+    "page": 1,
+    "name": "FL-341B.order.other",
+    "fullName": "FL-341B.order.other",
+    "rect": [
+      57.427,
+      338.802,
+      66.427,
+      347.802
+    ],
+    "type": "/Btn",
+    "tooltip": "Other orders (specify):"
+  },
+  {
+    "page": 1,
+    "name": "FL-341B.order.otherDetails",
+    "fullName": "FL-341B.order.otherDetails",
+    "rect": [
+      78.5,
+      245.444,
+      574.231,
+      338.148
+    ],
+    "type": "/Tx",
+    "tooltip": "Other orders (specify):"
+  }
+]

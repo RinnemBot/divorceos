@@ -15,6 +15,7 @@ const ProfilePage = lazy(() => import('@/pages/ProfilePage').then((m) => ({ defa
 const ConfirmEmailPage = lazy(() => import('@/pages/ConfirmEmailPage').then((m) => ({ default: m.ConfirmEmailPage })));
 const DashboardPage = lazy(() => import('@/pages/DashboardPage').then((m) => ({ default: m.DashboardPage })));
 const CountyConciergePage = lazy(() => import('@/pages/CountyConciergePage').then((m) => ({ default: m.CountyConciergePage })));
+const EfileAssistantPage = lazy(() => import('@/pages/EfileAssistantPage').then((m) => ({ default: m.EfileAssistantPage })));
 const DraftFormsPage = lazy(() => import('@/pages/DraftFormsPage').then((m) => ({ default: m.DraftFormsPage })));
 const TermsPage = lazy(() => import('@/pages/LegalPage').then((m) => ({ default: m.TermsPage })));
 const PrivacyPage = lazy(() => import('@/pages/LegalPage').then((m) => ({ default: m.PrivacyPage })));
@@ -94,6 +95,7 @@ function App() {
               <Route path="/support-tools" element={<SupportToolsPage />} />
               <Route path="/concierge" element={<CountyConciergePage />} />
               <Route path="/concierge/:countyId" element={<CountyConciergePage />} />
+              <Route path="/efile-assistant" element={<EfileAssistantPage />} />
               <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="/draft-forms" element={<DraftFormsPage />} />
               <Route path="/draft-forms/:workspaceId" element={<DraftFormsPage />} />
