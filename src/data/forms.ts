@@ -12,6 +12,7 @@ export const FORM_CATEGORIES = [
   { id: 'petition', name: 'Starting a Divorce', icon: 'FileText' },
   { id: 'response', name: 'Responding to Divorce', icon: 'Reply' },
   { id: 'financial', name: 'Financial Disclosures', icon: 'DollarSign' },
+  { id: 'fee-waiver', name: 'Fee Waivers', icon: 'DollarSign' },
   { id: 'custody', name: 'Child Custody & Support', icon: 'Users' },
   { id: 'support', name: 'Spousal Support', icon: 'Heart' },
   { id: 'property', name: 'Property & Debt', icon: 'Home' },
@@ -133,6 +134,33 @@ export const COURT_FORMS: CourtForm[] = [
     pdfUrl: '/forms/fl-160.pdf',
   },
   
+  // Fee Waivers
+  {
+    id: 'fw-001',
+    formNumber: 'FW-001',
+    title: 'Request to Waive Court Fees',
+    description: 'Use this to ask the court to waive filing fees and other court costs when you cannot afford them.',
+    category: 'fee-waiver',
+    pdfUrl: '/forms/fw-001.pdf',
+    instructionsUrl: 'https://www.courts.ca.gov/documents/fw001info.pdf',
+  },
+  {
+    id: 'fw-003',
+    formNumber: 'FW-003',
+    title: 'Order on Court Fee Waiver',
+    description: "The court's order granting, denying, or setting a hearing on your fee waiver request.",
+    category: 'fee-waiver',
+    pdfUrl: '/forms/fw-003.pdf',
+  },
+  {
+    id: 'fw-010',
+    formNumber: 'FW-010',
+    title: 'Notice to Court of Improved Financial Situation or Settlement',
+    description: 'Use after a fee waiver if your financial situation improves or the case settles in a way that may affect waived fees.',
+    category: 'fee-waiver',
+    pdfUrl: '/forms/fw-010.pdf',
+  },
+
   // Child Custody & Support
   {
     id: 'fl-300',

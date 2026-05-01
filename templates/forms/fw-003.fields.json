@@ -1,0 +1,652 @@
+[
+  {
+    "page": 0,
+    "name": "T29[0]",
+    "fullName": "T29[0]",
+    "type": "/Tx",
+    "rect": [
+      283.759,
+      503.739,
+      381.611,
+      516.373
+    ],
+    "tooltip": "A request to waive court fees was filed on (date):"
+  },
+  {
+    "page": 0,
+    "name": "Waiver_rb[0]",
+    "fullName": "Waiver_rb[0]",
+    "type": "/Btn",
+    "rect": [
+      92.999,
+      298.834,
+      101.999,
+      307.834
+    ],
+    "tooltip": "Fee Waiver. The court grants your request and waives your court fees and costs listed below. (Cal. Rules of Court, rules 3.55 and 8.818.) You do not have to pay the court fees for the following: "
+  },
+  {
+    "page": 0,
+    "name": "Additional_rb[0]",
+    "fullName": "Additional_rb[0]",
+    "type": "/Btn",
+    "rect": [
+      92.999,
+      148.039,
+      101.999,
+      157.039
+    ],
+    "tooltip": "Additional Fee Waiver. The court grants your request and waives your additional superior court fees and costs that are checked below. (Cal. Rules of Court, rule 3.56.) You do not have to pay for the checked items."
+  },
+  {
+    "page": 0,
+    "name": "T66[0]",
+    "fullName": "T66[0]",
+    "type": "/Btn",
+    "rect": [
+      112.482,
+      106.646,
+      121.482,
+      115.646
+    ],
+    "tooltip": "   Jury fees and expenses"
+  },
+  {
+    "page": 0,
+    "name": "T67[0]",
+    "fullName": "T67[0]",
+    "type": "/Btn",
+    "rect": [
+      341.478,
+      106.646,
+      350.478,
+      115.646
+    ],
+    "tooltip": "Fees for a peace officer to testify in court  "
+  },
+  {
+    "page": 0,
+    "name": "T68[0]",
+    "fullName": "T68[0]",
+    "type": "/Btn",
+    "rect": [
+      341.478,
+      93.938,
+      350.478,
+      102.938
+    ],
+    "tooltip": "Court-appointed interpreter fees for a witness"
+  },
+  {
+    "page": 0,
+    "name": "T69[0]",
+    "fullName": "T69[0]",
+    "type": "/Btn",
+    "rect": [
+      112.482,
+      93.144,
+      121.482,
+      102.144
+    ],
+    "tooltip": "   Fees for court-appointed experts "
+  },
+  {
+    "page": 0,
+    "name": "GrantDeny_cb[0]",
+    "fullName": "GrantDeny_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      76.272,
+      317.217,
+      85.272,
+      326.217
+    ],
+    "tooltip": "The court grants your request, as follows:"
+  },
+  {
+    "page": 0,
+    "name": "PersonWaivingName_ft[0]",
+    "fullName": "PersonWaivingName_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      93.23,
+      681.814,
+      377.527,
+      696.691
+    ],
+    "tooltip": "Name:"
+  },
+  {
+    "page": 0,
+    "name": "FillText23[0]",
+    "fullName": "FillText23[0]",
+    "type": "/Tx",
+    "rect": [
+      176.102,
+      664.523,
+      377.759,
+      679.399
+    ],
+    "tooltip": "Street or mailing address:"
+  },
+  {
+    "page": 0,
+    "name": "FillText21[0]",
+    "fullName": "FillText21[0]",
+    "type": "/Tx",
+    "rect": [
+      85.415,
+      647.898,
+      215.25,
+      662.003
+    ],
+    "tooltip": "City:"
+  },
+  {
+    "page": 0,
+    "name": "FillText20[0]",
+    "fullName": "FillText20[0]",
+    "type": "/Tx",
+    "rect": [
+      249.201,
+      647.901,
+      290.386,
+      662.003
+    ],
+    "tooltip": "State:"
+  },
+  {
+    "page": 0,
+    "name": "FillText22[0]",
+    "fullName": "FillText22[0]",
+    "type": "/Tx",
+    "rect": [
+      314.001,
+      647.898,
+      380.395,
+      662.003
+    ],
+    "tooltip": "Zip:"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox15[0]",
+    "fullName": "CheckBox15[0]",
+    "type": "/Btn",
+    "rect": [
+      61.2,
+      487.575,
+      70.2,
+      496.575
+    ],
+    "tooltip": " The court made a previous fee waiver order in this case on (date):"
+  },
+  {
+    "page": 0,
+    "name": "FillText17[0]",
+    "fullName": "FillText17[0]",
+    "type": "/Tx",
+    "rect": [
+      78.644,
+      473.321,
+      381.305,
+      485.935
+    ],
+    "tooltip": "FillText17"
+  },
+  {
+    "page": 0,
+    "name": "CourtInfo_ft[0]",
+    "fullName": "CourtInfo_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      399.617,
+      521.796,
+      573.857,
+      589.116
+    ],
+    "tooltip": "Superior Court of California, County of"
+  },
+  {
+    "page": 0,
+    "name": "CaseNumber_ft[0]",
+    "fullName": "CaseNumber_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      399.617,
+      483.48,
+      573.857,
+      496.949
+    ],
+    "tooltip": "Case Number:"
+  },
+  {
+    "page": 0,
+    "name": "CaseName_ft[0]",
+    "fullName": "CaseName_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      399.617,
+      453.342,
+      573.857,
+      467.39
+    ],
+    "tooltip": "Case Name:"
+  },
+  {
+    "page": 0,
+    "name": "Waiver_rb[1]",
+    "fullName": "Waiver_rb[1]",
+    "type": "/Btn",
+    "rect": [
+      187.523,
+      345.591,
+      197.523,
+      355.591
+    ],
+    "tooltip": "Request to Waive Court Fees"
+  },
+  {
+    "page": 0,
+    "name": "Additional_rb[1]",
+    "fullName": "Additional_rb[1]",
+    "type": "/Btn",
+    "rect": [
+      360.729,
+      346.461,
+      370.729,
+      356.461
+    ],
+    "tooltip": "Request to Waive Additional Court Fees"
+  },
+  {
+    "page": 0,
+    "name": "TextField2[0]",
+    "fullName": "TextField2[0]",
+    "type": "/Tx",
+    "rect": [
+      217.741,
+      77.494,
+      571.925,
+      88.628
+    ],
+    "tooltip": "    (specify):"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox61[0]",
+    "fullName": "CheckBox61[0]",
+    "type": "/Btn",
+    "rect": [
+      112.482,
+      78.561,
+      121.482,
+      87.561
+    ],
+    "tooltip": "   Other"
+  },
+  {
+    "page": 0,
+    "name": "FillText13[0]",
+    "fullName": "FillText13[0]",
+    "type": "/Tx",
+    "rect": [
+      61.2,
+      522.657,
+      377.606,
+      611.169
+    ],
+    "tooltip": "Lawyer, if person in 1 has one (name, firm name, address, phone number, e-mail, and State Bar number):"
+  },
+  {
+    "page": 1,
+    "name": "MoreInfo_ft[0]",
+    "fullName": "MoreInfo_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      112.056,
+      236.06,
+      576.864,
+      307.006
+    ],
+    "tooltip": "The court needs more information to decide whether to grant your request. You must go to court on the date on page 3. The hearing will be about the questions regarding your eligibility that are stated"
+  },
+  {
+    "page": 1,
+    "name": "GrantDeny_cb[0]",
+    "fullName": "GrantDeny_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      75.535,
+      706.066,
+      84.535,
+      715.066
+    ],
+    "tooltip": "The court denies your fee waiver request because:"
+  },
+  {
+    "page": 1,
+    "name": "FillText63[0]",
+    "fullName": "FillText63[0]",
+    "type": "/Tx",
+    "rect": [
+      132.474,
+      542.88,
+      574.395,
+      602.473
+    ],
+    "tooltip": "File a new revised request that includes the incomplete items listed"
+  },
+  {
+    "page": 1,
+    "name": "NotEligible_rb[0]",
+    "fullName": "NotEligible_rb[0]",
+    "type": "/Btn",
+    "rect": [
+      565.918,
+      660.096,
+      575.918,
+      670.096
+    ],
+    "tooltip": "Your request is incomplete. You have 10 days after the clerk gives notice of this Order (see date of service on next page) to:"
+  },
+  {
+    "page": 1,
+    "name": "Incomplete_rb[0]",
+    "fullName": "Incomplete_rb[0]",
+    "type": "/Btn",
+    "rect": [
+      92.974,
+      526.615,
+      101.974,
+      535.615
+    ],
+    "tooltip": "The information you provided on the request shows that you are not eligible for the fee waiver you requested for the reasons stated: "
+  },
+  {
+    "page": 1,
+    "name": "PersonWaivingName_ft[0]",
+    "fullName": "PersonWaivingName_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      100.894,
+      729.0,
+      389.991,
+      744.769
+    ],
+    "tooltip": "Your name:"
+  },
+  {
+    "page": 1,
+    "name": "CaseNumber_ft[0]",
+    "fullName": "CaseNumber_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      401.76,
+      729.0,
+      576.0,
+      745.002
+    ],
+    "tooltip": "Case Number:"
+  },
+  {
+    "page": 1,
+    "name": "Hearing_cb[0]",
+    "fullName": "Hearing_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      92.974,
+      337.065,
+      101.974,
+      346.065
+    ],
+    "tooltip": "The court needs more information to decide whether to grant your request. You must go to court on the date on page 3. The hearing will be about the questions regarding your eligibility that are stated:"
+  },
+  {
+    "page": 1,
+    "name": "Bring_cb[0]",
+    "fullName": "Bring_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      92.974,
+      212.576,
+      101.974,
+      221.576
+    ],
+    "tooltip": " Bring the items of proof to support your request, if reasonably available, that are listed:"
+  },
+  {
+    "page": 1,
+    "name": "FillText13[0]",
+    "fullName": "FillText13[0]",
+    "type": "/Tx",
+    "rect": [
+      111.271,
+      435.943,
+      574.764,
+      506.889
+    ],
+    "tooltip": "The information you provided on the request shows that you are not eligible for the fee waiver you requested for the reasons stated"
+  },
+  {
+    "page": 1,
+    "name": "Bring_ft[0]",
+    "fullName": "Bring_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      111.815,
+      85.991,
+      576.623,
+      189.215
+    ],
+    "tooltip": " Bring the items of proof to support your request, if reasonably available, that are listed"
+  },
+  {
+    "page": 2,
+    "name": "T55[0]",
+    "fullName": "T55[0]",
+    "type": "/Tx",
+    "rect": [
+      94.076,
+      539.637,
+      213.225,
+      550.638
+    ],
+    "tooltip": "Date:"
+  },
+  {
+    "page": 2,
+    "name": "HearingDate_dt[0]",
+    "fullName": "HearingDate_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      149.537,
+      677.242,
+      241.018,
+      690.202
+    ],
+    "tooltip": "Date:"
+  },
+  {
+    "page": 2,
+    "name": "HearingTime_dt[0]",
+    "fullName": "HearingTime_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      279.315,
+      677.242,
+      327.245,
+      690.202
+    ],
+    "tooltip": "Time:"
+  },
+  {
+    "page": 2,
+    "name": "HearingRm_ft[0]",
+    "fullName": "HearingRm_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      278.729,
+      660.178,
+      327.209,
+      673.138
+    ],
+    "tooltip": "Room:"
+  },
+  {
+    "page": 2,
+    "name": "HearingDept_ft[0]",
+    "fullName": "HearingDept_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      148.654,
+      660.178,
+      241.018,
+      673.138
+    ],
+    "tooltip": "Dept.:"
+  },
+  {
+    "page": 2,
+    "name": "HearingCourt_ft[0]",
+    "fullName": "HearingCourt_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      336.736,
+      641.849,
+      575.932,
+      699.204
+    ],
+    "tooltip": "Name and address of court if different from above"
+  },
+  {
+    "page": 2,
+    "name": "T81[0]",
+    "fullName": "T81[0]",
+    "type": "/Tx",
+    "rect": [
+      89.115,
+      259.866,
+      211.209,
+      270.867
+    ],
+    "tooltip": "Date:"
+  },
+  {
+    "page": 2,
+    "name": "T218[0]",
+    "fullName": "T218[0]",
+    "type": "/Btn",
+    "rect": [
+      51.386,
+      280.832,
+      60.386,
+      289.832
+    ],
+    "tooltip": "  A certificate of mailing is attached."
+  },
+  {
+    "page": 2,
+    "name": "FillText53[0]",
+    "fullName": "FillText53[0]",
+    "type": "/Tx",
+    "rect": [
+      105.268,
+      292.122,
+      269.812,
+      304.121
+    ],
+    "tooltip": "(city):"
+  },
+  {
+    "page": 2,
+    "name": "PersonWaivingName_ft[0]",
+    "fullName": "PersonWaivingName_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      101.518,
+      728.524,
+      390.615,
+      744.293
+    ],
+    "tooltip": "Your name:"
+  },
+  {
+    "page": 2,
+    "name": "CaseNumber_ft[0]",
+    "fullName": "CaseNumber_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      402.384,
+      728.524,
+      576.624,
+      744.526
+    ],
+    "tooltip": "Case Number:"
+  },
+  {
+    "page": 2,
+    "name": "ClerkName_ft[0]",
+    "fullName": "ClerkName_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      345.166,
+      220.411,
+      523.947,
+      231.412
+    ],
+    "tooltip": "Name:"
+  },
+  {
+    "page": 2,
+    "name": "Print[0]",
+    "fullName": "Print[0]",
+    "type": "/Btn",
+    "rect": [
+      258.775,
+      6.392,
+      339.775,
+      23.4
+    ],
+    "tooltip": "Print this form"
+  },
+  {
+    "page": 2,
+    "name": "Save[0]",
+    "fullName": "Save[0]",
+    "type": "/Btn",
+    "rect": [
+      345.314,
+      6.392,
+      426.419,
+      23.4
+    ],
+    "tooltip": "Save this form"
+  },
+  {
+    "page": 2,
+    "name": "Reset[0]",
+    "fullName": "Reset[0]",
+    "type": "/Btn",
+    "rect": [
+      495.003,
+      6.392,
+      576.0,
+      23.4
+    ],
+    "tooltip": "Clear this form"
+  },
+  {
+    "page": 2,
+    "name": "Warning[0]",
+    "fullName": "Warning[0]",
+    "type": "/Btn",
+    "rect": [
+      36.085,
+      6.392,
+      247.379,
+      29.571
+    ],
+    "tooltip": "For your protection and privacy, please press the Clear This Form button after you have printed the form."
+  }
+]
