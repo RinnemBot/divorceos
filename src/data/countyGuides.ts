@@ -29,7 +29,7 @@ export interface CountyGuide {
 }
 
 
-const DEFAULT_PACKET_FORMS = ['fl-100', 'fl-110', 'fl-105', 'fl-115', 'fl-117', 'fl-120', 'fl-140', 'fl-142', 'fl-150'];
+export const DEFAULT_PACKET_FORMS = ['fl-100', 'fl-110', 'fl-105', 'fl-115', 'fl-117', 'fl-120', 'fl-140', 'fl-142', 'fl-150', 'fw-001'];
 
 
 export function getCountyGuideIdFromName(countyName?: string | null): string | undefined {

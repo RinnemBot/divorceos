@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { CountyRoadmap } from '@/components/CountyRoadmap';
-import { COUNTY_GUIDES, type CountyGuide } from '@/data/countyGuides';
+import { COUNTY_GUIDES, DEFAULT_PACKET_FORMS, type CountyGuide } from '@/data/countyGuides';
 import { COURT_FORMS, type CourtForm } from '@/data/forms';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -27,8 +27,9 @@ export function CountyConciergePage() {
   }, [countyId]);
 
   const packetForms = useMemo(() => {
-    if (!county?.packetFormIds?.length) return [] as CourtForm[];
-    return county.packetFormIds
+    if (!county) return [] as CourtForm[];
+    const formIds = county.packetFormIds?.length ? county.packetFormIds : DEFAULT_PACKET_FORMS;
+    return formIds
       .map((formId) => COURT_FORMS.find((form) => form.id === formId))
       .filter((form): form is CourtForm => Boolean(form));
   }, [county]);
