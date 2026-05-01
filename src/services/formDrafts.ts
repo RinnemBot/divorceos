@@ -2590,6 +2590,10 @@ interface ChatIntakePrefill {
   separationDate?: string;
   hasMinorChildren?: boolean;
   children: Array<{ fullName?: string; age?: string }>;
+  requestedForms: {
+    fl300: boolean;
+    fl150: boolean;
+  };
   fl150: {
     employer?: string;
     employerAddress?: string;
@@ -2859,7 +2863,15 @@ function extractChatIntakePrefill(user: User, text: string): ChatIntakePrefill {
     separationDate: extractDateByLabel(combined, ['separated', 'date\\s+of\\s+separation', 'separation\\s+date']),
     hasMinorChildren: typeof user.profile?.hasChildren === 'boolean' ? user.profile.hasChildren : children.length > 0 || hasChildrenFromText || undefined,
     children,
+    requestedForms: inferRequestedForms(combined),
     fl150: extractFl150ChatPrefill(combined),
+  };
+}
+
+function inferRequestedForms(text: string): ChatIntakePrefill['requestedForms'] {
+  return {
+    fl300: /\b(?:fl\s*-?\s*300|form\s+300|request\s+for\s+order|rfo)\b/i.test(text),
+    fl150: /\b(?:fl\s*-?\s*150|form\s+150|income\s+and\s+expense\s+declaration|i\s*&\s*e)\b/i.test(text),
   };
 }
 
@@ -2972,7 +2984,47 @@ export function hydrateDraftWorkspaceFromSupportScenario(workspace: DraftFormsWo
   };
 }
 
-function applyChatPrefillToFl150(section: DraftFl150Section, prefill: ChatIntakePrefill['fl150']): DraftFl150Section {
+function applyChatPrefillToFl300(section: DraftFl300Section, requested: boolean, intakeText: string): DraftFl300Section {
+  if (!requested) return section;
+
+  const childCustody = /\b(?:custody|legal custody|physical custody)\b/i.test(intakeText);
+  const visitation = /\b(?:visitation|parenting time|timeshare|time share)\b/i.test(intakeText);
+  const childSupport = /\bchild support\b/i.test(intakeText);
+  const spousalSupport = /\b(?:spousal support|alimony)\b/i.test(intakeText);
+  const attorneyFeesCosts = /\b(?:attorney'?s? fees?|lawyer fees?|costs?|fee waiver|fees)\b/i.test(intakeText);
+  const propertyControl = /\b(?:property control|exclusive use|move[-\s]?out|control of property|debt payment)\b/i.test(intakeText);
+  const changeModify = /\b(?:change|modify|modification|existing order|current order)\b/i.test(intakeText);
+  const temporaryEmergencyOrders = /\b(?:temporary emergency|emergency order|ex parte|shorter service)\b/i.test(intakeText);
+  const other = !childCustody && !visitation && !childSupport && !spousalSupport && !attorneyFeesCosts && !propertyControl;
+  const facts = intakeText.trim()
+    ? truncateIntakeText(intakeText, 1800)
+    : section.facts.value;
+
+  return {
+    ...section,
+    includeForm: createChatField(true),
+    requestTypes: {
+      ...section.requestTypes,
+      childCustody: childCustody ? createChatField(true) : section.requestTypes.childCustody,
+      visitation: visitation ? createChatField(true) : section.requestTypes.visitation,
+      childSupport: childSupport ? createChatField(true) : section.requestTypes.childSupport,
+      spousalSupport: spousalSupport ? createChatField(true) : section.requestTypes.spousalSupport,
+      propertyControl: propertyControl ? createChatField(true) : section.requestTypes.propertyControl,
+      attorneyFeesCosts: attorneyFeesCosts ? createChatField(true) : section.requestTypes.attorneyFeesCosts,
+      other: other ? createChatField(true) : section.requestTypes.other,
+      changeModify: changeModify ? createChatField(true) : section.requestTypes.changeModify,
+      temporaryEmergencyOrders: temporaryEmergencyOrders ? createChatField(true) : section.requestTypes.temporaryEmergencyOrders,
+    },
+    requestedAgainst: {
+      ...section.requestedAgainst,
+      respondent: createChatField(true),
+    },
+    otherOrdersRequested: other ? createChatField('See supporting facts from Maria intake; convert into specific requested orders before filing.') : section.otherOrdersRequested,
+    facts: facts ? createChatField(facts) : section.facts,
+  };
+}
+
+function applyChatPrefillToFl150(section: DraftFl150Section, prefill: ChatIntakePrefill['fl150'], forceInclude = false): DraftFl150Section {
   const hasFinancialPrefill = Object.values(prefill).some((value) => typeof value === 'string' ? value.trim().length > 0 : Boolean(value));
   const hasExpensePrefill = [
     prefill.rentOrMortgage,
@@ -2986,7 +3038,7 @@ function applyChatPrefillToFl150(section: DraftFl150Section, prefill: ChatIntake
 
   return {
     ...section,
-    includeForm: hasFinancialPrefill ? createChatField(false) : section.includeForm,
+    includeForm: hasFinancialPrefill || forceInclude ? createChatField(true) : section.includeForm,
     employment: {
       ...section.employment,
       employer: withChatValue(section.employment.employer, prefill.employer),
@@ -3084,7 +3136,8 @@ function applyChatPrefillToBlankWorkspaceFields(workspace: DraftFormsWorkspace):
       ? createChatField(prefill.hasMinorChildren)
       : workspace.hasMinorChildren,
     children: nextChildren,
-    fl150: applyChatPrefillToFl150(workspace.fl150, prefill.fl150),
+    fl300: applyChatPrefillToFl300(workspace.fl300, prefill.requestedForms.fl300, intakeText),
+    fl150: applyChatPrefillToFl150(workspace.fl150, prefill.fl150, prefill.requestedForms.fl150),
   };
 }
 
@@ -3304,8 +3357,8 @@ export function createStarterPacketWorkspace(options: {
     }),
     children,
     fl100: createDefaultFl100Section(),
-    fl300: createDefaultFl300Section(petitionerName),
-    fl150: applyChatPrefillToFl150(createDefaultFl150Section(petitionerName), chatPrefill.fl150),
+    fl300: applyChatPrefillToFl300(createDefaultFl300Section(petitionerName), chatPrefill.requestedForms.fl300, chatContext),
+    fl150: applyChatPrefillToFl150(createDefaultFl150Section(petitionerName), chatPrefill.fl150, chatPrefill.requestedForms.fl150),
     fl105: createDefaultFl105Section(petitionerName),
     requests: inferRequests(user, chatContext, assistantMessage?.content),
   };
