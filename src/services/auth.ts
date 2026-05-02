@@ -71,6 +71,15 @@ export interface CaseReminder {
   updatedAt: string;
 }
 
+export type FilingTrackerStepId = 'generated' | 'filed' | 'served' | 'proof-filed' | 'clerk-review' | 'accepted';
+
+export interface FilingTrackerState {
+  completed: Record<FilingTrackerStepId, boolean>;
+  updatedAtByStep: Partial<Record<FilingTrackerStepId, string>>;
+  notes: string;
+  updatedAt?: string;
+}
+
 export const SUBSCRIPTION_LIMITS = {
   free: { maxChats: 3, aiResponses: true, price: 0, name: 'Free' },
   basic: { maxChats: 20, aiResponses: true, price: 20, name: 'Basic' },
@@ -89,6 +98,7 @@ interface AuthResponse {
   session?: ChatSession;
   reminders?: CaseReminder[];
   reminder?: CaseReminder;
+  filingTracker?: FilingTrackerState;
   error?: string;
   success?: boolean;
 }
@@ -214,6 +224,33 @@ class AuthService {
       messages: candidate.messages.filter(Boolean) as ChatMessage[],
       createdAt: typeof candidate.createdAt === 'string' ? candidate.createdAt : new Date().toISOString(),
       updatedAt: typeof candidate.updatedAt === 'string' ? candidate.updatedAt : new Date().toISOString(),
+    };
+  }
+
+  private createDefaultFilingTracker(): FilingTrackerState {
+    return {
+      completed: {
+        generated: false,
+        filed: false,
+        served: false,
+        'proof-filed': false,
+        'clerk-review': false,
+        accepted: false,
+      },
+      updatedAtByStep: {},
+      notes: '',
+    };
+  }
+
+  private sanitizeFilingTracker(input: unknown): FilingTrackerState {
+    const defaults = this.createDefaultFilingTracker();
+    if (!input || typeof input !== 'object') return defaults;
+    const candidate = input as Partial<FilingTrackerState>;
+    return {
+      completed: { ...defaults.completed, ...(candidate.completed ?? {}) },
+      updatedAtByStep: candidate.updatedAtByStep ?? {},
+      notes: typeof candidate.notes === 'string' ? candidate.notes : '',
+      updatedAt: typeof candidate.updatedAt === 'string' ? candidate.updatedAt : undefined,
     };
   }
 
@@ -376,6 +413,19 @@ class AuthService {
 
   async sendReminderTestEmail(reminderId: string): Promise<void> {
     await this.request<AuthResponse>('POST', { action: 'reminders-send-test', reminderId });
+  }
+
+  async getFilingTracker(): Promise<FilingTrackerState> {
+    const payload = await this.request<AuthResponse>('POST', { action: 'filing-tracker-get' });
+    return this.sanitizeFilingTracker(payload.filingTracker);
+  }
+
+  async saveFilingTracker(filingTracker: FilingTrackerState): Promise<FilingTrackerState> {
+    const payload = await this.request<AuthResponse>('POST', {
+      action: 'filing-tracker-save',
+      filingTracker,
+    });
+    return this.sanitizeFilingTracker(payload.filingTracker);
   }
 
   async register(email: string, password: string, name?: string, referralCode?: string): Promise<User> {
