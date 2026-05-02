@@ -30,6 +30,7 @@ interface NavigationProps {
 
 const navLinks = [
   { path: '/', label: 'Home' },
+  { path: '/what-do-i-need', label: 'Wizard' },
   { path: '/support-tools', label: 'Support Tools' },
   { path: '/forms', label: 'Forms' },
   { path: '/draft-forms', label: 'Draft Forms' },

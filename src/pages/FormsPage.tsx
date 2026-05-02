@@ -171,13 +171,13 @@ export function FormsPage() {
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Button asChild className="rounded-full bg-emerald-700 px-6 text-white hover:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-600">
-              <Link to="/draft-forms">
+              <Link to="/what-do-i-need">
                 <Sparkles className="mr-2 h-4 w-4" />
-                Start Draft Forms with Maria
+                Help me choose a packet
               </Link>
             </Button>
             <Button asChild variant="outline" className="rounded-full border-white/80 bg-white/70 dark:border-white/10 dark:bg-white/5">
-              <Link to="/#chat">Go to Maria chat</Link>
+              <Link to="/draft-forms">Start Draft Forms with Maria</Link>
             </Button>
           </div>
         </div>
