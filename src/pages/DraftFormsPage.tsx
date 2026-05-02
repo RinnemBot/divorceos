@@ -1156,6 +1156,7 @@ export function DraftFormsPage() {
       ...(workspace.fl300.includeForm.value ? ['FL-300'] : []),
       ...(workspace.fl150.includeForm.value ? ['FL-150'] : []),
       'FL-110',
+      'FW-001',
       'FL-105/GC-120',
       ...(shouldIncludeFl341
         ? [
@@ -1173,6 +1174,7 @@ export function DraftFormsPage() {
       ...(workspace.fl300.includeForm.value ? ['FL-300'] : []),
       ...(workspace.fl150.includeForm.value ? ['FL-150'] : []),
       'FL-110',
+      'FW-001',
       ...(shouldIncludeFl341
         ? [
           'FL-341',
@@ -1236,6 +1238,7 @@ export function DraftFormsPage() {
   const formOverview = [
     { form: 'FL-100', title: 'Petition', status: fl100Missing.length ? 'Needs review' : 'Ready', note: fl100Missing[0] ?? 'Core petition facts are ready.' },
     { form: 'FL-110', title: 'Summons', status: fl110Missing.length ? 'Needs review' : 'Ready', note: 'Uses the same caption and party information.' },
+    { form: 'FW-001', title: 'Request to Waive Court Fees', status: 'Ready', note: 'Prefills caption/contact fields and leaves financial qualification for user review.' },
     { form: 'FL-105', title: 'UCCJEA child custody declaration', status: workspace.hasMinorChildren.value ? (fl105Missing.length ? 'Needs review' : 'Ready') : 'Not selected', note: workspace.hasMinorChildren.value ? (fl105Missing[0] ?? 'Child declaration is ready.') : 'Only included when minor children are enabled.' },
     { form: 'FL-300', title: 'Request for Order', status: workspace.fl300.includeForm.value ? (fl300Missing.length ? 'Needs review' : 'Ready') : 'Optional', note: workspace.fl300.includeForm.value ? (fl300Missing[0] ?? 'Optional RFO is ready.') : 'Leave off unless filing a request for orders now.' },
     { form: 'FL-150', title: 'Income and Expense Declaration', status: workspace.fl150.includeForm.value ? (fl150Missing.length ? 'Needs review' : 'Ready') : 'Optional', note: workspace.fl150.includeForm.value ? (fl150Missing[0] ?? 'Financial declaration is ready.') : 'Recommended for support or fee requests.' },

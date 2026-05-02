@@ -415,6 +415,7 @@ const FL341B_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-341b.template.pdf');
 const FL341C_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-341c.template.pdf');
 const FL341D_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-341d.template.pdf');
 const FL341E_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-341e.template.pdf');
+const FW001_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fw-001.template.pdf');
 const FL100_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-100.fields.json');
 const FL110_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-110.fields.json');
 const FL105_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-105.fields.json');
@@ -429,6 +430,7 @@ const FL341B_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-341b.fields.json');
 const FL341C_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-341c.fields.json');
 const FL341D_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-341d.fields.json');
 const FL341E_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-341e.fields.json');
+const FW001_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fw-001.fields.json');
 const FL100_SEPARATE_PROPERTY_VISIBLE_ROWS = 5;
 const BASE_CHILD_VISIBLE_ROWS = 4;
 const GENERATED_CHILD_ATTACHMENT_ENTRIES_PER_PAGE = 6;
@@ -457,6 +459,7 @@ let templateCache: Promise<{
   fl341cBytes: Uint8Array;
   fl341dBytes: Uint8Array;
   fl341eBytes: Uint8Array;
+  fw001Bytes: Uint8Array;
   fl100Fields: TemplateField[];
   fl110Fields: TemplateField[];
   fl105Fields: TemplateField[];
@@ -471,6 +474,7 @@ let templateCache: Promise<{
   fl341cFields: TemplateField[];
   fl341dFields: TemplateField[];
   fl341eFields: TemplateField[];
+  fw001Fields: TemplateField[];
 }> | null = null;
 
 async function loadTemplates() {
@@ -490,6 +494,7 @@ async function loadTemplates() {
       fs.readFile(FL341C_TEMPLATE_PATH),
       fs.readFile(FL341D_TEMPLATE_PATH),
       fs.readFile(FL341E_TEMPLATE_PATH),
+      fs.readFile(FW001_TEMPLATE_PATH),
       fs.readFile(FL100_FIELDS_PATH, 'utf8'),
       fs.readFile(FL110_FIELDS_PATH, 'utf8'),
       fs.readFile(FL105_FIELDS_PATH, 'utf8'),
@@ -504,6 +509,7 @@ async function loadTemplates() {
       fs.readFile(FL341C_FIELDS_PATH, 'utf8'),
       fs.readFile(FL341D_FIELDS_PATH, 'utf8'),
       fs.readFile(FL341E_FIELDS_PATH, 'utf8'),
+      fs.readFile(FW001_FIELDS_PATH, 'utf8'),
     ]).then(([
       fl100Bytes,
       fl110Bytes,
@@ -519,6 +525,7 @@ async function loadTemplates() {
       fl341cBytes,
       fl341dBytes,
       fl341eBytes,
+      fw001Bytes,
       fl100FieldsRaw,
       fl110FieldsRaw,
       fl105FieldsRaw,
@@ -533,6 +540,7 @@ async function loadTemplates() {
       fl341cFieldsRaw,
       fl341dFieldsRaw,
       fl341eFieldsRaw,
+      fw001FieldsRaw,
     ]) => ({
       fl100Bytes: new Uint8Array(fl100Bytes),
       fl110Bytes: new Uint8Array(fl110Bytes),
@@ -548,6 +556,7 @@ async function loadTemplates() {
       fl341cBytes: new Uint8Array(fl341cBytes),
       fl341dBytes: new Uint8Array(fl341dBytes),
       fl341eBytes: new Uint8Array(fl341eBytes),
+      fw001Bytes: new Uint8Array(fw001Bytes),
       fl100Fields: JSON.parse(fl100FieldsRaw) as TemplateField[],
       fl110Fields: JSON.parse(fl110FieldsRaw) as TemplateField[],
       fl105Fields: JSON.parse(fl105FieldsRaw) as TemplateField[],
@@ -562,6 +571,7 @@ async function loadTemplates() {
       fl341cFields: JSON.parse(fl341cFieldsRaw) as TemplateField[],
       fl341dFields: JSON.parse(fl341dFieldsRaw) as TemplateField[],
       fl341eFields: JSON.parse(fl341eFieldsRaw) as TemplateField[],
+      fw001Fields: JSON.parse(fw001FieldsRaw) as TemplateField[],
     }));
   }
 
@@ -2597,6 +2607,53 @@ async function appendFl300RequestForOrderPages(
   return pages.length;
 }
 
+async function appendFw001FeeWaiverPages(
+  output: PDFDocument,
+  fw001Template: PDFDocument,
+  fw001FieldMap: Map<string, TemplateField[]>,
+  fontRegular: PDFFont,
+  workspace: StarterPacketWorkspace,
+  petitionerName: string,
+  respondentName: string,
+  caseNumber: string,
+  address: ReturnType<typeof parseAddress>,
+) {
+  const pages = await output.copyPages(fw001Template, fw001Template.getPageIndices());
+  pages.forEach((page) => output.addPage(page));
+
+  const filingCounty = sanitizeText(workspace.filingCounty?.value);
+  const courtLines = [
+    filingCounty ? `Superior Court of California, County of ${filingCounty}` : '',
+    sanitizeText(workspace.courtStreet?.value),
+    sanitizeText(workspace.courtMailingAddress?.value),
+    sanitizeText(workspace.courtCityZip?.value),
+    sanitizeText(workspace.courtBranch?.value),
+  ].filter(Boolean).join('\n');
+  const caseName = [petitionerName, respondentName].filter(Boolean).join(' v. ');
+  const signatureDate = formatDateForCourt(workspace.fl100?.signatureDate?.value) || formatDateForCourt(new Date().toISOString());
+
+  fillTextFields(pages, fw001FieldMap, 'CourtInfo[0]', courtLines, fontRegular, { size: 8, multiline: true });
+  fillTextFields(pages, fw001FieldMap, 'CaseNumber[0]', caseNumber, fontRegular, { size: 9 });
+  fillTextFields(pages, fw001FieldMap, 'CaseName[0]', caseName, fontRegular, { size: 9 });
+  fillTextFields(pages, fw001FieldMap, 'PetitionerName1[0]', petitionerName, fontRegular, { size: 9 });
+  fillTextFields(pages, fw001FieldMap, 'PetitionerStrAddress[0]', address.street, fontRegular, { size: 8 });
+  fillTextFields(pages, fw001FieldMap, 'PetitionerCity[0]', address.city, fontRegular, { size: 8 });
+  fillTextFields(pages, fw001FieldMap, 'PetitionerState[0]', address.state, fontRegular, { size: 8 });
+  fillTextFields(pages, fw001FieldMap, 'PetitionerZip[0]', address.zip, fontRegular, { size: 8 });
+  fillTextFields(pages, fw001FieldMap, 'PetitionerTel[0]', sanitizeText(workspace.petitionerPhone?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fw001FieldMap, 'PetitionerName[0]', petitionerName, fontRegular, { size: 9 });
+  fillTextFields(pages, fw001FieldMap, 'SigDate[0]', signatureDate, fontRegular, { size: 9 });
+
+  // Safe defaults for a family-law starter packet: request Superior Court fee waiver
+  // and ask to waive all court fees/costs. The financial qualification section stays
+  // blank for the user to complete/review before filing.
+  fillCheckbox(pages, fw001FieldMap, 'PetLawyerAdvanceFeesY[1]', true);
+  fillCheckbox(pages, fw001FieldMap, 'WaiveSuperiorCrtFee[0]', true);
+  fillCheckbox(pages, fw001FieldMap, 'FeeRequestDef[0]', true);
+
+  return pages.length;
+}
+
 export async function generateOfficialStarterPacketPdf(workspace: StarterPacketWorkspace): Promise<Uint8Array> {
   const {
     fl100Bytes,
@@ -2613,6 +2670,7 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
     fl341cBytes,
     fl341dBytes,
     fl341eBytes,
+    fw001Bytes,
     fl100Fields,
     fl110Fields,
     fl105Fields,
@@ -2627,6 +2685,7 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
     fl341cFields,
     fl341dFields,
     fl341eFields,
+    fw001Fields,
   } = await loadTemplates();
   const output = await PDFDocument.create();
   const fontRegular = await output.embedFont(StandardFonts.Helvetica);
@@ -2646,6 +2705,7 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
   const fl341cTemplate = await PDFDocument.load(fl341cBytes, { ignoreEncryption: true });
   const fl341dTemplate = await PDFDocument.load(fl341dBytes, { ignoreEncryption: true });
   const fl341eTemplate = await PDFDocument.load(fl341eBytes, { ignoreEncryption: true });
+  const fw001Template = await PDFDocument.load(fw001Bytes, { ignoreEncryption: true });
   const fl100Pages = await output.copyPages(fl100Template, fl100Template.getPageIndices());
   fl100Pages.forEach((page) => output.addPage(page));
   const fl110Pages = await output.copyPages(fl110Template, fl110Template.getPageIndices());
@@ -2665,6 +2725,7 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
   const fl341cFieldMap = mapFields(fl341cFields);
   const fl341dFieldMap = mapFields(fl341dFields);
   const fl341eFieldMap = mapFields(fl341eFields);
+  const fw001FieldMap = mapFields(fw001Fields);
 
   const petitionerName = sanitizeText(workspace.petitionerName?.value);
   const respondentName = sanitizeText(workspace.respondentName?.value);
@@ -3769,6 +3830,18 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
       .join('\n'),
     fontRegular,
     { size: 9, multiline: true },
+  );
+
+  await appendFw001FeeWaiverPages(
+    output,
+    fw001Template,
+    fw001FieldMap,
+    fontRegular,
+    workspace,
+    petitionerName,
+    respondentName,
+    caseNumber,
+    address,
   );
 
   if (hasMinorChildren) {
