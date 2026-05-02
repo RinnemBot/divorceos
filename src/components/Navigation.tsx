@@ -18,6 +18,8 @@ import {
   Settings,
   ChevronDown,
   LayoutDashboard,
+  BarChart3,
+  ReceiptText,
 } from 'lucide-react';
 import { authService, type User, SUBSCRIPTION_LIMITS } from '@/services/auth';
 import { ThemeToggle } from '@/components/ThemeToggle';
@@ -148,6 +150,22 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
                       Dashboard
                     </Link>
                   </DropdownMenuItem>
+                  {authService.isConciergeStaff(currentUser) && (
+                    <>
+                      <DropdownMenuItem asChild>
+                        <Link to="/analytics" className="cursor-pointer">
+                          <BarChart3 className="h-4 w-4 mr-2" />
+                          Analytics
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link to="/bookkeeping" className="cursor-pointer">
+                          <ReceiptText className="h-4 w-4 mr-2" />
+                          Bookkeeping
+                        </Link>
+                      </DropdownMenuItem>
+                    </>
+                  )}
                   <DropdownMenuItem asChild>
                     <Link to="/profile" className="cursor-pointer">
                       <Settings className="h-4 w-4 mr-2" />

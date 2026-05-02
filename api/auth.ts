@@ -2,6 +2,16 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { enforceBrowserOrigin, enforceRateLimit } from './_security.js';
 import { AGENTMAIL_INBOX_ID, sendAgentMail } from './_agentmail.js';
 import {
+  handleDeleteManualBookkeepingEntry,
+  handleCreateManualBookkeepingEntry,
+  handleListBookkeeping,
+  handleUpdateManualBookkeepingEntry,
+} from './_bookkeeping.js';
+import {
+  handleAnalyticsRead,
+  handleAnalyticsWrite,
+} from './_analytics.js';
+import {
   buildNewUserRecord,
   createEmailVerificationToken,
   createSessionForUser,
@@ -776,6 +786,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       if (action === 'reminders-delete') return handleDeleteReminder(req, res, body);
       if (action === 'reminders-send-test') return handleSendReminderTestEmail(req, res, body);
       if (action === 'reminders-dispatch-due') return handleDispatchDueReminders(req, res, body);
+      if (action === 'bookkeeping-list') return handleListBookkeeping(req, res);
+      if (action === 'bookkeeping-create') return handleCreateManualBookkeepingEntry(req, res);
+      if (action === 'bookkeeping-update') return handleUpdateManualBookkeepingEntry(req, res);
+      if (action === 'bookkeeping-delete') return handleDeleteManualBookkeepingEntry(req, res);
+      if (action === 'analytics-write') return handleAnalyticsWrite(req, res);
+      if (action === 'analytics-read') return handleAnalyticsRead(req, res);
       if (action === 'filing-tracker-get') return handleGetFilingTracker(req, res);
       if (action === 'filing-tracker-save') return handleSaveFilingTracker(req, res, body);
     }

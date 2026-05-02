@@ -4,6 +4,7 @@ import { Navigation } from '@/components/Navigation';
 import { Footer } from '@/components/Footer';
 import { ScrollToTop } from '@/components/ScrollToTop';
 import { AuthModal } from '@/components/AuthModal';
+import { AnalyticsTracker } from '@/components/AnalyticsTracker';
 import { authService, type User } from '@/services/auth';
 import { Toaster } from '@/components/ui/sonner';
 
@@ -15,6 +16,8 @@ const SupportToolsPage = lazy(() => import('@/pages/SupportToolsPage').then((m) 
 const ProfilePage = lazy(() => import('@/pages/ProfilePage').then((m) => ({ default: m.ProfilePage })));
 const ConfirmEmailPage = lazy(() => import('@/pages/ConfirmEmailPage').then((m) => ({ default: m.ConfirmEmailPage })));
 const DashboardPage = lazy(() => import('@/pages/DashboardPage').then((m) => ({ default: m.DashboardPage })));
+const BookkeepingPage = lazy(() => import('@/pages/BookkeepingPage').then((m) => ({ default: m.BookkeepingPage })));
+const AnalyticsPage = lazy(() => import('@/pages/AnalyticsPage').then((m) => ({ default: m.AnalyticsPage })));
 const CountyConciergePage = lazy(() => import('@/pages/CountyConciergePage').then((m) => ({ default: m.CountyConciergePage })));
 const EfileAssistantPage = lazy(() => import('@/pages/EfileAssistantPage').then((m) => ({ default: m.EfileAssistantPage })));
 const DraftFormsPage = lazy(() => import('@/pages/DraftFormsPage').then((m) => ({ default: m.DraftFormsPage })));
@@ -80,6 +83,7 @@ function App() {
 
   return (
     <Router>
+      <AnalyticsTracker />
       <ScrollToTop />
       <div className="min-h-screen flex flex-col bg-background text-foreground transition-colors">
         <Navigation 
@@ -99,6 +103,8 @@ function App() {
               <Route path="/concierge/:countyId" element={<CountyConciergePage />} />
               <Route path="/efile-assistant" element={<EfileAssistantPage />} />
               <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/bookkeeping" element={<BookkeepingPage />} />
+              <Route path="/analytics" element={<AnalyticsPage />} />
               <Route path="/draft-forms" element={<DraftFormsPage />} />
               <Route path="/draft-forms/:workspaceId" element={<DraftFormsPage />} />
               <Route path="/profile" element={<ProfilePage />} />
