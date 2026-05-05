@@ -11,7 +11,6 @@ import { Toaster } from '@/components/ui/sonner';
 const HomePage = lazy(() => import('@/pages/HomePage').then((m) => ({ default: m.HomePage })));
 const PricingPage = lazy(() => import('@/pages/PricingPage').then((m) => ({ default: m.PricingPage })));
 const FormsPage = lazy(() => import('@/pages/FormsPage').then((m) => ({ default: m.FormsPage })));
-const PacketWizardPage = lazy(() => import('@/pages/PacketWizardPage').then((m) => ({ default: m.PacketWizardPage })));
 const SupportToolsPage = lazy(() => import('@/pages/SupportToolsPage').then((m) => ({ default: m.SupportToolsPage })));
 const ProfilePage = lazy(() => import('@/pages/ProfilePage').then((m) => ({ default: m.ProfilePage })));
 const ConfirmEmailPage = lazy(() => import('@/pages/ConfirmEmailPage').then((m) => ({ default: m.ConfirmEmailPage })));
@@ -97,7 +96,7 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/pricing" element={<PricingPage />} />
               <Route path="/forms" element={<FormsPage />} />
-              <Route path="/what-do-i-need" element={<PacketWizardPage />} />
+              <Route path="/what-do-i-need" element={<Navigate to="/draft-forms" replace />} />
               <Route path="/support-tools" element={<SupportToolsPage />} />
               <Route path="/concierge" element={<CountyConciergePage />} />
               <Route path="/concierge/:countyId" element={<CountyConciergePage />} />
