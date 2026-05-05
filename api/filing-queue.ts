@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
+import { requireStaffUser } from './_auth.js';
 import { enforceBrowserOrigin, enforceSensitiveApiEnabled } from './_security.js';
 import type {
   FilingQueueItem,
@@ -12,7 +13,7 @@ import { FILING_REQUEST_STATUS_ORDER } from '../src/types/concierge.js';
 
 const TABLE_NAME = 'concierge_filing_requests';
 const SUPABASE_STORAGE_BUCKET = process.env.SUPABASE_STORAGE_BUCKET || 'divorceos-vault';
-const SIGNED_URL_TTL_SECONDS = 60 * 5;
+const SIGNED_URL_TTL_SECONDS = 60;
 const MAX_LIMIT = 200;
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
@@ -100,31 +101,19 @@ function buildSummary(rows: FilingQueueItem[]): FilingQueueSummary {
   );
 }
 
-async function attachSignedUrls(documents: FilingQueueDocument[]): Promise<FilingQueueDocument[]> {
-  if (!supabaseServerClient || !documents?.length) {
-    return documents ?? [];
-  }
+function normalizeStoragePath(value: unknown): string | null {
+  if (typeof value !== 'string') return null;
+  const trimmed = value.trim();
+  if (!trimmed || trimmed.includes('..') || trimmed.startsWith('/')) return null;
+  return trimmed;
+}
 
-  return Promise.all(
-    documents.map(async (doc) => {
-      if (!doc.storagePath || doc.downloadUrl) {
-        return doc;
-      }
-
-      try {
-        const { data, error } = await supabaseServerClient.storage
-          .from(SUPABASE_STORAGE_BUCKET)
-          .createSignedUrl(doc.storagePath, SIGNED_URL_TTL_SECONDS);
-
-        if (!error && data?.signedUrl) {
-          return { ...doc, downloadUrl: data.signedUrl };
-        }
-      } catch (error) {
-        console.error('Failed to create signed URL', error);
-      }
-      return doc;
-    })
-  );
+function findDocumentByStoragePath(row: Record<string, any>, storagePath: string) {
+  if (!Array.isArray(row.documents)) return null;
+  return row.documents.find((doc: Record<string, any>) => {
+    const candidate = normalizeStoragePath(doc?.storage_path ?? doc?.storagePath);
+    return candidate === storagePath;
+  }) ?? null;
 }
 
 async function mapRow(row: Record<string, any>): Promise<FilingQueueItem> {
@@ -138,7 +127,7 @@ async function mapRow(row: Record<string, any>): Promise<FilingQueueItem> {
       }))
     : [];
 
-  const enrichedDocuments = await attachSignedUrls(documents);
+  const safeDocuments = documents.map((doc) => ({ ...doc, downloadUrl: null }));
 
   return {
     id: row.id,
@@ -157,8 +146,8 @@ async function mapRow(row: Record<string, any>): Promise<FilingQueueItem> {
     submittedAt: row.submitted_at ?? row.created_at ?? new Date().toISOString(),
     lastActivityAt: row.last_activity_at ?? row.updated_at ?? null,
     nextDeadline: row.next_deadline ?? null,
-    documents: enrichedDocuments,
-    attachmentsCount: enrichedDocuments.length,
+    documents: safeDocuments,
+    attachmentsCount: safeDocuments.length,
     claimedBy: row.claimed_by ?? null,
     claimedByEmail: row.claimed_by_email ?? null,
     claimedAt: row.claimed_at ?? null,
@@ -218,6 +207,45 @@ async function handleGet(req: VercelRequest, res: VercelResponse) {
   const summary = buildSummary(requests);
 
   return res.status(200).json({ requests, summary });
+}
+
+async function handleDocumentUrl(req: VercelRequest, res: VercelResponse) {
+  if (!supabaseServerClient) {
+    return res.status(500).json({ error: 'Supabase environment variables are not configured' });
+  }
+
+  const requestId = (req.query.id as string | undefined)?.trim();
+  const storagePath = normalizeStoragePath(req.query.storagePath);
+
+  if (!requestId || !storagePath) {
+    return res.status(400).json({ error: 'id and storagePath are required' });
+  }
+
+  const { data: row, error: rowError } = await supabaseServerClient
+    .from(TABLE_NAME)
+    .select('id, documents')
+    .eq('id', requestId)
+    .maybeSingle<Record<string, any>>();
+
+  if (rowError) {
+    console.error('Failed to verify queue document access', rowError);
+    return res.status(500).json({ error: 'Unable to verify document access' });
+  }
+
+  if (!row || !findDocumentByStoragePath(row, storagePath)) {
+    return res.status(404).json({ error: 'Document not found' });
+  }
+
+  const { data, error } = await supabaseServerClient.storage
+    .from(SUPABASE_STORAGE_BUCKET)
+    .createSignedUrl(storagePath, SIGNED_URL_TTL_SECONDS);
+
+  if (error || !data?.signedUrl) {
+    console.error('Failed to create filing document signed URL', error);
+    return res.status(500).json({ error: 'Unable to create document link' });
+  }
+
+  return res.status(200).json({ downloadUrl: data.signedUrl, expiresIn: SIGNED_URL_TTL_SECONDS });
 }
 
 interface CreateQueuePayload {
@@ -379,7 +407,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(204).end();
   }
 
+  const staffUser = await requireStaffUser(req, res);
+  if (!staffUser) return;
+
   if (req.method === 'GET') {
+    if (req.query.action === 'document-url') {
+      return handleDocumentUrl(req, res);
+    }
     return handleGet(req, res);
   }
 

@@ -183,6 +183,34 @@ const filteredRequests = useMemo(() => {
     }
   };
 
+  const handleDocumentOpen = async (request: FilingQueueItem, doc: NonNullable<FilingQueueItem['documents']>[number]) => {
+    if (!doc.storagePath) {
+      toast.error('Document storage path is missing');
+      return;
+    }
+
+    try {
+      const params = new URLSearchParams({
+        action: 'document-url',
+        id: request.id,
+        storagePath: doc.storagePath,
+      });
+      const response = await fetch(`/api/filing-queue?${params.toString()}`);
+      if (!response.ok) {
+        const message = await response.text();
+        throw new Error(message || 'Unable to open document');
+      }
+      const payload = await response.json();
+      if (typeof payload.downloadUrl !== 'string') {
+        throw new Error('Document link was not returned');
+      }
+      window.open(payload.downloadUrl, '_blank', 'noopener,noreferrer');
+    } catch (err) {
+      console.error('Failed to open queue document', err);
+      toast.error(err instanceof Error ? err.message : 'Unable to open document');
+    }
+  };
+
   const handleClaimToggle = async (request: FilingQueueItem) => {
     const isClaiming = !request.claimedBy;
     setUpdatingId(request.id);
@@ -365,16 +393,16 @@ const filteredRequests = useMemo(() => {
                         {request.documents?.length ? (
                           <div className="flex flex-wrap gap-2 mt-2">
                             {request.documents.map((doc) => (
-                              <a
+                              <button
                                 key={`${request.id}-${doc.name}-${doc.storagePath}`}
-                                href={doc.downloadUrl ?? undefined}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center text-xs text-emerald-700 hover:underline"
+                                type="button"
+                                onClick={() => handleDocumentOpen(request, doc)}
+                                className="inline-flex items-center text-xs text-emerald-700 hover:underline disabled:cursor-not-allowed disabled:text-slate-400"
+                                disabled={!doc.storagePath}
                               >
                                 <FileText className="h-3 w-3 mr-1" />
                                 {doc.name}
-                              </a>
+                              </button>
                             ))}
                           </div>
                         ) : null}
