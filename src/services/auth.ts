@@ -18,6 +18,7 @@ export interface UserProfile {
   representationStatus?: string;
   primaryGoals?: string[];
   favoriteCountyIds?: string[];
+  avatarUrl?: string;
 }
 
 export interface User {

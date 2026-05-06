@@ -89,6 +89,23 @@ async function parseDocumentResponse(response: Response): Promise<VaultDocument>
   return payload.document as VaultDocument;
 }
 
+export async function listVaultDocuments(): Promise<VaultDocument[]> {
+  const response = await fetch('/api/vault-documents', {
+    credentials: 'same-origin',
+  });
+
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new MariaDocumentError(
+      typeof payload.error === 'string' ? payload.error : 'Unable to load Saved Files.',
+      response.status,
+      'VAULT_LIST_FAILED'
+    );
+  }
+
+  return Array.isArray(payload.documents) ? payload.documents as VaultDocument[] : [];
+}
+
 export async function createMariaDocument(input: CreateMariaDocumentInput): Promise<VaultDocument> {
   const response = await fetch('/api/maria-documents', {
     method: 'POST',
@@ -102,13 +119,13 @@ export async function createMariaDocument(input: CreateMariaDocumentInput): Prom
   return parseDocumentResponse(response);
 }
 
-export async function createOfficialStarterPacketDocument(workspace: DraftFormsWorkspace): Promise<VaultDocument> {
+export async function createOfficialStarterPacketDocument(workspace: DraftFormsWorkspace, options?: { manualReadinessOverride?: boolean }): Promise<VaultDocument> {
   const response = await fetch('/api/maria-documents', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ kind: 'starter_packet', workspace }),
+    body: JSON.stringify({ kind: 'starter_packet', workspace, manualReadinessOverride: options?.manualReadinessOverride === true }),
     credentials: 'same-origin',
   });
 

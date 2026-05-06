@@ -20,7 +20,6 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { 
   Send, 
   User as UserIcon, 
-  Bot, 
   CircleCheckBig,
   Mic,
   Square,
@@ -39,7 +38,7 @@ import {
 } from 'lucide-react';
 import { generateAIResponse, generateWelcomeMessage } from '@/services/api';
 import { extractChatAttachmentContext } from '@/services/chatAttachments';
-import { MariaDocumentError, createMariaDocument } from '@/services/documents';
+import { MariaDocumentError, createMariaDocument, type VaultDocument } from '@/services/documents';
 import { authService, type User, type ChatSession, type ChatMessage, type ChatAttachment } from '@/services/auth';
 import { cacheLatestDraftFormsChatHandoff, createStarterPacketWorkspace } from '@/services/formDrafts';
 import { CALIFORNIA_DIVORCE_TOPICS } from '@/services/personality';
@@ -52,6 +51,24 @@ const MAX_TTS_CHARS = 900;
 const SILENT_AUDIO_DATA_URI = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABAAZGF0YQAAAAA=';
 const SAVE_PROMPT_PATTERN = /(save this|save that|make (this|that) (a )?pdf|turn (this|that) into (a )?pdf|put (this|that) in (my )?(dashboard|saved files)|save (it|this|that) to (my )?(dashboard|saved files)|export (this|that)|save as a pdf|save (this|that) as pdf|pdf-ready|pdf ready|save .* to (my )?saved files|make me a pdf|create .*pdf)/i;
 const DRAFT_REQUEST_PATTERN = /\b(draft|create|make|generate|prepare|write|finalize|polish|revise|summar(?:y|ize)|declaration|findings|packet|based on)\b/i;
+
+function ChatUserAvatar({ user }: { user: User | null }) {
+  const avatarUrl = user?.profile?.avatarUrl;
+
+  if (avatarUrl) {
+    return (
+      <div className="h-10 w-10 flex-shrink-0 overflow-hidden rounded-2xl bg-slate-100 shadow-sm ring-2 ring-slate-100">
+        <img src={avatarUrl} alt="Your avatar" className="h-full w-full object-cover" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="w-9 h-9 rounded-2xl bg-gray-300 flex items-center justify-center flex-shrink-0 shadow-sm">
+      <UserIcon className="h-4 w-4 text-gray-600" />
+    </div>
+  );
+}
 
 interface PdfDraftSection {
   id: string;
@@ -299,6 +316,15 @@ interface ChatInterfaceProps {
   currentUser: User | null;
   prefillPrompt?: string | null;
   onPrefillConsumed?: () => void;
+  activeCaseFolder?: ChatCaseFolderContext | null;
+  folderSessionIds?: string[];
+  onFolderSessionSaved?: (sessionId: string) => void;
+}
+
+export interface ChatCaseFolderContext {
+  id: string;
+  name: string;
+  documents: VaultDocument[];
 }
 
 type BrowserSpeechRecognition = {
@@ -312,7 +338,7 @@ type BrowserSpeechRecognition = {
   stop: () => void;
 };
 
-export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }: ChatInterfaceProps) {
+export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed, activeCaseFolder, folderSessionIds = [], onFolderSessionSaved }: ChatInterfaceProps) {
   const navigate = useNavigate();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
@@ -351,9 +377,14 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
   const speechCacheRef = useRef<Map<string, string>>(new Map());
   const speechPrefetchRef = useRef<Set<string>>(new Set());
   const audioContextRef = useRef<AudioContext | null>(null);
+  const folderContextCacheRef = useRef<Map<string, string>>(new Map());
+  const [folderContextStatus, setFolderContextStatus] = useState<string | null>(null);
   const maxAttachments = 4;
 
   const speechRecognitionSupported = typeof window !== 'undefined' && Boolean((window as any).SpeechRecognition || (window as any).webkitSpeechRecognition);
+  const visibleSessions = activeCaseFolder
+    ? sessions.filter((session) => folderSessionIds.includes(session.id))
+    : sessions;
 
   const clearFallbackAudio = () => {
     setFallbackAudio((current) => {
@@ -659,6 +690,73 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
     fileInputRef.current.click();
   };
 
+  const buildActiveCaseFolderContext = async () => {
+    if (!activeCaseFolder || activeCaseFolder.documents.length === 0) return '';
+
+    const docsWithUrls = activeCaseFolder.documents.filter((doc) => doc.downloadUrl);
+    const docsToRead = docsWithUrls;
+    const cacheKey = [
+      activeCaseFolder.id,
+      ...docsToRead.map((doc) => `${doc.id}:${doc.uploadedAt}:${doc.size}`),
+    ].join('|');
+
+    const cached = folderContextCacheRef.current.get(cacheKey);
+    if (cached) return cached;
+
+    if (docsToRead.length === 0) {
+      return [
+        `Active case folder: ${activeCaseFolder.name}.`,
+        'Folder documents are selected, but Maria could not read them because secure download links were unavailable. Use the document names as a weak signal only.',
+        ...activeCaseFolder.documents.map((doc) => `- ${doc.name}`),
+      ].join('\n');
+    }
+
+    setFolderContextStatus(`Reading ${docsToRead.length} folder document${docsToRead.length === 1 ? '' : 's'}…`);
+
+    try {
+      const contextBlocks: string[] = [];
+      for (let index = 0; index < docsToRead.length; index += maxAttachments) {
+        const chunk = docsToRead.slice(index, index + maxAttachments);
+        setFolderContextStatus(`Reading folder documents ${index + 1}-${Math.min(index + maxAttachments, docsToRead.length)} of ${docsToRead.length}…`);
+        const files = await Promise.all(
+          chunk.map(async (doc) => {
+            const response = await fetch(doc.downloadUrl as string);
+            if (!response.ok) {
+              throw new Error(`Unable to read ${doc.name}`);
+            }
+            const blob = await response.blob();
+            return new File([blob], doc.name, { type: blob.type || 'application/pdf' });
+          })
+        );
+        const extraction = await extractChatAttachmentContext(files);
+        if (extraction.context) {
+          contextBlocks.push(extraction.context);
+        }
+      }
+
+      const context = [
+        `Active case folder: ${activeCaseFolder.name}. Treat the following as saved case-file context that should travel with this chat. Use it together with general California divorce knowledge.`,
+        `Folder documents selected (${activeCaseFolder.documents.length}): ${activeCaseFolder.documents.map((doc) => doc.name).join(', ')}.`,
+        contextBlocks.join('\n\n---\n\n'),
+      ].filter(Boolean).join('\n\n');
+
+      folderContextCacheRef.current.set(cacheKey, context);
+      return context;
+    } catch (error) {
+      console.error('Case folder document extraction failed', error);
+      toast.error('Maria could not read the folder documents yet.', {
+        description: error instanceof Error ? error.message : 'Try again or attach the document directly.',
+      });
+      return [
+        `Active case folder: ${activeCaseFolder.name}.`,
+        'Maria could not extract the folder documents for this request. Do not pretend to know their contents; ask the user to attach the specific file if needed.',
+        ...activeCaseFolder.documents.map((doc) => `- ${doc.name}`),
+      ].join('\n');
+    } finally {
+      setFolderContextStatus(null);
+    }
+  };
+
   // Load chat sessions when user changes
   useEffect(() => {
     let cancelled = false;
@@ -670,15 +768,19 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
 
         setSessions(userSessions);
 
-        if (userSessions.length > 0 && !currentSessionId) {
-          const nextSession = userSessions[0];
+        const relevantSessions = activeCaseFolder
+          ? userSessions.filter((session) => folderSessionIds.includes(session.id))
+          : userSessions;
+
+        if (relevantSessions.length > 0 && !currentSessionId) {
+          const nextSession = relevantSessions[0];
           stopSpeaking();
           setAutoVoiceReplies(false);
           setMessages(nextSession.messages);
           setCurrentSessionId(nextSession.id);
           shouldAutoScrollRef.current = false;
           scrollContainerRef.current?.scrollTo({ top: 0 });
-        } else if (userSessions.length === 0) {
+        } else if (relevantSessions.length === 0) {
           startNewChat();
         }
         return;
@@ -695,7 +797,21 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
     return () => {
       cancelled = true;
     };
-  }, [currentUser]);
+  }, [currentUser, activeCaseFolder?.id]);
+
+  useEffect(() => {
+    if (!activeCaseFolder) return;
+    if (!currentSessionId) return;
+    if (folderSessionIds.includes(currentSessionId)) return;
+
+    const nextSession = sessions.find((session) => folderSessionIds.includes(session.id));
+    if (nextSession) {
+      loadSession(nextSession.id);
+      return;
+    }
+
+    startNewChat();
+  }, [activeCaseFolder?.id, folderSessionIds.join('|')]);
 
   const isNearBottom = () => {
     const container = scrollContainerRef.current;
@@ -769,6 +885,9 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
     };
 
     const savedSession = await authService.saveChatSession(session);
+    if (activeCaseFolder) {
+      onFolderSessionSaved?.(savedSession.id);
+    }
     cacheLatestDraftFormsChatHandoff(currentUser.id, savedSession.messages, savedSession.id);
     setCurrentSessionId(savedSession.id);
 
@@ -790,7 +909,14 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
 
       if (currentSessionId === sessionId) {
         if (updatedSessions.length > 0) {
-          loadSession(updatedSessions[0].id);
+          const nextSession = activeCaseFolder
+            ? updatedSessions.find((entry) => folderSessionIds.includes(entry.id))
+            : updatedSessions[0];
+          if (nextSession) {
+            loadSession(nextSession.id);
+          } else {
+            startNewChat();
+          }
         } else {
           startNewChat();
         }
@@ -1125,6 +1251,14 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
         }
       }
 
+      const folderContext = await buildActiveCaseFolderContext();
+      if (folderContext) {
+        aiUserMessage = [
+          aiUserMessage || baseContent || 'Please use my case folder documents for context.',
+          `[Active case folder context]\n${folderContext}`,
+        ].join('\n\n');
+      }
+
       const aiResponse = await generateAIResponse(aiUserMessage, conversationHistory, userName, plan);
       
       const requestedPdfSave = SAVE_PROMPT_PATTERN.test(userMessage.content);
@@ -1340,10 +1474,15 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
             <div className="flex flex-wrap items-center gap-2 mb-2">
               <Badge variant="secondary" className="bg-white/15 text-white border-0">California divorce info</Badge>
               <Badge variant="secondary" className="bg-white/15 text-white border-0">Practical next steps</Badge>
+              {activeCaseFolder && activeCaseFolder.documents.length > 0 && (
+                <Badge variant="secondary" className="bg-white/20 text-white border-0">
+                  Folder: {activeCaseFolder.name} • {activeCaseFolder.documents.length} doc{activeCaseFolder.documents.length === 1 ? '' : 's'}
+                </Badge>
+              )}
             </div>
             <CardTitle className="flex items-center gap-3 text-lg font-semibold">
-              <span className="w-9 h-9 rounded-2xl bg-white/15 flex items-center justify-center shadow-sm">
-                <Bot className="h-5 w-5" />
+              <span className="w-10 h-10 overflow-hidden rounded-2xl bg-white/15 ring-2 ring-white/30 shadow-sm">
+                <img src="/maria-chat-avatar.png" alt="Maria" className="h-full w-full object-cover" />
               </span>
               Chat with Maria
             </CardTitle>
@@ -1387,7 +1526,7 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
                   className="text-white hover:bg-white/20"
                 >
                   <Plus className="h-4 w-4 mr-1" />
-                  New Chat
+                  {activeCaseFolder ? 'New Folder Chat' : 'New Chat'}
                 </Button>
               </>
             )}
@@ -1400,11 +1539,11 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
       {showHistory && currentUser && (
         <div className="border-b bg-gray-50 p-3 max-h-40 overflow-y-auto">
           <h4 className="text-xs font-semibold text-gray-500 uppercase mb-2">Previous Conversations</h4>
-          {sessions.length === 0 ? (
-            <p className="text-sm text-gray-400">No previous conversations</p>
+          {visibleSessions.length === 0 ? (
+            <p className="text-sm text-gray-400">{activeCaseFolder ? 'No chats in this folder yet' : 'No previous conversations'}</p>
           ) : (
             <div className="space-y-1">
-              {sessions.map(session => (
+              {visibleSessions.map(session => (
                 <div
                   key={session.id}
                   onClick={() => loadSession(session.id)}
@@ -1446,8 +1585,8 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
       >
         {messages.length === 0 ? (
           <div className="text-center py-10">
-            <div className="w-14 h-14 rounded-3xl bg-emerald-100 text-emerald-700 mx-auto mb-4 flex items-center justify-center shadow-sm">
-              <Bot className="h-7 w-7" />
+            <div className="mx-auto mb-4 h-20 w-20 overflow-hidden rounded-3xl bg-emerald-100 shadow-md ring-4 ring-white">
+              <img src="/maria-chat-avatar.png" alt="Maria" className="h-full w-full object-cover" />
             </div>
             <h3 className="text-lg font-semibold text-gray-700 mb-2">
               Maria
@@ -1477,8 +1616,8 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
               className={`flex gap-3 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               {message.role === 'assistant' && (
-                <div className="w-9 h-9 rounded-2xl bg-emerald-600 flex items-center justify-center flex-shrink-0 shadow-sm">
-                  <Bot className="h-4 w-4 text-white" />
+                <div className="h-10 w-10 flex-shrink-0 overflow-hidden rounded-2xl bg-emerald-100 shadow-sm ring-2 ring-emerald-100">
+                  <img src="/maria-chat-avatar.png" alt="Maria" className="h-full w-full object-cover" />
                 </div>
               )}
               <div
@@ -1588,18 +1727,14 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
                   </button>
                 </div>
               </div>
-              {message.role === 'user' && (
-                <div className="w-9 h-9 rounded-2xl bg-gray-300 flex items-center justify-center flex-shrink-0 shadow-sm">
-                  <UserIcon className="h-4 w-4 text-gray-600" />
-                </div>
-              )}
+              {message.role === 'user' && <ChatUserAvatar user={currentUser} />}
             </div>
           ))
         )}
         {isLoading && (
           <div className="flex gap-3 justify-start">
-            <div className="w-9 h-9 rounded-2xl bg-emerald-600 flex items-center justify-center flex-shrink-0 shadow-sm">
-              <Bot className="h-4 w-4 text-white" />
+            <div className="h-10 w-10 flex-shrink-0 overflow-hidden rounded-2xl bg-emerald-100 shadow-sm ring-2 ring-emerald-100">
+              <img src="/maria-chat-avatar.png" alt="Maria" className="h-full w-full object-cover" />
             </div>
             <div className="bg-white border border-gray-200 rounded-2xl p-3 shadow-sm">
               <Loader2 className="h-4 w-4 animate-spin text-emerald-600" />
@@ -1624,6 +1759,13 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed }:
               <a href="/pricing" className="underline font-medium ml-1">Upgrade for unlimited chats</a>.
             </AlertDescription>
           </Alert>
+        )}
+
+        {activeCaseFolder && activeCaseFolder.documents.length > 0 && (
+          <div className="mb-3 rounded-2xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs text-emerald-800">
+            New messages in this chat include the <strong>{activeCaseFolder.name}</strong> folder context automatically ({activeCaseFolder.documents.length} saved file{activeCaseFolder.documents.length === 1 ? '' : 's'}).
+            {folderContextStatus ? <span className="ml-1 font-medium">{folderContextStatus}</span> : null}
+          </div>
         )}
 
         {attachments.length > 0 && (

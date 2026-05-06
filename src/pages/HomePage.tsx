@@ -14,9 +14,12 @@ import {
   Heart,
   Home,
   DollarSign,
-  Handshake
+  Handshake,
+  Calculator,
+  ClipboardCheck,
+  FolderCheck,
+  Wand2,
 } from 'lucide-react';
-import { ChatInterface } from '@/components/ChatInterface';
 import { AuthModal } from '@/components/AuthModal';
 import { authService, type User } from '@/services/auth';
 import { CALIFORNIA_DIVORCE_TOPICS, type DivorceTopic } from '@/services/personality';
@@ -26,22 +29,49 @@ const features = [
   {
     icon: MessageSquare,
     title: 'Start with Maria',
-    description: 'Ask Maria about custody, support, filings, property, and next-step strategy anytime.',
+    description: 'Ask Maria about custody, support, filings, property, disclosures, and next-step strategy anytime.',
   },
+  {
+    icon: Wand2,
+    title: 'Draft forms with context',
+    description: 'Turn intake details, Maria chats, and support scenarios into cleaner starter packets and draft form workspaces.',
+  },
+  {
+    icon: Calculator,
+    title: 'Support planning tools',
+    description: 'Model child and spousal support scenarios, save your numbers, and bring them back into Maria when planning.',
+  },
+  {
+    icon: FolderCheck,
+    title: 'County filing workflow',
+    description: 'Use county roadmaps, packet checklists, filing notes, and concierge support to keep the case moving.',
+  },
+];
+
+const workflowHighlights = [
   {
     icon: FileText,
-    title: 'Forms with context',
-    description: 'Move from AI guidance into California court forms and filing prep without losing the thread.',
+    label: 'Official forms library',
+    title: '50+ California Judicial Council forms',
+    body: 'Browse blank court forms, instructions, and Maria-backed guidance by divorce stage.',
   },
   {
-    icon: Scale,
-    title: 'California-only logic',
-    description: 'Built around California divorce and family law, not generic nationwide legal content.',
+    icon: Wand2,
+    label: 'Draft Forms',
+    title: 'Starter packet drafting workspace',
+    body: 'Capture residency, children, disclosures, and filing details, then generate cleaner draft packets with context intact.',
   },
   {
-    icon: Shield,
-    title: 'Private and practical',
-    description: 'Designed to help you prepare smarter before you spend money or make avoidable mistakes.',
+    icon: Calculator,
+    label: 'Support Workbench',
+    title: 'Child + spousal support scenarios',
+    body: 'Compare parenting time, income, add-ons, and county notes before turning numbers into negotiation or filing prep.',
+  },
+  {
+    icon: ClipboardCheck,
+    label: 'Concierge Ops',
+    title: 'County-specific filing checklists',
+    body: 'Track filing method, fees, local cover sheets, service rules, and packet progress across supported counties.',
   },
 ];
 
@@ -88,7 +118,6 @@ const FEATURED_REGION_LOGOS = [
 export function HomePage() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [showAuthModal, setShowAuthModal] = useState(false);
-  const [topicPrompt, setTopicPrompt] = useState<string>('');
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -115,8 +144,7 @@ export function HomePage() {
   useEffect(() => {
     const state = (location.state as { focusChat?: boolean } | null);
     if (state?.focusChat) {
-      document.getElementById('chat')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      navigate(location.pathname, { replace: true, state: {} });
+      navigate('/chats', { replace: true });
     }
   }, [location, navigate]);
 
@@ -127,13 +155,7 @@ export function HomePage() {
 
   const handleTopicSelect = (topic: DivorceTopic) => {
     const prompt = topic.prompt ?? `Tell me about ${topic.title.toLowerCase()}`;
-    setTopicPrompt(prompt);
-    if (typeof document !== 'undefined') {
-      document.getElementById('chat')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-    if (!currentUser) {
-      setShowAuthModal(true);
-    }
+    navigate('/chats', { state: { prefillPrompt: prompt } });
   };
 
   return (
@@ -178,40 +200,29 @@ export function HomePage() {
                 Meet Maria, the Divorce Agent. Get clear on your options, prepare your next steps, and move forward with confidence.
               </p>
               <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-                {currentUser ? (
-                  <a
-                    href="#chat"
-                    className="inline-flex items-center justify-center rounded-full bg-emerald-700 px-6 py-3 font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-emerald-800 dark:bg-emerald-700 dark:text-white dark:hover:bg-emerald-600"
-                  >
-                    Ask Maria
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </a>
-                ) : (
-                  <Button
-                    onClick={() => setShowAuthModal(true)}
-                    size="lg"
-                    className="rounded-full bg-emerald-700 px-6 text-white hover:bg-emerald-800 dark:bg-emerald-700 dark:text-white dark:hover:bg-emerald-600"
-                  >
-                    Ask Maria
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                )}
                 <Link
-                  to="/what-do-i-need"
-                  className="inline-flex items-center justify-center rounded-full border border-white/70 bg-white/65 px-6 py-3 font-semibold text-slate-800 shadow-sm backdrop-blur transition-all duration-200 hover:-translate-y-0.5 hover:border-cyan-200 hover:bg-white/80 dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
+                  to="/chats"
+                  className="inline-flex items-center justify-center rounded-full bg-emerald-700 px-6 py-3 font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-emerald-800 dark:bg-emerald-700 dark:text-white dark:hover:bg-emerald-600"
                 >
-                  What do I need?
+                  Ask Maria
+                  <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
                 <Link
                   to="/forms"
-                  className="inline-flex items-center justify-center rounded-full border border-transparent px-6 py-3 font-semibold text-slate-600 transition-colors hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
+                  className="inline-flex items-center justify-center rounded-full border border-white/70 bg-white/65 px-6 py-3 font-semibold text-slate-800 shadow-sm backdrop-blur transition-all duration-200 hover:-translate-y-0.5 hover:border-cyan-200 hover:bg-white/80 dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
                 >
                   Explore Forms
+                </Link>
+                <Link
+                  to="/california-divorce-chat-agent"
+                  className="inline-flex items-center justify-center rounded-full border border-transparent px-6 py-3 font-semibold text-slate-600 transition-colors hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
+                >
+                  California Divorce Chat Agent
                 </Link>
               </div>
 
               <div className="mt-8 flex flex-wrap items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
-                {['3 free chats', '50+ court forms', '24/7 Maria access'].map((item) => (
+                {['3 free chats', '50+ court forms', 'Draft form workspaces', '40+ county guides'].map((item) => (
                   <div key={item} className="inline-flex items-center gap-2 rounded-full border border-white/70 bg-white/70 px-3 py-2 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/5">
                     <CheckCircle className="h-4 w-4 text-emerald-500" />
                     <span>{item}</span>
@@ -225,8 +236,8 @@ export function HomePage() {
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(34,211,238,0.08),transparent_28%),radial-gradient(circle_at_bottom_left,rgba(16,185,129,0.06),transparent_30%)]" />
                 <div className="mb-5 flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 via-emerald-400 to-cyan-400 text-slate-950 shadow-lg">
-                      <MessageSquare className="h-5 w-5" />
+                    <div className="h-14 w-14 overflow-hidden rounded-2xl bg-emerald-100 shadow-lg ring-2 ring-white/80 dark:ring-white/20">
+                      <img src="/maria-chat-avatar.png" alt="Maria, the Divorce Agent" className="h-full w-full object-cover" />
                     </div>
                     <div>
                       <p className="text-sm font-semibold text-slate-950 dark:text-white">Maria</p>
@@ -286,6 +297,37 @@ export function HomePage() {
                   </div>
                   <h3 className="mb-2 text-lg font-semibold text-slate-950 dark:text-white">{feature.title}</h3>
                   <p className="text-sm leading-6 text-slate-600 dark:text-slate-300">{feature.description}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-12 text-center">
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-600 dark:text-emerald-300">What Divorce Agent can do now</p>
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950 dark:text-white md:text-4xl">
+              Maria is becoming the front door for the whole divorce workflow.
+            </h2>
+            <p className="mx-auto mt-4 max-w-3xl text-lg leading-8 text-slate-600 dark:text-slate-300">
+              Start with a question, then move into forms, support calculations, county filing steps, and concierge follow-through without starting over.
+            </p>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+            {workflowHighlights.map((item) => (
+              <Card key={item.title} className="group rounded-3xl border border-white/80 bg-white/72 shadow-[0_20px_60px_-35px_rgba(15,23,42,0.35)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-cyan-200 dark:border-white/10 dark:bg-white/5">
+                <CardContent className="p-6">
+                  <div className="mb-5 flex items-center justify-between gap-3">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-100 via-white to-cyan-50 text-emerald-700 shadow-sm transition-transform duration-300 group-hover:scale-105 dark:from-emerald-400/20 dark:via-white/10 dark:to-cyan-400/10 dark:text-emerald-200">
+                      <item.icon className="h-6 w-6" />
+                    </div>
+                    <Badge className="border border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-200">{item.label}</Badge>
+                  </div>
+                  <h3 className="mb-2 text-lg font-semibold text-slate-950 dark:text-white">{item.title}</h3>
+                  <p className="text-sm leading-6 text-slate-600 dark:text-slate-300">{item.body}</p>
                 </CardContent>
               </Card>
             ))}
@@ -424,48 +466,31 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* Chat Section */}
+      {/* Maria CTA Section */}
       <section id="chat" className="py-16 bg-[radial-gradient(circle_at_top,rgba(34,211,238,0.12),transparent_28%),linear-gradient(180deg,rgba(255,255,255,0.28),rgba(240,253,250,0.88))] dark:bg-[radial-gradient(circle_at_top,rgba(34,211,238,0.1),transparent_24%),linear-gradient(180deg,rgba(2,6,23,0.55),rgba(2,6,23,0.95))]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-10 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+          <div className="grid gap-8 rounded-[2rem] border border-white/80 bg-white/72 p-8 shadow-[0_28px_90px_-42px_rgba(15,23,42,0.4)] backdrop-blur-2xl dark:border-white/10 dark:bg-white/5 lg:grid-cols-[1.15fr_1fr] lg:p-10">
             <div>
               <p className="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-600 dark:text-emerald-300">Meet Maria</p>
               <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950 dark:text-white md:text-4xl">
-                Maria is the Divorce Agent.
+                Maria now lives in the full Chats workspace.
               </h2>
-              <p className="mt-3 max-w-3xl text-lg leading-8 text-slate-600 dark:text-slate-300">
-                Built for California. Designed for real-world divorce decisions. Ask about custody, support, property, filings, and what to do next.
+              <p className="mt-3 max-w-2xl text-lg leading-8 text-slate-600 dark:text-slate-300">
+                Open the dedicated workspace for saved chat history, case folders, document uploads, voice, and longer California divorce conversations.
               </p>
-            </div>
-          </div>
-
-          <div className="grid gap-8 lg:grid-cols-[minmax(0,2.2fr)_minmax(0,1fr)]">
-            <div className="min-h-full">
-              {currentUser ? (
-                <div className="rounded-[2rem] border border-white/80 bg-white/72 p-3 shadow-[0_28px_90px_-42px_rgba(15,23,42,0.4)] backdrop-blur-2xl dark:border-white/10 dark:bg-white/5">
-                  <ChatInterface
-                    currentUser={currentUser}
-                    prefillPrompt={topicPrompt}
-                    onPrefillConsumed={() => setTopicPrompt('')}
-                  />
-                </div>
-              ) : (
-                <div className="rounded-[2rem] border border-white/80 bg-white/78 p-8 text-center shadow-[0_28px_90px_-42px_rgba(15,23,42,0.4)] backdrop-blur-2xl dark:border-white/10 dark:bg-white/5">
-                  <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-400 to-emerald-600 text-slate-950 shadow-lg">
-                    <MessageSquare className="h-6 w-6" />
-                  </div>
-                  <h3 className="mb-3 text-2xl font-semibold text-slate-900 dark:text-white">Sign in to ask Maria</h3>
-                  <p className="mb-6 text-sm leading-6 text-slate-600 dark:text-slate-300">
-                    Create a free account to talk with Maria, save context, and move from AI guidance into forms and filing support.
-                  </p>
-                  <Button
-                    onClick={() => setShowAuthModal(true)}
-                    className="rounded-full bg-emerald-700 px-6 text-white hover:bg-emerald-800 dark:bg-emerald-700 dark:text-white dark:hover:bg-emerald-600"
-                  >
-                    Sign In to Continue
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Link to="/chats">
+                  <Button className="rounded-full bg-emerald-700 px-6 text-white hover:bg-emerald-800">
+                    Open Chats
+                    <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
-                </div>
-              )}
+                </Link>
+                <Link to="/dashboard">
+                  <Button variant="outline" className="rounded-full">
+                    View Saved Files
+                  </Button>
+                </Link>
+              </div>
             </div>
 
             <div className="space-y-6">

@@ -18,8 +18,8 @@ import {
   Settings,
   ChevronDown,
   LayoutDashboard,
-  BarChart3,
   ReceiptText,
+  BarChart3,
 } from 'lucide-react';
 import { authService, type User, SUBSCRIPTION_LIMITS } from '@/services/auth';
 import { ThemeToggle } from '@/components/ThemeToggle';
@@ -32,11 +32,11 @@ interface NavigationProps {
 
 const navLinks = [
   { path: '/', label: 'Home' },
-  { path: '/support-tools', label: 'Support' },
+  { path: '/support-tools', label: 'Tools' },
+  { path: '/chats', label: 'Chats' },
   { path: '/forms', label: 'Forms' },
   { path: '/draft-forms', label: 'Drafts' },
   { path: '/concierge', label: 'Concierge' },
-  { path: '/efile-assistant', label: 'E-File' },
   { path: '/pricing', label: 'Pricing' },
 ];
 
@@ -45,6 +45,24 @@ const scrollToPageTop = () => {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
   }
 };
+
+function UserAvatar({ user, className = 'w-8 h-8' }: { user: User; className?: string }) {
+  const avatarUrl = user.profile?.avatarUrl;
+
+  if (avatarUrl) {
+    return (
+      <div className={`${className} overflow-hidden rounded-full bg-emerald-100 ring-1 ring-emerald-100`}>
+        <img src={avatarUrl} alt="User avatar" className="h-full w-full object-cover" />
+      </div>
+    );
+  }
+
+  return (
+    <div className={`${className} rounded-full bg-emerald-500 flex items-center justify-center`}>
+      <UserIcon className="h-4 w-4 text-white" />
+    </div>
+  );
+}
 
 export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -61,13 +79,13 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
       document.getElementById('chat')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       return;
     }
-    navigate('/', { state: { focusChat: true } });
+    navigate('/', { state: { focusChat: true, fromAppNavigation: true } });
   };
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-emerald-100/70 bg-white/88 backdrop-blur-2xl dark:border-white/10 dark:bg-slate-950/88 transition-colors">
-      <div className="mx-auto max-w-[88rem] px-4 sm:px-6 lg:px-8">
-        <div className="flex h-[4.5rem] min-h-[4.5rem] items-center justify-between gap-5 py-2">
+    <nav className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/92 backdrop-blur-xl transition-colors dark:border-white/10 dark:bg-slate-950/90">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex h-14 items-center justify-between gap-5">
           <div className="flex min-w-0 items-center">
             <Link
               to="/"
@@ -76,23 +94,18 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
                   scrollToPageTop();
                 }
               }}
-              className="flex min-w-0 items-center gap-3"
+              className="flex min-w-0 items-center gap-2.5"
             >
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-slate-950 via-slate-800 to-emerald-700 shadow-[0_12px_30px_-16px_rgba(15,23,42,0.9)] dark:from-emerald-500 dark:via-emerald-400 dark:to-slate-200">
+              <div className="flex h-8 w-8 flex-none items-center justify-center rounded-xl bg-slate-950 dark:bg-white">
                 <Scale className="h-4 w-4 text-white dark:text-slate-950" />
               </div>
-              <div className="min-w-0 leading-tight">
-                <span className="block truncate text-[1.05rem] font-bold tracking-[-0.035em] text-slate-950 dark:text-white">
-                  Divorce Agent
-                </span>
-                <span className="block truncate text-[10px] font-semibold uppercase tracking-[0.24em] text-emerald-700/80 dark:text-emerald-300/80">
-                  California AI guidance
-                </span>
-              </div>
+              <span className="block truncate text-base font-semibold tracking-tight text-slate-950 dark:text-white">
+                Divorce Agent
+              </span>
             </Link>
           </div>
 
-          <div className="hidden xl:flex items-center rounded-full border border-slate-200/80 bg-white/72 p-1 shadow-[0_18px_50px_-32px_rgba(15,23,42,0.45)] dark:border-white/10 dark:bg-white/[0.06]">
+          <div className="hidden flex-1 items-center justify-center gap-3 md:flex lg:gap-5">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
@@ -102,10 +115,10 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
                     scrollToPageTop();
                   }
                 }}
-                className={`whitespace-nowrap rounded-full px-3.5 py-2 text-[13px] font-semibold tracking-[-0.015em] transition-all duration-200 ${
+                className={`relative whitespace-nowrap py-1 text-sm font-medium transition-colors ${
                   (link.path === '/' ? location.pathname === '/' : location.pathname.startsWith(link.path))
-                    ? 'bg-slate-950 text-white shadow-sm dark:bg-emerald-300 dark:text-slate-950'
-                    : 'text-slate-600 hover:bg-emerald-50 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white'
+                    ? 'text-slate-950 after:absolute after:-bottom-1.5 after:left-0 after:h-0.5 after:w-full after:rounded-full after:bg-emerald-600 dark:text-white dark:after:bg-emerald-300'
+                    : 'text-slate-500 hover:text-slate-950 dark:text-slate-400 dark:hover:text-white'
                 }`}
               >
                 {link.label}
@@ -113,10 +126,11 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
             ))}
           </div>
 
-          <div className="hidden xl:flex shrink-0 items-center gap-2">
+          <div className="hidden items-center gap-2 md:flex">
             <ThemeToggle />
             <Button
-              className="rounded-full bg-slate-950 px-4 font-semibold tracking-[-0.01em] text-white shadow-[0_18px_40px_-26px_rgba(15,23,42,0.9)] hover:bg-emerald-800 dark:bg-emerald-400 dark:text-slate-950 dark:hover:bg-emerald-300"
+              variant="outline"
+              className="hidden h-9 rounded-full border-slate-300 bg-white/80 px-4 text-slate-900 hover:border-emerald-300 hover:bg-emerald-50 dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10 lg:inline-flex"
               onClick={handleChatCta}
             >
               Ask Maria
@@ -124,10 +138,8 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
             {currentUser ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="flex items-center gap-2 text-gray-700 dark:text-slate-200">
-                    <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center">
-                      <UserIcon className="h-4 w-4 text-white" />
-                    </div>
+                  <Button variant="ghost" className="flex h-9 items-center gap-2 rounded-full px-2 text-gray-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-white/10">
+                    <UserAvatar user={currentUser} />
                     <span className="text-sm font-medium text-gray-700 dark:text-slate-200">
                       {currentUser.name || currentUser.email.split('@')[0]}
                     </span>
@@ -186,14 +198,14 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
             ) : (
               <Button
                 onClick={onAuthClick}
-                className="bg-emerald-700 text-white hover:bg-emerald-800 dark:bg-emerald-700 dark:text-white dark:hover:bg-emerald-600"
+                className="h-9 rounded-full bg-emerald-700 px-4 text-white hover:bg-emerald-800 dark:bg-emerald-700 dark:text-white dark:hover:bg-emerald-600"
               >
                 Sign In/Create Account
               </Button>
             )}
           </div>
 
-          <div className="xl:hidden flex items-center">
+          <div className="flex items-center md:hidden">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="p-2 rounded-md text-gray-600 hover:bg-gray-100 dark:text-slate-200 dark:hover:bg-slate-900/70"
@@ -205,7 +217,7 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
       </div>
 
       {isMobileMenuOpen && (
-        <div className="xl:hidden bg-white/95 border-t border-emerald-100 dark:bg-slate-950 dark:border-slate-800 backdrop-blur-xl">
+        <div className="md:hidden bg-white/95 border-t border-slate-200 dark:bg-slate-950 dark:border-slate-800 backdrop-blur-xl">
           <div className="px-4 py-3 space-y-2">
             {navLinks.map((link) => (
               <Link
@@ -219,8 +231,8 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
                 }}
                 className={`block px-3 py-2 rounded-xl text-base font-medium ${
                   (link.path === '/' ? location.pathname === '/' : location.pathname.startsWith(link.path))
-                    ? 'border border-emerald-300 bg-emerald-200 text-emerald-950 dark:border-emerald-400/40 dark:bg-emerald-300 dark:text-slate-950'
-                    : 'text-slate-600 hover:bg-emerald-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-900/70 dark:hover:text-white'
+                    ? 'bg-slate-950 text-white dark:bg-white dark:text-slate-950'
+                    : 'text-slate-600 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white'
                 }`}
               >
                 {link.label}
@@ -243,11 +255,14 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
             <div className="border-t border-gray-200 pt-3 mt-3 dark:border-slate-800">
               {currentUser ? (
                 <>
-                  <div className="px-3 py-2">
-                    <p className="text-sm font-medium text-gray-900 dark:text-white">{currentUser.email}</p>
+                  <div className="flex items-center gap-3 px-3 py-2">
+                    <UserAvatar user={currentUser} className="h-10 w-10" />
+                    <div>
+                      <p className="text-sm font-medium text-gray-900 dark:text-white">{currentUser.email}</p>
                     <p className="text-xs text-gray-500 dark:text-slate-400">
                       {SUBSCRIPTION_LIMITS[currentUser.subscription].name} Plan
                     </p>
+                    </div>
                   </div>
                   <Link
                     to="/dashboard"
@@ -256,6 +271,15 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
                   >
                     Dashboard
                   </Link>
+                  {authService.isConciergeStaff(currentUser) && (
+                    <Link
+                      to="/bookkeeping"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:bg-gray-100 dark:text-slate-300 dark:hover:bg-slate-900/70"
+                    >
+                      Bookkeeping
+                    </Link>
+                  )}
                   <Link
                     to="/profile"
                     onClick={() => setIsMobileMenuOpen(false)}

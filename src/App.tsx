@@ -5,6 +5,7 @@ import { Footer } from '@/components/Footer';
 import { ScrollToTop } from '@/components/ScrollToTop';
 import { AuthModal } from '@/components/AuthModal';
 import { AnalyticsTracker } from '@/components/AnalyticsTracker';
+import { Seo } from '@/components/Seo';
 import { authService, type User } from '@/services/auth';
 import { Toaster } from '@/components/ui/sonner';
 
@@ -18,7 +19,8 @@ const DashboardPage = lazy(() => import('@/pages/DashboardPage').then((m) => ({ 
 const BookkeepingPage = lazy(() => import('@/pages/BookkeepingPage').then((m) => ({ default: m.BookkeepingPage })));
 const AnalyticsPage = lazy(() => import('@/pages/AnalyticsPage').then((m) => ({ default: m.AnalyticsPage })));
 const CountyConciergePage = lazy(() => import('@/pages/CountyConciergePage').then((m) => ({ default: m.CountyConciergePage })));
-const EfileAssistantPage = lazy(() => import('@/pages/EfileAssistantPage').then((m) => ({ default: m.EfileAssistantPage })));
+const CaliforniaDivorceChatAgentPage = lazy(() => import('@/pages/CaliforniaDivorceChatAgentPage').then((m) => ({ default: m.CaliforniaDivorceChatAgentPage })));
+const ChatsPage = lazy(() => import('@/pages/ChatsPage').then((m) => ({ default: m.ChatsPage })));
 const DraftFormsPage = lazy(() => import('@/pages/DraftFormsPage').then((m) => ({ default: m.DraftFormsPage })));
 const TermsPage = lazy(() => import('@/pages/LegalPage').then((m) => ({ default: m.TermsPage })));
 const PrivacyPage = lazy(() => import('@/pages/LegalPage').then((m) => ({ default: m.PrivacyPage })));
@@ -47,7 +49,12 @@ function App() {
       setShowAuthModal(true);
     };
 
+    const handleUserUpdated = () => {
+      setCurrentUser(authService.getCurrentUser());
+    };
+
     window.addEventListener('divorceos:auth-required', handleAuthRequired);
+    window.addEventListener('divorceos:user-updated', handleUserUpdated);
 
     void authService.refreshCurrentUser().then((user) => {
       setCurrentUser(user);
@@ -56,6 +63,7 @@ function App() {
 
     return () => {
       window.removeEventListener('divorceos:auth-required', handleAuthRequired);
+      window.removeEventListener('divorceos:user-updated', handleUserUpdated);
     };
   }, []);
 
@@ -82,6 +90,7 @@ function App() {
 
   return (
     <Router>
+      <Seo />
       <AnalyticsTracker />
       <ScrollToTop />
       <div className="min-h-screen flex flex-col bg-background text-foreground transition-colors">
@@ -96,11 +105,11 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/pricing" element={<PricingPage />} />
               <Route path="/forms" element={<FormsPage />} />
-              <Route path="/what-do-i-need" element={<Navigate to="/draft-forms" replace />} />
               <Route path="/support-tools" element={<SupportToolsPage />} />
               <Route path="/concierge" element={<CountyConciergePage />} />
               <Route path="/concierge/:countyId" element={<CountyConciergePage />} />
-              <Route path="/efile-assistant" element={<EfileAssistantPage />} />
+              <Route path="/california-divorce-chat-agent" element={<CaliforniaDivorceChatAgentPage />} />
+              <Route path="/chats" element={<ChatsPage currentUser={currentUser} onAuthSuccess={handleAuthSuccess} />} />
               <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="/bookkeeping" element={<BookkeepingPage />} />
               <Route path="/analytics" element={<AnalyticsPage />} />
