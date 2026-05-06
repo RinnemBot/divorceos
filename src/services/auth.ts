@@ -577,6 +577,9 @@ class AuthService {
     const updatedUser = this.sanitizeUser(payload.user);
     if (updatedUser) {
       this.setCurrentUser(updatedUser);
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('divorceos:user-updated', { detail: updatedUser }));
+      }
     }
   }
 

@@ -1,0 +1,2563 @@
+[
+  {
+    "page": 0,
+    "name": "CourtInfo_ft[0]",
+    "fullName": "CourtInfo_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      400.32,
+      517.345,
+      574.56,
+      584.665
+    ],
+    "tooltip": "Superior Court of California, County of"
+  },
+  {
+    "page": 0,
+    "name": "CaseNumber[0]",
+    "fullName": "CaseNumber[0]",
+    "type": "/Tx",
+    "rect": [
+      400.32,
+      468.19,
+      574.56,
+      485.116
+    ],
+    "tooltip": "Case Number:"
+  },
+  {
+    "page": 0,
+    "name": "OrigAmen_cb[0]",
+    "fullName": "OrigAmen_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      78.639,
+      710.24,
+      87.639,
+      719.24
+    ],
+    "tooltip": "Original Order"
+  },
+  {
+    "page": 0,
+    "name": "OrigAmen_cb[1]",
+    "fullName": "OrigAmen_cb[1]",
+    "type": "/Btn",
+    "rect": [
+      199.188,
+      710.241,
+      208.188,
+      719.241
+    ],
+    "tooltip": "Amended Order"
+  },
+  {
+    "page": 0,
+    "name": "Amended_ft[0]",
+    "fullName": "Amended_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      210.937,
+      707.939,
+      247.189,
+      720.74
+    ],
+    "tooltip": "Amended Order"
+  },
+  {
+    "page": 0,
+    "name": "TextField[0]",
+    "fullName": "TextField[0]",
+    "type": "/Tx",
+    "rect": [
+      205.004,
+      646.299,
+      388.783,
+      661.3
+    ],
+    "tooltip": "Protected Person (name):"
+  },
+  {
+    "page": 0,
+    "name": "ParentRel[0]",
+    "fullName": "ParentRel[0]",
+    "type": "/Tx",
+    "rect": [
+      129.147,
+      605.798,
+      384.971,
+      616.799
+    ],
+    "tooltip": "*Full Name:"
+  },
+  {
+    "page": 0,
+    "name": "gender_cb[0]",
+    "fullName": "gender_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      115.515,
+      590.883,
+      124.515,
+      599.883
+    ],
+    "tooltip": "male"
+  },
+  {
+    "page": 0,
+    "name": "gender_cb[1]",
+    "fullName": "gender_cb[1]",
+    "type": "/Btn",
+    "rect": [
+      151.203,
+      590.883,
+      160.203,
+      599.883
+    ],
+    "tooltip": "female"
+  },
+  {
+    "page": 0,
+    "name": "gender_cb[2]",
+    "fullName": "gender_cb[2]",
+    "type": "/Btn",
+    "rect": [
+      182.82,
+      590.883,
+      191.82,
+      599.883
+    ],
+    "tooltip": "Nonbinary"
+  },
+  {
+    "page": 0,
+    "name": "T191[0]",
+    "fullName": "T191[0]",
+    "type": "/Tx",
+    "rect": [
+      98.206,
+      573.965,
+      125.193,
+      584.966
+    ],
+    "tooltip": "*Age:"
+  },
+  {
+    "page": 0,
+    "name": "TF1[0]",
+    "fullName": "TF1[0]",
+    "type": "/Tx",
+    "rect": [
+      310.038,
+      573.965,
+      387.247,
+      584.966
+    ],
+    "tooltip": "Date of Birth:"
+  },
+  {
+    "page": 0,
+    "name": "TF2[0]",
+    "fullName": "TF2[0]",
+    "type": "/Tx",
+    "rect": [
+      102.389,
+      558.046,
+      204.727,
+      569.047
+    ],
+    "tooltip": "Height:"
+  },
+  {
+    "page": 0,
+    "name": "TF3[0]",
+    "fullName": "TF3[0]",
+    "type": "/Tx",
+    "rect": [
+      250.136,
+      558.046,
+      312.602,
+      569.047
+    ],
+    "tooltip": "Weight:"
+  },
+  {
+    "page": 0,
+    "name": "TF4[0]",
+    "fullName": "TF4[0]",
+    "type": "/Tx",
+    "rect": [
+      120.265,
+      542.129,
+      204.727,
+      553.13
+    ],
+    "tooltip": "Hair Color:"
+  },
+  {
+    "page": 0,
+    "name": "TF5[0]",
+    "fullName": "TF5[0]",
+    "type": "/Tx",
+    "rect": [
+      263.183,
+      542.129,
+      312.434,
+      553.13
+    ],
+    "tooltip": "Eye Color:"
+  },
+  {
+    "page": 0,
+    "name": "TF6[0]",
+    "fullName": "TF6[0]",
+    "type": "/Tx",
+    "rect": [
+      286.848,
+      589.882,
+      386.739,
+      600.883
+    ],
+    "tooltip": "*Race:"
+  },
+  {
+    "page": 0,
+    "name": "TextField[0]",
+    "fullName": "TextField[0]",
+    "type": "/Tx",
+    "rect": [
+      201.278,
+      525.215,
+      386.144,
+      537.214
+    ],
+    "tooltip": "Relationship to person in item 1:"
+  },
+  {
+    "page": 0,
+    "name": "TF7[0]",
+    "fullName": "TF7[0]",
+    "type": "/Tx",
+    "rect": [
+      202.916,
+      509.298,
+      385.606,
+      520.299
+    ],
+    "tooltip": "Address of restrained person:"
+  },
+  {
+    "page": 0,
+    "name": "TF8[0]",
+    "fullName": "TF8[0]",
+    "type": "/Tx",
+    "rect": [
+      94.886,
+      493.382,
+      236.784,
+      504.383
+    ],
+    "tooltip": "City:"
+  },
+  {
+    "page": 0,
+    "name": "TF9[0]",
+    "fullName": "TF9[0]",
+    "type": "/Tx",
+    "rect": [
+      268.478,
+      493.382,
+      294.931,
+      504.383
+    ],
+    "tooltip": "State:"
+  },
+  {
+    "page": 0,
+    "name": "TF10[0]",
+    "fullName": "TF10[0]",
+    "type": "/Tx",
+    "rect": [
+      319.897,
+      493.382,
+      385.217,
+      504.383
+    ],
+    "tooltip": "Zip:"
+  },
+  {
+    "page": 0,
+    "name": "OtherSpecify_tf[0]",
+    "fullName": "OtherSpecify_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      68.922,
+      421.317,
+      386.295,
+      460.177
+    ],
+    "tooltip": "Firearms, firearm parts, or ammunition that restrained person may have: (Include information from form DV-100, item 9)"
+  },
+  {
+    "page": 0,
+    "name": "item3_cb[0]",
+    "fullName": "item3_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      63.0,
+      352.774,
+      72.0,
+      361.774
+    ],
+    "tooltip": "Other Protected People"
+  },
+  {
+    "page": 0,
+    "name": "item3FullName1_tf1[0]",
+    "fullName": "item3FullName1_tf1[0]",
+    "type": "/Tx",
+    "rect": [
+      63.0,
+      299.234,
+      323.972,
+      312.194
+    ],
+    "tooltip": "Full name"
+  },
+  {
+    "page": 0,
+    "name": "item3relation1_tf1[0]",
+    "fullName": "item3relation1_tf1[0]",
+    "type": "/Tx",
+    "rect": [
+      329.139,
+      299.234,
+      512.895,
+      312.194
+    ],
+    "tooltip": "Relationship to person in item 1"
+  },
+  {
+    "page": 0,
+    "name": "item3age1_tf1[0]",
+    "fullName": "item3age1_tf1[0]",
+    "type": "/Tx",
+    "rect": [
+      521.748,
+      299.234,
+      564.486,
+      312.194
+    ],
+    "tooltip": "Age"
+  },
+  {
+    "page": 0,
+    "name": "item3FullName1_tf[0]",
+    "fullName": "item3FullName1_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      63.0,
+      285.709,
+      323.972,
+      298.669
+    ],
+    "tooltip": "Full name"
+  },
+  {
+    "page": 0,
+    "name": "item3relation1_tf[0]",
+    "fullName": "item3relation1_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      329.139,
+      285.709,
+      512.895,
+      298.669
+    ],
+    "tooltip": "Relationship to person in item 1"
+  },
+  {
+    "page": 0,
+    "name": "item3age1_tf[0]",
+    "fullName": "item3age1_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      521.748,
+      285.709,
+      564.486,
+      298.669
+    ],
+    "tooltip": "Age"
+  },
+  {
+    "page": 0,
+    "name": "item3FullName2_tf[0]",
+    "fullName": "item3FullName2_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      63.0,
+      272.429,
+      323.972,
+      285.389
+    ],
+    "tooltip": "Full name"
+  },
+  {
+    "page": 0,
+    "name": "item3relation2_tf[0]",
+    "fullName": "item3relation2_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      329.139,
+      272.429,
+      512.895,
+      285.389
+    ],
+    "tooltip": "Relationship to person in item 1"
+  },
+  {
+    "page": 0,
+    "name": "item3age2_tf[0]",
+    "fullName": "item3age2_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      521.748,
+      272.429,
+      564.486,
+      285.389
+    ],
+    "tooltip": "Age"
+  },
+  {
+    "page": 0,
+    "name": "item3FullName3_tf[0]",
+    "fullName": "item3FullName3_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      63.0,
+      258.78,
+      323.972,
+      271.74
+    ],
+    "tooltip": "Full name"
+  },
+  {
+    "page": 0,
+    "name": "item3relation3_tf[0]",
+    "fullName": "item3relation3_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      329.139,
+      258.78,
+      512.895,
+      271.74
+    ],
+    "tooltip": "Relationship to person in item 1"
+  },
+  {
+    "page": 0,
+    "name": "item3age3_tf[0]",
+    "fullName": "item3age3_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      521.748,
+      259.415,
+      564.486,
+      272.375
+    ],
+    "tooltip": "Age"
+  },
+  {
+    "page": 0,
+    "name": "AGHagueCert_cb[0]",
+    "fullName": "AGHagueCert_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      63.0,
+      245.423,
+      72.0,
+      254.423
+    ],
+    "tooltip": "Check here if you need to list more people. List them on a separate piece of paper, write \"DV-110, Other Protected People\" at the top, and attach it to this form."
+  },
+  {
+    "page": 0,
+    "name": "T195[0]",
+    "fullName": "T195[0]",
+    "type": "/Tx",
+    "rect": [
+      195.283,
+      136.571,
+      332.889,
+      150.971
+    ],
+    "tooltip": "Hearing Date:"
+  },
+  {
+    "page": 0,
+    "name": "time1[0]",
+    "fullName": "time1[0]",
+    "type": "/Tx",
+    "rect": [
+      372.992,
+      136.571,
+      464.542,
+      150.971
+    ],
+    "tooltip": "Time:"
+  },
+  {
+    "page": 0,
+    "name": "item4ampm[0]",
+    "fullName": "item4ampm[0]",
+    "type": "/Btn",
+    "rect": [
+      467.487,
+      138.46,
+      476.487,
+      147.46
+    ],
+    "tooltip": "a.m."
+  },
+  {
+    "page": 0,
+    "name": "item4ampm[1]",
+    "fullName": "item4ampm[1]",
+    "type": "/Btn",
+    "rect": [
+      509.661,
+      138.46,
+      518.661,
+      147.46
+    ],
+    "tooltip": "p.m."
+  },
+  {
+    "page": 1,
+    "name": "CaseNumber[0]",
+    "fullName": "CaseNumber[0]",
+    "type": "/Tx",
+    "rect": [
+      398.88,
+      729.0,
+      573.12,
+      743.642
+    ],
+    "tooltip": "Case Number:"
+  },
+  {
+    "page": 1,
+    "name": "CheckBoxRightCaption[0]",
+    "fullName": "CheckBoxRightCaption[0]",
+    "type": "/Btn",
+    "rect": [
+      63.0,
+      344.347,
+      72.0,
+      353.347
+    ],
+    "tooltip": "Restrained person has prohibited items"
+  },
+  {
+    "page": 1,
+    "name": "TextField[0]",
+    "fullName": "TextField[0]",
+    "type": "/Tx",
+    "rect": [
+      94.782,
+      255.563,
+      325.117,
+      270.564
+    ],
+    "tooltip": "Description (include serial number, if known)"
+  },
+  {
+    "page": 1,
+    "name": "TextField1[0]",
+    "fullName": "TextField1[0]",
+    "type": "/Tx",
+    "rect": [
+      327.461,
+      255.563,
+      457.676,
+      270.564
+    ],
+    "tooltip": "Location, if known"
+  },
+  {
+    "page": 1,
+    "name": "Choice[0]",
+    "fullName": "Choice[0]",
+    "type": "/Btn",
+    "rect": [
+      465.057,
+      259.704,
+      474.057,
+      268.704
+    ],
+    "tooltip": "Proof of compliance  received by the court"
+  },
+  {
+    "page": 1,
+    "name": "DateField1[0]",
+    "fullName": "DateField1[0]",
+    "type": "/Tx",
+    "rect": [
+      508.904,
+      256.654,
+      575.694,
+      271.655
+    ],
+    "tooltip": "(date):"
+  },
+  {
+    "page": 1,
+    "name": "TextField[0]",
+    "fullName": "TextField[0]",
+    "type": "/Tx",
+    "rect": [
+      94.782,
+      239.533,
+      325.117,
+      254.534
+    ],
+    "tooltip": "Description (include serial number, if known)"
+  },
+  {
+    "page": 1,
+    "name": "TextField1[0]",
+    "fullName": "TextField1[0]",
+    "type": "/Tx",
+    "rect": [
+      327.461,
+      239.533,
+      457.676,
+      254.534
+    ],
+    "tooltip": "Location, if known"
+  },
+  {
+    "page": 1,
+    "name": "Choice[0]",
+    "fullName": "Choice[0]",
+    "type": "/Btn",
+    "rect": [
+      465.057,
+      243.879,
+      474.057,
+      252.879
+    ],
+    "tooltip": "Proof of compliance  received by the court"
+  },
+  {
+    "page": 1,
+    "name": "DateField2[0]",
+    "fullName": "DateField2[0]",
+    "type": "/Tx",
+    "rect": [
+      508.904,
+      239.862,
+      575.694,
+      254.863
+    ],
+    "tooltip": "(date):"
+  },
+  {
+    "page": 1,
+    "name": "TextField[0]",
+    "fullName": "TextField[0]",
+    "type": "/Tx",
+    "rect": [
+      94.782,
+      223.287,
+      325.117,
+      238.288
+    ],
+    "tooltip": "Description (include serial number, if known)"
+  },
+  {
+    "page": 1,
+    "name": "TextField1[0]",
+    "fullName": "TextField1[0]",
+    "type": "/Tx",
+    "rect": [
+      327.461,
+      223.287,
+      457.676,
+      238.288
+    ],
+    "tooltip": "Location, if known"
+  },
+  {
+    "page": 1,
+    "name": "Choice[0]",
+    "fullName": "Choice[0]",
+    "type": "/Btn",
+    "rect": [
+      465.057,
+      226.102,
+      474.057,
+      235.102
+    ],
+    "tooltip": "Proof of compliance  received by the court"
+  },
+  {
+    "page": 1,
+    "name": "DateField3[0]",
+    "fullName": "DateField3[0]",
+    "type": "/Tx",
+    "rect": [
+      508.904,
+      223.106,
+      575.694,
+      238.107
+    ],
+    "tooltip": "(date):"
+  },
+  {
+    "page": 1,
+    "name": "TextField[0]",
+    "fullName": "TextField[0]",
+    "type": "/Tx",
+    "rect": [
+      94.782,
+      207.172,
+      325.117,
+      222.173
+    ],
+    "tooltip": "Description (include serial number, if known)"
+  },
+  {
+    "page": 1,
+    "name": "TextField1[0]",
+    "fullName": "TextField1[0]",
+    "type": "/Tx",
+    "rect": [
+      327.461,
+      207.172,
+      457.676,
+      222.173
+    ],
+    "tooltip": "Location, if known"
+  },
+  {
+    "page": 1,
+    "name": "Choice[0]",
+    "fullName": "Choice[0]",
+    "type": "/Btn",
+    "rect": [
+      465.057,
+      209.987,
+      474.057,
+      218.987
+    ],
+    "tooltip": "Proof of compliance  received by the court"
+  },
+  {
+    "page": 1,
+    "name": "DateField4[0]",
+    "fullName": "DateField4[0]",
+    "type": "/Tx",
+    "rect": [
+      508.904,
+      206.554,
+      575.694,
+      221.555
+    ],
+    "tooltip": "(date):"
+  },
+  {
+    "page": 1,
+    "name": "TextField[0]",
+    "fullName": "TextField[0]",
+    "type": "/Tx",
+    "rect": [
+      94.779,
+      139.949,
+      260.609,
+      154.95
+    ],
+    "tooltip": "Description "
+  },
+  {
+    "page": 1,
+    "name": "TextField1[0]",
+    "fullName": "TextField1[0]",
+    "type": "/Tx",
+    "rect": [
+      263.579,
+      139.949,
+      324.963,
+      154.95
+    ],
+    "tooltip": "Amount, if known"
+  },
+  {
+    "page": 1,
+    "name": "TextField2[0]",
+    "fullName": "TextField2[0]",
+    "type": "/Tx",
+    "rect": [
+      327.461,
+      139.949,
+      456.247,
+      154.95
+    ],
+    "tooltip": "Location, if known"
+  },
+  {
+    "page": 1,
+    "name": "Choice[0]",
+    "fullName": "Choice[0]",
+    "type": "/Btn",
+    "rect": [
+      465.057,
+      141.95,
+      474.057,
+      150.95
+    ],
+    "tooltip": "Proof of compliance  received by the court "
+  },
+  {
+    "page": 1,
+    "name": "DateField5[0]",
+    "fullName": "DateField5[0]",
+    "type": "/Tx",
+    "rect": [
+      508.901,
+      139.949,
+      575.691,
+      154.95
+    ],
+    "tooltip": "(date):"
+  },
+  {
+    "page": 1,
+    "name": "TextField[0]",
+    "fullName": "TextField[0]",
+    "type": "/Tx",
+    "rect": [
+      94.779,
+      123.613,
+      260.609,
+      138.614
+    ],
+    "tooltip": "Description "
+  },
+  {
+    "page": 1,
+    "name": "TextField1[0]",
+    "fullName": "TextField1[0]",
+    "type": "/Tx",
+    "rect": [
+      263.579,
+      123.613,
+      324.963,
+      138.614
+    ],
+    "tooltip": "Amount, if known"
+  },
+  {
+    "page": 1,
+    "name": "TextField2[0]",
+    "fullName": "TextField2[0]",
+    "type": "/Tx",
+    "rect": [
+      327.461,
+      123.613,
+      456.247,
+      138.614
+    ],
+    "tooltip": "Location, if known"
+  },
+  {
+    "page": 1,
+    "name": "Choice[0]",
+    "fullName": "Choice[0]",
+    "type": "/Btn",
+    "rect": [
+      465.057,
+      125.614,
+      474.057,
+      134.614
+    ],
+    "tooltip": "Proof of compliance  received by the court "
+  },
+  {
+    "page": 1,
+    "name": "DateField6[0]",
+    "fullName": "DateField6[0]",
+    "type": "/Tx",
+    "rect": [
+      508.901,
+      123.613,
+      575.691,
+      138.614
+    ],
+    "tooltip": "(date):"
+  },
+  {
+    "page": 2,
+    "name": "AGHagueCert_cb[0]",
+    "fullName": "AGHagueCert_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      63.108,
+      697.162,
+      72.108,
+      706.162
+    ],
+    "tooltip": "Court Hearing to Review Firearms (Guns), Firearm Parts, and Ammunition Compliance "
+  },
+  {
+    "page": 2,
+    "name": "HearingDate_dt[0]",
+    "fullName": "HearingDate_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      132.312,
+      591.63,
+      220.708,
+      604.59
+    ],
+    "tooltip": "Date:"
+  },
+  {
+    "page": 2,
+    "name": "HearingDept_ft[0]",
+    "fullName": "HearingDept_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      254.649,
+      591.63,
+      329.372,
+      604.59
+    ],
+    "tooltip": "Dept.:"
+  },
+  {
+    "page": 2,
+    "name": "HearingTime_dt[0]",
+    "fullName": "HearingTime_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      135.358,
+      576.828,
+      221.193,
+      589.788
+    ],
+    "tooltip": "Time:"
+  },
+  {
+    "page": 2,
+    "name": "HearingRm_ft[0]",
+    "fullName": "HearingRm_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      258.858,
+      576.828,
+      329.613,
+      589.788
+    ],
+    "tooltip": "Room:"
+  },
+  {
+    "page": 2,
+    "name": "HearingCourt_ft[0]",
+    "fullName": "HearingCourt_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      334.491,
+      559.826,
+      574.07,
+      603.753
+    ],
+    "tooltip": "Name and address of court, if different than court \raddress listed on page 1"
+  },
+  {
+    "page": 2,
+    "name": "AGHagueCert_cb[0]",
+    "fullName": "AGHagueCert_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      63.561,
+      405.182,
+      72.561,
+      414.182
+    ],
+    "tooltip": "If checked, this order was not granted because the judge found good cause not to make the order."
+  },
+  {
+    "page": 2,
+    "name": "item7_cb[0]",
+    "fullName": "item7_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      289.797,
+      351.726,
+      298.797,
+      360.726
+    ],
+    "tooltip": "Denied until the hearing"
+  },
+  {
+    "page": 2,
+    "name": "item7_cb[1]",
+    "fullName": "item7_cb[1]",
+    "type": "/Btn",
+    "rect": [
+      196.77,
+      351.726,
+      205.77,
+      360.726
+    ],
+    "tooltip": "Not requested"
+  },
+  {
+    "page": 2,
+    "name": "item7_cb[2]",
+    "fullName": "item7_cb[2]",
+    "type": "/Btn",
+    "rect": [
+      432.026,
+      351.726,
+      441.026,
+      360.726
+    ],
+    "tooltip": "Granted as follows:"
+  },
+  {
+    "page": 2,
+    "name": "CaseNumber[0]",
+    "fullName": "CaseNumber[0]",
+    "type": "/Tx",
+    "rect": [
+      398.88,
+      729.0,
+      573.12,
+      743.642
+    ],
+    "tooltip": "Case Number:"
+  },
+  {
+    "page": 3,
+    "name": "item8_cb[0]",
+    "fullName": "item8_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      195.857,
+      693.097,
+      204.857,
+      702.097
+    ],
+    "tooltip": "Not requested"
+  },
+  {
+    "page": 3,
+    "name": "item8_cb[1]",
+    "fullName": "item8_cb[1]",
+    "type": "/Btn",
+    "rect": [
+      288.884,
+      693.097,
+      297.884,
+      702.097
+    ],
+    "tooltip": "Denied until the hearing"
+  },
+  {
+    "page": 3,
+    "name": "item8_cb[2]",
+    "fullName": "item8_cb[2]",
+    "type": "/Btn",
+    "rect": [
+      431.113,
+      693.097,
+      440.113,
+      702.097
+    ],
+    "tooltip": "Granted as follows:"
+  },
+  {
+    "page": 3,
+    "name": "CheckBoxRightCaption[0]",
+    "fullName": "CheckBoxRightCaption[0]",
+    "type": "/Btn",
+    "rect": [
+      186.072,
+      672.956,
+      195.072,
+      681.956
+    ],
+    "tooltip": "the person in 1     "
+  },
+  {
+    "page": 3,
+    "name": "AGHagueCert_cb[0]",
+    "fullName": "AGHagueCert_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      288.711,
+      671.956,
+      297.711,
+      680.956
+    ],
+    "tooltip": " the persons in 3"
+  },
+  {
+    "page": 3,
+    "name": "AGHagueCert_cb1[0]",
+    "fullName": "AGHagueCert_cb1[0]",
+    "type": "/Btn",
+    "rect": [
+      78.48,
+      633.563,
+      87.48,
+      642.563
+    ],
+    "tooltip": "Exception to 11a: "
+  },
+  {
+    "page": 3,
+    "name": "MultilineCheckBox[0]",
+    "fullName": "MultilineCheckBox[0]",
+    "type": "/Btn",
+    "rect": [
+      98.64,
+      615.286,
+      107.64,
+      624.286
+    ],
+    "tooltip": "You may have brief and peaceful contact with the person in item 1 only to communicate about your children for court-ordered visits."
+  },
+  {
+    "page": 3,
+    "name": "AGHagueCert_cb[0]",
+    "fullName": "AGHagueCert_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      98.64,
+      583.226,
+      107.64,
+      592.226
+    ],
+    "tooltip": "You may have contact with your children only during court-ordered contact or visits."
+  },
+  {
+    "page": 3,
+    "name": "AGHagueCert_cb[0]",
+    "fullName": "AGHagueCert_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      98.64,
+      561.136,
+      107.64,
+      570.136
+    ],
+    "tooltip": "Other (explain):"
+  },
+  {
+    "page": 3,
+    "name": "TextField2[0]",
+    "fullName": "TextField2[0]",
+    "type": "/Tx",
+    "rect": [
+      189.629,
+      559.128,
+      575.198,
+      571.127
+    ],
+    "tooltip": "Explain other"
+  },
+  {
+    "page": 3,
+    "name": "item9_cb[0]",
+    "fullName": "item9_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      187.946,
+      483.688,
+      196.946,
+      492.688
+    ],
+    "tooltip": "Not requested"
+  },
+  {
+    "page": 3,
+    "name": "item9_cb[1]",
+    "fullName": "item9_cb[1]",
+    "type": "/Btn",
+    "rect": [
+      280.973,
+      483.688,
+      289.973,
+      492.688
+    ],
+    "tooltip": "Denied until the hearing"
+  },
+  {
+    "page": 3,
+    "name": "item9_cb[2]",
+    "fullName": "item9_cb[2]",
+    "type": "/Btn",
+    "rect": [
+      423.201,
+      483.688,
+      432.201,
+      492.688
+    ],
+    "tooltip": "Granted as follows:"
+  },
+  {
+    "page": 3,
+    "name": "T161[0]",
+    "fullName": "T161[0]",
+    "type": "/Tx",
+    "rect": [
+      225.487,
+      462.779,
+      274.388,
+      473.78
+    ],
+    "tooltip": "You must stay at least (specify):"
+  },
+  {
+    "page": 3,
+    "name": "FieldName_cb1[0]",
+    "fullName": "FieldName_cb1[0]",
+    "type": "/Btn",
+    "rect": [
+      78.48,
+      448.779,
+      87.48,
+      457.779
+    ],
+    "tooltip": "Person in 1."
+  },
+  {
+    "page": 3,
+    "name": "FieldName_cb2[0]",
+    "fullName": "FieldName_cb2[0]",
+    "type": "/Btn",
+    "rect": [
+      272.778,
+      448.005,
+      281.778,
+      457.005
+    ],
+    "tooltip": "School of person in 1. "
+  },
+  {
+    "page": 3,
+    "name": "FieldName_cb3[0]",
+    "fullName": "FieldName_cb3[0]",
+    "type": "/Btn",
+    "rect": [
+      78.48,
+      435.575,
+      87.48,
+      444.575
+    ],
+    "tooltip": "Home of person in 1. "
+  },
+  {
+    "page": 3,
+    "name": "FieldName_cb4[0]",
+    "fullName": "FieldName_cb4[0]",
+    "type": "/Btn",
+    "rect": [
+      272.778,
+      433.327,
+      281.778,
+      442.327
+    ],
+    "tooltip": "Persons in 3."
+  },
+  {
+    "page": 3,
+    "name": "FieldName_cb5[0]",
+    "fullName": "FieldName_cb5[0]",
+    "type": "/Btn",
+    "rect": [
+      78.48,
+      420.977,
+      87.48,
+      429.977
+    ],
+    "tooltip": "Job or workplace of person in 1. "
+  },
+  {
+    "page": 3,
+    "name": "FieldName_cb6[0]",
+    "fullName": "FieldName_cb6[0]",
+    "type": "/Btn",
+    "rect": [
+      272.778,
+      419.446,
+      281.778,
+      428.446
+    ],
+    "tooltip": "Children\u2019s school or child care."
+  },
+  {
+    "page": 3,
+    "name": "FieldName_cb7[0]",
+    "fullName": "FieldName_cb7[0]",
+    "type": "/Btn",
+    "rect": [
+      78.48,
+      407.016,
+      87.48,
+      416.016
+    ],
+    "tooltip": "Vehicle of person in 1. "
+  },
+  {
+    "page": 3,
+    "name": "AGHagueCert_cb[0]",
+    "fullName": "AGHagueCert_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      272.778,
+      405.389,
+      281.778,
+      414.389
+    ],
+    "tooltip": "Other (explain):"
+  },
+  {
+    "page": 3,
+    "name": "TextField2[0]",
+    "fullName": "TextField2[0]",
+    "type": "/Tx",
+    "rect": [
+      362.599,
+      403.764,
+      545.142,
+      415.763
+    ],
+    "tooltip": "explain other"
+  },
+  {
+    "page": 3,
+    "name": "AGHagueCert_cb1[0]",
+    "fullName": "AGHagueCert_cb1[0]",
+    "type": "/Btn",
+    "rect": [
+      78.48,
+      384.072,
+      87.48,
+      393.072
+    ],
+    "tooltip": "Exception to 12a: "
+  },
+  {
+    "page": 3,
+    "name": "AGHagueCert_cb[0]",
+    "fullName": "AGHagueCert_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      98.64,
+      351.672,
+      107.64,
+      360.672
+    ],
+    "tooltip": "For you to exchange your children for court-ordered visits. You must do so briefly and peacefully."
+  },
+  {
+    "page": 3,
+    "name": "AGHagueCert_cb[0]",
+    "fullName": "AGHagueCert_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      98.64,
+      335.917,
+      107.64,
+      344.917
+    ],
+    "tooltip": "For you to visit with your children for court-ordered contact or visits."
+  },
+  {
+    "page": 3,
+    "name": "AGHagueCert_cb[0]",
+    "fullName": "AGHagueCert_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      98.64,
+      318.549,
+      107.64,
+      327.549
+    ],
+    "tooltip": "Other (explain):"
+  },
+  {
+    "page": 3,
+    "name": "TextFieldItem9b3[0]",
+    "fullName": "TextFieldItem9b3[0]",
+    "type": "/Tx",
+    "rect": [
+      186.25,
+      316.942,
+      562.441,
+      328.941
+    ],
+    "tooltip": "Other (explain):"
+  },
+  {
+    "page": 3,
+    "name": "TextFieldItem9b3_tf[0]",
+    "fullName": "TextFieldItem9b3_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      115.305,
+      304.648,
+      566.065,
+      316.647
+    ],
+    "tooltip": "Other (explain):"
+  },
+  {
+    "page": 3,
+    "name": "item10_cb[0]",
+    "fullName": "item10_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      193.632,
+      258.756,
+      202.632,
+      267.756
+    ],
+    "tooltip": "Not requested"
+  },
+  {
+    "page": 3,
+    "name": "item10_cb[1]",
+    "fullName": "item10_cb[1]",
+    "type": "/Btn",
+    "rect": [
+      286.659,
+      258.756,
+      295.659,
+      267.756
+    ],
+    "tooltip": "Denied until the hearing"
+  },
+  {
+    "page": 3,
+    "name": "item10_cb[2]",
+    "fullName": "item10_cb[2]",
+    "type": "/Btn",
+    "rect": [
+      428.888,
+      258.756,
+      437.888,
+      267.756
+    ],
+    "tooltip": "Granted as follows:"
+  },
+  {
+    "page": 3,
+    "name": "TextField2[0]",
+    "fullName": "TextField2[0]",
+    "type": "/Tx",
+    "rect": [
+      111.906,
+      223.739,
+      566.577,
+      236.699
+    ],
+    "tooltip": "(address):"
+  },
+  {
+    "page": 3,
+    "name": "item11_cb[0]",
+    "fullName": "item11_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      164.205,
+      175.714,
+      173.205,
+      184.714
+    ],
+    "tooltip": "Not requested"
+  },
+  {
+    "page": 3,
+    "name": "item11_cb[1]",
+    "fullName": "item11_cb[1]",
+    "type": "/Btn",
+    "rect": [
+      257.233,
+      175.714,
+      266.233,
+      184.714
+    ],
+    "tooltip": "Denied until the hearing"
+  },
+  {
+    "page": 3,
+    "name": "item11_cb[2]",
+    "fullName": "item11_cb[2]",
+    "type": "/Btn",
+    "rect": [
+      399.461,
+      175.714,
+      408.461,
+      184.714
+    ],
+    "tooltip": "Granted as follows:"
+  },
+  {
+    "page": 3,
+    "name": "OtherSpecify_tf[0]",
+    "fullName": "OtherSpecify_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      63.633,
+      107.94,
+      567.711,
+      170.345
+    ],
+    "tooltip": "other orders"
+  },
+  {
+    "page": 3,
+    "name": "CaseNumber[0]",
+    "fullName": "CaseNumber[0]",
+    "type": "/Tx",
+    "rect": [
+      398.88,
+      729.0,
+      573.12,
+      743.642
+    ],
+    "tooltip": "Case Number:"
+  },
+  {
+    "page": 4,
+    "name": "CaseNumber[0]",
+    "fullName": "CaseNumber[0]",
+    "type": "/Tx",
+    "rect": [
+      398.88,
+      729.0,
+      573.12,
+      743.642
+    ],
+    "tooltip": "Case Number:"
+  },
+  {
+    "page": 4,
+    "name": "item12_cb[0]",
+    "fullName": "item12_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      244.003,
+      692.961,
+      253.003,
+      701.961
+    ],
+    "tooltip": "Not requested"
+  },
+  {
+    "page": 4,
+    "name": "item12_cb[1]",
+    "fullName": "item12_cb[1]",
+    "type": "/Btn",
+    "rect": [
+      332.949,
+      692.961,
+      341.949,
+      701.961
+    ],
+    "tooltip": "Denied until the hearing"
+  },
+  {
+    "page": 4,
+    "name": "item12_cb[2]",
+    "fullName": "item12_cb[2]",
+    "type": "/Btn",
+    "rect": [
+      469.565,
+      692.961,
+      478.565,
+      701.961
+    ],
+    "tooltip": "Granted as follows:"
+  },
+  {
+    "page": 4,
+    "name": "AGHagueCert11_cb[0]",
+    "fullName": "AGHagueCert11_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      63.561,
+      658.557,
+      72.561,
+      667.557
+    ],
+    "tooltip": "(list other form):                    "
+  },
+  {
+    "page": 4,
+    "name": "TextField[0]",
+    "fullName": "TextField[0]",
+    "type": "/Tx",
+    "rect": [
+      159.233,
+      656.538,
+      473.663,
+      671.539
+    ],
+    "tooltip": "list other form                 "
+  },
+  {
+    "page": 4,
+    "name": "item13_cb[0]",
+    "fullName": "item13_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      178.413,
+      598.392,
+      187.413,
+      607.392
+    ],
+    "tooltip": "Not requested"
+  },
+  {
+    "page": 4,
+    "name": "item13_cb[1]",
+    "fullName": "item13_cb[1]",
+    "type": "/Btn",
+    "rect": [
+      271.44,
+      598.392,
+      280.44,
+      607.392
+    ],
+    "tooltip": "Denied until the hearing"
+  },
+  {
+    "page": 4,
+    "name": "item13_cb[2]",
+    "fullName": "item13_cb[2]",
+    "type": "/Btn",
+    "rect": [
+      413.668,
+      598.392,
+      422.668,
+      607.392
+    ],
+    "tooltip": "Granted as follows:"
+  },
+  {
+    "page": 4,
+    "name": "AGHagueCert11_cb[0]",
+    "fullName": "AGHagueCert11_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      78.48,
+      578.163,
+      87.48,
+      587.163
+    ],
+    "tooltip": "You must stay at least                      "
+  },
+  {
+    "page": 4,
+    "name": "yards[0]",
+    "fullName": "yards[0]",
+    "type": "/Tx",
+    "rect": [
+      193.847,
+      576.184,
+      243.85,
+      589.144
+    ],
+    "tooltip": "number of yards"
+  },
+  {
+    "page": 4,
+    "name": "AGHagueCert_cb[0]",
+    "fullName": "AGHagueCert_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      78.48,
+      559.434,
+      87.48,
+      568.434
+    ],
+    "tooltip": "You must not take, sell, hide, molest, attack, strike, threaten, harm, get rid of, transfer, or borrow against the animals."
+  },
+  {
+    "page": 4,
+    "name": "AGHagueCert11_cb[0]",
+    "fullName": "AGHagueCert11_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      78.48,
+      522.233,
+      87.48,
+      531.233
+    ],
+    "tooltip": "The person in item 1 is given the sole possession, care, and control of the animals listed below.       "
+  },
+  {
+    "page": 4,
+    "name": "item3FullName3_tf1[0]",
+    "fullName": "item3FullName3_tf1[0]",
+    "type": "/Tx",
+    "rect": [
+      78.48,
+      483.77,
+      237.172,
+      496.73
+    ],
+    "tooltip": "Name or other way to ID animal"
+  },
+  {
+    "page": 4,
+    "name": "item3relation2_tf1[0]",
+    "fullName": "item3relation2_tf1[0]",
+    "type": "/Tx",
+    "rect": [
+      240.693,
+      484.101,
+      345.912,
+      497.061
+    ],
+    "tooltip": "Type of animal "
+  },
+  {
+    "page": 4,
+    "name": "item3relation1_tf2[0]",
+    "fullName": "item3relation1_tf2[0]",
+    "type": "/Tx",
+    "rect": [
+      350.952,
+      484.657,
+      454.408,
+      497.617
+    ],
+    "tooltip": "Breed (if known)"
+  },
+  {
+    "page": 4,
+    "name": "item3relation1_tf3[0]",
+    "fullName": "item3relation1_tf3[0]",
+    "type": "/Tx",
+    "rect": [
+      459.42,
+      484.626,
+      564.639,
+      497.586
+    ],
+    "tooltip": "Color "
+  },
+  {
+    "page": 4,
+    "name": "item3FullName3_tf2[0]",
+    "fullName": "item3FullName3_tf2[0]",
+    "type": "/Tx",
+    "rect": [
+      78.48,
+      469.344,
+      237.172,
+      482.304
+    ],
+    "tooltip": "Name or other way to ID animal"
+  },
+  {
+    "page": 4,
+    "name": "item3relation2_tf4[0]",
+    "fullName": "item3relation2_tf4[0]",
+    "type": "/Tx",
+    "rect": [
+      240.693,
+      469.344,
+      345.912,
+      482.304
+    ],
+    "tooltip": "Type of animal "
+  },
+  {
+    "page": 4,
+    "name": "item3relation1_tf5[0]",
+    "fullName": "item3relation1_tf5[0]",
+    "type": "/Tx",
+    "rect": [
+      350.952,
+      469.344,
+      454.408,
+      482.304
+    ],
+    "tooltip": "Breed (if known)"
+  },
+  {
+    "page": 4,
+    "name": "item3relation1_tf6[0]",
+    "fullName": "item3relation1_tf6[0]",
+    "type": "/Tx",
+    "rect": [
+      459.42,
+      469.344,
+      564.639,
+      482.304
+    ],
+    "tooltip": "Color "
+  },
+  {
+    "page": 4,
+    "name": "item3FullName3_tf7[0]",
+    "fullName": "item3FullName3_tf7[0]",
+    "type": "/Tx",
+    "rect": [
+      78.48,
+      454.448,
+      237.172,
+      467.408
+    ],
+    "tooltip": "Name or other way to ID animal"
+  },
+  {
+    "page": 4,
+    "name": "item3relation2_tf8[0]",
+    "fullName": "item3relation2_tf8[0]",
+    "type": "/Tx",
+    "rect": [
+      240.715,
+      454.448,
+      345.934,
+      467.408
+    ],
+    "tooltip": "Type of animal "
+  },
+  {
+    "page": 4,
+    "name": "item3relation1_tf9[0]",
+    "fullName": "item3relation1_tf9[0]",
+    "type": "/Tx",
+    "rect": [
+      350.974,
+      454.448,
+      454.43,
+      467.408
+    ],
+    "tooltip": "Breed (if known)"
+  },
+  {
+    "page": 4,
+    "name": "item3relation1_tf10[0]",
+    "fullName": "item3relation1_tf10[0]",
+    "type": "/Tx",
+    "rect": [
+      459.442,
+      454.448,
+      564.661,
+      467.408
+    ],
+    "tooltip": "Color "
+  },
+  {
+    "page": 4,
+    "name": "item3FullName3_tf11[0]",
+    "fullName": "item3FullName3_tf11[0]",
+    "type": "/Tx",
+    "rect": [
+      78.48,
+      439.566,
+      237.172,
+      452.526
+    ],
+    "tooltip": "Name or other way to ID animal"
+  },
+  {
+    "page": 4,
+    "name": "item3relation2_tf12[0]",
+    "fullName": "item3relation2_tf12[0]",
+    "type": "/Tx",
+    "rect": [
+      240.693,
+      439.566,
+      345.912,
+      452.526
+    ],
+    "tooltip": "Type of animal "
+  },
+  {
+    "page": 4,
+    "name": "item3relation1_tf13[0]",
+    "fullName": "item3relation1_tf13[0]",
+    "type": "/Tx",
+    "rect": [
+      350.952,
+      439.566,
+      454.408,
+      452.526
+    ],
+    "tooltip": "Breed (if known)"
+  },
+  {
+    "page": 4,
+    "name": "item3relation1_tf[0]",
+    "fullName": "item3relation1_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      459.42,
+      439.566,
+      564.639,
+      452.526
+    ],
+    "tooltip": "Color "
+  },
+  {
+    "page": 4,
+    "name": "item14_cb[0]",
+    "fullName": "item14_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      196.339,
+      390.873,
+      205.339,
+      399.873
+    ],
+    "tooltip": "Not requested"
+  },
+  {
+    "page": 4,
+    "name": "item14_cb[1]",
+    "fullName": "item14_cb[1]",
+    "type": "/Btn",
+    "rect": [
+      289.366,
+      390.873,
+      298.366,
+      399.873
+    ],
+    "tooltip": "Denied until the hearing"
+  },
+  {
+    "page": 4,
+    "name": "item14_cb[2]",
+    "fullName": "item14_cb[2]",
+    "type": "/Btn",
+    "rect": [
+      431.595,
+      390.873,
+      440.595,
+      399.873
+    ],
+    "tooltip": "Granted as follows:"
+  },
+  {
+    "page": 4,
+    "name": "OtherSpecify_tf[0]",
+    "fullName": "OtherSpecify_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      62.376,
+      323.906,
+      566.526,
+      366.803
+    ],
+    "tooltip": "Until the hearing, only the person in item 1 can use, control, and possess the following property"
+  },
+  {
+    "page": 4,
+    "name": "item15_cb[0]",
+    "fullName": "item15_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      239.927,
+      272.328,
+      248.927,
+      281.328
+    ],
+    "tooltip": "Not requested"
+  },
+  {
+    "page": 4,
+    "name": "item15_cb[1]",
+    "fullName": "item15_cb[1]",
+    "type": "/Btn",
+    "rect": [
+      326.832,
+      272.328,
+      335.832,
+      281.328
+    ],
+    "tooltip": "Denied until the hearing"
+  },
+  {
+    "page": 4,
+    "name": "item15_cb[2]",
+    "fullName": "item15_cb[2]",
+    "type": "/Btn",
+    "rect": [
+      462.427,
+      272.328,
+      471.427,
+      281.328
+    ],
+    "tooltip": "Granted as follows:"
+  },
+  {
+    "page": 4,
+    "name": "PersonIn1_cb[0]",
+    "fullName": "PersonIn1_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      123.664,
+      252.264,
+      132.664,
+      261.264
+    ],
+    "tooltip": "in 1"
+  },
+  {
+    "page": 4,
+    "name": "PersonIn2_cb[0]",
+    "fullName": "PersonIn2_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      170.609,
+      252.264,
+      179.609,
+      261.264
+    ],
+    "tooltip": "in 2"
+  },
+  {
+    "page": 4,
+    "name": "item16_cb[0]",
+    "fullName": "item16_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      226.976,
+      170.071,
+      235.976,
+      179.071
+    ],
+    "tooltip": "Not requested"
+  },
+  {
+    "page": 4,
+    "name": "item16_cb[1]",
+    "fullName": "item16_cb[1]",
+    "type": "/Btn",
+    "rect": [
+      320.003,
+      170.071,
+      329.003,
+      179.071
+    ],
+    "tooltip": "Denied until the hearing"
+  },
+  {
+    "page": 4,
+    "name": "item16_cb[2]",
+    "fullName": "item16_cb[2]",
+    "type": "/Btn",
+    "rect": [
+      462.231,
+      170.071,
+      471.231,
+      179.071
+    ],
+    "tooltip": "Granted as follows:"
+  },
+  {
+    "page": 5,
+    "name": "CaseNumber[0]",
+    "fullName": "CaseNumber[0]",
+    "type": "/Tx",
+    "rect": [
+      398.88,
+      729.0,
+      573.12,
+      743.642
+    ],
+    "tooltip": "Case Number:"
+  },
+  {
+    "page": 5,
+    "name": "item17_cb[0]",
+    "fullName": "item17_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      196.163,
+      693.25,
+      205.163,
+      702.25
+    ],
+    "tooltip": "Not requested"
+  },
+  {
+    "page": 5,
+    "name": "item17_cb[1]",
+    "fullName": "item17_cb[1]",
+    "type": "/Btn",
+    "rect": [
+      289.191,
+      693.25,
+      298.191,
+      702.25
+    ],
+    "tooltip": "Denied until the hearing"
+  },
+  {
+    "page": 5,
+    "name": "item17_cb[2]",
+    "fullName": "item17_cb[2]",
+    "type": "/Btn",
+    "rect": [
+      431.419,
+      693.25,
+      440.419,
+      702.25
+    ],
+    "tooltip": "Granted as follows:"
+  },
+  {
+    "page": 5,
+    "name": "PersonIn1_cb[0]",
+    "fullName": "PersonIn1_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      121.017,
+      678.359,
+      130.017,
+      687.359
+    ],
+    "tooltip": "in 1"
+  },
+  {
+    "page": 5,
+    "name": "PersonIn2_cb[0]",
+    "fullName": "PersonIn2_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      165.92,
+      678.359,
+      174.92,
+      687.359
+    ],
+    "tooltip": "in 2"
+  },
+  {
+    "page": 5,
+    "name": "item18_cb[0]",
+    "fullName": "item18_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      247.19,
+      566.511,
+      256.19,
+      575.511
+    ],
+    "tooltip": "Not requested"
+  },
+  {
+    "page": 5,
+    "name": "item18_cb[1]",
+    "fullName": "item18_cb[1]",
+    "type": "/Btn",
+    "rect": [
+      338.176,
+      566.0,
+      347.176,
+      575.0
+    ],
+    "tooltip": "Denied until the hearing"
+  },
+  {
+    "page": 5,
+    "name": "item18_cb[2]",
+    "fullName": "item18_cb[2]",
+    "type": "/Btn",
+    "rect": [
+      471.784,
+      566.0,
+      480.784,
+      575.0
+    ],
+    "tooltip": "Granted as follows:"
+  },
+  {
+    "page": 5,
+    "name": "T241[0]",
+    "fullName": "T241[0]",
+    "type": "/Tx",
+    "rect": [
+      96.316,
+      531.973,
+      212.593,
+      542.974
+    ],
+    "tooltip": "Pay to:   "
+  },
+  {
+    "page": 5,
+    "name": "T244[0]",
+    "fullName": "T244[0]",
+    "type": "/Tx",
+    "rect": [
+      239.407,
+      531.973,
+      308.832,
+      542.974
+    ],
+    "tooltip": "For:   "
+  },
+  {
+    "page": 5,
+    "name": "T247[0]",
+    "fullName": "T247[0]",
+    "type": "/Tx",
+    "rect": [
+      363.198,
+      531.973,
+      419.989,
+      542.974
+    ],
+    "tooltip": "Amount: $   "
+  },
+  {
+    "page": 5,
+    "name": "T250[0]",
+    "fullName": "T250[0]",
+    "type": "/Tx",
+    "rect": [
+      471.609,
+      531.973,
+      573.95,
+      542.974
+    ],
+    "tooltip": "Due date:    "
+  },
+  {
+    "page": 5,
+    "name": "T341[0]",
+    "fullName": "T341[0]",
+    "type": "/Tx",
+    "rect": [
+      96.316,
+      514.707,
+      212.593,
+      525.708
+    ],
+    "tooltip": "Pay to:   "
+  },
+  {
+    "page": 5,
+    "name": "T344[0]",
+    "fullName": "T344[0]",
+    "type": "/Tx",
+    "rect": [
+      239.838,
+      514.707,
+      309.263,
+      525.708
+    ],
+    "tooltip": "For:   "
+  },
+  {
+    "page": 5,
+    "name": "T347[0]",
+    "fullName": "T347[0]",
+    "type": "/Tx",
+    "rect": [
+      364.122,
+      514.707,
+      420.42,
+      525.708
+    ],
+    "tooltip": "Amount: $   "
+  },
+  {
+    "page": 5,
+    "name": "T350[0]",
+    "fullName": "T350[0]",
+    "type": "/Tx",
+    "rect": [
+      472.04,
+      514.707,
+      574.381,
+      525.708
+    ],
+    "tooltip": "Due date:    "
+  },
+  {
+    "page": 5,
+    "name": "T441[0]",
+    "fullName": "T441[0]",
+    "type": "/Tx",
+    "rect": [
+      96.316,
+      498.176,
+      212.593,
+      509.177
+    ],
+    "tooltip": "Pay to:   "
+  },
+  {
+    "page": 5,
+    "name": "T444[0]",
+    "fullName": "T444[0]",
+    "type": "/Tx",
+    "rect": [
+      239.716,
+      498.176,
+      309.141,
+      509.177
+    ],
+    "tooltip": "For:   "
+  },
+  {
+    "page": 5,
+    "name": "T447[0]",
+    "fullName": "T447[0]",
+    "type": "/Tx",
+    "rect": [
+      363.507,
+      498.176,
+      420.298,
+      509.177
+    ],
+    "tooltip": "Amount: $   "
+  },
+  {
+    "page": 5,
+    "name": "T450[0]",
+    "fullName": "T450[0]",
+    "type": "/Tx",
+    "rect": [
+      471.918,
+      498.176,
+      574.259,
+      509.177
+    ],
+    "tooltip": "Due date:    "
+  },
+  {
+    "page": 5,
+    "name": "FieldName_cb[0]",
+    "fullName": "FieldName_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      63.0,
+      261.566,
+      72.0,
+      270.566
+    ],
+    "tooltip": "Attached Pages (All of the attached pages are part of this order.)"
+  },
+  {
+    "page": 5,
+    "name": "NumberOfAttachedPages_ft[0]",
+    "fullName": "NumberOfAttachedPages_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      307.772,
+      240.859,
+      395.164,
+      255.259
+    ],
+    "tooltip": "Number of pages attached to this nine-page form:"
+  },
+  {
+    "page": 5,
+    "name": "FieldName_cb1[0]",
+    "fullName": "FieldName_cb1[0]",
+    "type": "/Btn",
+    "rect": [
+      78.48,
+      212.364,
+      87.48,
+      221.364
+    ],
+    "tooltip": "DV-140"
+  },
+  {
+    "page": 5,
+    "name": "FieldName_cb2[0]",
+    "fullName": "FieldName_cb2[0]",
+    "type": "/Btn",
+    "rect": [
+      149.148,
+      211.814,
+      158.148,
+      220.814
+    ],
+    "tooltip": "DV-145"
+  },
+  {
+    "page": 5,
+    "name": "FieldName_cb3[0]",
+    "fullName": "FieldName_cb3[0]",
+    "type": "/Btn",
+    "rect": [
+      219.175,
+      211.814,
+      228.175,
+      220.814
+    ],
+    "tooltip": "DV-820"
+  },
+  {
+    "page": 5,
+    "name": "AGHagueCert_cb[0]",
+    "fullName": "AGHagueCert_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      290.313,
+      212.279,
+      299.313,
+      221.279
+    ],
+    "tooltip": "Other:"
+  },
+  {
+    "page": 5,
+    "name": "TextField2[0]",
+    "fullName": "TextField2[0]",
+    "type": "/Tx",
+    "rect": [
+      337.564,
+      210.815,
+      575.439,
+      222.814
+    ],
+    "tooltip": "other"
+  },
+  {
+    "page": 5,
+    "name": "SigDate[0]",
+    "fullName": "SigDate[0]",
+    "type": "/Tx",
+    "rect": [
+      61.203,
+      139.309,
+      169.203,
+      150.31
+    ],
+    "tooltip": "Date:"
+  },
+  {
+    "page": 6,
+    "name": "CaseNumber[0]",
+    "fullName": "CaseNumber[0]",
+    "type": "/Tx",
+    "rect": [
+      398.88,
+      729.0,
+      573.12,
+      743.642
+    ],
+    "tooltip": "Case Number:"
+  },
+  {
+    "page": 7,
+    "name": "CaseNumber[0]",
+    "fullName": "CaseNumber[0]",
+    "type": "/Tx",
+    "rect": [
+      398.88,
+      729.0,
+      573.12,
+      743.642
+    ],
+    "tooltip": "Case Number:"
+  },
+  {
+    "page": 8,
+    "name": "Warning[0]",
+    "fullName": "Warning[0]",
+    "type": "/Btn",
+    "rect": [
+      36.045,
+      9.536,
+      247.339,
+      32.715
+    ],
+    "tooltip": "For your protection and privacy, please press the Clear This Form button after you have printed the form."
+  },
+  {
+    "page": 8,
+    "name": "Print[0]",
+    "fullName": "Print[0]",
+    "type": "/Btn",
+    "rect": [
+      258.735,
+      9.536,
+      339.735,
+      26.544
+    ],
+    "tooltip": "Print this form"
+  },
+  {
+    "page": 8,
+    "name": "Save[0]",
+    "fullName": "Save[0]",
+    "type": "/Btn",
+    "rect": [
+      345.274,
+      9.536,
+      426.379,
+      26.544
+    ],
+    "tooltip": "Save this form"
+  },
+  {
+    "page": 8,
+    "name": "Reset[0]",
+    "fullName": "Reset[0]",
+    "type": "/Btn",
+    "rect": [
+      494.963,
+      9.536,
+      575.96,
+      26.544
+    ],
+    "tooltip": "Clear this form"
+  },
+  {
+    "page": 8,
+    "name": "T57[0]",
+    "fullName": "T57[0]",
+    "type": "/Tx",
+    "rect": [
+      195.268,
+      149.295,
+      292.022,
+      163.695
+    ],
+    "tooltip": " Date:"
+  },
+  {
+    "page": 8,
+    "name": "T154[0]",
+    "fullName": "T154[0]",
+    "type": "/Tx",
+    "rect": [
+      342.883,
+      149.15,
+      509.691,
+      163.55
+    ],
+    "tooltip": "name of clerk."
+  },
+  {
+    "page": 8,
+    "name": "CaseNumber[0]",
+    "fullName": "CaseNumber[0]",
+    "type": "/Tx",
+    "rect": [
+      398.88,
+      729.0,
+      573.12,
+      743.642
+    ],
+    "tooltip": "Case Number:"
+  }
+]

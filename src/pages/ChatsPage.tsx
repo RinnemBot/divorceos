@@ -46,9 +46,9 @@ const chatTools = [
   { icon: Paperclip, title: 'Upload documents', body: 'Attach PDFs, images, DOCX, TXT, CSV, JSON, Markdown, and HEIC photos for Maria to review.' },
   { icon: Mic, title: 'Voice mode', body: 'Use speech input and voice replies when typing is not the easiest path.' },
   { icon: BookOpenText, title: 'Prompt library', body: 'Quick-start common California divorce questions, forms, hearings, support, and settlement prompts.' },
-  { icon: Pin, title: 'Pinned chats', body: 'Coming next: pin important conversations and group them by case or issue.' },
-  { icon: FolderPlus, title: 'Case folders', body: 'Coming next: shared case context and uploads across multiple chats.' },
-  { icon: Globe2, title: 'Research mode', body: 'Coming next: one-question web research for court pages, forms, and county filing updates.' },
+  { icon: Pin, title: 'Saved chat context', body: 'Sign in to save conversations, keep history, and send important chat context into Draft Forms.' },
+  { icon: FolderPlus, title: 'Case folders', body: 'Signed-in users can group Saved Files and chat sessions into case folders for cleaner context.' },
+  { icon: Globe2, title: 'Court-page research prompts', body: 'Use the prompt library to ask Maria what to verify on official court pages before filing.' },
 ];
 
 export function ChatsPage({ currentUser, onAuthSuccess }: ChatsPageProps) {
@@ -287,7 +287,7 @@ export function ChatsPage({ currentUser, onAuthSuccess }: ChatsPageProps) {
                 <div className="rounded-2xl bg-emerald-50 p-4 dark:bg-emerald-400/10">
                   <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700 dark:text-emerald-300">Signed in as</p>
                   <p className="mt-1 font-semibold text-slate-950 dark:text-white">{displayName}</p>
-                  {!currentUser && <p className="mt-2 text-xs">Guest chats work, but sign in to save history and personalize your avatar.</p>}
+                  {!currentUser && <p className="mt-2 text-xs">Sign in to send Maria messages, save history, and keep your case context together.</p>}
                 </div>
                 {!currentUser && (
                   <Button onClick={() => setShowAuthModal(true)} className="w-full rounded-full bg-emerald-700 text-white hover:bg-emerald-800">
@@ -434,10 +434,10 @@ export function ChatsPage({ currentUser, onAuthSuccess }: ChatsPageProps) {
               </CardHeader>
               <CardContent className="grid gap-2 text-sm">
                 {[
-                  ['Formal tone', 'Coming soon'],
-                  ['Internet research', 'Coming soon'],
-                  ['Auto-delete history', 'Coming soon'],
-                  ['Pin this chat', 'Coming soon'],
+                  ['Saved history', currentUser ? 'Active' : 'Sign in'],
+                  ['Case folders', currentUser ? 'Active' : 'Sign in'],
+                  ['Document context', currentUser ? 'Available' : 'Sign in'],
+                  ['Quick prompts', 'Active'],
                 ].map(([label, status]) => (
                   <div key={label} className="flex items-center justify-between rounded-2xl border border-slate-200 bg-white/70 px-3 py-2 dark:border-white/10 dark:bg-white/5">
                     <span className="text-slate-700 dark:text-slate-200">{label}</span>

@@ -1,0 +1,2927 @@
+[
+  {
+    "page": 0,
+    "name": "Button1[0]",
+    "fullName": "Button1[0]",
+    "type": "/Btn",
+    "rect": [
+      114.08,
+      53.286,
+      164.48,
+      62.887
+    ],
+    "tooltip": "COURTS DOT CA DOT GOV"
+  },
+  {
+    "page": 0,
+    "name": "CaseNumber_ft[0]",
+    "fullName": "CaseNumber_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      399.617,
+      725.511,
+      573.857,
+      742.539
+    ],
+    "tooltip": "Case Number"
+  },
+  {
+    "page": 0,
+    "name": "DV140_cb[0]",
+    "fullName": "DV140_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      217.65,
+      688.856,
+      226.65,
+      697.856
+    ],
+    "tooltip": "Form DV-110"
+  },
+  {
+    "page": 0,
+    "name": "DV140_cb[1]",
+    "fullName": "DV140_cb[1]",
+    "type": "/Btn",
+    "rect": [
+      310.127,
+      688.856,
+      319.127,
+      697.856
+    ],
+    "tooltip": "Form DV-130"
+  },
+  {
+    "page": 0,
+    "name": "FullName_ft[0]",
+    "fullName": "FullName_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      220.062,
+      638.728,
+      575.119,
+      654.412
+    ],
+    "tooltip": "Name of Protected Person:"
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxRightCaptionitem1[0]",
+    "fullName": "CheckBoxRightCaptionitem1[0]",
+    "type": "/Btn",
+    "rect": [
+      179.6,
+      622.783,
+      188.6,
+      631.783
+    ],
+    "tooltip": "Parent"
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxRightCaptionitem1[1]",
+    "fullName": "CheckBoxRightCaptionitem1[1]",
+    "type": "/Btn",
+    "rect": [
+      234.802,
+      622.783,
+      243.802,
+      631.783
+    ],
+    "tooltip": "Legal Guardian"
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxRightCaptionitem1[2]",
+    "fullName": "CheckBoxRightCaptionitem1[2]",
+    "type": "/Btn",
+    "rect": [
+      327.342,
+      622.783,
+      336.342,
+      631.783
+    ],
+    "tooltip": "Other (describe):"
+  },
+  {
+    "page": 0,
+    "name": "TextField[0]",
+    "fullName": "TextField[0]",
+    "type": "/Tx",
+    "rect": [
+      421.115,
+      616.782,
+      575.118,
+      631.783
+    ],
+    "tooltip": "describe other"
+  },
+  {
+    "page": 0,
+    "name": "FullName_ft1[0]",
+    "fullName": "FullName_ft1[0]",
+    "type": "/Tx",
+    "rect": [
+      226.73,
+      547.761,
+      576.0,
+      563.445
+    ],
+    "tooltip": "Name of Restrained Person:"
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxRightCaptionitemitem2[0]",
+    "fullName": "CheckBoxRightCaptionitemitem2[0]",
+    "type": "/Btn",
+    "rect": [
+      179.09,
+      532.619,
+      188.09,
+      541.619
+    ],
+    "tooltip": "Parent"
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxRightCaptionitem2[0]",
+    "fullName": "CheckBoxRightCaptionitem2[0]",
+    "type": "/Btn",
+    "rect": [
+      234.292,
+      532.619,
+      243.292,
+      541.619
+    ],
+    "tooltip": "Legal Guardian"
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxRightCaptionitem2[1]",
+    "fullName": "CheckBoxRightCaptionitem2[1]",
+    "type": "/Btn",
+    "rect": [
+      326.832,
+      532.619,
+      335.832,
+      541.619
+    ],
+    "tooltip": "Other (describe):"
+  },
+  {
+    "page": 0,
+    "name": "TextField[0]",
+    "fullName": "TextField[0]",
+    "type": "/Tx",
+    "rect": [
+      420.605,
+      529.002,
+      575.595,
+      541.619
+    ],
+    "tooltip": "describe other"
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxRightCaption[0]",
+    "fullName": "CheckBoxRightCaption[0]",
+    "type": "/Btn",
+    "rect": [
+      63.615,
+      464.854,
+      72.615,
+      473.854
+    ],
+    "tooltip": "Children Under 18 Years Old"
+  },
+  {
+    "page": 0,
+    "name": "TextField2[0]",
+    "fullName": "TextField2[0]",
+    "type": "/Tx",
+    "rect": [
+      111.055,
+      443.883,
+      368.189,
+      458.212
+    ],
+    "tooltip": "Name:"
+  },
+  {
+    "page": 0,
+    "name": "TextField34[0]",
+    "fullName": "TextField34[0]",
+    "type": "/Tx",
+    "rect": [
+      441.333,
+      443.883,
+      575.997,
+      457.356
+    ],
+    "tooltip": "Date of birth:"
+  },
+  {
+    "page": 0,
+    "name": "TextField2[0]",
+    "fullName": "TextField2[0]",
+    "type": "/Tx",
+    "rect": [
+      111.055,
+      426.768,
+      368.189,
+      441.097
+    ],
+    "tooltip": "Name:"
+  },
+  {
+    "page": 0,
+    "name": "TextField35[0]",
+    "fullName": "TextField35[0]",
+    "type": "/Tx",
+    "rect": [
+      441.333,
+      426.768,
+      575.997,
+      441.769
+    ],
+    "tooltip": "Date of birth:"
+  },
+  {
+    "page": 0,
+    "name": "TextField2[0]",
+    "fullName": "TextField2[0]",
+    "type": "/Tx",
+    "rect": [
+      111.055,
+      409.105,
+      368.189,
+      423.434
+    ],
+    "tooltip": "Name:"
+  },
+  {
+    "page": 0,
+    "name": "TextField36[0]",
+    "fullName": "TextField36[0]",
+    "type": "/Tx",
+    "rect": [
+      441.333,
+      409.105,
+      575.997,
+      424.106
+    ],
+    "tooltip": "Date of birth:"
+  },
+  {
+    "page": 0,
+    "name": "TextField2[0]",
+    "fullName": "TextField2[0]",
+    "type": "/Tx",
+    "rect": [
+      111.055,
+      390.864,
+      368.189,
+      405.193
+    ],
+    "tooltip": "Name:"
+  },
+  {
+    "page": 0,
+    "name": "TextField37[0]",
+    "fullName": "TextField37[0]",
+    "type": "/Tx",
+    "rect": [
+      441.333,
+      390.867,
+      575.997,
+      405.868
+    ],
+    "tooltip": "Date of birth:"
+  },
+  {
+    "page": 0,
+    "name": "MultilineCheckBox[0]",
+    "fullName": "MultilineCheckBox[0]",
+    "type": "/Btn",
+    "rect": [
+      63.615,
+      376.192,
+      72.615,
+      385.192
+    ],
+    "tooltip": "(Check here if you have more children to list. On a separate piece of paper write \u201cDV-140, Children\u201d at the top\nand attach it to this form.)"
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxRightCaption[0]",
+    "fullName": "CheckBoxRightCaption[0]",
+    "type": "/Btn",
+    "rect": [
+      62.938,
+      289.837,
+      71.938,
+      298.837
+    ],
+    "tooltip": "No Travel With Children Without Permission"
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxRightCaption1[0]",
+    "fullName": "CheckBoxRightCaption1[0]",
+    "type": "/Btn",
+    "rect": [
+      63.252,
+      264.566,
+      72.252,
+      273.566
+    ],
+    "tooltip": "Person in"
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxRightCaption2[0]",
+    "fullName": "CheckBoxRightCaption2[0]",
+    "type": "/Btn",
+    "rect": [
+      161.045,
+      264.41,
+      170.045,
+      273.41
+    ],
+    "tooltip": "Person in"
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxRightCaption3[0]",
+    "fullName": "CheckBoxRightCaption3[0]",
+    "type": "/Btn",
+    "rect": [
+      265.011,
+      264.109,
+      274.011,
+      273.109
+    ],
+    "tooltip": "Other"
+  },
+  {
+    "page": 0,
+    "name": "TextField2[0]",
+    "fullName": "TextField2[0]",
+    "type": "/Tx",
+    "rect": [
+      344.623,
+      261.641,
+      574.659,
+      273.742
+    ],
+    "tooltip": "(name)"
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxRightCaption[0]",
+    "fullName": "CheckBoxRightCaption[0]",
+    "type": "/Btn",
+    "rect": [
+      78.307,
+      224.274,
+      87.307,
+      233.274
+    ],
+    "tooltip": "County of (list):"
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxRightCaption[0]",
+    "fullName": "CheckBoxRightCaption[0]",
+    "type": "/Btn",
+    "rect": [
+      78.307,
+      205.047,
+      87.307,
+      214.047
+    ],
+    "tooltip": "State of California"
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxRightCaption[0]",
+    "fullName": "CheckBoxRightCaption[0]",
+    "type": "/Btn",
+    "rect": [
+      78.607,
+      184.943,
+      87.607,
+      193.943
+    ],
+    "tooltip": "United States"
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxRightCaption[0]",
+    "fullName": "CheckBoxRightCaption[0]",
+    "type": "/Btn",
+    "rect": [
+      78.48,
+      163.627,
+      87.48,
+      172.627
+    ],
+    "tooltip": "Other places"
+  },
+  {
+    "page": 0,
+    "name": "TextField2[0]",
+    "fullName": "TextField2[0]",
+    "type": "/Tx",
+    "rect": [
+      185.512,
+      160.821,
+      549.788,
+      172.922
+    ],
+    "tooltip": "Other place(s) (list):"
+  },
+  {
+    "page": 0,
+    "name": "TextField[0]",
+    "fullName": "TextField[0]",
+    "type": "/Tx",
+    "rect": [
+      166.663,
+      220.94,
+      549.893,
+      233.6
+    ],
+    "tooltip": "County of (list):"
+  },
+  {
+    "page": 0,
+    "name": "DV140_cb[2]",
+    "fullName": "DV140_cb[2]",
+    "type": "/Btn",
+    "rect": [
+      403.693,
+      688.49,
+      412.693,
+      697.49
+    ],
+    "tooltip": "Form DV-310"
+  },
+  {
+    "page": 1,
+    "name": "CaseNumber_ft[0]",
+    "fullName": "CaseNumber_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      399.945,
+      729.332,
+      572.745,
+      741.428
+    ],
+    "tooltip": "Case Number"
+  },
+  {
+    "page": 1,
+    "name": "CheckBoxRightCaption[0]",
+    "fullName": "CheckBoxRightCaption[0]",
+    "type": "/Btn",
+    "rect": [
+      64.19,
+      685.843,
+      73.19,
+      694.843
+    ],
+    "tooltip": "Stop Access to Children's School, Health, and Other Information "
+  },
+  {
+    "page": 1,
+    "name": "TextField[0]",
+    "fullName": "TextField[0]",
+    "type": "/Tx",
+    "rect": [
+      262.266,
+      628.276,
+      576.401,
+      643.277
+    ],
+    "tooltip": "Only the children listed here (names):"
+  },
+  {
+    "page": 1,
+    "name": "CheckBoxRightCaptionitem5a[0]",
+    "fullName": "CheckBoxRightCaptionitem5a[0]",
+    "type": "/Btn",
+    "rect": [
+      79.06,
+      648.901,
+      88.06,
+      657.901
+    ],
+    "tooltip": "All the children listed in 3."
+  },
+  {
+    "page": 1,
+    "name": "CheckBoxRightCaptionitem5a[1]",
+    "fullName": "CheckBoxRightCaptionitem5a[1]",
+    "type": "/Btn",
+    "rect": [
+      78.893,
+      634.277,
+      87.893,
+      643.277
+    ],
+    "tooltip": "Only the children listed here (names):"
+  },
+  {
+    "page": 1,
+    "name": "CheckBoxRightCaption[0]",
+    "fullName": "CheckBoxRightCaption[0]",
+    "type": "/Btn",
+    "rect": [
+      78.831,
+      589.7,
+      87.831,
+      598.7
+    ],
+    "tooltip": "Medical, dental, and mental health providers"
+  },
+  {
+    "page": 1,
+    "name": "CheckBoxRightCaption1[0]",
+    "fullName": "CheckBoxRightCaption1[0]",
+    "type": "/Btn",
+    "rect": [
+      78.831,
+      573.03,
+      87.831,
+      582.03
+    ],
+    "tooltip": "School and daycare providers"
+  },
+  {
+    "page": 1,
+    "name": "MultilineCheckBox[0]",
+    "fullName": "MultilineCheckBox[0]",
+    "type": "/Btn",
+    "rect": [
+      78.641,
+      556.305,
+      87.641,
+      565.305
+    ],
+    "tooltip": "Extracurricular activity providers (including\n summer camps and sports teams)"
+  },
+  {
+    "page": 1,
+    "name": "MultilineCheckBox[1]",
+    "fullName": "MultilineCheckBox[1]",
+    "type": "/Btn",
+    "rect": [
+      322.16,
+      589.842,
+      331.16,
+      598.842
+    ],
+    "tooltip": "Child\u2019s employers (including volunteer and\nunpaid positions)"
+  },
+  {
+    "page": 1,
+    "name": "CheckBoxRightCaption4[0]",
+    "fullName": "CheckBoxRightCaption4[0]",
+    "type": "/Btn",
+    "rect": [
+      322.16,
+      556.305,
+      331.16,
+      565.305
+    ],
+    "tooltip": "Other (describe): "
+  },
+  {
+    "page": 1,
+    "name": "TextField[0]",
+    "fullName": "TextField[0]",
+    "type": "/Tx",
+    "rect": [
+      322.063,
+      539.844,
+      556.899,
+      553.025
+    ],
+    "tooltip": "describe other"
+  },
+  {
+    "page": 1,
+    "name": "CheckBoxRightCaption[0]",
+    "fullName": "CheckBoxRightCaption[0]",
+    "type": "/Btn",
+    "rect": [
+      64.729,
+      442.234,
+      73.729,
+      451.234
+    ],
+    "tooltip": "Judge's Decision on Request for Orders to Prevent Child Abduction (attach form DV-145)"
+  },
+  {
+    "page": 1,
+    "name": "CheckBoxRightCaption[0]",
+    "fullName": "CheckBoxRightCaption[0]",
+    "type": "/Btn",
+    "rect": [
+      63.788,
+      382.626,
+      72.788,
+      391.626
+    ],
+    "tooltip": "Child Custody "
+  },
+  {
+    "page": 1,
+    "name": "CheckBoxRightCaptionitem7a[0]",
+    "fullName": "CheckBoxRightCaptionitem7a[0]",
+    "type": "/Btn",
+    "rect": [
+      80.269,
+      345.226,
+      89.269,
+      354.226
+    ],
+    "tooltip": "Sole to Person in"
+  },
+  {
+    "page": 1,
+    "name": "CheckBoxRightCaptionitem7a[1]",
+    "fullName": "CheckBoxRightCaptionitem7a[1]",
+    "type": "/Btn",
+    "rect": [
+      226.911,
+      344.747,
+      235.911,
+      353.747
+    ],
+    "tooltip": "Jointly (shared) by persons in 1 and 2."
+  },
+  {
+    "page": 1,
+    "name": "CheckBoxRightCaptionitem7a[2]",
+    "fullName": "CheckBoxRightCaptionitem7a[2]",
+    "type": "/Btn",
+    "rect": [
+      80.269,
+      330.319,
+      89.269,
+      339.319
+    ],
+    "tooltip": "Sole to Person in"
+  },
+  {
+    "page": 1,
+    "name": "CheckBoxRightCaptionitem7a[3]",
+    "fullName": "CheckBoxRightCaptionitem7a[3]",
+    "type": "/Btn",
+    "rect": [
+      226.548,
+      329.429,
+      235.548,
+      338.429
+    ],
+    "tooltip": "Other (describe):"
+  },
+  {
+    "page": 1,
+    "name": "TextField[0]",
+    "fullName": "TextField[0]",
+    "type": "/Tx",
+    "rect": [
+      318.98,
+      323.428,
+      575.856,
+      338.429
+    ],
+    "tooltip": "Other (describe):"
+  },
+  {
+    "page": 1,
+    "name": "CheckBoxRightCaptionitem7b[0]",
+    "fullName": "CheckBoxRightCaptionitem7b[0]",
+    "type": "/Btn",
+    "rect": [
+      79.489,
+      285.143,
+      88.489,
+      294.143
+    ],
+    "tooltip": "Sole to Person in"
+  },
+  {
+    "page": 1,
+    "name": "CheckBoxRightCaptionitem7b[1]",
+    "fullName": "CheckBoxRightCaptionitem7b[1]",
+    "type": "/Btn",
+    "rect": [
+      225.768,
+      285.143,
+      234.768,
+      294.143
+    ],
+    "tooltip": "Jointly (shared) by persons in 1 and 2."
+  },
+  {
+    "page": 1,
+    "name": "CheckBoxRightCaptionitem7b[2]",
+    "fullName": "CheckBoxRightCaptionitem7b[2]",
+    "type": "/Btn",
+    "rect": [
+      79.489,
+      270.746,
+      88.489,
+      279.746
+    ],
+    "tooltip": "Sole to Person in"
+  },
+  {
+    "page": 1,
+    "name": "CheckBoxRightCaptionitem7b[3]",
+    "fullName": "CheckBoxRightCaptionitem7b[3]",
+    "type": "/Btn",
+    "rect": [
+      225.768,
+      269.855,
+      234.768,
+      278.855
+    ],
+    "tooltip": "Other (describe):"
+  },
+  {
+    "page": 1,
+    "name": "TextField[0]",
+    "fullName": "TextField[0]",
+    "type": "/Tx",
+    "rect": [
+      317.072,
+      263.854,
+      573.925,
+      278.855
+    ],
+    "tooltip": "Other (describe):"
+  },
+  {
+    "page": 1,
+    "name": "MultilineCheckBox[0]",
+    "fullName": "MultilineCheckBox[0]",
+    "type": "/Btn",
+    "rect": [
+      63.441,
+      177.718,
+      72.441,
+      186.718
+    ],
+    "tooltip": "Person in 2 must have no visitation with the children in 3 until further order of \rthe court."
+  },
+  {
+    "page": 2,
+    "name": "CaseNumber_ft[0]",
+    "fullName": "CaseNumber_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      400.005,
+      729.21,
+      572.805,
+      740.524
+    ],
+    "tooltip": "Case Number"
+  },
+  {
+    "page": 2,
+    "name": "CheckBoxRightCaption[0]",
+    "fullName": "CheckBoxRightCaption[0]",
+    "type": "/Btn",
+    "rect": [
+      63.26,
+      682.155,
+      72.26,
+      691.155
+    ],
+    "tooltip": "Professional Supervised (Monitored) Visits With Children"
+  },
+  {
+    "page": 2,
+    "name": "CheckBoxRightCaption1[0]",
+    "fullName": "CheckBoxRightCaption1[0]",
+    "type": "/Btn",
+    "rect": [
+      193.368,
+      652.252,
+      202.368,
+      661.252
+    ],
+    "tooltip": "Person in"
+  },
+  {
+    "page": 2,
+    "name": "CheckBoxRightCaption11[0]",
+    "fullName": "CheckBoxRightCaption11[0]",
+    "type": "/Btn",
+    "rect": [
+      280.445,
+      652.606,
+      289.445,
+      661.606
+    ],
+    "tooltip": "Person in"
+  },
+  {
+    "page": 2,
+    "name": "DateField1[0]",
+    "fullName": "DateField1[0]",
+    "type": "/Tx",
+    "rect": [
+      351.065,
+      493.979,
+      576.402,
+      506.528
+    ],
+    "tooltip": "Person in 1 must contact chosen provider by (date):"
+  },
+  {
+    "page": 2,
+    "name": "DateField2[0]",
+    "fullName": "DateField2[0]",
+    "type": "/Tx",
+    "rect": [
+      351.065,
+      478.377,
+      576.402,
+      491.241
+    ],
+    "tooltip": "Person in 2 must contact chosen provider by (date):"
+  },
+  {
+    "page": 2,
+    "name": "phonetf[0]",
+    "fullName": "phonetf[0]",
+    "type": "/Tx",
+    "rect": [
+      466.081,
+      598.864,
+      573.463,
+      613.95
+    ],
+    "tooltip": "Telephone:"
+  },
+  {
+    "page": 2,
+    "name": "addresstf[0]",
+    "fullName": "addresstf[0]",
+    "type": "/Tx",
+    "rect": [
+      201.261,
+      581.759,
+      574.432,
+      596.76
+    ],
+    "tooltip": "Address (if known):"
+  },
+  {
+    "page": 2,
+    "name": "TextField[0]",
+    "fullName": "TextField[0]",
+    "type": "/Tx",
+    "rect": [
+      189.841,
+      601.418,
+      413.327,
+      614.409
+    ],
+    "tooltip": "Chosen provider:"
+  },
+  {
+    "page": 2,
+    "name": "CheckBoxRightCaption[0]",
+    "fullName": "CheckBoxRightCaption[0]",
+    "type": "/Btn",
+    "rect": [
+      99.175,
+      605.409,
+      108.175,
+      614.409
+    ],
+    "tooltip": "Chosen provider:"
+  },
+  {
+    "page": 2,
+    "name": "tf1[0]",
+    "fullName": "tf1[0]",
+    "type": "/Tx",
+    "rect": [
+      198.876,
+      536.277,
+      411.234,
+      547.276
+    ],
+    "tooltip": "Alternate provider:"
+  },
+  {
+    "page": 2,
+    "name": "phonetf1[0]",
+    "fullName": "phonetf1[0]",
+    "type": "/Tx",
+    "rect": [
+      465.359,
+      533.607,
+      573.109,
+      548.693
+    ],
+    "tooltip": "Telephone:"
+  },
+  {
+    "page": 2,
+    "name": "addresstf1[0]",
+    "fullName": "addresstf1[0]",
+    "type": "/Tx",
+    "rect": [
+      201.261,
+      519.25,
+      574.432,
+      534.251
+    ],
+    "tooltip": "Address (if known):"
+  },
+  {
+    "page": 2,
+    "name": "CheckBoxitem9b2person[0]",
+    "fullName": "CheckBoxitem9b2person[0]",
+    "type": "/Btn",
+    "rect": [
+      212.612,
+      420.732,
+      221.612,
+      429.732
+    ],
+    "tooltip": "Person in   "
+  },
+  {
+    "page": 2,
+    "name": "CheckBoxitem9b2person2[0]",
+    "fullName": "CheckBoxitem9b2person2[0]",
+    "type": "/Btn",
+    "rect": [
+      302.476,
+      421.245,
+      311.476,
+      430.245
+    ],
+    "tooltip": "Person in   "
+  },
+  {
+    "page": 2,
+    "name": "item9b2[0]",
+    "fullName": "item9b2[0]",
+    "type": "/Btn",
+    "rect": [
+      112.892,
+      434.621,
+      121.892,
+      443.621
+    ],
+    "tooltip": "is attached to this order."
+  },
+  {
+    "page": 2,
+    "name": "item9b2[1]",
+    "fullName": "item9b2[1]",
+    "type": "/Btn",
+    "rect": [
+      112.892,
+      421.248,
+      121.892,
+      430.248
+    ],
+    "tooltip": "given in court to"
+  },
+  {
+    "page": 2,
+    "name": "CheckBoxitem9b2person3[0]",
+    "fullName": "CheckBoxitem9b2person3[0]",
+    "type": "/Btn",
+    "rect": [
+      99.206,
+      405.257,
+      108.206,
+      414.257
+    ],
+    "tooltip": "Person in   "
+  },
+  {
+    "page": 2,
+    "name": "CheckBoxitem9b2person4[0]",
+    "fullName": "CheckBoxitem9b2person4[0]",
+    "type": "/Btn",
+    "rect": [
+      182.638,
+      405.257,
+      191.638,
+      414.257
+    ],
+    "tooltip": "Person in   "
+  },
+  {
+    "page": 2,
+    "name": "addresstf[0]",
+    "fullName": "addresstf[0]",
+    "type": "/Tx",
+    "rect": [
+      463.498,
+      402.355,
+      572.546,
+      414.586
+    ],
+    "tooltip": "(date):"
+  },
+  {
+    "page": 2,
+    "name": "CheckBoxRightCaption[0]",
+    "fullName": "CheckBoxRightCaption[0]",
+    "type": "/Btn",
+    "rect": [
+      98.795,
+      450.226,
+      107.795,
+      459.226
+    ],
+    "tooltip": "A list of providers (check one):"
+  },
+  {
+    "page": 2,
+    "name": "item9b3[0]",
+    "fullName": "item9b3[0]",
+    "type": "/Tx",
+    "rect": [
+      144.53,
+      367.314,
+      575.198,
+      380.696
+    ],
+    "tooltip": "Other"
+  },
+  {
+    "page": 2,
+    "name": "item9b3cont[0]",
+    "fullName": "item9b3cont[0]",
+    "type": "/Tx",
+    "rect": [
+      98.455,
+      351.113,
+      575.492,
+      366.114
+    ],
+    "tooltip": "Other"
+  },
+  {
+    "page": 2,
+    "name": "CheckBoxRightCaption[0]",
+    "fullName": "CheckBoxRightCaption[0]",
+    "type": "/Btn",
+    "rect": [
+      98.795,
+      372.294,
+      107.795,
+      381.294
+    ],
+    "tooltip": "Other:"
+  },
+  {
+    "page": 2,
+    "name": "CheckBoxitem9c[0]",
+    "fullName": "CheckBoxitem9c[0]",
+    "type": "/Btn",
+    "rect": [
+      79.429,
+      302.987,
+      88.429,
+      311.987
+    ],
+    "tooltip": "Once a week, for (number of hours): "
+  },
+  {
+    "page": 2,
+    "name": "DecimalField1[0]",
+    "fullName": "DecimalField1[0]",
+    "type": "/Tx",
+    "rect": [
+      261.646,
+      296.986,
+      312.811,
+      311.987
+    ],
+    "tooltip": "number of hours"
+  },
+  {
+    "page": 2,
+    "name": "CheckBoxitem9c[1]",
+    "fullName": "CheckBoxitem9c[1]",
+    "type": "/Btn",
+    "rect": [
+      79.429,
+      285.362,
+      88.429,
+      294.362
+    ],
+    "tooltip": "Twice a week, for (number of hours): "
+  },
+  {
+    "page": 2,
+    "name": "DecimalField2[0]",
+    "fullName": "DecimalField2[0]",
+    "type": "/Tx",
+    "rect": [
+      261.646,
+      279.361,
+      313.021,
+      294.362
+    ],
+    "tooltip": "number of hours"
+  },
+  {
+    "page": 2,
+    "name": "CheckBoxitem9c[2]",
+    "fullName": "CheckBoxitem9c[2]",
+    "type": "/Btn",
+    "rect": [
+      79.486,
+      269.136,
+      88.486,
+      278.136
+    ],
+    "tooltip": "Other (describe): "
+  },
+  {
+    "page": 2,
+    "name": "TextField3[0]",
+    "fullName": "TextField3[0]",
+    "type": "/Tx",
+    "rect": [
+      174.16,
+      263.135,
+      575.894,
+      278.136
+    ],
+    "tooltip": "Other (describe):  "
+  },
+  {
+    "page": 2,
+    "name": "NumericField3[0]",
+    "fullName": "NumericField3[0]",
+    "type": "/Tx",
+    "rect": [
+      204.327,
+      227.52,
+      228.945,
+      243.082
+    ],
+    "tooltip": "%"
+  },
+  {
+    "page": 2,
+    "name": "NumericField31[0]",
+    "fullName": "NumericField31[0]",
+    "type": "/Tx",
+    "rect": [
+      318.22,
+      227.52,
+      342.041,
+      243.082
+    ],
+    "tooltip": "%"
+  },
+  {
+    "page": 2,
+    "name": "TextField2[0]",
+    "fullName": "TextField2[0]",
+    "type": "/Tx",
+    "rect": [
+      396.637,
+      227.52,
+      525.699,
+      243.082
+    ],
+    "tooltip": "Other "
+  },
+  {
+    "page": 2,
+    "name": "NumericField32[0]",
+    "fullName": "NumericField32[0]",
+    "type": "/Tx",
+    "rect": [
+      536.303,
+      227.52,
+      560.921,
+      243.082
+    ],
+    "tooltip": "%"
+  },
+  {
+    "page": 2,
+    "name": "CheckBoxRightCaption[0]",
+    "fullName": "CheckBoxRightCaption[0]",
+    "type": "/Btn",
+    "rect": [
+      78.491,
+      159.718,
+      87.491,
+      168.718
+    ],
+    "tooltip": "Virtual (not in person). (Before a provider is chosen, confirm that the provider offers virtual visits.)"
+  },
+  {
+    "page": 2,
+    "name": "CheckBoxRightCaption[1]",
+    "fullName": "CheckBoxRightCaption[1]",
+    "type": "/Btn",
+    "rect": [
+      78.491,
+      176.332,
+      87.491,
+      185.332
+    ],
+    "tooltip": "In person at a safe location."
+  },
+  {
+    "page": 2,
+    "name": "CheckBoxRightCaption[2]",
+    "fullName": "CheckBoxRightCaption[2]",
+    "type": "/Btn",
+    "rect": [
+      78.491,
+      141.732,
+      87.491,
+      150.732
+    ],
+    "tooltip": "Other:"
+  },
+  {
+    "page": 2,
+    "name": "TextField[0]",
+    "fullName": "TextField[0]",
+    "type": "/Tx",
+    "rect": [
+      126.283,
+      135.731,
+      569.111,
+      150.732
+    ],
+    "tooltip": "Other:"
+  },
+  {
+    "page": 3,
+    "name": "CaseNumber_ft[0]",
+    "fullName": "CaseNumber_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      400.003,
+      729.21,
+      572.803,
+      740.524
+    ],
+    "tooltip": "Case Number"
+  },
+  {
+    "page": 3,
+    "name": "CheckBoxRightCaption[0]",
+    "fullName": "CheckBoxRightCaption[0]",
+    "type": "/Btn",
+    "rect": [
+      64.354,
+      695.849,
+      73.354,
+      704.849
+    ],
+    "tooltip": "Nonprofessional Supervised (Monitored) Visits With Children"
+  },
+  {
+    "page": 3,
+    "name": "item10a[0]",
+    "fullName": "item10a[0]",
+    "type": "/Btn",
+    "rect": [
+      192.328,
+      674.702,
+      201.328,
+      683.702
+    ],
+    "tooltip": "Person in"
+  },
+  {
+    "page": 3,
+    "name": "item10a[1]",
+    "fullName": "item10a[1]",
+    "type": "/Btn",
+    "rect": [
+      280.085,
+      675.056,
+      289.085,
+      684.056
+    ],
+    "tooltip": "Person in"
+  },
+  {
+    "page": 3,
+    "name": "TextField[0]",
+    "fullName": "TextField[0]",
+    "type": "/Tx",
+    "rect": [
+      112.558,
+      628.772,
+      346.101,
+      643.773
+    ],
+    "tooltip": "Name:"
+  },
+  {
+    "page": 3,
+    "name": "TextField1[0]",
+    "fullName": "TextField1[0]",
+    "type": "/Tx",
+    "rect": [
+      447.867,
+      628.823,
+      574.67,
+      643.824
+    ],
+    "tooltip": "Relationship to child:"
+  },
+  {
+    "page": 3,
+    "name": "phonetf[0]",
+    "fullName": "phonetf[0]",
+    "type": "/Tx",
+    "rect": [
+      479.275,
+      612.504,
+      576.399,
+      627.505
+    ],
+    "tooltip": "Telephone (if known):"
+  },
+  {
+    "page": 3,
+    "name": "addresstf[0]",
+    "fullName": "addresstf[0]",
+    "type": "/Tx",
+    "rect": [
+      168.726,
+      611.461,
+      376.579,
+      628.302
+    ],
+    "tooltip": "Address (if known):"
+  },
+  {
+    "page": 3,
+    "name": "CheckBoxitem10c[0]",
+    "fullName": "CheckBoxitem10c[0]",
+    "type": "/Btn",
+    "rect": [
+      79.336,
+      574.124,
+      88.336,
+      583.124
+    ],
+    "tooltip": "Follow the Visitation Plan listed in ."
+  },
+  {
+    "page": 3,
+    "name": "CheckBoxitem10c[1]",
+    "fullName": "CheckBoxitem10c[1]",
+    "type": "/Btn",
+    "rect": [
+      79.336,
+      559.698,
+      88.336,
+      568.698
+    ],
+    "tooltip": "Other schedule (give a detailed schedule): "
+  },
+  {
+    "page": 3,
+    "name": "item10c[0]",
+    "fullName": "item10c[0]",
+    "type": "/Tx",
+    "rect": [
+      283.277,
+      553.697,
+      573.91,
+      568.698
+    ],
+    "tooltip": "Other schedule (give a detailed schedule):  "
+  },
+  {
+    "page": 3,
+    "name": "item10cCont[0]",
+    "fullName": "item10cCont[0]",
+    "type": "/Tx",
+    "rect": [
+      79.112,
+      540.431,
+      573.88,
+      555.432
+    ],
+    "tooltip": "Other schedule (give a detailed schedule):  "
+  },
+  {
+    "page": 3,
+    "name": "CheckBoxRightCaption1[0]",
+    "fullName": "CheckBoxRightCaption1[0]",
+    "type": "/Btn",
+    "rect": [
+      79.217,
+      503.382,
+      88.217,
+      512.382
+    ],
+    "tooltip": "In person at a safe location (give location):"
+  },
+  {
+    "page": 3,
+    "name": "tf1[0]",
+    "fullName": "tf1[0]",
+    "type": "/Tx",
+    "rect": [
+      283.532,
+      497.976,
+      568.312,
+      512.382
+    ],
+    "tooltip": "In person at a safe location (give location):"
+  },
+  {
+    "page": 3,
+    "name": "CheckBoxRightCaption2[0]",
+    "fullName": "CheckBoxRightCaption2[0]",
+    "type": "/Btn",
+    "rect": [
+      79.217,
+      490.371,
+      88.217,
+      499.371
+    ],
+    "tooltip": "Virtual (not in person). (Provider, child, and visiting parent may need access to internet.)"
+  },
+  {
+    "page": 3,
+    "name": "CheckBoxRightCaption3[0]",
+    "fullName": "CheckBoxRightCaption3[0]",
+    "type": "/Btn",
+    "rect": [
+      79.217,
+      477.298,
+      88.217,
+      486.298
+    ],
+    "tooltip": "Other:"
+  },
+  {
+    "page": 3,
+    "name": "TextField[0]",
+    "fullName": "TextField[0]",
+    "type": "/Tx",
+    "rect": [
+      127.009,
+      472.388,
+      569.837,
+      486.298
+    ],
+    "tooltip": "Other:"
+  },
+  {
+    "page": 3,
+    "name": "CheckBoxRightCaption[0]",
+    "fullName": "CheckBoxRightCaption[0]",
+    "type": "/Btn",
+    "rect": [
+      63.402,
+      414.666,
+      72.402,
+      423.666
+    ],
+    "tooltip": "Supervised Exchanges (Drop-Off and Pick-up of Children)"
+  },
+  {
+    "page": 3,
+    "name": "item11a[0]",
+    "fullName": "item11a[0]",
+    "type": "/Btn",
+    "rect": [
+      189.745,
+      373.235,
+      198.745,
+      382.235
+    ],
+    "tooltip": "Person in"
+  },
+  {
+    "page": 3,
+    "name": "item11a[1]",
+    "fullName": "item11a[1]",
+    "type": "/Btn",
+    "rect": [
+      276.823,
+      373.589,
+      285.823,
+      382.589
+    ],
+    "tooltip": "Person in"
+  },
+  {
+    "page": 3,
+    "name": "CheckBox31[0]",
+    "fullName": "CheckBox31[0]",
+    "type": "/Btn",
+    "rect": [
+      101.962,
+      328.086,
+      110.962,
+      337.086
+    ],
+    "tooltip": "Professional Provider"
+  },
+  {
+    "page": 3,
+    "name": "TextField[0]",
+    "fullName": "TextField[0]",
+    "type": "/Tx",
+    "rect": [
+      232.877,
+      308.976,
+      576.107,
+      323.977
+    ],
+    "tooltip": "Name of provider (if known):"
+  },
+  {
+    "page": 3,
+    "name": "phonetf[0]",
+    "fullName": "phonetf[0]",
+    "type": "/Tx",
+    "rect": [
+      201.304,
+      277.897,
+      576.107,
+      292.898
+    ],
+    "tooltip": "Telephone (if known):"
+  },
+  {
+    "page": 3,
+    "name": "addresstf[0]",
+    "fullName": "addresstf[0]",
+    "type": "/Tx",
+    "rect": [
+      190.599,
+      293.975,
+      576.107,
+      308.976
+    ],
+    "tooltip": "Address (if known):"
+  },
+  {
+    "page": 3,
+    "name": "NumericField3[0]",
+    "fullName": "NumericField3[0]",
+    "type": "/Tx",
+    "rect": [
+      226.031,
+      260.569,
+      250.932,
+      276.131
+    ],
+    "tooltip": "%"
+  },
+  {
+    "page": 3,
+    "name": "NumericField31[0]",
+    "fullName": "NumericField31[0]",
+    "type": "/Tx",
+    "rect": [
+      335.443,
+      260.569,
+      360.061,
+      276.131
+    ],
+    "tooltip": "%"
+  },
+  {
+    "page": 3,
+    "name": "TextField2[0]",
+    "fullName": "TextField2[0]",
+    "type": "/Tx",
+    "rect": [
+      413.508,
+      260.569,
+      528.945,
+      276.131
+    ],
+    "tooltip": "Other"
+  },
+  {
+    "page": 3,
+    "name": "NumericField32[0]",
+    "fullName": "NumericField32[0]",
+    "type": "/Tx",
+    "rect": [
+      536.876,
+      260.569,
+      561.494,
+      276.131
+    ],
+    "tooltip": "%"
+  },
+  {
+    "page": 3,
+    "name": "DateField3[0]",
+    "fullName": "DateField3[0]",
+    "type": "/Tx",
+    "rect": [
+      304.957,
+      240.19,
+      576.402,
+      255.253
+    ],
+    "tooltip": "Person in 1 must contact provider by (date):"
+  },
+  {
+    "page": 3,
+    "name": "DateField4[0]",
+    "fullName": "DateField4[0]",
+    "type": "/Tx",
+    "rect": [
+      304.743,
+      224.546,
+      576.402,
+      239.609
+    ],
+    "tooltip": "Person in 2 must contact provider by (date):"
+  },
+  {
+    "page": 3,
+    "name": "CheckBox3[0]",
+    "fullName": "CheckBox3[0]",
+    "type": "/Btn",
+    "rect": [
+      101.962,
+      180.086,
+      110.962,
+      189.086
+    ],
+    "tooltip": "Nonprofessional Provider"
+  },
+  {
+    "page": 3,
+    "name": "TextField[0]",
+    "fullName": "TextField[0]",
+    "type": "/Tx",
+    "rect": [
+      132.307,
+      160.321,
+      360.036,
+      175.322
+    ],
+    "tooltip": "Name:"
+  },
+  {
+    "page": 3,
+    "name": "TextField[1]",
+    "fullName": "TextField[1]",
+    "type": "/Tx",
+    "rect": [
+      468.172,
+      160.321,
+      576.402,
+      175.322
+    ],
+    "tooltip": "Relationship to child:"
+  },
+  {
+    "page": 3,
+    "name": "phonetf[0]",
+    "fullName": "phonetf[0]",
+    "type": "/Tx",
+    "rect": [
+      201.304,
+      128.618,
+      573.057,
+      143.619
+    ],
+    "tooltip": "Telephone (if known):"
+  },
+  {
+    "page": 3,
+    "name": "addresstf[0]",
+    "fullName": "addresstf[0]",
+    "type": "/Tx",
+    "rect": [
+      190.599,
+      144.15,
+      573.057,
+      159.151
+    ],
+    "tooltip": "Address (if known):"
+  },
+  {
+    "page": 3,
+    "name": "TextField[2]",
+    "fullName": "TextField[2]",
+    "type": "/Tx",
+    "rect": [
+      227.621,
+      112.663,
+      573.057,
+      128.225
+    ],
+    "tooltip": "Safe location for exchanges:"
+  },
+  {
+    "page": 4,
+    "name": "CaseNumber_ft[0]",
+    "fullName": "CaseNumber_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      400.003,
+      730.8,
+      572.803,
+      742.114
+    ],
+    "tooltip": "Case Number"
+  },
+  {
+    "page": 4,
+    "name": "CheckBoxRightCaption[0]",
+    "fullName": "CheckBoxRightCaption[0]",
+    "type": "/Btn",
+    "rect": [
+      63.981,
+      702.581,
+      72.981,
+      711.581
+    ],
+    "tooltip": "Visits With No Supervision (Unmonitored)"
+  },
+  {
+    "page": 4,
+    "name": "item12a[0]",
+    "fullName": "item12a[0]",
+    "type": "/Btn",
+    "rect": [
+      79.373,
+      680.553,
+      88.373,
+      689.553
+    ],
+    "tooltip": "Person in"
+  },
+  {
+    "page": 4,
+    "name": "item12a[1]",
+    "fullName": "item12a[1]",
+    "type": "/Btn",
+    "rect": [
+      161.348,
+      680.907,
+      170.348,
+      689.907
+    ],
+    "tooltip": "Person in"
+  },
+  {
+    "page": 4,
+    "name": "CheckBoxRightCaption[0]",
+    "fullName": "CheckBoxRightCaption[0]",
+    "type": "/Btn",
+    "rect": [
+      79.376,
+      637.718,
+      88.376,
+      646.718
+    ],
+    "tooltip": "In person"
+  },
+  {
+    "page": 4,
+    "name": "CheckBoxRightCaption1[0]",
+    "fullName": "CheckBoxRightCaption1[0]",
+    "type": "/Btn",
+    "rect": [
+      78.715,
+      621.711,
+      87.715,
+      630.711
+    ],
+    "tooltip": "Virtual (not in person) (Child and visiting parent may need access to the internet. For more information on virtual visits, go to selfhelp.courts.ca.gov/domestic-violence-child-custody.)"
+  },
+  {
+    "page": 4,
+    "name": "CheckBoxRightCaption2[0]",
+    "fullName": "CheckBoxRightCaption2[0]",
+    "type": "/Btn",
+    "rect": [
+      79.623,
+      594.365,
+      88.623,
+      603.365
+    ],
+    "tooltip": "Other:"
+  },
+  {
+    "page": 4,
+    "name": "TextField[0]",
+    "fullName": "TextField[0]",
+    "type": "/Tx",
+    "rect": [
+      125.093,
+      588.364,
+      554.967,
+      603.365
+    ],
+    "tooltip": "Other:"
+  },
+  {
+    "page": 4,
+    "name": "TextField[0]",
+    "fullName": "TextField[0]",
+    "type": "/Tx",
+    "rect": [
+      94.799,
+      476.271,
+      571.297,
+      530.22
+    ],
+    "tooltip": "describe visitation schedule"
+  },
+  {
+    "page": 4,
+    "name": "item12c[0]",
+    "fullName": "item12c[0]",
+    "type": "/Btn",
+    "rect": [
+      79.518,
+      532.258,
+      88.518,
+      541.258
+    ],
+    "tooltip": "Described below:"
+  },
+  {
+    "page": 4,
+    "name": "item12c[1]",
+    "fullName": "item12c[1]",
+    "type": "/Btn",
+    "rect": [
+      79.435,
+      548.266,
+      88.435,
+      557.266
+    ],
+    "tooltip": "Listed in 13."
+  },
+  {
+    "page": 4,
+    "name": "CheckBoxRightCaption[0]",
+    "fullName": "CheckBoxRightCaption[0]",
+    "type": "/Btn",
+    "rect": [
+      62.694,
+      452.197,
+      71.694,
+      461.197
+    ],
+    "tooltip": "Visitation Plan for Person in"
+  },
+  {
+    "page": 4,
+    "name": "tf1[0]",
+    "fullName": "tf1[0]",
+    "type": "/Tx",
+    "rect": [
+      153.447,
+      383.423,
+      248.434,
+      394.422
+    ],
+    "tooltip": "Start:"
+  },
+  {
+    "page": 4,
+    "name": "tf2[0]",
+    "fullName": "tf2[0]",
+    "type": "/Tx",
+    "rect": [
+      195.714,
+      368.064,
+      248.434,
+      379.063
+    ],
+    "tooltip": "End, if applies:"
+  },
+  {
+    "page": 4,
+    "name": "tf3[0]",
+    "fullName": "tf3[0]",
+    "type": "/Tx",
+    "rect": [
+      305.152,
+      383.423,
+      437.015,
+      394.422
+    ],
+    "tooltip": "Person to bring children to\r and from visit (or make child available for virtual visit)"
+  },
+  {
+    "page": 4,
+    "name": "tf4[0]",
+    "fullName": "tf4[0]",
+    "type": "/Tx",
+    "rect": [
+      305.152,
+      368.064,
+      437.015,
+      379.063
+    ],
+    "tooltip": "Person to bring children to\r and from visit (or make child available for virtual visit)"
+  },
+  {
+    "page": 4,
+    "name": "tf5[0]",
+    "fullName": "tf5[0]",
+    "type": "/Tx",
+    "rect": [
+      447.627,
+      383.423,
+      572.168,
+      394.422
+    ],
+    "tooltip": "Location of drop-off/pick-up"
+  },
+  {
+    "page": 4,
+    "name": "tf6[0]",
+    "fullName": "tf6[0]",
+    "type": "/Tx",
+    "rect": [
+      447.627,
+      368.064,
+      572.168,
+      379.063
+    ],
+    "tooltip": "Location of drop-off/pick-up"
+  },
+  {
+    "page": 4,
+    "name": "tf7[0]",
+    "fullName": "tf7[0]",
+    "type": "/Tx",
+    "rect": [
+      153.447,
+      347.425,
+      248.434,
+      358.424
+    ],
+    "tooltip": "Start:"
+  },
+  {
+    "page": 4,
+    "name": "tf8[0]",
+    "fullName": "tf8[0]",
+    "type": "/Tx",
+    "rect": [
+      195.714,
+      332.067,
+      248.434,
+      343.066
+    ],
+    "tooltip": "End, if applies:"
+  },
+  {
+    "page": 4,
+    "name": "tf9[0]",
+    "fullName": "tf9[0]",
+    "type": "/Tx",
+    "rect": [
+      305.152,
+      346.405,
+      436.762,
+      357.404
+    ],
+    "tooltip": "Person to bring children to\r and from visit (or make child available for virtual visit)"
+  },
+  {
+    "page": 4,
+    "name": "tf10[0]",
+    "fullName": "tf10[0]",
+    "type": "/Tx",
+    "rect": [
+      305.152,
+      331.047,
+      437.241,
+      342.046
+    ],
+    "tooltip": "Person to bring children to\r and from visit (or make child available for virtual visit)"
+  },
+  {
+    "page": 4,
+    "name": "tf11[0]",
+    "fullName": "tf11[0]",
+    "type": "/Tx",
+    "rect": [
+      447.627,
+      346.405,
+      572.168,
+      357.404
+    ],
+    "tooltip": "Location of drop-off/pick-up"
+  },
+  {
+    "page": 4,
+    "name": "tf12[0]",
+    "fullName": "tf12[0]",
+    "type": "/Tx",
+    "rect": [
+      447.627,
+      331.047,
+      572.168,
+      342.046
+    ],
+    "tooltip": "Location of drop-off/pick-up"
+  },
+  {
+    "page": 4,
+    "name": "tf13[0]",
+    "fullName": "tf13[0]",
+    "type": "/Tx",
+    "rect": [
+      153.447,
+      312.84,
+      248.434,
+      323.839
+    ],
+    "tooltip": "Start:"
+  },
+  {
+    "page": 4,
+    "name": "tf14[0]",
+    "fullName": "tf14[0]",
+    "type": "/Tx",
+    "rect": [
+      195.714,
+      297.482,
+      248.434,
+      308.481
+    ],
+    "tooltip": "End, if applies:"
+  },
+  {
+    "page": 4,
+    "name": "tf15[0]",
+    "fullName": "tf15[0]",
+    "type": "/Tx",
+    "rect": [
+      305.152,
+      312.84,
+      436.762,
+      323.839
+    ],
+    "tooltip": "Person to bring children to\r and from visit (or make child available for virtual visit)"
+  },
+  {
+    "page": 4,
+    "name": "tf16[0]",
+    "fullName": "tf16[0]",
+    "type": "/Tx",
+    "rect": [
+      305.152,
+      297.482,
+      437.241,
+      308.481
+    ],
+    "tooltip": "Person to bring children to\r and from visit (or make child available for virtual visit)"
+  },
+  {
+    "page": 4,
+    "name": "tf17[0]",
+    "fullName": "tf17[0]",
+    "type": "/Tx",
+    "rect": [
+      447.627,
+      312.84,
+      572.168,
+      323.839
+    ],
+    "tooltip": "Location of drop-off/pick-up"
+  },
+  {
+    "page": 4,
+    "name": "tf18[0]",
+    "fullName": "tf18[0]",
+    "type": "/Tx",
+    "rect": [
+      447.627,
+      297.482,
+      572.168,
+      308.481
+    ],
+    "tooltip": "Location of drop-off/pick-up"
+  },
+  {
+    "page": 4,
+    "name": "tf19[0]",
+    "fullName": "tf19[0]",
+    "type": "/Tx",
+    "rect": [
+      153.447,
+      279.85,
+      248.434,
+      290.849
+    ],
+    "tooltip": "Start:"
+  },
+  {
+    "page": 4,
+    "name": "tf20[0]",
+    "fullName": "tf20[0]",
+    "type": "/Tx",
+    "rect": [
+      195.714,
+      264.492,
+      248.434,
+      275.491
+    ],
+    "tooltip": "End, if applies:"
+  },
+  {
+    "page": 4,
+    "name": "tf21[0]",
+    "fullName": "tf21[0]",
+    "type": "/Tx",
+    "rect": [
+      305.152,
+      279.85,
+      436.762,
+      290.849
+    ],
+    "tooltip": "Person to bring children to\r and from visit (or make child available for virtual visit)"
+  },
+  {
+    "page": 4,
+    "name": "tf22[0]",
+    "fullName": "tf22[0]",
+    "type": "/Tx",
+    "rect": [
+      305.152,
+      264.492,
+      437.241,
+      275.491
+    ],
+    "tooltip": "Person to bring children to\r and from visit (or make child available for virtual visit)"
+  },
+  {
+    "page": 4,
+    "name": "tf23[0]",
+    "fullName": "tf23[0]",
+    "type": "/Tx",
+    "rect": [
+      447.627,
+      279.85,
+      572.168,
+      290.849
+    ],
+    "tooltip": "Location of drop-off/pick-up"
+  },
+  {
+    "page": 4,
+    "name": "tf24[0]",
+    "fullName": "tf24[0]",
+    "type": "/Tx",
+    "rect": [
+      447.627,
+      264.492,
+      572.168,
+      275.491
+    ],
+    "tooltip": "Location of drop-off/pick-up"
+  },
+  {
+    "page": 4,
+    "name": "tf25[0]",
+    "fullName": "tf25[0]",
+    "type": "/Tx",
+    "rect": [
+      153.447,
+      246.861,
+      248.434,
+      257.86
+    ],
+    "tooltip": "Start:"
+  },
+  {
+    "page": 4,
+    "name": "tf26[0]",
+    "fullName": "tf26[0]",
+    "type": "/Tx",
+    "rect": [
+      195.784,
+      231.503,
+      248.434,
+      242.502
+    ],
+    "tooltip": "End, if applies:"
+  },
+  {
+    "page": 4,
+    "name": "tf27[0]",
+    "fullName": "tf27[0]",
+    "type": "/Tx",
+    "rect": [
+      305.152,
+      246.435,
+      436.762,
+      257.434
+    ],
+    "tooltip": "Person to bring children to\r and from visit (or make child available for virtual visit)"
+  },
+  {
+    "page": 4,
+    "name": "tf28[0]",
+    "fullName": "tf28[0]",
+    "type": "/Tx",
+    "rect": [
+      305.152,
+      231.503,
+      437.241,
+      242.502
+    ],
+    "tooltip": "Person to bring children to\r and from visit (or make child available for virtual visit)"
+  },
+  {
+    "page": 4,
+    "name": "tf29[0]",
+    "fullName": "tf29[0]",
+    "type": "/Tx",
+    "rect": [
+      447.627,
+      246.861,
+      572.168,
+      257.86
+    ],
+    "tooltip": "Location of drop-off/pick-up"
+  },
+  {
+    "page": 4,
+    "name": "tf30[0]",
+    "fullName": "tf30[0]",
+    "type": "/Tx",
+    "rect": [
+      447.627,
+      231.503,
+      572.168,
+      242.502
+    ],
+    "tooltip": "Location of drop-off/pick-up"
+  },
+  {
+    "page": 4,
+    "name": "tf31[0]",
+    "fullName": "tf31[0]",
+    "type": "/Tx",
+    "rect": [
+      153.447,
+      213.296,
+      248.434,
+      224.295
+    ],
+    "tooltip": "Start:"
+  },
+  {
+    "page": 4,
+    "name": "tf32[0]",
+    "fullName": "tf32[0]",
+    "type": "/Tx",
+    "rect": [
+      195.714,
+      197.937,
+      248.434,
+      208.936
+    ],
+    "tooltip": "End, if applies:"
+  },
+  {
+    "page": 4,
+    "name": "tf33[0]",
+    "fullName": "tf33[0]",
+    "type": "/Tx",
+    "rect": [
+      305.152,
+      213.296,
+      436.762,
+      224.295
+    ],
+    "tooltip": "Person to bring children to\r and from visit (or make child available for virtual visit)"
+  },
+  {
+    "page": 4,
+    "name": "tf34[0]",
+    "fullName": "tf34[0]",
+    "type": "/Tx",
+    "rect": [
+      305.152,
+      197.937,
+      437.241,
+      208.936
+    ],
+    "tooltip": "Person to bring children to\r and from visit (or make child available for virtual visit)"
+  },
+  {
+    "page": 4,
+    "name": "tf35[0]",
+    "fullName": "tf35[0]",
+    "type": "/Tx",
+    "rect": [
+      447.627,
+      213.296,
+      572.168,
+      224.295
+    ],
+    "tooltip": "Location of drop-off/pick-up"
+  },
+  {
+    "page": 4,
+    "name": "tf36[0]",
+    "fullName": "tf36[0]",
+    "type": "/Tx",
+    "rect": [
+      447.627,
+      197.937,
+      572.168,
+      208.936
+    ],
+    "tooltip": "Location of drop-off/pick-up"
+  },
+  {
+    "page": 4,
+    "name": "tf37[0]",
+    "fullName": "tf37[0]",
+    "type": "/Tx",
+    "rect": [
+      447.627,
+      180.306,
+      572.168,
+      191.305
+    ],
+    "tooltip": "Location of drop-off/pick-up"
+  },
+  {
+    "page": 4,
+    "name": "tf38[0]",
+    "fullName": "tf38[0]",
+    "type": "/Tx",
+    "rect": [
+      153.447,
+      180.306,
+      248.434,
+      191.305
+    ],
+    "tooltip": "Start:"
+  },
+  {
+    "page": 4,
+    "name": "tf39[0]",
+    "fullName": "tf39[0]",
+    "type": "/Tx",
+    "rect": [
+      195.714,
+      164.948,
+      248.434,
+      175.947
+    ],
+    "tooltip": "End, if applies:"
+  },
+  {
+    "page": 4,
+    "name": "tf40[0]",
+    "fullName": "tf40[0]",
+    "type": "/Tx",
+    "rect": [
+      305.152,
+      180.306,
+      436.762,
+      191.305
+    ],
+    "tooltip": "Person to bring children to\r and from visit (or make child available for virtual visit)"
+  },
+  {
+    "page": 4,
+    "name": "tf41[0]",
+    "fullName": "tf41[0]",
+    "type": "/Tx",
+    "rect": [
+      305.152,
+      164.948,
+      437.241,
+      175.947
+    ],
+    "tooltip": "Person to bring children to\r and from visit (or make child available for virtual visit)"
+  },
+  {
+    "page": 4,
+    "name": "tf42[0]",
+    "fullName": "tf42[0]",
+    "type": "/Tx",
+    "rect": [
+      447.627,
+      164.948,
+      572.168,
+      175.947
+    ],
+    "tooltip": "Location of drop-off/pick-up"
+  },
+  {
+    "page": 4,
+    "name": "CheckBoxRightCaption12b[0]",
+    "fullName": "CheckBoxRightCaption12b[0]",
+    "type": "/Btn",
+    "rect": [
+      72.677,
+      133.328,
+      81.677,
+      142.328
+    ],
+    "tooltip": "Every week"
+  },
+  {
+    "page": 4,
+    "name": "CheckBoxRightCaption12b[1]",
+    "fullName": "CheckBoxRightCaption12b[1]",
+    "type": "/Btn",
+    "rect": [
+      166.144,
+      133.328,
+      175.144,
+      142.328
+    ],
+    "tooltip": "Every other week"
+  },
+  {
+    "page": 4,
+    "name": "CheckBoxRightCaption12b[2]",
+    "fullName": "CheckBoxRightCaption12b[2]",
+    "type": "/Btn",
+    "rect": [
+      286.098,
+      132.74,
+      295.098,
+      141.74
+    ],
+    "tooltip": "Other"
+  },
+  {
+    "page": 4,
+    "name": "TextField[0]",
+    "fullName": "TextField[0]",
+    "type": "/Tx",
+    "rect": [
+      335.214,
+      128.152,
+      573.234,
+      143.153
+    ],
+    "tooltip": "Other"
+  },
+  {
+    "page": 4,
+    "name": "DateField5[0]",
+    "fullName": "DateField5[0]",
+    "type": "/Tx",
+    "rect": [
+      257.273,
+      100.704,
+      573.281,
+      116.266
+    ],
+    "tooltip": "Start date for visits (month, day, year):"
+  },
+  {
+    "page": 4,
+    "name": "CheckBoxRightCaptionitem13[0]",
+    "fullName": "CheckBoxRightCaptionitem13[0]",
+    "type": "/Btn",
+    "rect": [
+      275.451,
+      375.731,
+      284.451,
+      384.731
+    ],
+    "tooltip": "Visit must\rbe virtual"
+  },
+  {
+    "page": 4,
+    "name": "CheckBoxRightCaptionitem13[1]",
+    "fullName": "CheckBoxRightCaptionitem13[1]",
+    "type": "/Btn",
+    "rect": [
+      275.451,
+      341.095,
+      284.451,
+      350.095
+    ],
+    "tooltip": "Visit must\rbe virtual"
+  },
+  {
+    "page": 4,
+    "name": "CheckBoxRightCaptionitem13[2]",
+    "fullName": "CheckBoxRightCaptionitem13[2]",
+    "type": "/Btn",
+    "rect": [
+      275.451,
+      305.279,
+      284.451,
+      314.279
+    ],
+    "tooltip": "Visit must\rbe virtual"
+  },
+  {
+    "page": 4,
+    "name": "CheckBoxRightCaptionitem13[3]",
+    "fullName": "CheckBoxRightCaptionitem13[3]",
+    "type": "/Btn",
+    "rect": [
+      275.451,
+      274.798,
+      284.451,
+      283.798
+    ],
+    "tooltip": "Visit must\rbe virtual"
+  },
+  {
+    "page": 4,
+    "name": "CheckBoxRightCaptionitem13[4]",
+    "fullName": "CheckBoxRightCaptionitem13[4]",
+    "type": "/Btn",
+    "rect": [
+      275.451,
+      240.524,
+      284.451,
+      249.524
+    ],
+    "tooltip": "Visit must\rbe virtual"
+  },
+  {
+    "page": 4,
+    "name": "CheckBoxRightCaptionitem13[5]",
+    "fullName": "CheckBoxRightCaptionitem13[5]",
+    "type": "/Btn",
+    "rect": [
+      275.451,
+      207.413,
+      284.451,
+      216.413
+    ],
+    "tooltip": "Visit must\rbe virtual"
+  },
+  {
+    "page": 4,
+    "name": "CheckBoxRightCaptionitem13[6]",
+    "fullName": "CheckBoxRightCaptionitem13[6]",
+    "type": "/Btn",
+    "rect": [
+      275.451,
+      173.068,
+      284.451,
+      182.068
+    ],
+    "tooltip": "Visit must\rbe virtual"
+  },
+  {
+    "page": 5,
+    "name": "Print[0]",
+    "fullName": "Print[0]",
+    "type": "/Btn",
+    "rect": [
+      259.2,
+      14.471,
+      340.2,
+      31.479
+    ],
+    "tooltip": "Print"
+  },
+  {
+    "page": 5,
+    "name": "Save[0]",
+    "fullName": "Save[0]",
+    "type": "/Btn",
+    "rect": [
+      345.739,
+      14.471,
+      426.844,
+      31.479
+    ],
+    "tooltip": "Save"
+  },
+  {
+    "page": 5,
+    "name": "Reset[0]",
+    "fullName": "Reset[0]",
+    "type": "/Btn",
+    "rect": [
+      495.428,
+      14.471,
+      576.425,
+      31.479
+    ],
+    "tooltip": "Clear"
+  },
+  {
+    "page": 5,
+    "name": "CaseNumber_ft[0]",
+    "fullName": "CaseNumber_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      399.598,
+      730.539,
+      572.398,
+      741.853
+    ],
+    "tooltip": "Case Number"
+  },
+  {
+    "page": 5,
+    "name": "item14ab[0]",
+    "fullName": "item14ab[0]",
+    "type": "/Btn",
+    "rect": [
+      79.186,
+      651.858,
+      88.186,
+      660.858
+    ],
+    "tooltip": "No findings required by law"
+  },
+  {
+    "page": 5,
+    "name": "item14ab[0]",
+    "fullName": "item14ab[0]",
+    "type": "/Btn",
+    "rect": [
+      79.186,
+      631.395,
+      88.186,
+      640.395
+    ],
+    "tooltip": "Findings required by law"
+  },
+  {
+    "page": 5,
+    "name": "CheckBoxRightCaption[0]",
+    "fullName": "CheckBoxRightCaption[0]",
+    "type": "/Btn",
+    "rect": [
+      111.048,
+      578.165,
+      120.048,
+      587.165
+    ],
+    "tooltip": "Other:"
+  },
+  {
+    "page": 5,
+    "name": "TextField[0]",
+    "fullName": "TextField[0]",
+    "type": "/Tx",
+    "rect": [
+      156.011,
+      574.749,
+      567.474,
+      587.165
+    ],
+    "tooltip": "Other:"
+  },
+  {
+    "page": 5,
+    "name": "CheckBoxRightCaption[1]",
+    "fullName": "CheckBoxRightCaption[1]",
+    "type": "/Btn",
+    "rect": [
+      96.243,
+      611.816,
+      105.243,
+      620.816
+    ],
+    "tooltip": "The court has made the required findings. The court\u2019s reasons are in writing (check one):"
+  },
+  {
+    "page": 5,
+    "name": "CheckBoxRightCaption[2]",
+    "fullName": "CheckBoxRightCaption[2]",
+    "type": "/Btn",
+    "rect": [
+      111.088,
+      596.129,
+      120.088,
+      605.129
+    ],
+    "tooltip": "On form DV-150, Mandatory Findings for Child Custody and Visitation Order."
+  },
+  {
+    "page": 5,
+    "name": "CheckBoxRightCaption[0]",
+    "fullName": "CheckBoxRightCaption[0]",
+    "type": "/Btn",
+    "rect": [
+      110.027,
+      538.815,
+      119.027,
+      547.815
+    ],
+    "tooltip": "In a minute order"
+  },
+  {
+    "page": 5,
+    "name": "CheckBoxRightCaption[1]",
+    "fullName": "CheckBoxRightCaption[1]",
+    "type": "/Btn",
+    "rect": [
+      216.984,
+      538.815,
+      225.984,
+      547.815
+    ],
+    "tooltip": "By a court reporter "
+  },
+  {
+    "page": 5,
+    "name": "CheckBoxRightCaption[2]",
+    "fullName": "CheckBoxRightCaption[2]",
+    "type": "/Btn",
+    "rect": [
+      330.019,
+      538.815,
+      339.019,
+      547.815
+    ],
+    "tooltip": "Other:"
+  },
+  {
+    "page": 5,
+    "name": "TextField[0]",
+    "fullName": "TextField[0]",
+    "type": "/Tx",
+    "rect": [
+      374.523,
+      534.991,
+      568.143,
+      547.815
+    ],
+    "tooltip": "Other:"
+  },
+  {
+    "page": 5,
+    "name": "CheckBoxRightCaption1[0]",
+    "fullName": "CheckBoxRightCaption1[0]",
+    "type": "/Btn",
+    "rect": [
+      96.237,
+      556.03,
+      105.237,
+      565.03
+    ],
+    "tooltip": "The court has made the required findings. The court\u2019s reasons were recorded (check all that apply):"
+  },
+  {
+    "page": 5,
+    "name": "CheckBoxRightCaption[0]",
+    "fullName": "CheckBoxRightCaption[0]",
+    "type": "/Btn",
+    "rect": [
+      63.434,
+      504.321,
+      72.434,
+      513.321
+    ],
+    "tooltip": "Other Orders"
+  },
+  {
+    "page": 5,
+    "name": "TextField[0]",
+    "fullName": "TextField[0]",
+    "type": "/Tx",
+    "rect": [
+      63.935,
+      443.852,
+      574.812,
+      470.88
+    ],
+    "tooltip": "Describe additional orders in the space below or use a separate attachment (e.g., FL-341(C), Children\u2019s Holiday Schedule Attachment)."
+  },
+  {
+    "page": 5,
+    "name": "CheckBoxRightCaption[0]",
+    "fullName": "CheckBoxRightCaption[0]",
+    "type": "/Btn",
+    "rect": [
+      63.544,
+      409.065,
+      72.544,
+      418.065
+    ],
+    "tooltip": "Criminal Protective Order"
+  },
+  {
+    "page": 5,
+    "name": "TextField1[0]",
+    "fullName": "TextField1[0]",
+    "type": "/Tx",
+    "rect": [
+      128.266,
+      369.187,
+      310.694,
+      384.188
+    ],
+    "tooltip": "Case number:"
+  },
+  {
+    "page": 5,
+    "name": "TextField2[0]",
+    "fullName": "TextField2[0]",
+    "type": "/Tx",
+    "rect": [
+      360.063,
+      369.187,
+      550.349,
+      384.188
+    ],
+    "tooltip": "County:"
+  },
+  {
+    "page": 5,
+    "name": "TextField3[0]",
+    "fullName": "TextField3[0]",
+    "type": "/Tx",
+    "rect": [
+      128.229,
+      351.209,
+      310.657,
+      366.21
+    ],
+    "tooltip": "Case number:"
+  },
+  {
+    "page": 5,
+    "name": "TextField4[0]",
+    "fullName": "TextField4[0]",
+    "type": "/Tx",
+    "rect": [
+      360.026,
+      351.209,
+      550.312,
+      366.21
+    ],
+    "tooltip": "County:"
+  },
+  {
+    "page": 5,
+    "name": "CheckBoxRightCaption8[0]",
+    "fullName": "CheckBoxRightCaption8[0]",
+    "type": "/Btn",
+    "rect": [
+      63.697,
+      257.128,
+      72.697,
+      266.128
+    ],
+    "tooltip": "The United States,"
+  },
+  {
+    "page": 5,
+    "name": "CheckBoxRightCaption8[1]",
+    "fullName": "CheckBoxRightCaption8[1]",
+    "type": "/Btn",
+    "rect": [
+      63.564,
+      241.234,
+      72.564,
+      250.234
+    ],
+    "tooltip": "Other"
+  },
+  {
+    "page": 5,
+    "name": "TextField2[0]",
+    "fullName": "TextField2[0]",
+    "type": "/Tx",
+    "rect": [
+      196.652,
+      238.425,
+      535.655,
+      250.526
+    ],
+    "tooltip": "(name of country):"
+  }
+]

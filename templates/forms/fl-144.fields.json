@@ -1,0 +1,275 @@
+[
+  {
+    "page": 0,
+    "name": "Email[0]",
+    "fullName": "Email[0]",
+    "type": "/Tx",
+    "rect": [
+      119.29,
+      652.206,
+      393.46,
+      661.206
+    ],
+    "tooltip": " ATTORNEY FOR (Name):"
+  },
+  {
+    "page": 0,
+    "name": "Email[1]",
+    "fullName": "Email[1]",
+    "type": "/Tx",
+    "rect": [
+      119.29,
+      663.619,
+      393.46,
+      672.619
+    ],
+    "tooltip": "E-MAIL ADDRESS (Optional):"
+  },
+  {
+    "page": 0,
+    "name": "Fax[0]",
+    "fullName": "Fax[0]",
+    "type": "/Tx",
+    "rect": [
+      295.214,
+      675.19,
+      393.46,
+      684.19
+    ],
+    "tooltip": "Fax number"
+  },
+  {
+    "page": 0,
+    "name": "Phone[0]",
+    "fullName": "Phone[0]",
+    "type": "/Tx",
+    "rect": [
+      119.26,
+      675.19,
+      233.674,
+      684.19
+    ],
+    "tooltip": "Phone number"
+  },
+  {
+    "page": 0,
+    "name": "TextField1[0]",
+    "fullName": "TextField1[0]",
+    "type": "/Tx",
+    "rect": [
+      37.054,
+      686.628,
+      393.36,
+      738.165
+    ],
+    "tooltip": "ATTORNEY OR PARTY WITHOUT ATTORNEY (Name, State Bar number, and address):"
+  },
+  {
+    "page": 0,
+    "name": "CrtCounty[0]",
+    "fullName": "CrtCounty[0]",
+    "type": "/Tx",
+    "rect": [
+      227.713,
+      638.75,
+      393.993,
+      647.75
+    ],
+    "tooltip": "SUPERIOR COURT OF CALIFORNIA, COUNTY OF"
+  },
+  {
+    "page": 0,
+    "name": "CrtStreet[0]",
+    "fullName": "CrtStreet[0]",
+    "type": "/Tx",
+    "rect": [
+      96.987,
+      627.811,
+      393.993,
+      636.811
+    ],
+    "tooltip": "STREET ADDRESS:"
+  },
+  {
+    "page": 0,
+    "name": "CrtMailingAdd[0]",
+    "fullName": "CrtMailingAdd[0]",
+    "type": "/Tx",
+    "rect": [
+      96.987,
+      616.873,
+      393.993,
+      625.873
+    ],
+    "tooltip": "MAILING ADDRESS:"
+  },
+  {
+    "page": 0,
+    "name": "CrtBranch[0]",
+    "fullName": "CrtBranch[0]",
+    "type": "/Tx",
+    "rect": [
+      96.987,
+      594.258,
+      393.993,
+      603.258
+    ],
+    "tooltip": "BRANCH NAME:"
+  },
+  {
+    "page": 0,
+    "name": "CrtCityZip[0]",
+    "fullName": "CrtCityZip[0]",
+    "type": "/Tx",
+    "rect": [
+      97.012,
+      605.684,
+      394.004,
+      614.684
+    ],
+    "tooltip": "CITY AND ZIP CODE:"
+  },
+  {
+    "page": 0,
+    "name": "Party1[0]",
+    "fullName": "Party1[0]",
+    "type": "/Tx",
+    "rect": [
+      148.794,
+      580.079,
+      394.016,
+      589.079
+    ],
+    "tooltip": "      PLAINTIFF/ PETITIONER:"
+  },
+  {
+    "page": 0,
+    "name": "Party2[0]",
+    "fullName": "Party2[0]",
+    "type": "/Tx",
+    "rect": [
+      148.794,
+      566.526,
+      394.016,
+      575.824
+    ],
+    "tooltip": "DEFENDANT/ RESPONDENT:"
+  },
+  {
+    "page": 0,
+    "name": "Party3[0]",
+    "fullName": "Party3[0]",
+    "type": "/Tx",
+    "rect": [
+      148.794,
+      553.376,
+      394.016,
+      562.674
+    ],
+    "tooltip": "                                   OTHER:"
+  },
+  {
+    "page": 0,
+    "name": "CaseNumber[0]",
+    "fullName": "CaseNumber[0]",
+    "type": "/Tx",
+    "rect": [
+      400.005,
+      525.461,
+      572.805,
+      539.85
+    ],
+    "tooltip": "CASE NUMBER:"
+  },
+  {
+    "page": 0,
+    "name": "SigDate[0]",
+    "fullName": "SigDate[0]",
+    "type": "/Tx",
+    "rect": [
+      62.196,
+      190.389,
+      169.2,
+      200.39
+    ],
+    "tooltip": "Date:"
+  },
+  {
+    "page": 0,
+    "name": "SigName[0]",
+    "fullName": "SigName[0]",
+    "type": "/Tx",
+    "rect": [
+      36.0,
+      165.739,
+      275.876,
+      179.85
+    ],
+    "tooltip": "(TYPE OR PRINT NAME)"
+  },
+  {
+    "page": 0,
+    "name": "Print[0]",
+    "fullName": "Print[0]",
+    "type": "/Btn",
+    "rect": [
+      258.775,
+      36.0,
+      339.775,
+      53.008
+    ],
+    "tooltip": "Print this form"
+  },
+  {
+    "page": 0,
+    "name": "Save[0]",
+    "fullName": "Save[0]",
+    "type": "/Btn",
+    "rect": [
+      345.314,
+      36.0,
+      426.419,
+      53.008
+    ],
+    "tooltip": "Save this form"
+  },
+  {
+    "page": 0,
+    "name": "Reset[0]",
+    "fullName": "Reset[0]",
+    "type": "/Btn",
+    "rect": [
+      495.003,
+      36.0,
+      576.0,
+      53.008
+    ],
+    "tooltip": "Clear this form"
+  },
+  {
+    "page": 0,
+    "name": "Warning[0]",
+    "fullName": "Warning[0]",
+    "type": "/Btn",
+    "rect": [
+      36.085,
+      36.0,
+      247.379,
+      59.179
+    ],
+    "tooltip": "For your protection and privacy, please press the Clear This Form button after you have printed the form."
+  },
+  {
+    "page": 0,
+    "name": "SigName[1]",
+    "fullName": "SigName[1]",
+    "type": "/Tx",
+    "rect": [
+      36.0,
+      122.318,
+      275.876,
+      136.429
+    ],
+    "tooltip": "(TYPE OR PRINT NAME)"
+  }
+]

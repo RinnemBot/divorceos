@@ -1,7 +1,14 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { ChangeEvent } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -19,7 +26,7 @@ import { FilingOpsPanel } from '@/components/FilingOpsPanel';
 import { COURT_FORMS } from '@/data/forms';
 import { COUNTY_GUIDES } from '@/data/countyGuides';
 import { authService, SUBSCRIPTION_LIMITS, type User } from '@/services/auth';
-import { listDraftWorkspaces } from '@/services/formDrafts';
+import { listDraftWorkspaces, syncDraftWorkspacesFromServer } from '@/services/formDrafts';
 import {
   LayoutDashboard,
   Files,
@@ -35,16 +42,10 @@ import {
   Shield,
   Loader2,
   Download,
+  Trash2,
+  ExternalLink,
+  Eye,
 } from 'lucide-react';
-
-type FilingTrackerStepId = 'generated' | 'filed' | 'served' | 'proof-filed' | 'clerk-review' | 'accepted';
-
-interface FilingTrackerState {
-  completed: Record<FilingTrackerStepId, boolean>;
-  updatedAtByStep: Partial<Record<FilingTrackerStepId, string>>;
-  notes: string;
-  updatedAt?: string;
-}
 
 const SERVICE_TASKS = [
   {
@@ -69,124 +70,7 @@ const SERVICE_TASKS = [
   },
 ];
 
-const FILING_TRACKER_STEPS: Array<{
-  id: FilingTrackerStepId;
-  title: string;
-  detail: string;
-  tab?: string;
-}> = [
-  {
-    id: 'generated',
-    title: 'Packet generated',
-    detail: 'Draft Forms packet or county packet manifest is ready for review.',
-    tab: 'saved',
-  },
-  {
-    id: 'filed',
-    title: 'Packet filed with court',
-    detail: 'Submitted through e-file, clerk window, drop box, or mail.',
-    tab: 'county',
-  },
-  {
-    id: 'served',
-    title: 'Other party served',
-    detail: 'A neutral adult or process server completed service.',
-    tab: 'service',
-  },
-  {
-    id: 'proof-filed',
-    title: 'Proof of service filed',
-    detail: 'FL-115 / FL-330 / FL-335 or other proof is filed with the court.',
-    tab: 'service',
-  },
-  {
-    id: 'clerk-review',
-    title: 'Waiting for clerk review',
-    detail: 'Court is reviewing filed documents or issuing stamped copies/rejections.',
-    tab: 'county',
-  },
-  {
-    id: 'accepted',
-    title: 'Accepted / stamped copies received',
-    detail: 'Filing accepted; save stamped copies and calendar the next deadline.',
-    tab: 'saved',
-  },
-];
-
-function createDefaultFilingTracker(): FilingTrackerState {
-  return {
-    completed: {
-      generated: false,
-      filed: false,
-      served: false,
-      'proof-filed': false,
-      'clerk-review': false,
-      accepted: false,
-    },
-    updatedAtByStep: {},
-    notes: '',
-  };
-}
-
-function getFilingTrackerStorageKey(userId?: string) {
-  return `divorceos:filing-tracker:${userId || 'local'}`;
-}
-
-function loadFilingTracker(userId?: string): FilingTrackerState {
-  if (typeof window === 'undefined') return createDefaultFilingTracker();
-  try {
-    const raw = window.localStorage.getItem(getFilingTrackerStorageKey(userId));
-    if (!raw) return createDefaultFilingTracker();
-    const parsed = JSON.parse(raw) as Partial<FilingTrackerState>;
-    const defaults = createDefaultFilingTracker();
-    return {
-      completed: { ...defaults.completed, ...(parsed.completed ?? {}) },
-      updatedAtByStep: parsed.updatedAtByStep ?? {},
-      notes: typeof parsed.notes === 'string' ? parsed.notes : '',
-    };
-  } catch (error) {
-    console.error('Failed to load filing tracker', error);
-    return createDefaultFilingTracker();
-  }
-}
-
 const FEATURED_FORM_IDS = ['fl-100', 'fl-110', 'fl-115', 'fl-300', 'fl-150', 'fl-311', 'fl-346'];
-const DASHBOARD_TABS = ['overview', 'reminders', 'documents', 'county', 'service', 'saved', 'referral', 'review', 'staff'] as const;
-
-const COMMAND_CENTER_CARDS = [
-  {
-    title: 'What should I file?',
-    description: 'Answer a few questions and get the right packet path.',
-    icon: ClipboardCheck,
-    href: '/what-do-i-need',
-    cta: 'Run wizard',
-    tone: 'from-emerald-500/18 via-white to-cyan-500/10 dark:from-emerald-400/15 dark:via-white/5 dark:to-cyan-400/10',
-  },
-  {
-    title: 'Generate forms',
-    description: 'Open your structured Draft Forms workspace.',
-    icon: FileText,
-    href: '/draft-forms',
-    cta: 'Draft packet',
-    tone: 'from-sky-500/16 via-white to-emerald-500/10 dark:from-sky-400/15 dark:via-white/5 dark:to-emerald-400/10',
-  },
-  {
-    title: 'County filing',
-    description: 'Check local filing, e-file, and service steps.',
-    icon: MapPinned,
-    href: '/concierge',
-    cta: 'Open concierge',
-    tone: 'from-amber-400/18 via-white to-emerald-500/10 dark:from-amber-300/15 dark:via-white/5 dark:to-emerald-400/10',
-  },
-  {
-    title: 'Saved files',
-    description: 'Find generated PDFs and uploaded documents.',
-    icon: Files,
-    tab: 'saved',
-    cta: 'View files',
-    tone: 'from-violet-500/16 via-white to-sky-500/10 dark:from-violet-400/15 dark:via-white/5 dark:to-sky-400/10',
-  },
-] as const;
 
 interface VaultDocument {
   id: string;
@@ -209,16 +93,13 @@ const formatBytes = (bytes: number) => {
 
 const VAULT_MAX_FILE_SIZE = 10 * 1024 * 1024;
 
+const getVaultPreviewUrl = (doc: VaultDocument) => `/api/vault-documents?preview=1&documentId=${encodeURIComponent(doc.id)}`;
+
 export function DashboardPage() {
   const navigate = useNavigate();
-  const location = useLocation();
   const [user, setUser] = useState<User | null>(() => authService.getCurrentUser());
-  const [activeTab, setActiveTab] = useState(() => {
-    const tab = new URLSearchParams(location.search).get('tab');
-    return tab && DASHBOARD_TABS.includes(tab as typeof DASHBOARD_TABS[number]) ? tab : 'overview';
-  });
+  const [activeTab, setActiveTab] = useState('overview');
   const [completedTasks, setCompletedTasks] = useState<string[]>([]);
-  const [filingTracker, setFilingTracker] = useState<FilingTrackerState>(() => loadFilingTracker());
   const [referralStats, setReferralStats] = useState<{
     totalReferrals: number;
     completedReferrals: number;
@@ -230,14 +111,12 @@ export function DashboardPage() {
   const [isVaultLoading, setIsVaultLoading] = useState(false);
   const [vaultError, setVaultError] = useState<string | null>(null);
   const [isVaultUploading, setIsVaultUploading] = useState(false);
-  const [isFilingTrackerLoading, setIsFilingTrackerLoading] = useState(false);
-  const [filingTrackerError, setFilingTrackerError] = useState<string | null>(null);
-  const [filingTrackerLastSyncedAt, setFilingTrackerLastSyncedAt] = useState<string | null>(null);
+  const [deletingVaultDocId, setDeletingVaultDocId] = useState<string | null>(null);
+  const [previewVaultDoc, setPreviewVaultDoc] = useState<VaultDocument | null>(null);
+  const [draftSyncVersion, setDraftSyncVersion] = useState(0);
   const vaultFileInputRef = useRef<HTMLInputElement>(null);
-  const filingTrackerLoadedRef = useRef(false);
-  const filingTrackerSaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isStaffUser = useMemo(() => (user ? authService.isConciergeStaff(user) : false), [user]);
-  const draftWorkspaces = useMemo(() => (user ? listDraftWorkspaces(user.id) : []), [user]);
+  const draftWorkspaces = useMemo(() => (user ? listDraftWorkspaces(user.id) : []), [user, draftSyncVersion]);
   const latestDraftWorkspace = draftWorkspaces[0] ?? null;
 
   useEffect(() => {
@@ -247,6 +126,9 @@ export function DashboardPage() {
       return;
     }
     setUser(session);
+    void syncDraftWorkspacesFromServer(session.id)
+      .then(() => setDraftSyncVersion((version) => version + 1))
+      .catch((error) => console.error('Failed to sync Draft Forms workspaces from server.', error));
     void fetchReferralSnapshot()
       .then((snapshot) => setReferralStats(snapshot.stats))
       .catch((error) => {
@@ -254,80 +136,6 @@ export function DashboardPage() {
         setReferralStats(null);
       });
   }, [navigate]);
-
-  useEffect(() => {
-    if (!user?.id) return;
-
-    let cancelled = false;
-    filingTrackerLoadedRef.current = false;
-    setIsFilingTrackerLoading(true);
-    setFilingTrackerError(null);
-    setFilingTracker(loadFilingTracker(user.id));
-
-    const loadRemoteTracker = async () => {
-      try {
-        const remoteTracker = await authService.getFilingTracker();
-        if (cancelled) return;
-        setFilingTracker(remoteTracker);
-        setFilingTrackerLastSyncedAt(remoteTracker.updatedAt ?? new Date().toISOString());
-        if (typeof window !== 'undefined') {
-          window.localStorage.setItem(getFilingTrackerStorageKey(user.id), JSON.stringify(remoteTracker));
-        }
-      } catch (error) {
-        console.error('Failed to load filing tracker from Supabase', error);
-        if (!cancelled) {
-          setFilingTrackerError(error instanceof Error ? error.message : 'Unable to sync filing tracker. Local backup is still available.');
-        }
-      } finally {
-        if (!cancelled) {
-          filingTrackerLoadedRef.current = true;
-          setIsFilingTrackerLoading(false);
-        }
-      }
-    };
-
-    void loadRemoteTracker();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [user?.id]);
-
-  useEffect(() => {
-    if (!user?.id || typeof window === 'undefined') return;
-    window.localStorage.setItem(getFilingTrackerStorageKey(user.id), JSON.stringify(filingTracker));
-
-    if (!filingTrackerLoadedRef.current) return;
-    if (filingTrackerSaveTimerRef.current) {
-      clearTimeout(filingTrackerSaveTimerRef.current);
-    }
-
-    filingTrackerSaveTimerRef.current = setTimeout(() => {
-      void authService.saveFilingTracker(filingTracker)
-        .then((savedTracker) => {
-          setFilingTrackerError(null);
-          setFilingTrackerLastSyncedAt(savedTracker.updatedAt ?? new Date().toISOString());
-          window.localStorage.setItem(getFilingTrackerStorageKey(user.id), JSON.stringify(savedTracker));
-        })
-        .catch((error) => {
-          console.error('Failed to save filing tracker to Supabase', error);
-          setFilingTrackerError(error instanceof Error ? error.message : 'Unable to sync filing tracker. Local backup is still available.');
-        });
-    }, 500);
-
-    return () => {
-      if (filingTrackerSaveTimerRef.current) {
-        clearTimeout(filingTrackerSaveTimerRef.current);
-      }
-    };
-  }, [filingTracker, user?.id]);
-
-  useEffect(() => {
-    const tab = new URLSearchParams(location.search).get('tab');
-    if (tab && DASHBOARD_TABS.includes(tab as typeof DASHBOARD_TABS[number])) {
-      setActiveTab(tab);
-    }
-  }, [location.search]);
 
   const fetchVaultDocuments = useCallback(async () => {
     if (!user?.id) {
@@ -373,6 +181,35 @@ export function DashboardPage() {
 
   const triggerVaultPicker = () => {
     vaultFileInputRef.current?.click();
+  };
+
+  const handleDeleteVaultDocument = async (doc: VaultDocument) => {
+    if (!user?.id || deletingVaultDocId) return;
+    const confirmed = window.confirm(`Delete “${doc.name}” from Document vault? This cannot be undone.`);
+    if (!confirmed) return;
+
+    setDeletingVaultDocId(doc.id);
+    setVaultError(null);
+
+    try {
+      const response = await fetch('/api/vault-documents', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify({ documentId: doc.id }),
+      });
+
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(text || 'Delete failed');
+      }
+
+      setVaultDocs((prev) => prev.filter((candidate) => candidate.id !== doc.id));
+    } catch (error) {
+      setVaultError(error instanceof Error ? error.message : 'Delete failed');
+    } finally {
+      setDeletingVaultDocId(null);
+    }
   };
 
   const handleVaultFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
@@ -455,35 +292,6 @@ export function DashboardPage() {
     (completedTasks.length / SERVICE_TASKS.length) * 100
   );
 
-  const filingCompletedCount = FILING_TRACKER_STEPS.filter((step) => filingTracker.completed[step.id]).length;
-  const filingProgressPercent = Math.round((filingCompletedCount / FILING_TRACKER_STEPS.length) * 100);
-  const nextFilingStep = FILING_TRACKER_STEPS.find((step) => !filingTracker.completed[step.id]);
-
-  const toggleFilingTrackerStep = (stepId: FilingTrackerStepId) => {
-    setFilingTracker((current) => {
-      const nextValue = !current.completed[stepId];
-      const nextUpdatedAtByStep = { ...current.updatedAtByStep };
-      if (nextValue) {
-        nextUpdatedAtByStep[stepId] = new Date().toISOString();
-      } else {
-        delete nextUpdatedAtByStep[stepId];
-      }
-
-      return {
-        ...current,
-        completed: {
-          ...current.completed,
-          [stepId]: nextValue,
-        },
-        updatedAtByStep: nextUpdatedAtByStep,
-      };
-    });
-  };
-
-  const resetFilingTracker = () => {
-    setFilingTracker(createDefaultFilingTracker());
-  };
-
   const vaultPanel = (
     <Card>
       <CardHeader>
@@ -558,19 +366,47 @@ export function DashboardPage() {
                       </td>
                       <td className="px-4 py-3 text-slate-600">{formatBytes(doc.size)}</td>
                       <td className="px-4 py-3 text-right">
-                        {doc.downloadUrl ? (
-                          <Button asChild size="sm" variant="outline">
-                            <a href={doc.downloadUrl} target="_blank" rel="noopener noreferrer">
+                        <div className="flex flex-wrap justify-end gap-2">
+                          {doc.downloadUrl ? (
+                            <>
+                              <Button size="sm" variant="outline" onClick={() => setPreviewVaultDoc(doc)}>
+                                <Eye className="h-4 w-4 mr-2" />
+                                Preview
+                              </Button>
+                              <Button asChild size="sm" variant="outline">
+                                <a href={doc.downloadUrl} target="_blank" rel="noopener noreferrer">
+                                  <ExternalLink className="h-4 w-4 mr-2" />
+                                  Open
+                                </a>
+                              </Button>
+                              <Button asChild size="sm" variant="outline">
+                                <a href={doc.downloadUrl} download={doc.name}>
+                                  <Download className="h-4 w-4 mr-2" />
+                                  Download
+                                </a>
+                              </Button>
+                            </>
+                          ) : (
+                            <Button size="sm" variant="outline" disabled>
                               <Download className="h-4 w-4 mr-2" />
-                              Download
-                            </a>
+                              Open
+                            </Button>
+                          )}
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="border-red-200 text-red-700 hover:bg-red-50 hover:text-red-800"
+                            disabled={deletingVaultDocId === doc.id}
+                            onClick={() => handleDeleteVaultDocument(doc)}
+                          >
+                            {deletingVaultDocId === doc.id ? (
+                              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                            ) : (
+                              <Trash2 className="h-4 w-4 mr-2" />
+                            )}
+                            Delete
                           </Button>
-                        ) : (
-                          <Button size="sm" variant="outline" disabled>
-                            <Download className="h-4 w-4 mr-2" />
-                            Download
-                          </Button>
-                        )}
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -580,6 +416,45 @@ export function DashboardPage() {
           )}
         </div>
       </CardContent>
+      <Dialog open={Boolean(previewVaultDoc)} onOpenChange={(open) => { if (!open) setPreviewVaultDoc(null); }}>
+        <DialogContent className="max-w-5xl overflow-hidden p-0 sm:rounded-3xl">
+          <DialogHeader className="border-b border-slate-200 px-5 py-4 text-left">
+            <DialogTitle className="truncate pr-8">{previewVaultDoc?.name || 'Document preview'}</DialogTitle>
+            <DialogDescription>
+              Preview your saved PDF here, or open it in a new tab if your browser blocks inline viewing.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="h-[75vh] bg-slate-100">
+            {previewVaultDoc?.downloadUrl ? (
+              <iframe
+                src={getVaultPreviewUrl(previewVaultDoc)}
+                title={previewVaultDoc.name}
+                className="h-full w-full border-0"
+              />
+            ) : (
+              <div className="flex h-full items-center justify-center text-sm text-slate-500">
+                Preview link unavailable. Refresh Saved Files and try again.
+              </div>
+            )}
+          </div>
+          {previewVaultDoc?.downloadUrl && (
+            <div className="flex flex-wrap justify-end gap-2 border-t border-slate-200 bg-white px-5 py-3">
+              <Button asChild variant="outline">
+                <a href={previewVaultDoc.downloadUrl} target="_blank" rel="noopener noreferrer">
+                  <ExternalLink className="mr-2 h-4 w-4" />
+                  Open in new tab
+                </a>
+              </Button>
+              <Button asChild>
+                <a href={previewVaultDoc.downloadUrl} download={previewVaultDoc.name}>
+                  <Download className="mr-2 h-4 w-4" />
+                  Download
+                </a>
+              </Button>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </Card>
   );
 
@@ -621,39 +496,6 @@ export function DashboardPage() {
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
-            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-              {COMMAND_CENTER_CARDS.map((card) => {
-                const Icon = card.icon;
-                const content = (
-                  <Card className={cn('h-full overflow-hidden rounded-[1.5rem] border-white/80 bg-gradient-to-br shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg dark:border-white/10', card.tone)}>
-                    <CardContent className="flex h-full flex-col justify-between p-5">
-                      <div>
-                        <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-2xl bg-white/80 text-emerald-700 shadow-sm dark:bg-white/10 dark:text-emerald-200">
-                          <Icon className="h-5 w-5" />
-                        </div>
-                        <h3 className="font-semibold text-slate-950 dark:text-white">{card.title}</h3>
-                        <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">{card.description}</p>
-                      </div>
-                      <div className="mt-5 inline-flex items-center text-sm font-semibold text-emerald-700 dark:text-emerald-200">
-                        {card.cta}
-                        <ChevronRight className="ml-1 h-4 w-4" />
-                      </div>
-                    </CardContent>
-                  </Card>
-                );
-
-                if ('href' in card) {
-                  return <Link key={card.title} to={card.href}>{content}</Link>;
-                }
-
-                return (
-                  <button key={card.title} type="button" className="text-left" onClick={() => setActiveTab(card.tab)}>
-                    {content}
-                  </button>
-                );
-              })}
-            </div>
-
             <div className="grid gap-4 md:grid-cols-2">
               <Card>
                 <CardHeader>
@@ -698,12 +540,6 @@ export function DashboardPage() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="grid gap-3">
-                  <Button variant="ghost" className="justify-start" asChild>
-                    <Link to="/what-do-i-need">
-                      <ClipboardCheck className="h-4 w-4 mr-2 text-emerald-600" />
-                      Help me choose what to file
-                    </Link>
-                  </Button>
                   <Button variant="ghost" className="justify-start" asChild>
                     <Link to="/draft-forms">
                       <FileText className="h-4 w-4 mr-2 text-slate-500" />
@@ -829,35 +665,6 @@ export function DashboardPage() {
                   </Button>
                 </CardContent>
               </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <ClipboardCheck className="h-4 w-4 text-emerald-600" />
-                    Filing tracker
-                  </CardTitle>
-                  <CardDescription>Persistent filing status from generated packet through clerk review.</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <Progress value={filingProgressPercent} />
-                  <p className="text-sm text-slate-500">
-                    {filingCompletedCount} of {FILING_TRACKER_STEPS.length} filing milestones complete
-                  </p>
-                  {nextFilingStep ? (
-                    <div className="rounded-2xl border border-emerald-100 bg-emerald-50/80 p-3 text-sm dark:border-emerald-400/20 dark:bg-emerald-400/10">
-                      <p className="font-medium text-emerald-900 dark:text-emerald-100">Next: {nextFilingStep.title}</p>
-                      <p className="mt-1 text-emerald-800/80 dark:text-emerald-100/75">{nextFilingStep.detail}</p>
-                    </div>
-                  ) : (
-                    <p className="rounded-2xl border border-emerald-100 bg-emerald-50/80 p-3 text-sm font-medium text-emerald-900 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-100">
-                      All filing milestones are marked complete.
-                    </p>
-                  )}
-                  <Button variant="outline" className="w-full" onClick={() => setActiveTab('county')}>
-                    Update filing tracker
-                  </Button>
-                </CardContent>
-              </Card>
             </div>
           </TabsContent>
 
@@ -912,107 +719,7 @@ export function DashboardPage() {
             </div>
           </TabsContent>
 
-          <TabsContent value="county" className="space-y-6">
-            <Card className="rounded-[1.75rem] border-white/80 bg-white/80 shadow-sm backdrop-blur-xl dark:border-white/10 dark:bg-white/5">
-              <CardHeader>
-                <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                  <div>
-                    <CardTitle className="flex items-center gap-2">
-                      <ClipboardCheck className="h-5 w-5 text-emerald-600" />
-                      Filing tracker
-                    </CardTitle>
-                    <CardDescription className="mt-2">
-                      Mark each filing milestone as it happens. This saves locally to your DivorceOS dashboard.
-                    </CardDescription>
-                  </div>
-                  <Badge variant="outline" className="w-fit rounded-full border-emerald-200 bg-emerald-50 text-emerald-800 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-100">
-                    {filingCompletedCount}/{FILING_TRACKER_STEPS.length} complete
-                  </Badge>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-5">
-                <Progress value={filingProgressPercent} className="h-2" />
-                <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500 dark:text-slate-300">
-                  <Badge variant="secondary" className="rounded-full">
-                    {isFilingTrackerLoading ? 'Syncing…' : filingTrackerError ? 'Local backup active' : 'Synced to account'}
-                  </Badge>
-                  {filingTrackerError ? (
-                    <span>{filingTrackerError}</span>
-                  ) : (
-                    <span>
-                      Tracker follows this login across devices
-                      {filingTrackerLastSyncedAt
-                        ? ` • Last synced ${new Date(filingTrackerLastSyncedAt).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}`
-                        : '.'}
-                    </span>
-                  )}
-                </div>
-                <div className="grid gap-3 md:grid-cols-2">
-                  {FILING_TRACKER_STEPS.map((step, index) => {
-                    const checked = filingTracker.completed[step.id];
-                    const updatedAt = filingTracker.updatedAtByStep[step.id];
-                    return (
-                      <div
-                        key={step.id}
-                        className={cn(
-                          'rounded-2xl border p-4 transition-colors',
-                          checked
-                            ? 'border-emerald-200 bg-emerald-50/80 dark:border-emerald-400/20 dark:bg-emerald-400/10'
-                            : 'border-slate-200 bg-white/75 dark:border-white/10 dark:bg-white/5',
-                        )}
-                      >
-                        <div className="flex items-start gap-3">
-                          <Checkbox checked={checked} onCheckedChange={() => toggleFilingTrackerStep(step.id)} className="mt-1" />
-                          <div className="min-w-0 flex-1">
-                            <div className="flex flex-wrap items-center gap-2">
-                              <Badge variant="secondary" className="rounded-full text-[11px]">Step {index + 1}</Badge>
-                              {checked && <Badge className="rounded-full bg-emerald-700 text-white">Done</Badge>}
-                            </div>
-                            <p className="mt-2 font-medium text-slate-900 dark:text-white">{step.title}</p>
-                            <p className="mt-1 text-sm leading-6 text-slate-500 dark:text-slate-300">{step.detail}</p>
-                            {updatedAt && (
-                              <p className="mt-2 text-xs text-emerald-700 dark:text-emerald-200">
-                                Marked {new Date(updatedAt).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
-                              </p>
-                            )}
-                            {step.tab && (
-                              <Button variant="link" size="sm" className="mt-2 h-auto px-0 text-emerald-700 dark:text-emerald-200" onClick={() => setActiveTab(step.tab!)}>
-                                Open related section
-                                <ChevronRight className="ml-1 h-4 w-4" />
-                              </Button>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-                <div className="rounded-2xl border border-slate-200 bg-white/75 p-4 dark:border-white/10 dark:bg-white/5">
-                  <label className="text-sm font-medium text-slate-800 dark:text-slate-100" htmlFor="filing-tracker-notes">
-                    Filing notes / clerk status
-                  </label>
-                  <textarea
-                    id="filing-tracker-notes"
-                    value={filingTracker.notes}
-                    onChange={(event) => setFilingTracker((current) => ({ ...current, notes: event.target.value }))}
-                    placeholder="Example: Filed through Tyler on May 1. Waiting for clerk acceptance. Rejection reason, envelope number, hearing date, or next deadline…"
-                    className="mt-2 min-h-28 w-full rounded-2xl border border-slate-200 bg-white p-3 text-sm outline-none transition focus:border-emerald-400 focus:ring-4 focus:ring-emerald-100 dark:border-white/10 dark:bg-slate-950 dark:text-white dark:focus:ring-emerald-400/10"
-                  />
-                </div>
-                <div className="flex flex-col gap-2 sm:flex-row sm:justify-between">
-                  <Button asChild variant="outline" className="rounded-full">
-                    <Link to="/concierge">
-                      Open county concierge
-                      <ChevronRight className="ml-1 h-4 w-4" />
-                    </Link>
-                  </Button>
-                  <Button variant="ghost" className="rounded-full text-slate-500" onClick={resetFilingTracker}>
-                    Reset tracker
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-
+          <TabsContent value="county">
             <CountyRoadmap initialCountyId={preferredCountyId} currentUser={user} onProfileUpdated={setUser} />
           </TabsContent>
 

@@ -2,15 +2,19 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { enforceBrowserOrigin, enforceRateLimit } from './_security.js';
 import { AGENTMAIL_INBOX_ID, sendAgentMail } from './_agentmail.js';
 import {
-  handleDeleteManualBookkeepingEntry,
+  handleAnalyticsRead,
+  handleAnalyticsWrite,
+} from './_analytics.js';
+import {
   handleCreateManualBookkeepingEntry,
+  handleDeleteManualBookkeepingEntry,
   handleListBookkeeping,
   handleUpdateManualBookkeepingEntry,
 } from './_bookkeeping.js';
 import {
-  handleAnalyticsRead,
-  handleAnalyticsWrite,
-} from './_analytics.js';
+  handleListFormDrafts,
+  handleSaveFormDraft,
+} from './_form_drafts.js';
 import {
   buildNewUserRecord,
   createEmailVerificationToken,
@@ -42,17 +46,7 @@ import {
 const USERS_TABLE = 'site_users';
 const REFERRALS_TABLE = 'site_referrals';
 const SUPPORT_SCENARIOS_TABLE = 'site_support_scenarios';
-const FILING_TRACKERS_TABLE = 'site_filing_trackers';
 const REMINDER_DISPATCH_TOKEN = process.env.REMINDER_DISPATCH_TOKEN;
-
-type FilingTrackerStepId = 'generated' | 'filed' | 'served' | 'proof-filed' | 'clerk-review' | 'accepted';
-
-interface FilingTrackerState {
-  completed: Record<FilingTrackerStepId, boolean>;
-  updatedAtByStep: Partial<Record<FilingTrackerStepId, string>>;
-  notes: string;
-  updatedAt?: string;
-}
 
 interface AuthActionBody {
   action?: string;
@@ -93,8 +87,14 @@ interface AuthActionBody {
   actionTab?: string;
   emailEnabled?: boolean;
   reminderId?: string;
-  filingTracker?: Partial<FilingTrackerState>;
   dispatchToken?: string;
+  type?: string;
+  amount?: number;
+  occurredAt?: string;
+  counterparty?: string;
+  category?: string;
+  entryId?: string;
+  workspace?: unknown;
 }
 
 function parseJsonBody<T>(req: VercelRequest): T {
@@ -130,41 +130,6 @@ function normalizeSupportScenario(row: Record<string, any>) {
     combinedSupport: Number(row.combined_support ?? 0),
     estimatePayer: row.estimate_payer,
     snapshot: row.snapshot,
-  };
-}
-
-function createDefaultFilingTracker(): FilingTrackerState {
-  return {
-    completed: {
-      generated: false,
-      filed: false,
-      served: false,
-      'proof-filed': false,
-      'clerk-review': false,
-      accepted: false,
-    },
-    updatedAtByStep: {},
-    notes: '',
-  };
-}
-
-function normalizeFilingTracker(row?: Record<string, any> | null): FilingTrackerState {
-  const defaults = createDefaultFilingTracker();
-  if (!row) return defaults;
-  return {
-    completed: { ...defaults.completed, ...(row.completed ?? {}) },
-    updatedAtByStep: row.updated_at_by_step ?? row.updatedAtByStep ?? {},
-    notes: typeof row.notes === 'string' ? row.notes : '',
-    updatedAt: typeof row.updated_at === 'string' ? row.updated_at : undefined,
-  };
-}
-
-function sanitizeFilingTrackerPayload(input: Partial<FilingTrackerState> | undefined): FilingTrackerState {
-  const defaults = createDefaultFilingTracker();
-  return {
-    completed: { ...defaults.completed, ...(input?.completed ?? {}) },
-    updatedAtByStep: input?.updatedAtByStep ?? {},
-    notes: typeof input?.notes === 'string' ? input.notes.slice(0, 5000) : '',
   };
 }
 
@@ -587,56 +552,6 @@ async function handleDeleteReminder(req: VercelRequest, res: VercelResponse, bod
   return res.status(200).json({ success: true });
 }
 
-async function handleGetFilingTracker(req: VercelRequest, res: VercelResponse) {
-  const user = await requireAuthenticatedUser(req, res);
-  if (!user) return;
-
-  const supabase = requireSupabase();
-  const { data, error } = await supabase
-    .from(FILING_TRACKERS_TABLE)
-    .select('*')
-    .eq('user_id', user.id)
-    .maybeSingle<Record<string, any>>();
-
-  if (error) {
-    if (isMissingTableError(error.message, FILING_TRACKERS_TABLE)) {
-      return res.status(503).json({ error: 'Filing tracker storage is not ready yet. Please run supabase/site-filing-trackers.sql.' });
-    }
-    return res.status(500).json({ error: `Unable to load filing tracker: ${error.message}` });
-  }
-
-  return res.status(200).json({ filingTracker: normalizeFilingTracker(data) });
-}
-
-async function handleSaveFilingTracker(req: VercelRequest, res: VercelResponse, body: AuthActionBody) {
-  const user = await requireAuthenticatedUser(req, res);
-  if (!user) return;
-
-  const filingTracker = sanitizeFilingTrackerPayload(body.filingTracker);
-  const now = new Date().toISOString();
-  const supabase = requireSupabase();
-  const { data, error } = await supabase
-    .from(FILING_TRACKERS_TABLE)
-    .upsert({
-      user_id: user.id,
-      completed: filingTracker.completed,
-      updated_at_by_step: filingTracker.updatedAtByStep,
-      notes: filingTracker.notes,
-      updated_at: now,
-    }, { onConflict: 'user_id' })
-    .select('*')
-    .single<Record<string, any>>();
-
-  if (error) {
-    if (isMissingTableError(error.message, FILING_TRACKERS_TABLE)) {
-      return res.status(503).json({ error: 'Filing tracker storage is not ready yet. Please run supabase/site-filing-trackers.sql.' });
-    }
-    return res.status(500).json({ error: `Unable to save filing tracker: ${error.message}` });
-  }
-
-  return res.status(200).json({ filingTracker: normalizeFilingTracker(data) });
-}
-
 async function handleSendReminderTestEmail(req: VercelRequest, res: VercelResponse, body: AuthActionBody) {
   const user = await requireAuthenticatedUser(req, res);
   if (!user) return;
@@ -781,6 +696,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       if (action === 'chat-sessions-list') return handleListChatSessions(req, res);
       if (action === 'chat-sessions-save') return handleSaveChatSession(req, res, body);
       if (action === 'chat-sessions-delete') return handleDeleteChatSession(req, res, body);
+      if (action === 'form-drafts-list') return handleListFormDrafts(req, res);
+      if (action === 'form-drafts-save') return handleSaveFormDraft(req, res, body);
       if (action === 'reminders-list') return handleListReminders(req, res);
       if (action === 'reminders-save') return handleSaveReminder(req, res, body);
       if (action === 'reminders-delete') return handleDeleteReminder(req, res, body);
@@ -792,8 +709,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       if (action === 'bookkeeping-delete') return handleDeleteManualBookkeepingEntry(req, res);
       if (action === 'analytics-write') return handleAnalyticsWrite(req, res);
       if (action === 'analytics-read') return handleAnalyticsRead(req, res);
-      if (action === 'filing-tracker-get') return handleGetFilingTracker(req, res);
-      if (action === 'filing-tracker-save') return handleSaveFilingTracker(req, res, body);
     }
 
     if (req.method === 'PATCH') {

@@ -1,0 +1,1692 @@
+[
+  {
+    "page": 0,
+    "name": "DocumentDate[0]",
+    "fullName": "DocumentDate[0]",
+    "type": "/Tx",
+    "rect": [
+      400.938,
+      702.067,
+      516.013,
+      715.217
+    ],
+    "tooltip": "Date"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      53.853,
+      686.913,
+      62.853,
+      695.913
+    ],
+    "tooltip": "INCOME WITHHOLDING ORDER slash NOTICE FOR SUPPORT parentheses IWO"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[1]",
+    "fullName": "CheckBox1[1]",
+    "type": "/Btn",
+    "rect": [
+      400.521,
+      686.913,
+      409.521,
+      695.913
+    ],
+    "tooltip": "AMENDED IWO"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[2]",
+    "fullName": "CheckBox1[2]",
+    "type": "/Btn",
+    "rect": [
+      53.853,
+      672.933,
+      62.853,
+      681.933
+    ],
+    "tooltip": "ONE-TIME ORDER/NOTICE FOR LUMP SUM PAYMENT"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[3]",
+    "fullName": "CheckBox1[3]",
+    "type": "/Btn",
+    "rect": [
+      400.521,
+      672.933,
+      409.521,
+      681.933
+    ],
+    "tooltip": "TERMINATION OF IWO"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox5[0]",
+    "fullName": "CheckBox5[0]",
+    "type": "/Btn",
+    "rect": [
+      39.832,
+      655.341,
+      48.832,
+      664.341
+    ],
+    "tooltip": "Child Support Enforcement parentheses CSE Agency"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox5[1]",
+    "fullName": "CheckBox5[1]",
+    "type": "/Btn",
+    "rect": [
+      255.444,
+      655.341,
+      264.444,
+      664.341
+    ],
+    "tooltip": "Court"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox5[2]",
+    "fullName": "CheckBox5[2]",
+    "type": "/Btn",
+    "rect": [
+      308.234,
+      655.341,
+      317.234,
+      664.341
+    ],
+    "tooltip": "Attorney"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox5[3]",
+    "fullName": "CheckBox5[3]",
+    "type": "/Btn",
+    "rect": [
+      374.145,
+      655.341,
+      383.145,
+      664.341
+    ],
+    "tooltip": "Private Individual slash Entity"
+  },
+  {
+    "page": 0,
+    "name": "Button1[0]",
+    "fullName": "Button1[0]",
+    "type": "/Btn",
+    "rect": [
+      167.922,
+      628.978,
+      500.922,
+      638.979
+    ],
+    "tooltip": " www dot acf dot hhs dot gov slash css slash resource slash income dash withholding dash for dash support dash instructions"
+  },
+  {
+    "page": 0,
+    "name": "IssuingState-Tribe-TerritoryName[0]",
+    "fullName": "IssuingState-Tribe-TerritoryName[0]",
+    "type": "/Tx",
+    "rect": [
+      126.299,
+      585.634,
+      269.248,
+      596.93
+    ],
+    "tooltip": "State or Tribe or Territory"
+  },
+  {
+    "page": 0,
+    "name": "RemittanceIdentifier[0]",
+    "fullName": "RemittanceIdentifier[0]",
+    "type": "/Tx",
+    "rect": [
+      432.2,
+      585.634,
+      574.291,
+      596.93
+    ],
+    "tooltip": "Remittance Identifier, include with payment"
+  },
+  {
+    "page": 0,
+    "name": "IssuingJurisdictionName[0]",
+    "fullName": "IssuingJurisdictionName[0]",
+    "type": "/Tx",
+    "rect": [
+      138.479,
+      572.178,
+      269.251,
+      583.474
+    ],
+    "tooltip": "City or County or District or Tribe"
+  },
+  {
+    "page": 0,
+    "name": "OrderIdentifierA[0]",
+    "fullName": "OrderIdentifierA[0]",
+    "type": "/Tx",
+    "rect": [
+      315.445,
+      572.178,
+      574.291,
+      583.474
+    ],
+    "tooltip": "order identifier"
+  },
+  {
+    "page": 0,
+    "name": "PrivateIndividualEntityName[0]",
+    "fullName": "PrivateIndividualEntityName[0]",
+    "type": "/Tx",
+    "rect": [
+      139.924,
+      558.663,
+      268.951,
+      569.959
+    ],
+    "tooltip": "Private Individual or Entity"
+  },
+  {
+    "page": 0,
+    "name": "CaseIdentifierA[0]",
+    "fullName": "CaseIdentifierA[0]",
+    "type": "/Tx",
+    "rect": [
+      311.711,
+      558.663,
+      574.291,
+      569.959
+    ],
+    "tooltip": "case identifier"
+  },
+  {
+    "page": 0,
+    "name": "EmployerNameA[0]",
+    "fullName": "EmployerNameA[0]",
+    "type": "/Tx",
+    "rect": [
+      43.254,
+      526.738,
+      288.754,
+      537.738
+    ],
+    "tooltip": "Name of Employer or Income Withholder"
+  },
+  {
+    "page": 0,
+    "name": "EmployerAddress1[0]",
+    "fullName": "EmployerAddress1[0]",
+    "type": "/Tx",
+    "rect": [
+      43.254,
+      502.227,
+      288.754,
+      513.227
+    ],
+    "tooltip": "Address of Employer or Income Withholder"
+  },
+  {
+    "page": 0,
+    "name": "EmployerAddress2[0]",
+    "fullName": "EmployerAddress2[0]",
+    "type": "/Tx",
+    "rect": [
+      43.254,
+      477.793,
+      288.754,
+      488.793
+    ],
+    "tooltip": "Address of Employer or Income Withholder continued"
+  },
+  {
+    "page": 0,
+    "name": "EmployerAddress3[0]",
+    "fullName": "EmployerAddress3[0]",
+    "type": "/Tx",
+    "rect": [
+      43.254,
+      453.437,
+      288.754,
+      464.437
+    ],
+    "tooltip": "Address of Employer or Income Withholder continued"
+  },
+  {
+    "page": 0,
+    "name": "TextField[0]",
+    "fullName": "TextField[0]",
+    "type": "/Tx",
+    "rect": [
+      204.222,
+      420.027,
+      326.826,
+      430.028
+    ],
+    "tooltip": "Employer or Income Withholder's FEIN"
+  },
+  {
+    "page": 0,
+    "name": "EmployeeNameA[0]",
+    "fullName": "EmployeeNameA[0]",
+    "type": "/Tx",
+    "rect": [
+      323.728,
+      526.931,
+      569.228,
+      537.931
+    ],
+    "tooltip": "Employee or Obligor Name, Last, First, Middle"
+  },
+  {
+    "page": 0,
+    "name": "EmployeeSSN[0]",
+    "fullName": "EmployeeSSN[0]",
+    "type": "/Tx",
+    "rect": [
+      323.728,
+      502.42,
+      569.228,
+      513.42
+    ],
+    "tooltip": "Social Security Number of Employee or Obligor  "
+  },
+  {
+    "page": 0,
+    "name": "EmployeeDOB[0]",
+    "fullName": "EmployeeDOB[0]",
+    "type": "/Tx",
+    "rect": [
+      323.728,
+      477.906,
+      569.228,
+      488.906
+    ],
+    "tooltip": "Employee or Obligor Date of Birth"
+  },
+  {
+    "page": 0,
+    "name": "ObligeeName[0]",
+    "fullName": "ObligeeName[0]",
+    "type": "/Tx",
+    "rect": [
+      323.728,
+      453.551,
+      569.228,
+      464.551
+    ],
+    "tooltip": "Custodial Party or Obligee Name, Last, First, Middle"
+  },
+  {
+    "page": 0,
+    "name": "Child1Name[0]",
+    "fullName": "Child1Name[0]",
+    "type": "/Tx",
+    "rect": [
+      44.629,
+      386.768,
+      242.629,
+      402.177
+    ],
+    "tooltip": "Child1 Name, Last, First, Middle"
+  },
+  {
+    "page": 0,
+    "name": "Child1BirthDate[0]",
+    "fullName": "Child1BirthDate[0]",
+    "type": "/Tx",
+    "rect": [
+      259.747,
+      386.771,
+      362.758,
+      402.18
+    ],
+    "tooltip": "Child1 Birth Date "
+  },
+  {
+    "page": 0,
+    "name": "Child2Name[0]",
+    "fullName": "Child2Name[0]",
+    "type": "/Tx",
+    "rect": [
+      44.629,
+      369.848,
+      242.629,
+      385.257
+    ],
+    "tooltip": "Child2 Name, Last, First, Middle"
+  },
+  {
+    "page": 0,
+    "name": "Child2BirthDate[0]",
+    "fullName": "Child2BirthDate[0]",
+    "type": "/Tx",
+    "rect": [
+      259.747,
+      369.848,
+      362.758,
+      385.257
+    ],
+    "tooltip": "Child2 Birth Date "
+  },
+  {
+    "page": 0,
+    "name": "Child3Name[0]",
+    "fullName": "Child3Name[0]",
+    "type": "/Tx",
+    "rect": [
+      44.629,
+      353.166,
+      242.629,
+      368.575
+    ],
+    "tooltip": "Child3 Name, Last, First, Middle"
+  },
+  {
+    "page": 0,
+    "name": "Child3BirthDate[0]",
+    "fullName": "Child3BirthDate[0]",
+    "type": "/Tx",
+    "rect": [
+      259.747,
+      353.166,
+      362.758,
+      368.575
+    ],
+    "tooltip": "Child3 Birth Date "
+  },
+  {
+    "page": 0,
+    "name": "Child4Name[0]",
+    "fullName": "Child4Name[0]",
+    "type": "/Tx",
+    "rect": [
+      44.629,
+      335.753,
+      242.629,
+      351.162
+    ],
+    "tooltip": "Child4 Name, Last, First, Middle"
+  },
+  {
+    "page": 0,
+    "name": "Child4BirthDate[0]",
+    "fullName": "Child4BirthDate[0]",
+    "type": "/Tx",
+    "rect": [
+      259.747,
+      335.753,
+      362.758,
+      351.162
+    ],
+    "tooltip": "Child4 Birth Date "
+  },
+  {
+    "page": 0,
+    "name": "Child5Name[0]",
+    "fullName": "Child5Name[0]",
+    "type": "/Tx",
+    "rect": [
+      44.629,
+      319.071,
+      242.629,
+      334.48
+    ],
+    "tooltip": "Child5 Name, Last, First, Middle"
+  },
+  {
+    "page": 0,
+    "name": "Child5BirthDate[0]",
+    "fullName": "Child5BirthDate[0]",
+    "type": "/Tx",
+    "rect": [
+      259.747,
+      319.071,
+      362.758,
+      334.48
+    ],
+    "tooltip": "Child5 Birth Date "
+  },
+  {
+    "page": 0,
+    "name": "Child6Name[0]",
+    "fullName": "Child6Name[0]",
+    "type": "/Tx",
+    "rect": [
+      44.629,
+      301.67,
+      242.629,
+      317.212
+    ],
+    "tooltip": "Child6 Name, Last, First, Middle"
+  },
+  {
+    "page": 0,
+    "name": "Child6BirthDate[0]",
+    "fullName": "Child6BirthDate[0]",
+    "type": "/Tx",
+    "rect": [
+      259.747,
+      301.67,
+      362.758,
+      317.212
+    ],
+    "tooltip": "Child6 Birth Date "
+  },
+  {
+    "page": 0,
+    "name": "IssuingTribunalName[0]",
+    "fullName": "IssuingTribunalName[0]",
+    "type": "/Tx",
+    "rect": [
+      260.68,
+      265.076,
+      498.28,
+      276.077
+    ],
+    "tooltip": "Name of state slash tribe"
+  },
+  {
+    "page": 0,
+    "name": "SupportCurrentChildAmount[0]",
+    "fullName": "SupportCurrentChildAmount[0]",
+    "type": "/Tx",
+    "rect": [
+      45.199,
+      238.476,
+      117.199,
+      249.477
+    ],
+    "tooltip": "dollar amount"
+  },
+  {
+    "page": 0,
+    "name": "SupportCurrentChildFrequencyCode[0]",
+    "fullName": "SupportCurrentChildFrequencyCode[0]",
+    "type": "/Tx",
+    "rect": [
+      142.014,
+      239.17,
+      221.293,
+      250.171
+    ],
+    "tooltip": "per"
+  },
+  {
+    "page": 0,
+    "name": "SupportPastDueChildAmount[0]",
+    "fullName": "SupportPastDueChildAmount[0]",
+    "type": "/Tx",
+    "rect": [
+      45.199,
+      227.356,
+      117.199,
+      238.357
+    ],
+    "tooltip": "dollar amount"
+  },
+  {
+    "page": 0,
+    "name": "SupportPastDueChildFrequencyCode[0]",
+    "fullName": "SupportPastDueChildFrequencyCode[0]",
+    "type": "/Tx",
+    "rect": [
+      142.014,
+      227.339,
+      221.214,
+      238.34
+    ],
+    "tooltip": "per"
+  },
+  {
+    "page": 0,
+    "name": "SupportCurrentMedicalAmount[0]",
+    "fullName": "SupportCurrentMedicalAmount[0]",
+    "type": "/Tx",
+    "rect": [
+      45.199,
+      216.048,
+      117.199,
+      227.049
+    ],
+    "tooltip": "dollar amount"
+  },
+  {
+    "page": 0,
+    "name": "SupportCurrentMedicalFrequencyCode[0]",
+    "fullName": "SupportCurrentMedicalFrequencyCode[0]",
+    "type": "/Tx",
+    "rect": [
+      142.014,
+      216.037,
+      221.214,
+      227.038
+    ],
+    "tooltip": "per"
+  },
+  {
+    "page": 0,
+    "name": "SupportPastDueMedicalAmount[0]",
+    "fullName": "SupportPastDueMedicalAmount[0]",
+    "type": "/Tx",
+    "rect": [
+      45.199,
+      204.803,
+      117.199,
+      215.804
+    ],
+    "tooltip": "dollar amount"
+  },
+  {
+    "page": 0,
+    "name": "SupportPastDueMedicalFrequencyCode[0]",
+    "fullName": "SupportPastDueMedicalFrequencyCode[0]",
+    "type": "/Tx",
+    "rect": [
+      142.014,
+      204.789,
+      221.214,
+      215.79
+    ],
+    "tooltip": "per"
+  },
+  {
+    "page": 0,
+    "name": "SupportCurrentSpousalAmount[0]",
+    "fullName": "SupportCurrentSpousalAmount[0]",
+    "type": "/Tx",
+    "rect": [
+      45.199,
+      192.952,
+      117.199,
+      203.953
+    ],
+    "tooltip": "dollar amount"
+  },
+  {
+    "page": 0,
+    "name": "SupportCurrentSpousalFrequencyCode[0]",
+    "fullName": "SupportCurrentSpousalFrequencyCode[0]",
+    "type": "/Tx",
+    "rect": [
+      142.014,
+      192.937,
+      221.214,
+      203.938
+    ],
+    "tooltip": "per"
+  },
+  {
+    "page": 0,
+    "name": "SupportPastDueSpousalAmount[0]",
+    "fullName": "SupportPastDueSpousalAmount[0]",
+    "type": "/Tx",
+    "rect": [
+      45.199,
+      181.698,
+      117.199,
+      192.699
+    ],
+    "tooltip": "dollar amount"
+  },
+  {
+    "page": 0,
+    "name": "SupportPastDueSpousalFrequencyCode[0]",
+    "fullName": "SupportPastDueSpousalFrequencyCode[0]",
+    "type": "/Tx",
+    "rect": [
+      142.014,
+      181.684,
+      221.214,
+      192.685
+    ],
+    "tooltip": "per"
+  },
+  {
+    "page": 0,
+    "name": "ObligationOtherAmount[0]",
+    "fullName": "ObligationOtherAmount[0]",
+    "type": "/Tx",
+    "rect": [
+      45.199,
+      169.855,
+      117.199,
+      180.856
+    ],
+    "tooltip": "dollar amount"
+  },
+  {
+    "page": 0,
+    "name": "ObligationOtherFrequencyCode[0]",
+    "fullName": "ObligationOtherFrequencyCode[0]",
+    "type": "/Tx",
+    "rect": [
+      142.014,
+      169.841,
+      221.214,
+      180.842
+    ],
+    "tooltip": "per"
+  },
+  {
+    "page": 0,
+    "name": "ObligationOtherDescriptionText[0]",
+    "fullName": "ObligationOtherDescriptionText[0]",
+    "type": "/Tx",
+    "rect": [
+      313.781,
+      169.353,
+      563.527,
+      180.354
+    ],
+    "tooltip": "other parentheses must specify"
+  },
+  {
+    "page": 0,
+    "name": "ObligationTotalAmount[0]",
+    "fullName": "ObligationTotalAmount[0]",
+    "type": "/Tx",
+    "rect": [
+      202.406,
+      155.733,
+      277.884,
+      166.734
+    ],
+    "tooltip": "for a Total Amount to Withhold of  dollar amount"
+  },
+  {
+    "page": 0,
+    "name": "ObligationTotalFrequencyCode[0]",
+    "fullName": "ObligationTotalFrequencyCode[0]",
+    "type": "/Tx",
+    "rect": [
+      304.456,
+      155.718,
+      400.451,
+      166.719
+    ],
+    "tooltip": "per"
+  },
+  {
+    "page": 0,
+    "name": "YesNo[0]",
+    "fullName": "YesNo[0]",
+    "type": "/Btn",
+    "rect": [
+      488.585,
+      229.25,
+      497.585,
+      238.25
+    ],
+    "tooltip": "yes"
+  },
+  {
+    "page": 0,
+    "name": "YesNo[1]",
+    "fullName": "YesNo[1]",
+    "type": "/Btn",
+    "rect": [
+      533.041,
+      229.25,
+      542.041,
+      238.25
+    ],
+    "tooltip": "no"
+  },
+  {
+    "page": 0,
+    "name": "IncomeWithholdingDeductionWeeklyAmount[0]",
+    "fullName": "IncomeWithholdingDeductionWeeklyAmount[0]",
+    "type": "/Tx",
+    "rect": [
+      44.816,
+      101.283,
+      107.456,
+      112.283
+    ],
+    "tooltip": "dollar amount"
+  },
+  {
+    "page": 0,
+    "name": "IncomeWithholdingSemimonthlyAmount[0]",
+    "fullName": "IncomeWithholdingSemimonthlyAmount[0]",
+    "type": "/Tx",
+    "rect": [
+      305.008,
+      101.368,
+      367.648,
+      112.368
+    ],
+    "tooltip": "dollar amount"
+  },
+  {
+    "page": 0,
+    "name": "IncomeWithholdingDeductionBi-WeeklyAmount[0]",
+    "fullName": "IncomeWithholdingDeductionBi-WeeklyAmount[0]",
+    "type": "/Tx",
+    "rect": [
+      44.816,
+      89.479,
+      107.456,
+      100.479
+    ],
+    "tooltip": "dollar amount"
+  },
+  {
+    "page": 0,
+    "name": "IncomeWithholdingMonthlyAmount[0]",
+    "fullName": "IncomeWithholdingMonthlyAmount[0]",
+    "type": "/Tx",
+    "rect": [
+      305.008,
+      89.567,
+      367.648,
+      100.567
+    ],
+    "tooltip": "dollar amount"
+  },
+  {
+    "page": 0,
+    "name": "LumpSumPaymentAmount[0]",
+    "fullName": "LumpSumPaymentAmount[0]",
+    "type": "/Tx",
+    "rect": [
+      44.816,
+      78.178,
+      107.456,
+      89.178
+    ],
+    "tooltip": "dollar amount"
+  },
+  {
+    "page": 0,
+    "name": "DocumentTrackingNumber[0]",
+    "fullName": "DocumentTrackingNumber[0]",
+    "type": "/Tx",
+    "rect": [
+      268.686,
+      60.93,
+      434.88,
+      71.01
+    ],
+    "tooltip": "Document Tracking Identifier"
+  },
+  {
+    "page": 1,
+    "name": "EmployerNameA[0]",
+    "fullName": "EmployerNameA[0]",
+    "type": "/Tx",
+    "rect": [
+      186.803,
+      730.131,
+      357.16,
+      741.132
+    ],
+    "tooltip": "Employer or Income Withholder's Name"
+  },
+  {
+    "page": 1,
+    "name": "TextField[0]",
+    "fullName": "TextField[0]",
+    "type": "/Tx",
+    "rect": [
+      511.209,
+      730.469,
+      575.79,
+      741.47
+    ],
+    "tooltip": "Employer or Income Withholder FEIN"
+  },
+  {
+    "page": 1,
+    "name": "EmployeeNameA[0]",
+    "fullName": "EmployeeNameA[0]",
+    "type": "/Tx",
+    "rect": [
+      145.225,
+      715.488,
+      447.987,
+      726.489
+    ],
+    "tooltip": "Employee or Obligor's Name"
+  },
+  {
+    "page": 1,
+    "name": "EmployeeSSN[0]",
+    "fullName": "EmployeeSSN[0]",
+    "type": "/Tx",
+    "rect": [
+      483.685,
+      715.488,
+      575.79,
+      726.489
+    ],
+    "tooltip": "Social Security Number"
+  },
+  {
+    "page": 1,
+    "name": "CaseIdentifierA[0]",
+    "fullName": "CaseIdentifierA[0]",
+    "type": "/Tx",
+    "rect": [
+      73.984,
+      700.552,
+      267.369,
+      711.848
+    ],
+    "tooltip": "Case Identifier"
+  },
+  {
+    "page": 1,
+    "name": "OrderIdentifierA[0]",
+    "fullName": "OrderIdentifierA[0]",
+    "type": "/Tx",
+    "rect": [
+      315.655,
+      700.552,
+      575.79,
+      711.848
+    ],
+    "tooltip": "Order Identifier"
+  },
+  {
+    "page": 1,
+    "name": "TextField1[0]",
+    "fullName": "TextField1[0]",
+    "type": "/Tx",
+    "rect": [
+      292.056,
+      655.444,
+      378.51,
+      666.445
+    ],
+    "tooltip": "name of"
+  },
+  {
+    "page": 1,
+    "name": "TextField2[0]",
+    "fullName": "TextField2[0]",
+    "type": "/Tx",
+    "rect": [
+      216.85,
+      643.88,
+      242.77,
+      654.88
+    ],
+    "tooltip": "number of"
+  },
+  {
+    "page": 1,
+    "name": "IncomeWithholdingStartDate[0]",
+    "fullName": "IncomeWithholdingStartDate[0]",
+    "type": "/Tx",
+    "rect": [
+      340.98,
+      644.879,
+      404.765,
+      654.88
+    ],
+    "tooltip": "the date of"
+  },
+  {
+    "page": 1,
+    "name": "SendPaymentWithinDaysNumber[0]",
+    "fullName": "SendPaymentWithinDaysNumber[0]",
+    "type": "/Tx",
+    "rect": [
+      64.205,
+      633.435,
+      92.047,
+      643.436
+    ],
+    "tooltip": "number of "
+  },
+  {
+    "page": 1,
+    "name": "IncomeWithholdingCCPARate[0]",
+    "fullName": "IncomeWithholdingCCPARate[0]",
+    "type": "/Tx",
+    "rect": [
+      155.877,
+      620.997,
+      183.597,
+      631.998
+    ],
+    "tooltip": "number"
+  },
+  {
+    "page": 1,
+    "name": "EmploymentPlaceName[0]",
+    "fullName": "EmploymentPlaceName[0]",
+    "type": "/Tx",
+    "rect": [
+      120.657,
+      610.758,
+      207.117,
+      620.759
+    ],
+    "tooltip": "name of "
+  },
+  {
+    "page": 1,
+    "name": "Button1[0]",
+    "fullName": "Button1[0]",
+    "type": "/Btn",
+    "rect": [
+      287.308,
+      569.52,
+      558.331,
+      579.521
+    ],
+    "tooltip": "www dot acf dot hhs dot gov slash css slash resource slash state hyphen income hyphen withholdingcontacts hyphen and hyphen program hyphen requirements "
+  },
+  {
+    "page": 1,
+    "name": "Button2[0]",
+    "fullName": "Button2[0]",
+    "type": "/Btn",
+    "rect": [
+      121.635,
+      545.466,
+      523.338,
+      555.472
+    ],
+    "tooltip": "www dot acf dot hhs dot gov slash sites slash default slash files slash programs slash csstribal underscore agency underscore contacts underscore printable underscore pdf dot pdf "
+  },
+  {
+    "page": 1,
+    "name": "Button3[0]",
+    "fullName": "Button3[0]",
+    "type": "/Btn",
+    "rect": [
+      36.428,
+      533.633,
+      294.993,
+      543.773
+    ],
+    "tooltip": "www dot bia dot gov slash tribalmap slash DataDotGovSamples slash tld underscore map dot html"
+  },
+  {
+    "page": 1,
+    "name": "Button5[0]",
+    "fullName": "Button5[0]",
+    "type": "/Btn",
+    "rect": [
+      175.348,
+      377.558,
+      530.674,
+      389.2
+    ],
+    "tooltip": "www dot acf dot hhs dot gov slash css slash resource slash state dash income dash withholding dash contacts dash and dash program dash requirements"
+  },
+  {
+    "page": 1,
+    "name": "Button6[0]",
+    "fullName": "Button6[0]",
+    "type": "/Btn",
+    "rect": [
+      209.356,
+      265.131,
+      544.737,
+      275.131
+    ],
+    "tooltip": "www dot acf dot hhs dot gov slash css slash resource slash sdu dash eft dash contacts dash and dash program dash requirements."
+  },
+  {
+    "page": 1,
+    "name": "ReturnSendInd[0]",
+    "fullName": "ReturnSendInd[0]",
+    "type": "/Btn",
+    "rect": [
+      36.0,
+      241.432,
+      45.0,
+      250.432
+    ],
+    "tooltip": "Return to Sender (Completed by Employer/Income Withholder). Payment must be directed to an SDU in accordance with sections 466(b)(5) and (6) of the Social Security Act or Tribal Payee (see Payments in Section VI below). If payment is not directed to an SDU/Tribal Payee or this IWO is not regular on its face, you must check this box and return the IWO to the sender.  "
+  },
+  {
+    "page": 1,
+    "name": "EmploymentPlaceNameA[0]",
+    "fullName": "EmploymentPlaceNameA[0]",
+    "type": "/Tx",
+    "rect": [
+      524.792,
+      307.386,
+      575.997,
+      318.387
+    ],
+    "tooltip": "Locator Code of the payee if needed"
+  },
+  {
+    "page": 1,
+    "name": "GovermentOfficialSignature[0]",
+    "fullName": "GovermentOfficialSignature[0]",
+    "type": "/Sig",
+    "rect": [
+      204.415,
+      164.075,
+      569.593,
+      174.756
+    ],
+    "tooltip": "Signature of Judge or Issuing Official"
+  },
+  {
+    "page": 1,
+    "name": "GovernmentOfficialName[0]",
+    "fullName": "GovernmentOfficialName[0]",
+    "type": "/Tx",
+    "rect": [
+      204.415,
+      151.957,
+      569.593,
+      162.958
+    ],
+    "tooltip": "Print Name of Judge or Issuing Official"
+  },
+  {
+    "page": 1,
+    "name": "IssuingOfficialTitleText[0]",
+    "fullName": "IssuingOfficialTitleText[0]",
+    "type": "/Tx",
+    "rect": [
+      174.484,
+      139.839,
+      569.593,
+      150.84
+    ],
+    "tooltip": "Title of Judge/Issuing Official"
+  },
+  {
+    "page": 1,
+    "name": "DateofSigniture[0]",
+    "fullName": "DateofSigniture[0]",
+    "type": "/Tx",
+    "rect": [
+      124.07,
+      127.721,
+      569.593,
+      138.722
+    ],
+    "tooltip": "Date of Signature"
+  },
+  {
+    "page": 1,
+    "name": "SendEmployeeCopyIndicator[0]",
+    "fullName": "SendEmployeeCopyIndicator[0]",
+    "type": "/Btn",
+    "rect": [
+      36.0,
+      73.41,
+      46.0,
+      83.41
+    ],
+    "tooltip": "If checked, the employer/income withholder must provide a copy of this form to the employee or obligor.  "
+  },
+  {
+    "page": 1,
+    "name": "Button4[0]",
+    "fullName": "Button4[0]",
+    "type": "/Btn",
+    "rect": [
+      443.426,
+      477.062,
+      559.238,
+      491.689
+    ],
+    "tooltip": "www dot dol dot gov slash sites slash dolgov slash files slash WHD slash legacy slash files slash garn01 dot pdf"
+  },
+  {
+    "page": 2,
+    "name": "EmployerNameA[0]",
+    "fullName": "EmployerNameA[0]",
+    "type": "/Tx",
+    "rect": [
+      186.804,
+      730.131,
+      357.163,
+      741.132
+    ],
+    "tooltip": "Employer's Name"
+  },
+  {
+    "page": 2,
+    "name": "TextField[0]",
+    "fullName": "TextField[0]",
+    "type": "/Tx",
+    "rect": [
+      510.8,
+      730.47,
+      575.376,
+      741.47
+    ],
+    "tooltip": "Employer FEIN"
+  },
+  {
+    "page": 2,
+    "name": "EmployeeNameA[0]",
+    "fullName": "EmployeeNameA[0]",
+    "type": "/Tx",
+    "rect": [
+      145.225,
+      715.486,
+      447.985,
+      726.486
+    ],
+    "tooltip": "Employee or Obligor's Name"
+  },
+  {
+    "page": 2,
+    "name": "EmployeeSSN[0]",
+    "fullName": "EmployeeSSN[0]",
+    "type": "/Tx",
+    "rect": [
+      483.274,
+      715.485,
+      575.376,
+      726.486
+    ],
+    "tooltip": "Social Security Number"
+  },
+  {
+    "page": 2,
+    "name": "CaseIdentifierA[0]",
+    "fullName": "CaseIdentifierA[0]",
+    "type": "/Tx",
+    "rect": [
+      73.987,
+      700.554,
+      267.369,
+      711.85
+    ],
+    "tooltip": "Case Identifier"
+  },
+  {
+    "page": 2,
+    "name": "OrderIdentifierA[0]",
+    "fullName": "OrderIdentifierA[0]",
+    "type": "/Tx",
+    "rect": [
+      315.24,
+      700.554,
+      575.376,
+      711.85
+    ],
+    "tooltip": "Order Identifier"
+  },
+  {
+    "page": 2,
+    "name": "PenaltyLiabilityInfoText[0]",
+    "fullName": "PenaltyLiabilityInfoText[0]",
+    "type": "/Tx",
+    "rect": [
+      36.0,
+      365.451,
+      576.0,
+      414.931
+    ],
+    "tooltip": "Liability: If you have any doubts about the validity of this IWO, contact the sender.  If you fail to withhold income from the employee or obligor's income as the IWO directs, you are liable for both the accumulated amount you should have withheld  and any penalties set by state or tribal law/procedure."
+  },
+  {
+    "page": 2,
+    "name": "AntiDiscriminationProvisionsText[0]",
+    "fullName": "AntiDiscriminationProvisionsText[0]",
+    "type": "/Tx",
+    "rect": [
+      36.0,
+      274.685,
+      576.0,
+      323.228
+    ],
+    "tooltip": "Anti-discrimination: You are subject to a fine determined under state or tribal law for discharging an employee/obligor from employment, refusing to employ, or taking disciplinary action against an employee or obligor because of this IWO."
+  },
+  {
+    "page": 2,
+    "name": "SpecificPayeeWithholdingLimitsText[0]",
+    "fullName": "SpecificPayeeWithholdingLimitsText[0]",
+    "type": "/Tx",
+    "rect": [
+      36.0,
+      164.129,
+      576.0,
+      248.995
+    ],
+    "tooltip": "Supplemental Information"
+  },
+  {
+    "page": 2,
+    "name": "Button1[0]",
+    "fullName": "Button1[0]",
+    "type": "/Btn",
+    "rect": [
+      36.527,
+      491.116,
+      140.865,
+      501.769
+    ],
+    "tooltip": "parentheses ocsp dot acf dot hhs dot gov slash csp slash "
+  },
+  {
+    "page": 3,
+    "name": "Warning[0]",
+    "fullName": "Warning[0]",
+    "type": "/Btn",
+    "rect": [
+      36.326,
+      13.107,
+      247.62,
+      36.286
+    ],
+    "tooltip": "For your protection and privacy, please press the Clear This Form button after you have printed the form."
+  },
+  {
+    "page": 3,
+    "name": "Print[0]",
+    "fullName": "Print[0]",
+    "type": "/Btn",
+    "rect": [
+      259.016,
+      13.107,
+      340.016,
+      30.115
+    ],
+    "tooltip": "Print this form"
+  },
+  {
+    "page": 3,
+    "name": "Save[0]",
+    "fullName": "Save[0]",
+    "type": "/Btn",
+    "rect": [
+      345.555,
+      13.107,
+      426.66,
+      30.115
+    ],
+    "tooltip": "Save this form"
+  },
+  {
+    "page": 3,
+    "name": "Reset[0]",
+    "fullName": "Reset[0]",
+    "type": "/Btn",
+    "rect": [
+      495.244,
+      13.107,
+      576.241,
+      30.115
+    ],
+    "tooltip": "Clear this form"
+  },
+  {
+    "page": 3,
+    "name": "EmployerNameA[0]",
+    "fullName": "EmployerNameA[0]",
+    "type": "/Tx",
+    "rect": [
+      186.804,
+      730.131,
+      357.163,
+      741.132
+    ],
+    "tooltip": "Employer's Name"
+  },
+  {
+    "page": 3,
+    "name": "TextField[0]",
+    "fullName": "TextField[0]",
+    "type": "/Tx",
+    "rect": [
+      510.8,
+      730.47,
+      575.376,
+      741.47
+    ],
+    "tooltip": "Employer FEIN"
+  },
+  {
+    "page": 3,
+    "name": "EmployeeNameA[0]",
+    "fullName": "EmployeeNameA[0]",
+    "type": "/Tx",
+    "rect": [
+      145.225,
+      715.486,
+      447.985,
+      726.486
+    ],
+    "tooltip": "Employee or Obligor's Name"
+  },
+  {
+    "page": 3,
+    "name": "EmployeeSSN[0]",
+    "fullName": "EmployeeSSN[0]",
+    "type": "/Tx",
+    "rect": [
+      483.274,
+      715.485,
+      575.376,
+      726.486
+    ],
+    "tooltip": "Social Security Number"
+  },
+  {
+    "page": 3,
+    "name": "CaseIdentifierA[0]",
+    "fullName": "CaseIdentifierA[0]",
+    "type": "/Tx",
+    "rect": [
+      73.987,
+      700.554,
+      267.369,
+      711.85
+    ],
+    "tooltip": "Case Identifier"
+  },
+  {
+    "page": 3,
+    "name": "OrderIdentifierA[0]",
+    "fullName": "OrderIdentifierA[0]",
+    "type": "/Tx",
+    "rect": [
+      315.24,
+      700.554,
+      575.376,
+      711.85
+    ],
+    "tooltip": "Order Identifier"
+  },
+  {
+    "page": 3,
+    "name": "Button1[0]",
+    "fullName": "Button1[0]",
+    "type": "/Btn",
+    "rect": [
+      255.489,
+      615.812,
+      364.929,
+      626.465
+    ],
+    "tooltip": "parentheses ocsp dot acf dot hhs dot gov slash csp slash period"
+  },
+  {
+    "page": 3,
+    "name": "EmploymentIndicator[0]",
+    "fullName": "EmploymentIndicator[0]",
+    "type": "/Btn",
+    "rect": [
+      39.285,
+      589.275,
+      48.285,
+      598.275
+    ],
+    "tooltip": "This person has never worked for this employer nor received periodic income.  "
+  },
+  {
+    "page": 3,
+    "name": "EmploymentIndicator1[0]",
+    "fullName": "EmploymentIndicator1[0]",
+    "type": "/Btn",
+    "rect": [
+      39.285,
+      572.556,
+      48.285,
+      581.556
+    ],
+    "tooltip": "This person no longer works for this employer nor receives periodic income. "
+  },
+  {
+    "page": 3,
+    "name": "TerminationDate[0]",
+    "fullName": "TerminationDate[0]",
+    "type": "/Tx",
+    "rect": [
+      121.847,
+      539.147,
+      320.663,
+      550.324
+    ],
+    "tooltip": "Termination date"
+  },
+  {
+    "page": 3,
+    "name": "LastKnowPhone[0]",
+    "fullName": "LastKnowPhone[0]",
+    "type": "/Tx",
+    "rect": [
+      469.987,
+      539.133,
+      574.143,
+      550.31
+    ],
+    "tooltip": "Last known telephone number"
+  },
+  {
+    "page": 3,
+    "name": "LastKnowAddress1[0]",
+    "fullName": "LastKnowAddress1[0]",
+    "type": "/Tx",
+    "rect": [
+      132.304,
+      519.158,
+      574.39,
+      530.158
+    ],
+    "tooltip": "Last known address"
+  },
+  {
+    "page": 3,
+    "name": "LastKnowAddress2[0]",
+    "fullName": "LastKnowAddress2[0]",
+    "type": "/Tx",
+    "rect": [
+      39.285,
+      506.807,
+      574.993,
+      517.808
+    ],
+    "tooltip": "Last known address continued"
+  },
+  {
+    "page": 3,
+    "name": "DateFinalPaymenttoSDU[0]",
+    "fullName": "DateFinalPaymenttoSDU[0]",
+    "type": "/Tx",
+    "rect": [
+      222.653,
+      485.016,
+      316.973,
+      496.193
+    ],
+    "tooltip": "Final payment date to SDU or Tribal Payee"
+  },
+  {
+    "page": 3,
+    "name": "FinalPaymenttoSDUAmount[0]",
+    "fullName": "FinalPaymenttoSDUAmount[0]",
+    "type": "/Tx",
+    "rect": [
+      434.849,
+      484.594,
+      574.143,
+      495.771
+    ],
+    "tooltip": "Final payment amount"
+  },
+  {
+    "page": 3,
+    "name": "NewEmployerName[0]",
+    "fullName": "NewEmployerName[0]",
+    "type": "/Tx",
+    "rect": [
+      247.403,
+      462.172,
+      574.39,
+      473.349
+    ],
+    "tooltip": "New employer's name"
+  },
+  {
+    "page": 3,
+    "name": "NewEmployerAddress1[0]",
+    "fullName": "NewEmployerAddress1[0]",
+    "type": "/Tx",
+    "rect": [
+      256.387,
+      439.155,
+      574.39,
+      450.366
+    ],
+    "tooltip": "New employer's address"
+  },
+  {
+    "page": 3,
+    "name": "NewEmployerAddress2[0]",
+    "fullName": "NewEmployerAddress2[0]",
+    "type": "/Tx",
+    "rect": [
+      39.285,
+      427.439,
+      574.991,
+      438.65
+    ],
+    "tooltip": "New employer's address continued"
+  },
+  {
+    "page": 3,
+    "name": "EmployerStateContactName[0]",
+    "fullName": "EmployerStateContactName[0]",
+    "type": "/Tx",
+    "rect": [
+      335.296,
+      368.436,
+      491.177,
+      379.437
+    ],
+    "tooltip": "sender name"
+  },
+  {
+    "page": 3,
+    "name": "Textfield1[0]",
+    "fullName": "Textfield1[0]",
+    "type": "/Tx",
+    "rect": [
+      84.501,
+      346.263,
+      193.413,
+      356.264
+    ],
+    "tooltip": "by telephone"
+  },
+  {
+    "page": 3,
+    "name": "Textfield2[0]",
+    "fullName": "Textfield2[0]",
+    "type": "/Tx",
+    "rect": [
+      229.065,
+      346.263,
+      322.109,
+      356.264
+    ],
+    "tooltip": "by fax"
+  },
+  {
+    "page": 3,
+    "name": "Textfield3[0]",
+    "fullName": "Textfield3[0]",
+    "type": "/Tx",
+    "rect": [
+      415.295,
+      346.263,
+      570.54,
+      356.264
+    ],
+    "tooltip": "by email or website"
+  },
+  {
+    "page": 3,
+    "name": "EmployerStateContactAddress1[0]",
+    "fullName": "EmployerStateContactAddress1[0]",
+    "type": "/Tx",
+    "rect": [
+      342.479,
+      323.768,
+      574.982,
+      334.769
+    ],
+    "tooltip": "sender address"
+  },
+  {
+    "page": 3,
+    "name": "EmployerStateContactAddress2[0]",
+    "fullName": "EmployerStateContactAddress2[0]",
+    "type": "/Tx",
+    "rect": [
+      36.981,
+      300.87,
+      493.954,
+      311.871
+    ],
+    "tooltip": "sender address continued"
+  },
+  {
+    "page": 3,
+    "name": "EmployeeStateContactName[0]",
+    "fullName": "EmployeeStateContactName[0]",
+    "type": "/Tx",
+    "rect": [
+      349.812,
+      278.394,
+      506.739,
+      289.395
+    ],
+    "tooltip": "sender name"
+  },
+  {
+    "page": 3,
+    "name": "Textfield4[0]",
+    "fullName": "Textfield4[0]",
+    "type": "/Tx",
+    "rect": [
+      100.087,
+      256.206,
+      193.867,
+      266.207
+    ],
+    "tooltip": "by telephone"
+  },
+  {
+    "page": 3,
+    "name": "Textfield5[0]",
+    "fullName": "Textfield5[0]",
+    "type": "/Tx",
+    "rect": [
+      229.518,
+      256.206,
+      322.562,
+      266.207
+    ],
+    "tooltip": "by fax"
+  },
+  {
+    "page": 3,
+    "name": "Textfield6[0]",
+    "fullName": "Textfield6[0]",
+    "type": "/Tx",
+    "rect": [
+      415.749,
+      256.206,
+      570.994,
+      266.207
+    ],
+    "tooltip": "by email or website"
+  }
+]

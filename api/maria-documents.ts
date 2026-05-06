@@ -13,6 +13,7 @@ interface MariaDocumentRequest {
   sections?: MariaDocumentSection[];
   footerNote?: string;
   workspace?: unknown;
+  manualReadinessOverride?: boolean;
 }
 
 function parseBody(req: VercelRequest): MariaDocumentRequest {
@@ -73,7 +74,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         return res.status(400).json({ error: 'workspace is required' });
       }
 
-      const pdfBytes = await generateOfficialStarterPacketPdf(body.workspace as Parameters<typeof generateOfficialStarterPacketPdf>[0]);
+      const pdfBytes = await generateOfficialStarterPacketPdf(
+        body.workspace as Parameters<typeof generateOfficialStarterPacketPdf>[0],
+        { manualReadinessOverride: body.manualReadinessOverride === true },
+      );
       const document = await uploadBufferToVault({
         userId: currentUser.id,
         fileName: buildStarterPacketFileName(body),

@@ -26,15 +26,15 @@ const pricingTiers: PricingTier[] = [
     name: 'Free',
     monthlyPrice: 0,
     annualPrice: 0,
-    description: 'Get started with basic divorce information',
+    description: 'Create a free account for three Maria chats per day and blank California forms',
     features: [
-      '3 AI chats per day',
+      'Create an account for three AI chats per day',
       'Access to all blank court forms',
       'Basic divorce information',
+      'Browse public county filing guidance',
       'California law resources',
     ],
     notIncluded: [
-      'AI-generated responses',
       'Chat history',
       'Priority support',
     ],
@@ -46,13 +46,14 @@ const pricingTiers: PricingTier[] = [
     name: 'Basic',
     monthlyPrice: 20,
     annualPrice: 200,
-    description: 'AI guidance plus concierge prep for your county',
+    description: 'AI guidance, saved chat history, and county filing prep checklists',
     features: [
       '20 AI chats per day',
       'AI-generated responses 24/7',
       'Private conversation history',
       'Access to all blank court forms',
       'County concierge roadmaps + filing prep checklists',
+      'Basic Maria-backed form checklists',
     ],
     buttonText: 'Start Basic Plan',
     buttonVariant: 'outline',
@@ -62,7 +63,7 @@ const pricingTiers: PricingTier[] = [
     name: 'Essential',
     monthlyPrice: 49,
     annualPrice: 490,
-    description: 'Core Maria access plus filing support for one active case',
+    description: 'Draft Forms, detailed guidance, and filing support for one active case',
     features: [
       'Unlimited AI chats',
       'Private conversation history',
@@ -72,6 +73,7 @@ const pricingTiers: PricingTier[] = [
       'Case law references',
       'Concierge filing support for supported counties (1 active case)',
       'Saved support scenarios + planning tools',
+      'Draft Forms workspace for starter packet prep',
     ],
     buttonText: 'Start Essential Plan',
     buttonVariant: 'default',
@@ -82,12 +84,13 @@ const pricingTiers: PricingTier[] = [
     name: 'Plus',
     monthlyPrice: 99,
     annualPrice: 990,
-    description: 'Everything in Essential, plus deeper strategy and faster concierge handling',
+    description: 'Everything in Essential, plus document analysis, strategy help, and priority concierge handling',
     features: [
       'Everything in Essential',
       'Document analysis',
       'Strategy suggestions for next steps',
       'Priority concierge queue',
+      'Maria handoff from support scenarios and draft forms',
       'More hands-on filing coordination',
       'Higher-touch planning for negotiations and disclosures',
     ],
@@ -99,14 +102,15 @@ const pricingTiers: PricingTier[] = [
     name: 'Done-For-You',
     monthlyPrice: 299,
     annualPrice: 2990,
-    description: 'Everything in Plus, with the most hands-on concierge workflow support',
+    description: 'Highest-touch packet workflow support for users who want more hand-holding',
     features: [
       'Everything in Plus',
       'Priority support queue',
-      'Custom document templates',
-      'Service-of-process coordination help',
-      'Follow-up workflow support',
-      'Highest-touch concierge guidance across the process',
+      'Packet review workflow and court-ready organization',
+      'Service-of-process checklist and coordination help',
+      'Filing calendar, follow-up reminders, and status nudges',
+      'Concierge handoff for packet questions and next steps',
+      'Highest-touch guidance across the process',
     ],
     buttonText: 'Start Done-For-You',
     buttonVariant: 'outline',
@@ -133,21 +137,31 @@ export function PricingPage() {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [isProcessing, setIsProcessing] = useState<string | null>(null);
   const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'annual'>('monthly');
+  const [pendingPlanId, setPendingPlanId] = useState<PricingTier['planId'] | null>(null);
 
   const handleAuthSuccess = (user: User) => {
     setCurrentUser(user);
     setShowAuthModal(false);
+    const selectedPlanId = pendingPlanId;
+    setPendingPlanId(null);
+
+    if (selectedPlanId && selectedPlanId !== 'free') {
+      void handleSelectPlan(selectedPlanId, user);
+    }
   };
 
-  const handleSelectPlan = async (planId: PricingTier['planId']) => {
-    if (!currentUser) {
+  const handleSelectPlan = async (planId: PricingTier['planId'], userOverride?: User) => {
+    const user = userOverride ?? currentUser;
+
+    if (!user) {
+      setPendingPlanId(planId);
       setShowAuthModal(true);
       return;
     }
 
     if (planId === 'free') {
-      if (currentUser.subscription !== 'free') {
-        const updatedUser = { ...currentUser, subscription: 'free' as User['subscription'] };
+      if (user.subscription !== 'free') {
+        const updatedUser = { ...user, subscription: 'free' as User['subscription'] };
         await authService.updateUser(updatedUser);
         setCurrentUser(updatedUser);
         toast.success('You are back on the Free plan.');
@@ -182,10 +196,10 @@ export function PricingPage() {
                 Plans for every stage
               </Badge>
               <h1 className="text-4xl font-semibold tracking-tight text-slate-950 dark:text-white md:text-6xl md:leading-[1.02]">
-                Pick the amount of Maria you want in your corner.
+                Pick the amount of Maria, forms, and filing support you want in your corner.
               </h1>
               <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600 dark:text-slate-300">
-                Start with AI guidance, then add deeper form support and county concierge help as your case gets more real.
+                Start with AI guidance, then add draft forms, saved support scenarios, document analysis, and county concierge help as your case gets more real.
               </p>
             </div>
 
@@ -221,7 +235,7 @@ export function PricingPage() {
                   : 'text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white'
               }`}
             >
-              Annual billing
+              <span>Annual billing</span>{' '}
               <span className="ml-2 rounded-full bg-emerald-100 px-2 py-0.5 text-xs text-emerald-800 dark:bg-emerald-400/15 dark:text-emerald-200">
                 Save 2 months
               </span>
@@ -349,16 +363,19 @@ export function PricingPage() {
               <tbody className="divide-y divide-slate-200/80 dark:divide-white/10">
                 {[
                   ['AI Chats per Day', '3', '20', 'Unlimited', 'Unlimited', 'Unlimited'],
-                  ['AI-Generated Responses', 'x', 'check', 'check', 'check', 'check'],
+                  ['AI-Generated Responses', '3/day', 'check', 'check', 'check', 'check'],
                   ['Chat History', 'x', 'check', 'check', 'check', 'check'],
                   ['Court Forms Access', 'check', 'check', 'check', 'check', 'check'],
+                  ['Draft Forms Workspace', 'x', 'x', 'check', 'check', 'check'],
                   ['County Concierge Roadmaps', 'x', 'check', 'check', 'check', 'check'],
                   ['Detailed Form Guidance', 'x', 'Basic', 'check', 'check', 'check'],
                   ['Case Law References', 'x', 'x', 'check', 'check', 'check'],
                   ['Saved Support Scenarios', 'x', 'x', 'check', 'check', 'check'],
+                  ['Maria Handoff from Planning Tools', 'x', 'x', 'check', 'check', 'check'],
                   ['Concierge Filing Support', 'x', 'x', '1 active case', 'Priority queue', 'Highest touch'],
                   ['Document Analysis', 'x', 'x', 'x', 'check', 'check'],
                   ['Strategy Suggestions', 'x', 'x', 'x', 'check', 'check'],
+                  ['Starter Packet Workflow Support', 'x', 'x', 'x', 'x', 'check'],
                   ['Service / Follow-Up Coordination', 'x', 'x', 'x', 'x', 'check'],
                   ['Custom Document Templates', 'x', 'x', 'x', 'x', 'check'],
                 ].map(([label, free, basic, essential, plus, done]) => {
@@ -369,9 +386,15 @@ export function PricingPage() {
                       {values.map((value, index) => (
                         <td key={`${label}-${index}`} className={`p-4 text-center ${index === 1 ? 'bg-white/60 dark:bg-emerald-400/5' : ''}`}>
                           {value === 'check' ? (
-                            <Check className="mx-auto h-4 w-4 text-emerald-500" />
+                            <span className="inline-flex items-center justify-center text-emerald-600 dark:text-emerald-300">
+                              <Check aria-hidden="true" className="h-4 w-4" />
+                              <span className="sr-only">Included</span>
+                            </span>
                           ) : value === 'x' ? (
-                            <X className="mx-auto h-4 w-4 text-slate-300" />
+                            <span className="inline-flex items-center justify-center text-slate-300">
+                              <X aria-hidden="true" className="h-4 w-4" />
+                              <span className="sr-only">Not included</span>
+                            </span>
                           ) : (
                             <span className="text-slate-600 dark:text-slate-300">{value}</span>
                           )}
@@ -399,7 +422,11 @@ export function PricingPage() {
               },
               {
                 title: 'How does Maria work?',
-                body: 'Maria helps with California divorce and family law questions, explains procedures, shows next steps, and connects guidance to forms and filing support.',
+                body: 'Maria helps with California divorce and family law questions, explains procedures, shows next steps, and connects guidance to forms, support planning, and filing support.',
+              },
+              {
+                title: 'What are Draft Forms?',
+                body: 'Draft Forms is the workspace for turning intake details, Maria context, and support scenarios into cleaner starter packet prep. Final review is still your responsibility before filing.',
               },
               {
                 title: 'Are the court forms official?',
@@ -421,7 +448,10 @@ export function PricingPage() {
 
       <AuthModal
         isOpen={showAuthModal}
-        onClose={() => setShowAuthModal(false)}
+        onClose={() => {
+          setShowAuthModal(false);
+          setPendingPlanId(null);
+        }}
         onSuccess={handleAuthSuccess}
       />
     </div>

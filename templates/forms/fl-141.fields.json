@@ -1,0 +1,444 @@
+[
+  {
+    "page": 0,
+    "name": "FL-141.caption.attorneyOrParty",
+    "fullName": "FL-141.caption.attorneyOrParty",
+    "rect": [
+      37.738,
+      703.485,
+      392.239,
+      754.526
+    ],
+    "type": "/Tx",
+    "tooltip": "PartyAttyAddInfo_ft"
+  },
+  {
+    "page": 0,
+    "name": "FL-141.caption.phone",
+    "fullName": "FL-141.caption.phone",
+    "rect": [
+      97.091,
+      690.497,
+      220.34,
+      700.914
+    ],
+    "type": "/Tx",
+    "tooltip": "TELEPHONE NO.:"
+  },
+  {
+    "page": 0,
+    "name": "FL-141.caption.fax",
+    "fullName": "FL-141.caption.fax",
+    "rect": [
+      270.568,
+      690.497,
+      390.991,
+      700.914
+    ],
+    "type": "/Tx",
+    "tooltip": "FAX NO. :"
+  },
+  {
+    "page": 0,
+    "name": "FL-141.caption.email",
+    "fullName": "FL-141.caption.email",
+    "rect": [
+      97.01,
+      680.644,
+      390.992,
+      690.644
+    ],
+    "type": "/Tx",
+    "tooltip": "E-MAIL ADDRESS:"
+  },
+  {
+    "page": 0,
+    "name": "FL-141.caption.attorneyFor",
+    "fullName": "FL-141.caption.attorneyFor",
+    "rect": [
+      116.513,
+      671.219,
+      390.992,
+      681.219
+    ],
+    "type": "/Tx",
+    "tooltip": "ATTORNEY FOR (Name):"
+  },
+  {
+    "page": 0,
+    "name": "FL-141.caption.county",
+    "fullName": "FL-141.caption.county",
+    "rect": [
+      230.395,
+      655.596,
+      391.502,
+      665.597
+    ],
+    "type": "/Tx",
+    "tooltip": "SUPERIOR COURT OF CALIFORNIA, COUNTY OF"
+  },
+  {
+    "page": 0,
+    "name": "FL-141.caption.street",
+    "fullName": "FL-141.caption.street",
+    "rect": [
+      104.069,
+      645.394,
+      391.502,
+      655.395
+    ],
+    "type": "/Tx",
+    "tooltip": "STREET ADDRESS:"
+  },
+  {
+    "page": 0,
+    "name": "FL-141.caption.mailing",
+    "fullName": "FL-141.caption.mailing",
+    "rect": [
+      104.328,
+      635.195,
+      391.502,
+      645.196
+    ],
+    "type": "/Tx",
+    "tooltip": "MAILING ADDRESS:"
+  },
+  {
+    "page": 0,
+    "name": "FL-141.caption.cityZip",
+    "fullName": "FL-141.caption.cityZip",
+    "rect": [
+      104.385,
+      624.993,
+      391.502,
+      634.994
+    ],
+    "type": "/Tx",
+    "tooltip": "CITY AND ZIP CODE:"
+  },
+  {
+    "page": 0,
+    "name": "FL-141.caption.branch",
+    "fullName": "FL-141.caption.branch",
+    "rect": [
+      104.317,
+      614.789,
+      391.502,
+      624.79
+    ],
+    "type": "/Tx",
+    "tooltip": "BRANCH NAME:"
+  },
+  {
+    "page": 0,
+    "name": "FL-141.caption.petitioner",
+    "fullName": "FL-141.caption.petitioner",
+    "rect": [
+      136.101,
+      600.327,
+      391.501,
+      610.328
+    ],
+    "type": "/Tx",
+    "tooltip": "PETITIONER:"
+  },
+  {
+    "page": 0,
+    "name": "FL-141.caption.respondent",
+    "fullName": "FL-141.caption.respondent",
+    "rect": [
+      136.655,
+      588.319,
+      391.501,
+      598.32
+    ],
+    "type": "/Tx",
+    "tooltip": "RESPONDENT:"
+  },
+  {
+    "page": 0,
+    "name": "FL-141.caption.otherParentParty",
+    "fullName": "FL-141.caption.otherParentParty",
+    "rect": [
+      136.364,
+      575.989,
+      391.501,
+      586.194
+    ],
+    "type": "/Tx",
+    "tooltip": "OTHER PARENT/PARTY:"
+  },
+  {
+    "page": 0,
+    "name": "FL-141.caption.caseNumber",
+    "fullName": "FL-141.caption.caseNumber",
+    "rect": [
+      400.005,
+      546.361,
+      572.805,
+      557.961
+    ],
+    "type": "/Tx",
+    "tooltip": "CASE NUMBER:"
+  },
+  {
+    "page": 0,
+    "name": "FL-141.disclosure.preliminary",
+    "fullName": "FL-141.disclosure.preliminary",
+    "rect": [
+      227.341,
+      539.344,
+      237.341,
+      549.344
+    ],
+    "type": "/Btn",
+    "tooltip": "Preliminary"
+  },
+  {
+    "page": 0,
+    "name": "FL-141.disclosure.final",
+    "fullName": "FL-141.disclosure.final",
+    "rect": [
+      227.341,
+      524.879,
+      237.341,
+      534.879
+    ],
+    "type": "/Btn",
+    "tooltip": "Final"
+  },
+  {
+    "page": 0,
+    "name": "FL-141.servingParty.petitioner",
+    "fullName": "FL-141.servingParty.petitioner",
+    "rect": [
+      55.917,
+      486.429,
+      64.917,
+      495.429
+    ],
+    "type": "/Btn",
+    "tooltip": "Petitioner's"
+  },
+  {
+    "page": 0,
+    "name": "FL-141.servingParty.respondent",
+    "fullName": "FL-141.servingParty.respondent",
+    "rect": [
+      147.818,
+      486.592,
+      156.818,
+      495.592
+    ],
+    "type": "/Btn",
+    "tooltip": "Respondent's"
+  },
+  {
+    "page": 0,
+    "name": "FL-141.servedOn.petitioner",
+    "fullName": "FL-141.servedOn.petitioner",
+    "rect": [
+      171.02,
+      503.024,
+      181.02,
+      513.024
+    ],
+    "type": "/Btn",
+    "tooltip": "petitioner"
+  },
+  {
+    "page": 0,
+    "name": "FL-141.servedOn.respondent",
+    "fullName": "FL-141.servedOn.respondent",
+    "rect": [
+      244.578,
+      503.024,
+      254.578,
+      513.024
+    ],
+    "type": "/Btn",
+    "tooltip": "respondent"
+  },
+  {
+    "page": 0,
+    "name": "FL-141.service.personal",
+    "fullName": "FL-141.service.personal",
+    "rect": [
+      321.14,
+      438.226,
+      331.14,
+      448.226
+    ],
+    "type": "/Btn",
+    "tooltip": "personal service"
+  },
+  {
+    "page": 0,
+    "name": "FL-141.service.mail",
+    "fullName": "FL-141.service.mail",
+    "rect": [
+      428.944,
+      438.226,
+      438.944,
+      448.226
+    ],
+    "type": "/Btn",
+    "tooltip": "mail"
+  },
+  {
+    "page": 0,
+    "name": "FL-141.preliminary.otherSelected",
+    "fullName": "FL-141.preliminary.otherSelected",
+    "rect": [
+      55.917,
+      425.563,
+      65.917,
+      435.563
+    ],
+    "type": "/Btn",
+    "tooltip": "Other"
+  },
+  {
+    "page": 0,
+    "name": "FL-141.preliminary.otherText",
+    "fullName": "FL-141.preliminary.otherText",
+    "rect": [
+      140.766,
+      425.106,
+      572.281,
+      436.062
+    ],
+    "type": "/Tx",
+    "tooltip": "(specify):"
+  },
+  {
+    "page": 0,
+    "name": "FL-141.preliminary.serviceDate",
+    "fullName": "FL-141.preliminary.serviceDate",
+    "rect": [
+      93.153,
+      412.146,
+      236.549,
+      423.102
+    ],
+    "type": "/Tx",
+    "tooltip": "on (date):"
+  },
+  {
+    "page": 0,
+    "name": "FL-141.final.otherSelected",
+    "fullName": "FL-141.final.otherSelected",
+    "rect": [
+      55.917,
+      339.88,
+      65.917,
+      349.88
+    ],
+    "type": "/Btn",
+    "tooltip": "Other"
+  },
+  {
+    "page": 0,
+    "name": "FL-141.final.otherText",
+    "fullName": "FL-141.final.otherText",
+    "rect": [
+      138.589,
+      339.423,
+      570.104,
+      350.379
+    ],
+    "type": "/Tx",
+    "tooltip": "(specify):"
+  },
+  {
+    "page": 0,
+    "name": "FL-141.final.serviceDate",
+    "fullName": "FL-141.final.serviceDate",
+    "rect": [
+      93.153,
+      326.724,
+      236.549,
+      337.68
+    ],
+    "type": "/Tx",
+    "tooltip": "on (date):"
+  },
+  {
+    "page": 0,
+    "name": "FL-141.waiveFinalDeclaration",
+    "fullName": "FL-141.waiveFinalDeclaration",
+    "rect": [
+      72.113,
+      279.22,
+      82.113,
+      289.22
+    ],
+    "type": "/Btn",
+    "tooltip": "The parties agreed to waive final declaration of disclosure requirements under Family Code section 2105(d.)"
+  },
+  {
+    "page": 0,
+    "name": "FL-141.finalIncomeExpenseServed",
+    "fullName": "FL-141.finalIncomeExpenseServed",
+    "rect": [
+      55.885,
+      291.859,
+      65.885,
+      301.859
+    ],
+    "type": "/Btn",
+    "tooltip": "current income and expense declaration has been waived as follows:"
+  },
+  {
+    "page": 0,
+    "name": "FL-141.waiveReceipt",
+    "fullName": "FL-141.waiveReceipt",
+    "rect": [
+      71.467,
+      241.759,
+      80.467,
+      250.759
+    ],
+    "type": "/Btn",
+    "tooltip": "The party has failed to comply with disclosure requirements, and the court has granted the request for voluntary waiver of "
+  },
+  {
+    "page": 0,
+    "name": "FL-141.waiverServiceDate",
+    "fullName": "FL-141.waiverServiceDate",
+    "rect": [
+      292.11,
+      227.741,
+      450.071,
+      239.981
+    ],
+    "type": "/Tx",
+    "tooltip": "on (date):"
+  },
+  {
+    "page": 0,
+    "name": "FL-141.signature.name",
+    "fullName": "FL-141.signature.name",
+    "rect": [
+      36.0,
+      138.356,
+      266.783,
+      151.316
+    ],
+    "type": "/Tx",
+    "tooltip": "YourName_ft"
+  },
+  {
+    "page": 0,
+    "name": "FL-141.signature.date",
+    "fullName": "FL-141.signature.date",
+    "rect": [
+      62.792,
+      152.64,
+      247.206,
+      165.6
+    ],
+    "type": "/Tx",
+    "tooltip": "Date:"
+  }
+]

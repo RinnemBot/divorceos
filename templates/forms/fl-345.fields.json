@@ -1,0 +1,821 @@
+[
+  {
+    "page": 0,
+    "name": "Button1[0]",
+    "fullName": "Button1[0]",
+    "type": "/Btn",
+    "rect": [
+      525.85,
+      37.149,
+      576.2,
+      43.149
+    ],
+    "tooltip": "Courts Dot CA Dot Gov"
+  },
+  {
+    "page": 0,
+    "name": "Party1[0]",
+    "fullName": "Party1[0]",
+    "type": "/Tx",
+    "rect": [
+      98.133,
+      731.514,
+      394.342,
+      743.034
+    ],
+    "tooltip": "Petitioner"
+  },
+  {
+    "page": 0,
+    "name": "Party2[0]",
+    "fullName": "Party2[0]",
+    "type": "/Tx",
+    "rect": [
+      98.547,
+      717.962,
+      394.342,
+      729.482
+    ],
+    "tooltip": "Respondent"
+  },
+  {
+    "page": 0,
+    "name": "CaseNumber[0]",
+    "fullName": "CaseNumber[0]",
+    "type": "/Tx",
+    "rect": [
+      400.005,
+      718.738,
+      572.805,
+      733.127
+    ],
+    "tooltip": "Case Number"
+  },
+  {
+    "page": 0,
+    "name": "CheckMark1[0]",
+    "fullName": "CheckMark1[0]",
+    "type": "/Btn",
+    "rect": [
+      69.781,
+      661.867,
+      78.781,
+      670.867
+    ],
+    "tooltip": "There are no community property assets"
+  },
+  {
+    "page": 0,
+    "name": "CheckMark1[0]",
+    "fullName": "CheckMark1[0]",
+    "type": "/Btn",
+    "rect": [
+      69.78,
+      646.478,
+      78.78,
+      655.478
+    ],
+    "tooltip": "The court finds that the net value of the community estate is less than dollars 5,000 and that the "
+  },
+  {
+    "page": 0,
+    "name": "Check1[0]",
+    "fullName": "Check1[0]",
+    "type": "/Btn",
+    "rect": [
+      462.557,
+      646.478,
+      471.557,
+      655.478
+    ],
+    "tooltip": "petitioner"
+  },
+  {
+    "page": 0,
+    "name": "Check1[1]",
+    "fullName": "Check1[1]",
+    "type": "/Btn",
+    "rect": [
+      94.32,
+      633.11,
+      103.32,
+      642.11
+    ],
+    "tooltip": "respondent       cannot be found. Under Family Code section 2604, the entire community estate is awarded to the"
+  },
+  {
+    "page": 0,
+    "name": "Check2[0]",
+    "fullName": "Check2[0]",
+    "type": "/Btn",
+    "rect": [
+      94.32,
+      619.722,
+      103.32,
+      628.722
+    ],
+    "tooltip": "petitioner"
+  },
+  {
+    "page": 0,
+    "name": "Check2[1]",
+    "fullName": "Check2[1]",
+    "type": "/Btn",
+    "rect": [
+      167.635,
+      619.722,
+      176.635,
+      628.722
+    ],
+    "tooltip": "respondent"
+  },
+  {
+    "page": 0,
+    "name": "CheckMark1[0]",
+    "fullName": "CheckMark1[0]",
+    "type": "/Btn",
+    "rect": [
+      69.781,
+      606.376,
+      78.781,
+      615.376
+    ],
+    "tooltip": "The petitioner will receive the following assets"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox2[0]",
+    "fullName": "CheckBox2[0]",
+    "type": "/Btn",
+    "rect": [
+      476.431,
+      606.354,
+      485.431,
+      615.354
+    ],
+    "tooltip": "See Attachment l c"
+  },
+  {
+    "page": 0,
+    "name": "FillText1[0]",
+    "fullName": "FillText1[0]",
+    "type": "/Tx",
+    "rect": [
+      88.076,
+      559.624,
+      574.291,
+      604.216
+    ],
+    "tooltip": "Specify"
+  },
+  {
+    "page": 0,
+    "name": "CheckMark1[0]",
+    "fullName": "CheckMark1[0]",
+    "type": "/Btn",
+    "rect": [
+      69.781,
+      546.631,
+      78.781,
+      555.631
+    ],
+    "tooltip": "The respondent will receive the following assets"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox2[0]",
+    "fullName": "CheckBox2[0]",
+    "type": "/Btn",
+    "rect": [
+      476.13,
+      546.642,
+      485.13,
+      555.642
+    ],
+    "tooltip": "See Attachment l d"
+  },
+  {
+    "page": 0,
+    "name": "FillText1[0]",
+    "fullName": "FillText1[0]",
+    "type": "/Tx",
+    "rect": [
+      88.076,
+      499.879,
+      574.291,
+      544.471
+    ],
+    "tooltip": "Specify"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      93.453,
+      485.212,
+      102.453,
+      494.212
+    ],
+    "tooltip": "petitioner"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox2[0]",
+    "fullName": "CheckBox2[0]",
+    "type": "/Btn",
+    "rect": [
+      167.043,
+      485.212,
+      176.043,
+      494.212
+    ],
+    "tooltip": "respondent"
+  },
+  {
+    "page": 0,
+    "name": "FillText1[0]",
+    "fullName": "FillText1[0]",
+    "type": "/Tx",
+    "rect": [
+      65.469,
+      444.183,
+      574.43,
+      469.749
+    ],
+    "tooltip": "QDRO to divide the following plan or retirement accounts specify"
+  },
+  {
+    "page": 0,
+    "name": "FillText2[0]",
+    "fullName": "FillText2[0]",
+    "type": "/Tx",
+    "rect": [
+      65.469,
+      403.659,
+      574.43,
+      434.066
+    ],
+    "tooltip": "The fee for preparation of the QDRO will be shared as follows"
+  },
+  {
+    "page": 0,
+    "name": "CheckMark1[0]",
+    "fullName": "CheckMark1[0]",
+    "type": "/Btn",
+    "rect": [
+      68.76,
+      389.37,
+      77.76,
+      398.37
+    ],
+    "tooltip": "Other Orders"
+  },
+  {
+    "page": 0,
+    "name": "FillText1[0]",
+    "fullName": "FillText1[0]",
+    "type": "/Tx",
+    "rect": [
+      87.276,
+      349.01,
+      572.324,
+      389.39
+    ],
+    "tooltip": "Specify Other Orders"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      70.744,
+      335.809,
+      79.744,
+      344.809
+    ],
+    "tooltip": "Each spouse or domestic partner will receive the assets listed above as sole and separate property. The parties must execute any and all documents required to carry out this division"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      69.78,
+      290.254,
+      78.78,
+      299.254
+    ],
+    "tooltip": "There are no community property debts"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      69.78,
+      271.242,
+      78.78,
+      280.242
+    ],
+    "tooltip": "All community debts have been paid by the "
+  },
+  {
+    "page": 0,
+    "name": "Check_pet[0]",
+    "fullName": "Check_pet[0]",
+    "type": "/Btn",
+    "rect": [
+      286.962,
+      271.242,
+      295.962,
+      280.242
+    ],
+    "tooltip": "petitioner"
+  },
+  {
+    "page": 0,
+    "name": "Check_resp[0]",
+    "fullName": "Check_resp[0]",
+    "type": "/Btn",
+    "rect": [
+      365.224,
+      271.242,
+      374.224,
+      280.242
+    ],
+    "tooltip": "respondent"
+  },
+  {
+    "page": 0,
+    "name": "Check4_pet[0]",
+    "fullName": "Check4_pet[0]",
+    "type": "/Btn",
+    "rect": [
+      123.695,
+      258.013,
+      132.695,
+      267.013
+    ],
+    "tooltip": "petitioner"
+  },
+  {
+    "page": 0,
+    "name": "Check4_resp[0]",
+    "fullName": "Check4_resp[0]",
+    "type": "/Btn",
+    "rect": [
+      197.756,
+      258.013,
+      206.756,
+      267.013
+    ],
+    "tooltip": "respondent"
+  },
+  {
+    "page": 0,
+    "name": "FillText1[0]",
+    "fullName": "FillText1[0]",
+    "type": "/Tx",
+    "rect": [
+      420.701,
+      258.126,
+      492.701,
+      267.126
+    ],
+    "tooltip": "must reimburse the other party amount in dollars"
+  },
+  {
+    "page": 0,
+    "name": "FillText2[0]",
+    "fullName": "FillText2[0]",
+    "type": "/Tx",
+    "rect": [
+      90.119,
+      196.376,
+      574.129,
+      243.905
+    ],
+    "tooltip": "The payment plan is as follows"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      69.781,
+      185.766,
+      78.781,
+      194.766
+    ],
+    "tooltip": "The petitioner"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      477.545,
+      148.414,
+      486.545,
+      157.414
+    ],
+    "tooltip": "See Attachment 2 c"
+  },
+  {
+    "page": 0,
+    "name": "FillText1[0]",
+    "fullName": "FillText1[0]",
+    "type": "/Tx",
+    "rect": [
+      91.256,
+      55.302,
+      575.997,
+      145.282
+    ],
+    "tooltip": "will not hold the respondent legally responsible for the debts listed below"
+  },
+  {
+    "page": 1,
+    "name": "Print[0]",
+    "fullName": "Print[0]",
+    "type": "/Btn",
+    "rect": [
+      258.642,
+      12.194,
+      339.642,
+      29.202
+    ],
+    "tooltip": "Print this form"
+  },
+  {
+    "page": 1,
+    "name": "Save[0]",
+    "fullName": "Save[0]",
+    "type": "/Btn",
+    "rect": [
+      345.181,
+      12.194,
+      426.286,
+      29.202
+    ],
+    "tooltip": "Save this form"
+  },
+  {
+    "page": 1,
+    "name": "Reset[0]",
+    "fullName": "Reset[0]",
+    "type": "/Btn",
+    "rect": [
+      494.87,
+      12.194,
+      575.867,
+      29.202
+    ],
+    "tooltip": "Clear this form"
+  },
+  {
+    "page": 1,
+    "name": "Warning[0]",
+    "fullName": "Warning[0]",
+    "type": "/Btn",
+    "rect": [
+      35.952,
+      12.194,
+      247.246,
+      35.373
+    ],
+    "tooltip": "For your protection and privacy, please press the Clear This Form button after you have printed the form"
+  },
+  {
+    "page": 1,
+    "name": "Party1[0]",
+    "fullName": "Party1[0]",
+    "type": "/Tx",
+    "rect": [
+      98.133,
+      731.514,
+      394.342,
+      743.034
+    ],
+    "tooltip": "Petitioner"
+  },
+  {
+    "page": 1,
+    "name": "Party2[0]",
+    "fullName": "Party2[0]",
+    "type": "/Tx",
+    "rect": [
+      98.547,
+      717.962,
+      394.342,
+      729.482
+    ],
+    "tooltip": "Respondent"
+  },
+  {
+    "page": 1,
+    "name": "CaseNumber[0]",
+    "fullName": "CaseNumber[0]",
+    "type": "/Tx",
+    "rect": [
+      400.005,
+      718.738,
+      572.805,
+      733.127
+    ],
+    "tooltip": "Case Number"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      71.456,
+      693.842,
+      80.456,
+      702.842
+    ],
+    "tooltip": "The respondent"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      470.416,
+      657.434,
+      479.416,
+      666.434
+    ],
+    "tooltip": "See Attachment 2 d"
+  },
+  {
+    "page": 1,
+    "name": "FillText1[0]",
+    "fullName": "FillText1[0]",
+    "type": "/Tx",
+    "rect": [
+      86.721,
+      598.998,
+      569.121,
+      654.668
+    ],
+    "tooltip": "will not hold the petitioner legally responsible for the debts listed below"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      68.777,
+      513.582,
+      77.777,
+      522.582
+    ],
+    "tooltip": "Other Orders"
+  },
+  {
+    "page": 1,
+    "name": "FillText1[0]",
+    "fullName": "FillText1[0]",
+    "type": "/Tx",
+    "rect": [
+      87.531,
+      452.296,
+      572.995,
+      512.354
+    ],
+    "tooltip": "Specify Other Orders"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      70.265,
+      347.964,
+      79.265,
+      356.964
+    ],
+    "tooltip": "The court confirms the following assets or debts as the sole separate property, or sole responsibility, of the petitioner"
+  },
+  {
+    "page": 1,
+    "name": "FillText1[0]",
+    "fullName": "FillText1[0]",
+    "type": "/Tx",
+    "rect": [
+      88.379,
+      301.949,
+      574.594,
+      346.541
+    ],
+    "tooltip": "Specify"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      70.265,
+      288.638,
+      79.265,
+      297.638
+    ],
+    "tooltip": "The court confirms the following assets or debts as the sole separate property, or sole responsibility, of the respondent"
+  },
+  {
+    "page": 1,
+    "name": "FillText1[0]",
+    "fullName": "FillText1[0]",
+    "type": "/Tx",
+    "rect": [
+      88.379,
+      241.886,
+      574.594,
+      286.478
+    ],
+    "tooltip": "Specify"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      54.888,
+      437.548,
+      63.888,
+      446.548
+    ],
+    "tooltip": "Equalization of division of property and debt orders. To equalize the division of the community property assets and debts,"
+  },
+  {
+    "page": 1,
+    "name": "Check[0]",
+    "fullName": "Check[0]",
+    "type": "/Btn",
+    "rect": [
+      99.723,
+      424.916,
+      108.723,
+      433.916
+    ],
+    "tooltip": "petitioner"
+  },
+  {
+    "page": 1,
+    "name": "Check[1]",
+    "fullName": "Check[1]",
+    "type": "/Btn",
+    "rect": [
+      176.278,
+      424.667,
+      185.278,
+      433.667
+    ],
+    "tooltip": "respondent"
+  },
+  {
+    "page": 1,
+    "name": "FillText2[0]",
+    "fullName": "FillText2[0]",
+    "type": "/Tx",
+    "rect": [
+      407.055,
+      424.851,
+      447.548,
+      433.851
+    ],
+    "tooltip": "must pay to the other the sum of amount in dollars"
+  },
+  {
+    "page": 1,
+    "name": "FillText3[0]",
+    "fullName": "FillText3[0]",
+    "type": "/Tx",
+    "rect": [
+      73.99,
+      376.586,
+      574.469,
+      421.178
+    ],
+    "tooltip": "Payable as follows"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      54.814,
+      221.633,
+      63.814,
+      230.633
+    ],
+    "tooltip": "The settlement agreement between the parties dated"
+  },
+  {
+    "page": 1,
+    "name": "FillText1[0]",
+    "fullName": "FillText1[0]",
+    "type": "/Tx",
+    "rect": [
+      292.062,
+      220.136,
+      362.078,
+      230.633
+    ],
+    "tooltip": "Date"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      54.814,
+      200.002,
+      63.814,
+      209.002
+    ],
+    "tooltip": "Sale of property. The following property will be offered for sale and sold for the fair can be found, and the net proceeds from the sale will be market value as soon as a willing buyer "
+  },
+  {
+    "page": 1,
+    "name": "CheckBox2[0]",
+    "fullName": "CheckBox2[0]",
+    "type": "/Btn",
+    "rect": [
+      316.902,
+      183.833,
+      325.902,
+      192.833
+    ],
+    "tooltip": "divided equally"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox3[0]",
+    "fullName": "CheckBox3[0]",
+    "type": "/Btn",
+    "rect": [
+      414.354,
+      183.833,
+      423.354,
+      192.833
+    ],
+    "tooltip": "Other"
+  },
+  {
+    "page": 1,
+    "name": "FillText1[0]",
+    "fullName": "FillText1[0]",
+    "type": "/Tx",
+    "rect": [
+      73.261,
+      128.293,
+      575.022,
+      182.007
+    ],
+    "tooltip": "Specify Other"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      54.868,
+      114.775,
+      63.868,
+      123.775
+    ],
+    "tooltip": "Other Orders"
+  },
+  {
+    "page": 1,
+    "name": "FillText1[0]",
+    "fullName": "FillText1[0]",
+    "type": "/Tx",
+    "rect": [
+      74.455,
+      69.142,
+      573.418,
+      114.485
+    ],
+    "tooltip": "Specify Other Orders"
+  }
+]

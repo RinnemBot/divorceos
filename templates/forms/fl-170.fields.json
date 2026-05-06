@@ -1,0 +1,1380 @@
+[
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      69.687,
+      173.735,
+      78.687,
+      182.735
+    ],
+    "tooltip": "Both the parties have filed, or are filing concurrently, a Declaration Regarding Service of Declaration of Disclosure (form FL-141) and an Income and Expense Declaration (form FL-150)."
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[1]",
+    "fullName": "CheckBox1[1]",
+    "type": "/Btn",
+    "rect": [
+      69.687,
+      116.836,
+      78.687,
+      125.836
+    ],
+    "tooltip": "This matter is proceeding by default. I am the petitioner in this action, and service of the summons on respondent was done by publication or posting under court order. Service of the preliminary Declaration of Disclosure (form FL-140) is not required. I hereby waive receipt of the final Declaration of Disclosure (form FL-140) from the respondent."
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[2]",
+    "fullName": "CheckBox1[2]",
+    "type": "/Btn",
+    "rect": [
+      69.687,
+      254.993,
+      78.687,
+      263.993
+    ],
+    "tooltip": "Uncontested"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[3]",
+    "fullName": "CheckBox1[3]",
+    "type": "/Btn",
+    "rect": [
+      69.687,
+      151.381,
+      78.687,
+      160.381
+    ],
+    "tooltip": "This matter is proceeding by default. I am the petitioner in this action and have filed a proof of service of the preliminary Declaration of Disclosure (form FL-140) with the court. I hereby waive receipt of the final Declaration of Disclosure (form FL-140) from the respondent."
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[4]",
+    "fullName": "CheckBox1[4]",
+    "type": "/Btn",
+    "rect": [
+      69.092,
+      325.406,
+      78.092,
+      334.406
+    ],
+    "tooltip": "Default with agreement"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[5]",
+    "fullName": "CheckBox1[5]",
+    "type": "/Btn",
+    "rect": [
+      69.687,
+      445.226,
+      78.687,
+      454.226
+    ],
+    "tooltip": "Default without agreement"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[6]",
+    "fullName": "CheckBox1[6]",
+    "type": "/Btn",
+    "rect": [
+      103.411,
+      383.468,
+      112.411,
+      392.468
+    ],
+    "tooltip": "There are no assets or debts to be disposed of by the court. "
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[7]",
+    "fullName": "CheckBox1[7]",
+    "type": "/Btn",
+    "rect": [
+      103.411,
+      372.093,
+      112.411,
+      381.093
+    ],
+    "tooltip": "The community and quasi-community assets and debts are listed on the completed current Property Declaration (form FL-160), which includes an estimate of the value of the assets and debts that I propose to be distributed to each party. The division in the proposed Judgment (form FL-180) is a fair and equal division of the property and debts, or if there is a negative estate, the debts are assigned fairly and equitably."
+  },
+  {
+    "page": 0,
+    "name": "Amended_cb[0]",
+    "fullName": "Amended_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      211.887,
+      539.365,
+      221.887,
+      549.365
+    ],
+    "tooltip": "LEGAL SEPARATION"
+  },
+  {
+    "page": 0,
+    "name": "DissolutionOf_cb[0]",
+    "fullName": "DissolutionOf_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      102.759,
+      539.865,
+      111.759,
+      548.865
+    ],
+    "tooltip": "DISSOLUTION   "
+  },
+  {
+    "page": 0,
+    "name": "AttyFor_ft[0]",
+    "fullName": "AttyFor_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      108.109,
+      654.876,
+      394.518,
+      663.876
+    ],
+    "tooltip": "ATTORNEY FOR (name):"
+  },
+  {
+    "page": 0,
+    "name": "Email_ft[0]",
+    "fullName": "Email_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      91.12,
+      666.291,
+      394.518,
+      675.291
+    ],
+    "tooltip": "E-MAIL ADDRESS:"
+  },
+  {
+    "page": 0,
+    "name": "Fax_ft[0]",
+    "fullName": "Fax_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      266.081,
+      678.443,
+      394.517,
+      687.443
+    ],
+    "tooltip": "FAX NO.:"
+  },
+  {
+    "page": 0,
+    "name": "Phone_ft[0]",
+    "fullName": "Phone_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      89.117,
+      678.443,
+      217.355,
+      687.443
+    ],
+    "tooltip": "TELEPHONE NO.:"
+  },
+  {
+    "page": 0,
+    "name": "AttyZip_ft[0]",
+    "fullName": "AttyZip_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      326.998,
+      689.875,
+      394.518,
+      698.875
+    ],
+    "tooltip": "ZIP CODE:"
+  },
+  {
+    "page": 0,
+    "name": "AttyState_ft[0]",
+    "fullName": "AttyState_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      264.784,
+      689.875,
+      294.196,
+      698.875
+    ],
+    "tooltip": "STATE:"
+  },
+  {
+    "page": 0,
+    "name": "AttyCity_ft[0]",
+    "fullName": "AttyCity_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      54.118,
+      689.875,
+      240.934,
+      698.875
+    ],
+    "tooltip": "CITY:"
+  },
+  {
+    "page": 0,
+    "name": "AttyStreet_ft[0]",
+    "fullName": "AttyStreet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      94.106,
+      701.307,
+      394.518,
+      710.307
+    ],
+    "tooltip": "STREET ADDRESS:"
+  },
+  {
+    "page": 0,
+    "name": "AttyFirm_ft[0]",
+    "fullName": "AttyFirm_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      73.11,
+      712.49,
+      394.518,
+      721.49
+    ],
+    "tooltip": "FIRM NAME:"
+  },
+  {
+    "page": 0,
+    "name": "AttyName_ft[0]",
+    "fullName": "AttyName_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      58.106,
+      724.172,
+      394.195,
+      733.172
+    ],
+    "tooltip": "NAME:"
+  },
+  {
+    "page": 0,
+    "name": "BarNo_ft[0]",
+    "fullName": "BarNo_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      308.623,
+      735.536,
+      393.789,
+      744.536
+    ],
+    "tooltip": "STATE BAR NUMBER:"
+  },
+  {
+    "page": 0,
+    "name": "CrtCounty_ft[0]",
+    "fullName": "CrtCounty_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      230.395,
+      638.2,
+      391.502,
+      648.201
+    ],
+    "tooltip": "SUPERIOR COURT OF CALIFORNIA, COUNTY OF"
+  },
+  {
+    "page": 0,
+    "name": "Branch_ft[0]",
+    "fullName": "Branch_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      111.467,
+      597.393,
+      391.502,
+      607.394
+    ],
+    "tooltip": "BRANCH NAME:"
+  },
+  {
+    "page": 0,
+    "name": "CityZip_ft[0]",
+    "fullName": "CityZip_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      111.555,
+      607.597,
+      391.502,
+      617.598
+    ],
+    "tooltip": "CITY AND ZIP CODE:"
+  },
+  {
+    "page": 0,
+    "name": "Street_ft[0]",
+    "fullName": "Street_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      111.566,
+      627.998,
+      391.502,
+      637.999
+    ],
+    "tooltip": "STREET ADDRESS:"
+  },
+  {
+    "page": 0,
+    "name": "MailingAdd_ft[0]",
+    "fullName": "MailingAdd_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      111.34,
+      617.799,
+      391.502,
+      627.8
+    ],
+    "tooltip": "MAILING ADDRESS:"
+  },
+  {
+    "page": 0,
+    "name": "Party2_ft[0]",
+    "fullName": "Party2_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      97.44,
+      569.48,
+      393.435,
+      578.48
+    ],
+    "tooltip": "RESPONDENT:"
+  },
+  {
+    "page": 0,
+    "name": "Party1_ft[0]",
+    "fullName": "Party1_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      97.44,
+      583.032,
+      393.435,
+      592.032
+    ],
+    "tooltip": "PETITIONER:"
+  },
+  {
+    "page": 0,
+    "name": "CaseNumber_ft[0]",
+    "fullName": "CaseNumber_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      402.426,
+      540.526,
+      553.328,
+      552.126
+    ],
+    "tooltip": "CASE NUMBER:"
+  },
+  {
+    "page": 0,
+    "name": "RB2Choices[0]",
+    "fullName": "RB2Choices[0]",
+    "type": "/Btn",
+    "rect": [
+      230.797,
+      470.435,
+      239.797,
+      479.435
+    ],
+    "tooltip": "Petition"
+  },
+  {
+    "page": 0,
+    "name": "RB2Choices[1]",
+    "fullName": "RB2Choices[1]",
+    "type": "/Btn",
+    "rect": [
+      295.466,
+      470.435,
+      304.466,
+      479.435
+    ],
+    "tooltip": "Response"
+  },
+  {
+    "page": 0,
+    "name": "RB2Choices[2]",
+    "fullName": "RB2Choices[2]",
+    "type": "/Btn",
+    "rect": [
+      160.03,
+      470.435,
+      169.03,
+      479.435
+    ],
+    "tooltip": "amended"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      70.342,
+      537.075,
+      79.342,
+      546.075
+    ],
+    "tooltip": "The facts that support the requested judgment are (In a default case, state your reasons below):"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox1[1]",
+    "fullName": "CheckBox1[1]",
+    "type": "/Btn",
+    "rect": [
+      70.342,
+      592.605,
+      79.342,
+      601.605
+    ],
+    "tooltip": "The current custody and visitation (parenting time) previously ordered in this case, or the current schedule is (specify): "
+  },
+  {
+    "page": 1,
+    "name": "RB2Choices[0]",
+    "fullName": "RB2Choices[0]",
+    "type": "/Btn",
+    "rect": [
+      90.065,
+      455.803,
+      99.065,
+      464.803
+    ],
+    "tooltip": "Child support is being enforced in another case in "
+  },
+  {
+    "page": 1,
+    "name": "RB2Choices[1]",
+    "fullName": "RB2Choices[1]",
+    "type": "/Btn",
+    "rect": [
+      90.065,
+      407.781,
+      99.065,
+      416.781
+    ],
+    "tooltip": "I request that this order be based on the [ ] Petitioner's   [ ] Respondent's     earning ability."
+  },
+  {
+    "page": 1,
+    "name": "RB2Choices[2]",
+    "fullName": "RB2Choices[2]",
+    "type": "/Btn",
+    "rect": [
+      90.065,
+      432.116,
+      99.065,
+      441.116
+    ],
+    "tooltip": "The information in the child support calculation attached to the proposed judgment is correct based on my personal knowledge."
+  },
+  {
+    "page": 1,
+    "name": "Party2_ft[0]",
+    "fullName": "Party2_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      95.717,
+      718.755,
+      393.435,
+      727.755
+    ],
+    "tooltip": "RESPONDENT:"
+  },
+  {
+    "page": 1,
+    "name": "Party1_ft[0]",
+    "fullName": "Party1_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      95.717,
+      731.712,
+      393.435,
+      740.712
+    ],
+    "tooltip": "PETITIONER:"
+  },
+  {
+    "page": 1,
+    "name": "CaseNumber_ft[0]",
+    "fullName": "CaseNumber_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      401.879,
+      720.986,
+      552.781,
+      732.586
+    ],
+    "tooltip": "CASE NUMBER:"
+  },
+  {
+    "page": 1,
+    "name": "RB2Choices[3]",
+    "fullName": "RB2Choices[3]",
+    "type": "/Btn",
+    "rect": [
+      70.9,
+      700.903,
+      79.9,
+      709.903
+    ],
+    "tooltip": "This matter is proceeding as an uncontested action. Service of the final Declaration of Disclosure (form FL-140) is mutually waived by both parties. A waiver provision executed by both parties under penalty of perjury is contained on the Stipulation and Waiver of Final Declaration of Disclosure (form FL-144), in the settlement agreement or proposed judgment, or in another, separate stipulation."
+  },
+  {
+    "page": 1,
+    "name": "RB2Choices[4]",
+    "fullName": "RB2Choices[4]",
+    "type": "/Btn",
+    "rect": [
+      95.094,
+      628.809,
+      104.094,
+      637.809
+    ],
+    "tooltip": "has"
+  },
+  {
+    "page": 1,
+    "name": "T313[0]",
+    "fullName": "T313[0]",
+    "type": "/Tx",
+    "rect": [
+      89.138,
+      504.17,
+      574.186,
+      536.618
+    ],
+    "tooltip": "The facts that support the requested judgment are (In a default case, state your reasons):"
+  },
+  {
+    "page": 1,
+    "name": "attach6d_cb[0]",
+    "fullName": "attach6d_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      95.094,
+      495.128,
+      104.094,
+      504.128
+    ],
+    "tooltip": "Contained on Attachment 6d."
+  },
+  {
+    "page": 1,
+    "name": "Attach_cb[0]",
+    "fullName": "Attach_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      95.094,
+      548.277,
+      104.094,
+      557.277
+    ],
+    "tooltip": "Contained on Attachment 6c."
+  },
+  {
+    "page": 1,
+    "name": "RB2Choices[5]",
+    "fullName": "RB2Choices[5]",
+    "type": "/Btn",
+    "rect": [
+      143.583,
+      628.809,
+      152.583,
+      637.809
+    ],
+    "tooltip": "has not"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox1[2]",
+    "fullName": "CheckBox1[2]",
+    "type": "/Btn",
+    "rect": [
+      55.202,
+      478.298,
+      64.202,
+      487.298
+    ],
+    "tooltip": "Child support should be ordered as set forth in the proposed Judgment (form FL-180)."
+  },
+  {
+    "page": 1,
+    "name": "T303[0]",
+    "fullName": "T303[0]",
+    "type": "/Tx",
+    "rect": [
+      433.278,
+      614.676,
+      576.0,
+      624.396
+    ],
+    "tooltip": "(county): "
+  },
+  {
+    "page": 1,
+    "name": "T313[1]",
+    "fullName": "T313[1]",
+    "type": "/Tx",
+    "rect": [
+      210.686,
+      605.22,
+      574.721,
+      614.94
+    ],
+    "tooltip": "The case number is (specify):"
+  },
+  {
+    "page": 1,
+    "name": "T313[2]",
+    "fullName": "T313[2]",
+    "type": "/Tx",
+    "rect": [
+      89.138,
+      557.019,
+      575.283,
+      592.149
+    ],
+    "tooltip": "the current schedule is (specify)"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox1[3]",
+    "fullName": "CheckBox1[3]",
+    "type": "/Btn",
+    "rect": [
+      55.202,
+      652.289,
+      64.202,
+      661.289
+    ],
+    "tooltip": "Child custody and visitation (parenting time) should be ordered as set forth in the proposed Judgment (form FL-180)."
+  },
+  {
+    "page": 1,
+    "name": "CheckBox1[4]",
+    "fullName": "CheckBox1[4]",
+    "type": "/Btn",
+    "rect": [
+      70.342,
+      641.205,
+      79.342,
+      650.205
+    ],
+    "tooltip": "The information in Declaration Under Uniform Child Custody Jurisdiction and Enforcement Act (UCCJEA) (form FL-105) "
+  },
+  {
+    "page": 1,
+    "name": "CheckBox1[5]",
+    "fullName": "CheckBox1[5]",
+    "type": "/Btn",
+    "rect": [
+      70.342,
+      615.396,
+      79.342,
+      624.396
+    ],
+    "tooltip": "There is an existing court order for custody/parenting time in another case in "
+  },
+  {
+    "page": 1,
+    "name": "T316[0]",
+    "fullName": "T316[0]",
+    "type": "/Tx",
+    "rect": [
+      345.976,
+      455.803,
+      575.405,
+      464.803
+    ],
+    "tooltip": "(county):"
+  },
+  {
+    "page": 1,
+    "name": "T317[0]",
+    "fullName": "T317[0]",
+    "type": "/Tx",
+    "rect": [
+      230.718,
+      445.059,
+      575.818,
+      454.419
+    ],
+    "tooltip": "The case number is (specify):"
+  },
+  {
+    "page": 1,
+    "name": "RB2Choices[6]",
+    "fullName": "RB2Choices[6]",
+    "type": "/Btn",
+    "rect": [
+      281.018,
+      407.781,
+      290.018,
+      416.781
+    ],
+    "tooltip": "Petitioner's"
+  },
+  {
+    "page": 1,
+    "name": "RB2Choices[7]",
+    "fullName": "RB2Choices[7]",
+    "type": "/Btn",
+    "rect": [
+      356.998,
+      407.781,
+      365.998,
+      416.781
+    ],
+    "tooltip": "Respondent's"
+  },
+  {
+    "page": 1,
+    "name": "T313[3]",
+    "fullName": "T313[3]",
+    "type": "/Tx",
+    "rect": [
+      109.655,
+      361.35,
+      575.464,
+      396.471
+    ],
+    "tooltip": "The facts in support of my estimate of earning ability are (specify)"
+  },
+  {
+    "page": 1,
+    "name": "attach7a3_cb[0]",
+    "fullName": "attach7a3_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      115.191,
+      351.476,
+      124.191,
+      360.476
+    ],
+    "tooltip": "Contained on Attachment 7a(3)."
+  },
+  {
+    "page": 1,
+    "name": "RB2Choices[8]",
+    "fullName": "RB2Choices[8]",
+    "type": "/Btn",
+    "rect": [
+      108.167,
+      324.193,
+      117.167,
+      333.193
+    ],
+    "tooltip": "am receiving"
+  },
+  {
+    "page": 1,
+    "name": "RB2Choices[9]",
+    "fullName": "RB2Choices[9]",
+    "type": "/Btn",
+    "rect": [
+      191.29,
+      324.193,
+      200.29,
+      333.193
+    ],
+    "tooltip": "am not receiving"
+  },
+  {
+    "page": 1,
+    "name": "RB2Choices[10]",
+    "fullName": "RB2Choices[10]",
+    "type": "/Btn",
+    "rect": [
+      292.374,
+      324.193,
+      301.374,
+      333.193
+    ],
+    "tooltip": "intend to apply for"
+  },
+  {
+    "page": 1,
+    "name": "RB2Choices[11]",
+    "fullName": "RB2Choices[11]",
+    "type": "/Btn",
+    "rect": [
+      71.597,
+      100.361,
+      80.597,
+      109.361
+    ],
+    "tooltip": "Family support should be ordered as set forth in the proposed Judgment (form FL-180)."
+  },
+  {
+    "page": 1,
+    "name": "RB2Choices[12]",
+    "fullName": "RB2Choices[12]",
+    "type": "/Btn",
+    "rect": [
+      277.775,
+      300.436,
+      286.775,
+      309.436
+    ],
+    "tooltip": "is"
+  },
+  {
+    "page": 1,
+    "name": "RB2Choices[13]",
+    "fullName": "RB2Choices[13]",
+    "type": "/Btn",
+    "rect": [
+      317.931,
+      300.436,
+      326.931,
+      309.436
+    ],
+    "tooltip": "is not"
+  },
+  {
+    "page": 1,
+    "name": "RB2Choices[14]",
+    "fullName": "RB2Choices[14]",
+    "type": "/Btn",
+    "rect": [
+      90.006,
+      288.839,
+      99.006,
+      297.839
+    ],
+    "tooltip": "Petitioner"
+  },
+  {
+    "page": 1,
+    "name": "RB2Choices[15]",
+    "fullName": "RB2Choices[15]",
+    "type": "/Btn",
+    "rect": [
+      162.414,
+      288.839,
+      171.414,
+      297.839
+    ],
+    "tooltip": "Respondent"
+  },
+  {
+    "page": 1,
+    "name": "RB2Choices[16]",
+    "fullName": "RB2Choices[16]",
+    "type": "/Btn",
+    "rect": [
+      71.597,
+      210.226,
+      80.597,
+      219.226
+    ],
+    "tooltip": "I knowingly give up forever any right to receive spousal or partner support."
+  },
+  {
+    "page": 1,
+    "name": "RB2Choices[17]",
+    "fullName": "RB2Choices[17]",
+    "type": "/Btn",
+    "rect": [
+      71.597,
+      175.535,
+      80.597,
+      184.535
+    ],
+    "tooltip": "I ask the court to terminate forever spousal or partner support for:"
+  },
+  {
+    "page": 1,
+    "name": "RB2Choices[18]",
+    "fullName": "RB2Choices[18]",
+    "type": "/Btn",
+    "rect": [
+      71.597,
+      163.222,
+      80.597,
+      172.222
+    ],
+    "tooltip": "Spousal support or domestic partner support should be ordered as set forth in the proposed Judgment (form FL-180) based on the factors described in: "
+  },
+  {
+    "page": 1,
+    "name": "RB2Choices[19]",
+    "fullName": "RB2Choices[19]",
+    "type": "/Btn",
+    "rect": [
+      71.597,
+      198.272,
+      80.597,
+      207.272
+    ],
+    "tooltip": "I ask the court to reserve jurisdiction to award spousal or partner support in the future to: "
+  },
+  {
+    "page": 1,
+    "name": "RB2Choices[20]",
+    "fullName": "RB2Choices[20]",
+    "type": "/Btn",
+    "rect": [
+      97.353,
+      188.334,
+      106.353,
+      197.334
+    ],
+    "tooltip": "Petitioner"
+  },
+  {
+    "page": 1,
+    "name": "RB2Choices[21]",
+    "fullName": "RB2Choices[21]",
+    "type": "/Btn",
+    "rect": [
+      169.761,
+      188.334,
+      178.761,
+      197.334
+    ],
+    "tooltip": "Respondent"
+  },
+  {
+    "page": 1,
+    "name": "RB2Choices[22]",
+    "fullName": "RB2Choices[22]",
+    "type": "/Btn",
+    "rect": [
+      365.82,
+      175.535,
+      374.82,
+      184.535
+    ],
+    "tooltip": "Petitioner"
+  },
+  {
+    "page": 1,
+    "name": "RB2Choices[23]",
+    "fullName": "RB2Choices[23]",
+    "type": "/Btn",
+    "rect": [
+      438.228,
+      175.535,
+      447.228,
+      184.535
+    ],
+    "tooltip": "Respondent"
+  },
+  {
+    "page": 1,
+    "name": "RB2Choices[24]",
+    "fullName": "RB2Choices[24]",
+    "type": "/Btn",
+    "rect": [
+      97.353,
+      140.02,
+      106.353,
+      149.02
+    ],
+    "tooltip": "Spousal or Partner Support Declaration Attachment (form FL-157)"
+  },
+  {
+    "page": 1,
+    "name": "RB2Choices[25]",
+    "fullName": "RB2Choices[25]",
+    "type": "/Btn",
+    "rect": [
+      97.353,
+      114.1,
+      106.353,
+      123.1
+    ],
+    "tooltip": "attached declaration (Attachment 8d)"
+  },
+  {
+    "page": 1,
+    "name": "RB2Choices[26]",
+    "fullName": "RB2Choices[26]",
+    "type": "/Btn",
+    "rect": [
+      97.353,
+      127.06,
+      106.353,
+      136.06
+    ],
+    "tooltip": "written agreement"
+  },
+  {
+    "page": 1,
+    "name": "RB2Choices[27]",
+    "fullName": "RB2Choices[27]",
+    "type": "/Btn",
+    "rect": [
+      71.691,
+      85.799,
+      80.691,
+      94.799
+    ],
+    "tooltip": "Other "
+  },
+  {
+    "page": 1,
+    "name": "FillText109[0]",
+    "fullName": "FillText109[0]",
+    "type": "/Tx",
+    "rect": [
+      155.721,
+      85.799,
+      575.818,
+      94.799
+    ],
+    "tooltip": "(specify):"
+  },
+  {
+    "page": 2,
+    "name": "RB2Choices[0]",
+    "fullName": "RB2Choices[0]",
+    "type": "/Btn",
+    "rect": [
+      71.685,
+      602.447,
+      80.685,
+      611.447
+    ],
+    "tooltip": "The facts in support of this request are on Request for Attorney's Fees and Costs Attachment (form FL-319)."
+  },
+  {
+    "page": 2,
+    "name": "FillText1140[0]",
+    "fullName": "FillText1140[0]",
+    "type": "/Tx",
+    "rect": [
+      61.2,
+      123.392,
+      169.2,
+      132.392
+    ],
+    "tooltip": "Date:"
+  },
+  {
+    "page": 2,
+    "name": "Party2_ft[0]",
+    "fullName": "Party2_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      96.875,
+      717.973,
+      393.435,
+      726.973
+    ],
+    "tooltip": "RESPONDENT:"
+  },
+  {
+    "page": 2,
+    "name": "Party1_ft[0]",
+    "fullName": "Party1_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      96.875,
+      730.93,
+      393.435,
+      739.93
+    ],
+    "tooltip": "PETITIONER:"
+  },
+  {
+    "page": 2,
+    "name": "CaseNumber_ft[0]",
+    "fullName": "CaseNumber_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      401.879,
+      720.799,
+      552.781,
+      732.399
+    ],
+    "tooltip": "CASE NUMBER:"
+  },
+  {
+    "page": 2,
+    "name": "FillText56[0]",
+    "fullName": "FillText56[0]",
+    "type": "/Tx",
+    "rect": [
+      36.0,
+      95.53,
+      275.876,
+      109.641
+    ],
+    "tooltip": "(TYPE OR PRINT NAME)"
+  },
+  {
+    "page": 2,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      56.055,
+      292.564,
+      65.055,
+      301.564
+    ],
+    "tooltip": "Status only judgment: This declaration is only for the termination of marital or domestic partner status. I ask the court to reserve jurisdiction over all other issues not requested in this declaration for later determination."
+  },
+  {
+    "page": 2,
+    "name": "RB2Choices[1]",
+    "fullName": "RB2Choices[1]",
+    "type": "/Btn",
+    "rect": [
+      56.679,
+      474.792,
+      65.679,
+      483.792
+    ],
+    "tooltip": "Petitioner"
+  },
+  {
+    "page": 2,
+    "name": "RB2Choices[2]",
+    "fullName": "RB2Choices[2]",
+    "type": "/Btn",
+    "rect": [
+      127.301,
+      474.792,
+      136.301,
+      483.792
+    ],
+    "tooltip": "Respondent"
+  },
+  {
+    "page": 2,
+    "name": "RB2Choices[3]",
+    "fullName": "RB2Choices[3]",
+    "type": "/Btn",
+    "rect": [
+      57.538,
+      165.3,
+      66.538,
+      174.3
+    ],
+    "tooltip": "Other (specify)"
+  },
+  {
+    "page": 2,
+    "name": "FillText109[0]",
+    "fullName": "FillText109[0]",
+    "type": "/Tx",
+    "rect": [
+      141.214,
+      165.3,
+      576.0,
+      174.3
+    ],
+    "tooltip": "Other (specify)"
+  },
+  {
+    "page": 2,
+    "name": "RB2Choices[4]",
+    "fullName": "RB2Choices[4]",
+    "type": "/Btn",
+    "rect": [
+      56.735,
+      533.662,
+      65.735,
+      542.662
+    ],
+    "tooltip": "The judgment should be entered nunc pro tunc for the following reasons (specify):"
+  },
+  {
+    "page": 2,
+    "name": "T187[0]",
+    "fullName": "T187[0]",
+    "type": "/Tx",
+    "rect": [
+      340.856,
+      664.101,
+      572.996,
+      673.101
+    ],
+    "tooltip": "(county):"
+  },
+  {
+    "page": 2,
+    "name": "RB2Choices[5]",
+    "fullName": "RB2Choices[5]",
+    "type": "/Btn",
+    "rect": [
+      71.685,
+      676.054,
+      80.685,
+      685.054
+    ],
+    "tooltip": "A voluntary declaration of parentage or paternity is attached."
+  },
+  {
+    "page": 2,
+    "name": "RB2Choices[6]",
+    "fullName": "RB2Choices[6]",
+    "type": "/Btn",
+    "rect": [
+      71.685,
+      641.906,
+      80.685,
+      650.906
+    ],
+    "tooltip": "The written agreement of the parties regarding parentage is attached here (Attachment 9b) or to the proposed Judgment (form FL-180)."
+  },
+  {
+    "page": 2,
+    "name": "RB2Choices[7]",
+    "fullName": "RB2Choices[7]",
+    "type": "/Btn",
+    "rect": [
+      71.685,
+      664.101,
+      80.685,
+      673.101
+    ],
+    "tooltip": "Parentage was previously established by the court in "
+  },
+  {
+    "page": 2,
+    "name": "T317[0]",
+    "fullName": "T317[0]",
+    "type": "/Tx",
+    "rect": [
+      211.216,
+      653.391,
+      574.041,
+      662.751
+    ],
+    "tooltip": "The case number is (specify):"
+  },
+  {
+    "page": 2,
+    "name": "RB2Choices[8]",
+    "fullName": "RB2Choices[8]",
+    "type": "/Btn",
+    "rect": [
+      56.735,
+      614.194,
+      65.735,
+      623.194
+    ],
+    "tooltip": "Attorney fees should be ordered as set forth in the proposed Judgment (form FL-180). "
+  },
+  {
+    "page": 2,
+    "name": "RB2Choices[9]",
+    "fullName": "RB2Choices[9]",
+    "type": "/Btn",
+    "rect": [
+      71.824,
+      590.916,
+      80.824,
+      599.916
+    ],
+    "tooltip": "Other (specify facts below):"
+  },
+  {
+    "page": 2,
+    "name": "FillText109[1]",
+    "fullName": "FillText109[1]",
+    "type": "/Tx",
+    "rect": [
+      91.148,
+      552.044,
+      575.66,
+      590.4
+    ],
+    "tooltip": "Other (specify facts)"
+  },
+  {
+    "page": 2,
+    "name": "FillText109[2]",
+    "fullName": "FillText109[2]",
+    "type": "/Tx",
+    "rect": [
+      75.796,
+      490.867,
+      576.0,
+      533.001
+    ],
+    "tooltip": "The judgment should be entered nunc pro tunc for these reasons (specify)"
+  },
+  {
+    "page": 2,
+    "name": "Print[0]",
+    "fullName": "Print[0]",
+    "type": "/Btn",
+    "rect": [
+      258.775,
+      10.627,
+      339.775,
+      27.635
+    ],
+    "tooltip": "Print this form"
+  },
+  {
+    "page": 2,
+    "name": "Save[0]",
+    "fullName": "Save[0]",
+    "type": "/Btn",
+    "rect": [
+      345.314,
+      10.627,
+      426.419,
+      27.635
+    ],
+    "tooltip": "Save this form"
+  },
+  {
+    "page": 2,
+    "name": "Reset[0]",
+    "fullName": "Reset[0]",
+    "type": "/Btn",
+    "rect": [
+      495.003,
+      10.627,
+      576.0,
+      27.635
+    ],
+    "tooltip": "Clear this form"
+  },
+  {
+    "page": 2,
+    "name": "Warning[0]",
+    "fullName": "Warning[0]",
+    "type": "/Btn",
+    "rect": [
+      36.085,
+      10.627,
+      247.379,
+      33.806
+    ],
+    "tooltip": "For your protection and privacy, please press the Clear This Form button after you have printed the form."
+  },
+  {
+    "page": 2,
+    "name": "RB2Choices[10]",
+    "fullName": "RB2Choices[10]",
+    "type": "/Btn",
+    "rect": [
+      56.803,
+      698.854,
+      65.803,
+      707.854
+    ],
+    "tooltip": "Parentage of the children of the petitioner and respondent born prior to their marriage or domestic partnership should be ordered as set forth in the proposed Judgment (form FL-180). "
+  }
+]

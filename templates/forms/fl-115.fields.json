@@ -1,0 +1,1211 @@
+[
+  {
+    "page": 0,
+    "name": "Button1[0]",
+    "fullName": "Button1[0]",
+    "type": "/Btn",
+    "rect": [
+      523.284,
+      28.132,
+      573.634,
+      34.132
+    ],
+    "tooltip": "COURTS DOT CA DOT GOV"
+  },
+  {
+    "page": 0,
+    "name": "CaseNumber_ft[0]",
+    "fullName": "CaseNumber_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      402.429,
+      543.409,
+      553.331,
+      555.009
+    ],
+    "tooltip": "Case Number"
+  },
+  {
+    "page": 0,
+    "name": "PartyAttyAddInfo_ft[0]",
+    "fullName": "PartyAttyAddInfo_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      237.983,
+      744.636,
+      392.42,
+      755.436
+    ],
+    "tooltip": "State Bar Number"
+  },
+  {
+    "page": 0,
+    "name": "Phone_ft[0]",
+    "fullName": "Phone_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      58.214,
+      733.433,
+      392.42,
+      744.233
+    ],
+    "tooltip": "Name"
+  },
+  {
+    "page": 0,
+    "name": "Phone_ft[1]",
+    "fullName": "Phone_ft[1]",
+    "type": "/Tx",
+    "rect": [
+      75.09,
+      722.494,
+      392.42,
+      733.294
+    ],
+    "tooltip": "Firm Name"
+  },
+  {
+    "page": 0,
+    "name": "Phone_ft[2]",
+    "fullName": "Phone_ft[2]",
+    "type": "/Tx",
+    "rect": [
+      94.541,
+      711.357,
+      392.42,
+      722.157
+    ],
+    "tooltip": "Street Address"
+  },
+  {
+    "page": 0,
+    "name": "Phone_ft[3]",
+    "fullName": "Phone_ft[3]",
+    "type": "/Tx",
+    "rect": [
+      55.926,
+      700.186,
+      215.575,
+      710.986
+    ],
+    "tooltip": "City"
+  },
+  {
+    "page": 0,
+    "name": "Phone_ft[4]",
+    "fullName": "Phone_ft[4]",
+    "type": "/Tx",
+    "rect": [
+      240.536,
+      700.186,
+      260.271,
+      710.986
+    ],
+    "tooltip": "State"
+  },
+  {
+    "page": 0,
+    "name": "Phone_ft[5]",
+    "fullName": "Phone_ft[5]",
+    "type": "/Tx",
+    "rect": [
+      295.21,
+      700.186,
+      392.303,
+      710.986
+    ],
+    "tooltip": "Zip Code"
+  },
+  {
+    "page": 0,
+    "name": "Phone_ft[6]",
+    "fullName": "Phone_ft[6]",
+    "type": "/Tx",
+    "rect": [
+      92.413,
+      688.382,
+      205.183,
+      699.182
+    ],
+    "tooltip": "Phone Number"
+  },
+  {
+    "page": 0,
+    "name": "Email_ft[0]",
+    "fullName": "Email_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      93.925,
+      677.384,
+      392.754,
+      688.184
+    ],
+    "tooltip": "E-mail Address"
+  },
+  {
+    "page": 0,
+    "name": "AttyFor_ft[0]",
+    "fullName": "AttyFor_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      111.915,
+      666.658,
+      392.403,
+      677.458
+    ],
+    "tooltip": "Attorney For, name"
+  },
+  {
+    "page": 0,
+    "name": "Phone_ft[7]",
+    "fullName": "Phone_ft[7]",
+    "type": "/Tx",
+    "rect": [
+      240.882,
+      688.382,
+      392.304,
+      699.182
+    ],
+    "tooltip": "Fax Number"
+  },
+  {
+    "page": 0,
+    "name": "CrtCounty_ft[0]",
+    "fullName": "CrtCounty_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      229.23,
+      649.926,
+      390.337,
+      659.927
+    ],
+    "tooltip": "Superior Court of California, County of"
+  },
+  {
+    "page": 0,
+    "name": "Branch_ft[0]",
+    "fullName": "Branch_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      84.829,
+      609.119,
+      376.402,
+      619.12
+    ],
+    "tooltip": "Branch Name"
+  },
+  {
+    "page": 0,
+    "name": "CityZip_ft[0]",
+    "fullName": "CityZip_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      98.556,
+      619.323,
+      390.337,
+      629.324
+    ],
+    "tooltip": "City and Zip Code"
+  },
+  {
+    "page": 0,
+    "name": "Street_ft[0]",
+    "fullName": "Street_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      95.358,
+      639.724,
+      386.652,
+      649.725
+    ],
+    "tooltip": "Street Address"
+  },
+  {
+    "page": 0,
+    "name": "MailingAdd_ft[0]",
+    "fullName": "MailingAdd_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      95.358,
+      629.525,
+      387.389,
+      639.526
+    ],
+    "tooltip": "Mailing Address"
+  },
+  {
+    "page": 0,
+    "name": "Petitioner_tf[0]",
+    "fullName": "Petitioner_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      115.285,
+      592.503,
+      391.15,
+      602.665
+    ],
+    "tooltip": "Petitioner"
+  },
+  {
+    "page": 0,
+    "name": "Respondent_tf[0]",
+    "fullName": "Respondent_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      115.883,
+      573.604,
+      391.703,
+      583.415
+    ],
+    "tooltip": "Respondent"
+  },
+  {
+    "page": 0,
+    "name": "Check1[0]",
+    "fullName": "Check1[0]",
+    "type": "/Btn",
+    "rect": [
+      70.835,
+      507.263,
+      80.835,
+      517.263
+    ],
+    "tooltip": "Family Law: Petition\u2014Marriage/Domestic Partnership (form FL hyphen 100), Summons (form FL hyphen 110), and blank Response\u2014Marriage/Domestic Partnership (form FL hyphen 120)"
+  },
+  {
+    "page": 0,
+    "name": "Button1[0]",
+    "fullName": "Button1[0]",
+    "type": "/Btn",
+    "rect": [
+      328.714,
+      507.625,
+      361.114,
+      516.625
+    ],
+    "tooltip": "FL hyphen 100"
+  },
+  {
+    "page": 0,
+    "name": "Button2[0]",
+    "fullName": "Button2[0]",
+    "type": "/Btn",
+    "rect": [
+      433.726,
+      506.851,
+      466.126,
+      515.851
+    ],
+    "tooltip": "FL hyphen 110"
+  },
+  {
+    "page": 0,
+    "name": "Button3[0]",
+    "fullName": "Button3[0]",
+    "type": "/Btn",
+    "rect": [
+      240.905,
+      496.686,
+      273.305,
+      505.686
+    ],
+    "tooltip": "FL hyphen 120"
+  },
+  {
+    "page": 0,
+    "name": "Check1[0]",
+    "fullName": "Check1[0]",
+    "type": "/Btn",
+    "rect": [
+      70.345,
+      473.72,
+      80.345,
+      483.72
+    ],
+    "tooltip": "Uniform Parentage: Petition to Determine Parental Relationship (form FL hyphen 200), Summons (form FL hyphen 210), and blank Response to Petition to Determine Parental Relationship (form FL hyphen 220)"
+  },
+  {
+    "page": 0,
+    "name": "Button1[0]",
+    "fullName": "Button1[0]",
+    "type": "/Btn",
+    "rect": [
+      365.171,
+      474.0,
+      397.571,
+      483.0
+    ],
+    "tooltip": "FL hyphen 200"
+  },
+  {
+    "page": 0,
+    "name": "Button2[0]",
+    "fullName": "Button2[0]",
+    "type": "/Btn",
+    "rect": [
+      468.618,
+      473.824,
+      501.018,
+      482.824
+    ],
+    "tooltip": "FL hyphen 210"
+  },
+  {
+    "page": 0,
+    "name": "Button1[1]",
+    "fullName": "Button1[1]",
+    "type": "/Btn",
+    "rect": [
+      339.653,
+      462.602,
+      372.053,
+      471.602
+    ],
+    "tooltip": "FL hyphen 220"
+  },
+  {
+    "page": 0,
+    "name": "Check1[0]",
+    "fullName": "Check1[0]",
+    "type": "/Btn",
+    "rect": [
+      69.877,
+      437.879,
+      79.877,
+      447.879
+    ],
+    "tooltip": "Custody and Support: Petition for Custody and Support of Minor Children (form FL hyphen 260), Summons (form FL hyphen 210), and blank Response to Petition for Custody and Support of Minor Children (form FL hyphen 270)"
+  },
+  {
+    "page": 0,
+    "name": "Button1[0]",
+    "fullName": "Button1[0]",
+    "type": "/Btn",
+    "rect": [
+      512.218,
+      437.876,
+      544.618,
+      446.876
+    ],
+    "tooltip": "FL hyphen 210"
+  },
+  {
+    "page": 0,
+    "name": "Button1[1]",
+    "fullName": "Button1[1]",
+    "type": "/Btn",
+    "rect": [
+      406.219,
+      438.088,
+      438.619,
+      447.088
+    ],
+    "tooltip": "FL hyphen 260"
+  },
+  {
+    "page": 0,
+    "name": "Button3[0]",
+    "fullName": "Button3[0]",
+    "type": "/Btn",
+    "rect": [
+      392.979,
+      426.971,
+      425.379,
+      435.971
+    ],
+    "tooltip": "FL hyphen 270"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      67.938,
+      403.532,
+      77.938,
+      413.532
+    ],
+    "tooltip": "Other"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      117.496,
+      402.227,
+      127.496,
+      412.227
+    ],
+    "tooltip": "Completed and blank Declaration Under Uniform Child Custody Jurisdiction and Enforcement Act (UCCJEA) (form FL hyphen 105)"
+  },
+  {
+    "page": 0,
+    "name": "Button3[0]",
+    "fullName": "Button3[0]",
+    "type": "/Btn",
+    "rect": [
+      271.752,
+      381.295,
+      304.152,
+      390.295
+    ],
+    "tooltip": "FL hyphen 105"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      117.496,
+      364.515,
+      127.496,
+      374.515
+    ],
+    "tooltip": "Completed and blank Declaration of Disclosure (form FL hyphen 140)"
+  },
+  {
+    "page": 0,
+    "name": "Button3[0]",
+    "fullName": "Button3[0]",
+    "type": "/Btn",
+    "rect": [
+      204.888,
+      353.44,
+      237.288,
+      362.44
+    ],
+    "tooltip": "FL hyphen 140"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      117.496,
+      340.922,
+      127.496,
+      350.922
+    ],
+    "tooltip": "Completed and blank Schedule of Assets and Debts (form FL hyphen 142)"
+  },
+  {
+    "page": 0,
+    "name": "Button3[0]",
+    "fullName": "Button3[0]",
+    "type": "/Btn",
+    "rect": [
+      203.868,
+      330.169,
+      236.268,
+      339.169
+    ],
+    "tooltip": "FL hyphen 142"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      117.496,
+      315.954,
+      127.496,
+      325.954
+    ],
+    "tooltip": "Completed and blank Income and Expense Declaration (form FL hyphen 150)"
+  },
+  {
+    "page": 0,
+    "name": "Button3[0]",
+    "fullName": "Button3[0]",
+    "type": "/Btn",
+    "rect": [
+      242.946,
+      306.577,
+      275.346,
+      315.577
+    ],
+    "tooltip": "FL hyphen 150"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      352.768,
+      402.695,
+      362.768,
+      412.695
+    ],
+    "tooltip": "Completed and blank Financial Statement (Simplified) (form FL hyphen 155)"
+  },
+  {
+    "page": 0,
+    "name": "Button3[0]",
+    "fullName": "Button3[0]",
+    "type": "/Btn",
+    "rect": [
+      441.946,
+      392.45,
+      474.346,
+      401.45
+    ],
+    "tooltip": "FL hyphen 155"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      352.768,
+      377.574,
+      362.768,
+      387.574
+    ],
+    "tooltip": "Completed and blank Property Declaration (form FL hyphen 160)"
+  },
+  {
+    "page": 0,
+    "name": "Button3[0]",
+    "fullName": "Button3[0]",
+    "type": "/Btn",
+    "rect": [
+      441.436,
+      367.21,
+      473.836,
+      376.21
+    ],
+    "tooltip": "FL hyphen 160"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      351.745,
+      353.502,
+      361.745,
+      363.502
+    ],
+    "tooltip": "Request for Order (form FL hyphen 300), and blank Responsive Declaration to Request for Order (form FL hyphen 320)"
+  },
+  {
+    "page": 0,
+    "name": "Button1[0]",
+    "fullName": "Button1[0]",
+    "type": "/Btn",
+    "rect": [
+      470.043,
+      351.699,
+      502.443,
+      360.699
+    ],
+    "tooltip": "FL hyphen 300"
+  },
+  {
+    "page": 0,
+    "name": "Button3[0]",
+    "fullName": "Button3[0]",
+    "type": "/Btn",
+    "rect": [
+      393.565,
+      331.105,
+      425.965,
+      340.105
+    ],
+    "tooltip": "FL hyphen 320"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      352.766,
+      316.91,
+      362.766,
+      326.91
+    ],
+    "tooltip": "Other"
+  },
+  {
+    "page": 0,
+    "name": "TextField[0]",
+    "fullName": "TextField[0]",
+    "type": "/Tx",
+    "rect": [
+      371.018,
+      288.528,
+      575.424,
+      315.823
+    ],
+    "tooltip": "Specify Other"
+  },
+  {
+    "page": 0,
+    "name": "AddressWhereServed_tf[0]",
+    "fullName": "AddressWhereServed_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      52.085,
+      257.368,
+      575.861,
+      272.667
+    ],
+    "tooltip": "Address where respondent was served"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      71.15,
+      229.072,
+      81.15,
+      239.072
+    ],
+    "tooltip": "Personal service. I personally delivered the copies to the respondent (Code Civ. Proc., \u00a7 415.10)"
+  },
+  {
+    "page": 0,
+    "name": "DatePersonalServiceCompleted_dt[0]",
+    "fullName": "DatePersonalServiceCompleted_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      136.083,
+      215.214,
+      286.818,
+      227.165
+    ],
+    "tooltip": "On Date"
+  },
+  {
+    "page": 0,
+    "name": "TimePersonalServiceCompleted_dt[0]",
+    "fullName": "TimePersonalServiceCompleted_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      328.304,
+      215.214,
+      483.444,
+      227.165
+    ],
+    "tooltip": "at Time"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      70.66,
+      202.188,
+      80.66,
+      212.188
+    ],
+    "tooltip": "Substituted service. I left the copies with or in the presence of "
+  },
+  {
+    "page": 0,
+    "name": "CopiesLeftWith_Name_tf[0]",
+    "fullName": "CopiesLeftWith_Name_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      381.997,
+      201.713,
+      574.322,
+      213.593
+    ],
+    "tooltip": "name"
+  },
+  {
+    "page": 0,
+    "name": "RelationshipToRespondent_tf[0]",
+    "fullName": "RelationshipToRespondent_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      287.272,
+      186.618,
+      570.721,
+      198.569
+    ],
+    "tooltip": "who is, specify title or relationship to respondent"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      115.178,
+      171.527,
+      125.178,
+      181.527
+    ],
+    "tooltip": "(Business) a person at least 18 years of age who was apparently in charge at the office or usual place of business of the respondent. I informed the person of the general nature of the papers."
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      115.178,
+      147.47,
+      125.178,
+      157.47
+    ],
+    "tooltip": "(Home) a competent member of the household (at least 18 years of age) at the home of the respondent. I informed the person of the general nature of the papers."
+  },
+  {
+    "page": 0,
+    "name": "DateofSubstitutedService_dt[0]",
+    "fullName": "DateofSubstitutedService_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      134.103,
+      123.454,
+      278.381,
+      135.365
+    ],
+    "tooltip": "on Date"
+  },
+  {
+    "page": 0,
+    "name": "TimeofSubstitutedService__tf[0]",
+    "fullName": "TimeofSubstitutedService__tf[0]",
+    "type": "/Tx",
+    "rect": [
+      321.92,
+      123.74,
+      572.398,
+      135.62
+    ],
+    "tooltip": "at Time"
+  },
+  {
+    "page": 0,
+    "name": "DateCopiesMailed_dt[0]",
+    "fullName": "DateCopiesMailed_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      314.607,
+      98.14,
+      460.395,
+      110.02
+    ],
+    "tooltip": "Date"
+  },
+  {
+    "page": 1,
+    "name": "Warning[0]",
+    "fullName": "Warning[0]",
+    "type": "/Btn",
+    "rect": [
+      36.048,
+      10.882,
+      247.342,
+      34.061
+    ],
+    "tooltip": "For your protection and privacy, please press the Clear This Form button after you have printed the form."
+  },
+  {
+    "page": 1,
+    "name": "Print[0]",
+    "fullName": "Print[0]",
+    "type": "/Btn",
+    "rect": [
+      258.738,
+      10.882,
+      339.738,
+      27.89
+    ],
+    "tooltip": "Print this form"
+  },
+  {
+    "page": 1,
+    "name": "Save[0]",
+    "fullName": "Save[0]",
+    "type": "/Btn",
+    "rect": [
+      345.277,
+      10.882,
+      426.382,
+      27.89
+    ],
+    "tooltip": "Save this form"
+  },
+  {
+    "page": 1,
+    "name": "Reset[0]",
+    "fullName": "Reset[0]",
+    "type": "/Btn",
+    "rect": [
+      494.966,
+      10.882,
+      575.963,
+      27.89
+    ],
+    "tooltip": "Clear this form"
+  },
+  {
+    "page": 1,
+    "name": "Respondent_tf[0]",
+    "fullName": "Respondent_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      115.416,
+      717.593,
+      396.21,
+      727.594
+    ],
+    "tooltip": "Respondent"
+  },
+  {
+    "page": 1,
+    "name": "Petitioner_tf[0]",
+    "fullName": "Petitioner_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      114.602,
+      733.158,
+      395.184,
+      743.159
+    ],
+    "tooltip": "Petitioner"
+  },
+  {
+    "page": 1,
+    "name": "CaseNumber_ft[0]",
+    "fullName": "CaseNumber_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      399.005,
+      721.53,
+      571.805,
+      733.847
+    ],
+    "tooltip": "Case Number"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      67.527,
+      690.356,
+      77.527,
+      700.356
+    ],
+    "tooltip": "Mail and acknowledgment service. I mailed the copies to the respondent, addressed as shown in item 2, by first-class mail, postage prepaid, on"
+  },
+  {
+    "page": 1,
+    "name": "DateofMail_AcknowledgmentService_dt[0]",
+    "fullName": "DateofMail_AcknowledgmentService_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      260.533,
+      678.147,
+      397.463,
+      690.027
+    ],
+    "tooltip": "Date"
+  },
+  {
+    "page": 1,
+    "name": "CityFromWhichSummonsMailed_tf[0]",
+    "fullName": "CityFromWhichSummonsMailed_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      448.137,
+      678.813,
+      572.241,
+      690.764
+    ],
+    "tooltip": "Form City"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox2[0]",
+    "fullName": "CheckBox2[0]",
+    "type": "/Btn",
+    "rect": [
+      103.592,
+      627.665,
+      113.592,
+      637.665
+    ],
+    "tooltip": "to an address outside California (by registered or certified mail with return receipt requested). (Attach signed return receipt or other evidence of actual delivery to the respondent.) (Code Civ. Proc., \u00a7\u00a7 415.40, 417.20.)"
+  },
+  {
+    "page": 1,
+    "name": "Checkbox1[0]",
+    "fullName": "Checkbox1[0]",
+    "type": "/Btn",
+    "rect": [
+      103.592,
+      664.173,
+      113.592,
+      674.173
+    ],
+    "tooltip": "with two copies of the Notice and Acknowledgment of Receipt (form FL hyphen 117) and a postage-paid return envelope addressed to me. (Attach completed Notice and Acknowledgment of Receipt (form FL hyphen 117).) (Code Civ. Proc., \u00a7 415.30.)"
+  },
+  {
+    "page": 1,
+    "name": "Button1[0]",
+    "fullName": "Button1[0]",
+    "type": "/Btn",
+    "rect": [
+      510.069,
+      653.42,
+      542.469,
+      662.42
+    ],
+    "tooltip": "FL hyphen 117"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      69.829,
+      600.853,
+      79.829,
+      610.853
+    ],
+    "tooltip": "Other"
+  },
+  {
+    "page": 1,
+    "name": "SpecifyCodeSectio[0]",
+    "fullName": "SpecifyCodeSectio[0]",
+    "type": "/Tx",
+    "rect": [
+      212.357,
+      599.913,
+      562.496,
+      611.793
+    ],
+    "tooltip": "Specify code section"
+  },
+  {
+    "page": 1,
+    "name": "item3dattch[0]",
+    "fullName": "item3dattch[0]",
+    "type": "/Btn",
+    "rect": [
+      70.288,
+      585.322,
+      80.288,
+      595.322
+    ],
+    "tooltip": "Continued on Attachment 3d"
+  },
+  {
+    "page": 1,
+    "name": "NameofServer_tf[0]",
+    "fullName": "NameofServer_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      82.558,
+      551.239,
+      572.972,
+      563.19
+    ],
+    "tooltip": "Name"
+  },
+  {
+    "page": 1,
+    "name": "ServersAddress_tf[0]",
+    "fullName": "ServersAddress_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      89.025,
+      512.869,
+      572.972,
+      548.495
+    ],
+    "tooltip": "Address"
+  },
+  {
+    "page": 1,
+    "name": "ServersTelephoneNumber_tf[0]",
+    "fullName": "ServersTelephoneNumber_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      133.012,
+      498.968,
+      265.784,
+      510.919
+    ],
+    "tooltip": "Telephone Number"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      72.178,
+      470.488,
+      82.178,
+      480.488
+    ],
+    "tooltip": "exempt from registration under Business and Professions Code section 22350(b)."
+  },
+  {
+    "page": 1,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      72.178,
+      456.212,
+      82.178,
+      466.212
+    ],
+    "tooltip": "not a registered California process server."
+  },
+  {
+    "page": 1,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      72.178,
+      444.431,
+      82.178,
+      454.431
+    ],
+    "tooltip": "a registered California process server:"
+  },
+  {
+    "page": 1,
+    "name": "CheckB1[0]",
+    "fullName": "CheckB1[0]",
+    "type": "/Btn",
+    "rect": [
+      261.251,
+      443.964,
+      271.251,
+      453.964
+    ],
+    "tooltip": "an employee or"
+  },
+  {
+    "page": 1,
+    "name": "CheckB1[1]",
+    "fullName": "CheckB1[1]",
+    "type": "/Btn",
+    "rect": [
+      361.201,
+      443.964,
+      371.201,
+      453.964
+    ],
+    "tooltip": "an independent contractor"
+  },
+  {
+    "page": 1,
+    "name": "ServersCounty_tf[0]",
+    "fullName": "ServersCounty_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      146.375,
+      413.135,
+      574.891,
+      425.086
+    ],
+    "tooltip": "County"
+  },
+  {
+    "page": 1,
+    "name": "FeeforService_tf[0]",
+    "fullName": "FeeforService_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      257.422,
+      398.688,
+      414.677,
+      411.143
+    ],
+    "tooltip": "The fee for service was, specify in dollars"
+  },
+  {
+    "page": 1,
+    "name": "ServersRegistrationNumber_tf[0]",
+    "fullName": "ServersRegistrationNumber_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      180.79,
+      426.541,
+      574.423,
+      438.492
+    ],
+    "tooltip": "Registration Number"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox1a[0]",
+    "fullName": "CheckBox1a[0]",
+    "type": "/Btn",
+    "rect": [
+      55.696,
+      381.633,
+      65.696,
+      391.633
+    ],
+    "tooltip": "I declare under penalty of perjury under the laws of the State of California that the foregoing is true and correct."
+  },
+  {
+    "page": 1,
+    "name": "CheckBox1a[0]",
+    "fullName": "CheckBox1a[0]",
+    "type": "/Btn",
+    "rect": [
+      55.696,
+      353.343,
+      65.696,
+      363.343
+    ],
+    "tooltip": "I am a California sheriff, marshal, or constable, and I certify that the foregoing is true and correct."
+  },
+  {
+    "page": 1,
+    "name": "SigDate[0]",
+    "fullName": "SigDate[0]",
+    "type": "/Tx",
+    "rect": [
+      65.268,
+      142.498,
+      222.852,
+      152.765
+    ],
+    "tooltip": "Date"
+  },
+  {
+    "page": 1,
+    "name": "Name[0]",
+    "fullName": "Name[0]",
+    "type": "/Tx",
+    "rect": [
+      66.428,
+      112.217,
+      260.794,
+      122.996
+    ],
+    "tooltip": "Name of person who served papers"
+  }
+]

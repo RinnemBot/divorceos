@@ -56,6 +56,40 @@ interface StarterPacketFl105OtherClaimant {
   claimsVisitationRights: StarterPacketField<boolean>;
 }
 
+interface StarterPacketRemainingFlFormSection {
+  includeForm?: StarterPacketField<boolean>;
+  primaryParty?: StarterPacketField<'petitioner' | 'respondent' | 'both' | 'other'>;
+  attachTo?: StarterPacketField<'fl180' | 'fl300' | 'fl340' | 'fl350' | 'fl355' | 'other'>;
+  amount?: StarterPacketField<string>;
+  date?: StarterPacketField<string>;
+  otherPartyName?: StarterPacketField<string>;
+  details?: StarterPacketField<string>;
+  signatureDate?: StarterPacketField<string>;
+  printedName?: StarterPacketField<string>;
+}
+
+interface StarterPacketDvFormSection {
+  includeForm?: StarterPacketField<boolean>;
+  protectedPartyName?: StarterPacketField<string>;
+  restrainedPartyName?: StarterPacketField<string>;
+  relationship?: StarterPacketField<string>;
+  restrainedPersonDescription?: StarterPacketField<string>;
+  otherProtectedPeople?: StarterPacketField<string>;
+  childNames?: StarterPacketField<string>;
+  hearingDate?: StarterPacketField<string>;
+  hearingTime?: StarterPacketField<string>;
+  hearingDepartment?: StarterPacketField<string>;
+  hearingRoom?: StarterPacketField<string>;
+  serviceDate?: StarterPacketField<string>;
+  serviceTime?: StarterPacketField<string>;
+  servedByName?: StarterPacketField<string>;
+  requestSummary?: StarterPacketField<string>;
+  orderSummary?: StarterPacketField<string>;
+  responseSummary?: StarterPacketField<string>;
+  signatureDate?: StarterPacketField<string>;
+  printedName?: StarterPacketField<string>;
+}
+
 interface StarterPacketWorkspace {
   caseNumber: StarterPacketField<string>;
   filingCounty: StarterPacketField<string>;
@@ -78,6 +112,7 @@ interface StarterPacketWorkspace {
   hasMinorChildren: StarterPacketField<boolean>;
   children: StarterPacketChild[];
   fl100: {
+    includeForm?: StarterPacketField<boolean>;
     proceedingType: StarterPacketField<'dissolution' | 'legal_separation' | 'nullity'>;
     isAmended: StarterPacketField<boolean>;
     relationshipType: StarterPacketField<'marriage' | 'domestic_partnership' | 'both'>;
@@ -379,7 +414,48 @@ interface StarterPacketWorkspace {
     declarantName: StarterPacketField<string>;
     signatureDate: StarterPacketField<string>;
   };
+  fl110?: { includeForm?: StarterPacketField<boolean> };
   fl300?: any;
+  fl140?: any;
+  fl141?: any;
+  fl142?: any;
+  fl115?: any;
+  fl117?: any;
+  fl120?: any;
+  fl160?: any;
+  fl342?: any;
+  fl343?: any;
+  fl130?: any;
+  fl144?: any;
+  fl170?: any;
+  fl180?: any;
+  fl190?: any;
+  fl345?: any;
+  fl348?: any;
+  fl165?: StarterPacketRemainingFlFormSection;
+  fl182?: StarterPacketRemainingFlFormSection;
+  fl191?: StarterPacketRemainingFlFormSection;
+  fl195?: StarterPacketRemainingFlFormSection;
+  fl272?: StarterPacketRemainingFlFormSection;
+  fl342a?: StarterPacketRemainingFlFormSection;
+  fl346?: StarterPacketRemainingFlFormSection;
+  fl347?: StarterPacketRemainingFlFormSection;
+  fl435?: StarterPacketRemainingFlFormSection;
+  fl460?: StarterPacketRemainingFlFormSection;
+  fl830?: StarterPacketRemainingFlFormSection;
+  fw001?: StarterPacketRemainingFlFormSection;
+  fw003?: StarterPacketRemainingFlFormSection;
+  fw010?: StarterPacketRemainingFlFormSection;
+  dv100?: StarterPacketDvFormSection;
+  dv101?: StarterPacketDvFormSection;
+  dv105?: StarterPacketDvFormSection;
+  dv108?: StarterPacketDvFormSection;
+  dv109?: StarterPacketDvFormSection;
+  dv110?: StarterPacketDvFormSection;
+  dv120?: StarterPacketDvFormSection;
+  dv130?: StarterPacketDvFormSection;
+  dv140?: StarterPacketDvFormSection;
+  dv200?: StarterPacketDvFormSection;
   fl150?: any;
   requests: {
     propertyRightsDetermination: StarterPacketField<boolean>;
@@ -403,10 +479,38 @@ interface TemplateField {
 const TEMPLATES_DIR = path.join(process.cwd(), 'templates', 'forms');
 const FL100_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-100.template.pdf');
 const FL110_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-110.template.pdf');
+const FL115_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-115.template.pdf');
+const FL117_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-117.template.pdf');
+const FL120_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-120.template.pdf');
+const FL160_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-160.template.pdf');
+const FL342_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-342.template.pdf');
+const FL343_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-343.template.pdf');
+const FL130_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-130.template.pdf');
+const FL144_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-144.template.pdf');
+const FL170_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-170.template.pdf');
+const FL180_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-180.template.pdf');
+const FL190_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-190.template.pdf');
+const FL345_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-345.template.pdf');
+const FL348_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-348.template.pdf');
+const FL165_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-165.template.pdf');
+const FL182_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-182.template.pdf');
+const FL191_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-191.template.pdf');
+const FL195_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-195.template.pdf');
+const FL272_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-272.template.pdf');
+const FL342A_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-342a.template.pdf');
+const FL346_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-346.template.pdf');
+const FL347_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-347.template.pdf');
+const FL435_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-435.template.pdf');
+const FL460_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-460.template.pdf');
+const FL830_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-830.template.pdf');
 const FL105_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-105.template.pdf');
 const FL105A_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-105a.template.pdf');
+const FL140_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-140.template.pdf');
+const FL141_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-141.template.pdf');
+const FL142_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-142.template.pdf');
 const FL150_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-150.template.pdf');
 const FL300_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-300.template.pdf');
+const FL319_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-319.template.pdf');
 const FL311_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-311.template.pdf');
 const FL312_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-312.template.pdf');
 const FL341_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-341.template.pdf');
@@ -415,13 +519,40 @@ const FL341B_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-341b.template.pdf');
 const FL341C_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-341c.template.pdf');
 const FL341D_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-341d.template.pdf');
 const FL341E_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fl-341e.template.pdf');
-const FW001_TEMPLATE_PATH = path.join(TEMPLATES_DIR, 'fw-001.template.pdf');
 const FL100_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-100.fields.json');
 const FL110_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-110.fields.json');
+const FL115_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-115.fields.json');
+const FL117_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-117.fields.json');
+const FL120_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-120.fields.json');
+const FL160_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-160.fields.json');
+const FL342_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-342.fields.json');
+const FL343_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-343.fields.json');
+const FL130_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-130.fields.json');
+const FL144_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-144.fields.json');
+const FL170_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-170.fields.json');
+const FL180_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-180.fields.json');
+const FL190_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-190.fields.json');
+const FL345_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-345.fields.json');
+const FL348_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-348.fields.json');
+const FL165_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-165.fields.json');
+const FL182_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-182.fields.json');
+const FL191_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-191.fields.json');
+const FL195_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-195.fields.json');
+const FL272_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-272.fields.json');
+const FL342A_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-342a.fields.json');
+const FL346_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-346.fields.json');
+const FL347_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-347.fields.json');
+const FL435_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-435.fields.json');
+const FL460_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-460.fields.json');
+const FL830_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-830.fields.json');
 const FL105_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-105.fields.json');
 const FL105A_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-105a.fields.json');
+const FL140_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-140.fields.json');
+const FL141_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-141.fields.json');
+const FL142_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-142.fields.json');
 const FL150_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-150.fields.json');
 const FL300_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-300.fields.json');
+const FL319_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-319.fields.json');
 const FL311_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-311.fields.json');
 const FL312_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-312.fields.json');
 const FL341_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-341.fields.json');
@@ -430,7 +561,6 @@ const FL341B_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-341b.fields.json');
 const FL341C_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-341c.fields.json');
 const FL341D_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-341d.fields.json');
 const FL341E_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fl-341e.fields.json');
-const FW001_FIELDS_PATH = path.join(TEMPLATES_DIR, 'fw-001.fields.json');
 const FL100_SEPARATE_PROPERTY_VISIBLE_ROWS = 5;
 const BASE_CHILD_VISIBLE_ROWS = 4;
 const GENERATED_CHILD_ATTACHMENT_ENTRIES_PER_PAGE = 6;
@@ -447,10 +577,38 @@ interface AttachmentSection {
 let templateCache: Promise<{
   fl100Bytes: Uint8Array;
   fl110Bytes: Uint8Array;
+  fl115Bytes: Uint8Array;
+  fl117Bytes: Uint8Array;
+  fl120Bytes: Uint8Array;
+  fl160Bytes: Uint8Array;
+  fl342Bytes: Uint8Array;
+  fl343Bytes: Uint8Array;
+  fl130Bytes: Uint8Array;
+  fl144Bytes: Uint8Array;
+  fl170Bytes: Uint8Array;
+  fl180Bytes: Uint8Array;
+  fl190Bytes: Uint8Array;
+  fl345Bytes: Uint8Array;
+  fl348Bytes: Uint8Array;
+  fl165Bytes: Uint8Array;
+  fl182Bytes: Uint8Array;
+  fl191Bytes: Uint8Array;
+  fl195Bytes: Uint8Array;
+  fl272Bytes: Uint8Array;
+  fl342aBytes: Uint8Array;
+  fl346Bytes: Uint8Array;
+  fl347Bytes: Uint8Array;
+  fl435Bytes: Uint8Array;
+  fl460Bytes: Uint8Array;
+  fl830Bytes: Uint8Array;
   fl105Bytes: Uint8Array;
   fl105aBytes: Uint8Array;
+  fl140Bytes: Uint8Array;
+  fl141Bytes: Uint8Array;
+  fl142Bytes: Uint8Array;
   fl150Bytes: Uint8Array;
   fl300Bytes: Uint8Array;
+  fl319Bytes: Uint8Array;
   fl311Bytes: Uint8Array;
   fl312Bytes: Uint8Array;
   fl341Bytes: Uint8Array;
@@ -459,13 +617,40 @@ let templateCache: Promise<{
   fl341cBytes: Uint8Array;
   fl341dBytes: Uint8Array;
   fl341eBytes: Uint8Array;
-  fw001Bytes: Uint8Array;
   fl100Fields: TemplateField[];
   fl110Fields: TemplateField[];
+  fl115Fields: TemplateField[];
+  fl117Fields: TemplateField[];
+  fl120Fields: TemplateField[];
+  fl160Fields: TemplateField[];
+  fl342Fields: TemplateField[];
+  fl343Fields: TemplateField[];
+  fl130Fields: TemplateField[];
+  fl144Fields: TemplateField[];
+  fl170Fields: TemplateField[];
+  fl180Fields: TemplateField[];
+  fl190Fields: TemplateField[];
+  fl345Fields: TemplateField[];
+  fl348Fields: TemplateField[];
+  fl165Fields: TemplateField[];
+  fl182Fields: TemplateField[];
+  fl191Fields: TemplateField[];
+  fl195Fields: TemplateField[];
+  fl272Fields: TemplateField[];
+  fl342aFields: TemplateField[];
+  fl346Fields: TemplateField[];
+  fl347Fields: TemplateField[];
+  fl435Fields: TemplateField[];
+  fl460Fields: TemplateField[];
+  fl830Fields: TemplateField[];
   fl105Fields: TemplateField[];
   fl105aFields: TemplateField[];
+  fl140Fields: TemplateField[];
+  fl141Fields: TemplateField[];
+  fl142Fields: TemplateField[];
   fl150Fields: TemplateField[];
   fl300Fields: TemplateField[];
+  fl319Fields: TemplateField[];
   fl311Fields: TemplateField[];
   fl312Fields: TemplateField[];
   fl341Fields: TemplateField[];
@@ -474,7 +659,6 @@ let templateCache: Promise<{
   fl341cFields: TemplateField[];
   fl341dFields: TemplateField[];
   fl341eFields: TemplateField[];
-  fw001Fields: TemplateField[];
 }> | null = null;
 
 async function loadTemplates() {
@@ -482,10 +666,38 @@ async function loadTemplates() {
     templateCache = Promise.all([
       fs.readFile(FL100_TEMPLATE_PATH),
       fs.readFile(FL110_TEMPLATE_PATH),
+      fs.readFile(FL115_TEMPLATE_PATH),
+      fs.readFile(FL117_TEMPLATE_PATH),
+      fs.readFile(FL120_TEMPLATE_PATH),
+      fs.readFile(FL160_TEMPLATE_PATH),
+      fs.readFile(FL342_TEMPLATE_PATH),
+      fs.readFile(FL343_TEMPLATE_PATH),
+      fs.readFile(FL130_TEMPLATE_PATH),
+      fs.readFile(FL144_TEMPLATE_PATH),
+      fs.readFile(FL170_TEMPLATE_PATH),
+      fs.readFile(FL180_TEMPLATE_PATH),
+      fs.readFile(FL190_TEMPLATE_PATH),
+      fs.readFile(FL345_TEMPLATE_PATH),
+      fs.readFile(FL348_TEMPLATE_PATH),
+      fs.readFile(FL165_TEMPLATE_PATH),
+      fs.readFile(FL182_TEMPLATE_PATH),
+      fs.readFile(FL191_TEMPLATE_PATH),
+      fs.readFile(FL195_TEMPLATE_PATH),
+      fs.readFile(FL272_TEMPLATE_PATH),
+      fs.readFile(FL342A_TEMPLATE_PATH),
+      fs.readFile(FL346_TEMPLATE_PATH),
+      fs.readFile(FL347_TEMPLATE_PATH),
+      fs.readFile(FL435_TEMPLATE_PATH),
+      fs.readFile(FL460_TEMPLATE_PATH),
+      fs.readFile(FL830_TEMPLATE_PATH),
       fs.readFile(FL105_TEMPLATE_PATH),
       fs.readFile(FL105A_TEMPLATE_PATH),
+      fs.readFile(FL140_TEMPLATE_PATH),
+      fs.readFile(FL141_TEMPLATE_PATH),
+      fs.readFile(FL142_TEMPLATE_PATH),
       fs.readFile(FL150_TEMPLATE_PATH),
       fs.readFile(FL300_TEMPLATE_PATH),
+      fs.readFile(FL319_TEMPLATE_PATH),
       fs.readFile(FL311_TEMPLATE_PATH),
       fs.readFile(FL312_TEMPLATE_PATH),
       fs.readFile(FL341_TEMPLATE_PATH),
@@ -494,13 +706,40 @@ async function loadTemplates() {
       fs.readFile(FL341C_TEMPLATE_PATH),
       fs.readFile(FL341D_TEMPLATE_PATH),
       fs.readFile(FL341E_TEMPLATE_PATH),
-      fs.readFile(FW001_TEMPLATE_PATH),
       fs.readFile(FL100_FIELDS_PATH, 'utf8'),
       fs.readFile(FL110_FIELDS_PATH, 'utf8'),
+      fs.readFile(FL115_FIELDS_PATH, 'utf8'),
+      fs.readFile(FL117_FIELDS_PATH, 'utf8'),
+      fs.readFile(FL120_FIELDS_PATH, 'utf8'),
+      fs.readFile(FL160_FIELDS_PATH, 'utf8'),
+      fs.readFile(FL342_FIELDS_PATH, 'utf8'),
+      fs.readFile(FL343_FIELDS_PATH, 'utf8'),
+      fs.readFile(FL130_FIELDS_PATH, 'utf8'),
+      fs.readFile(FL144_FIELDS_PATH, 'utf8'),
+      fs.readFile(FL170_FIELDS_PATH, 'utf8'),
+      fs.readFile(FL180_FIELDS_PATH, 'utf8'),
+      fs.readFile(FL190_FIELDS_PATH, 'utf8'),
+      fs.readFile(FL345_FIELDS_PATH, 'utf8'),
+      fs.readFile(FL348_FIELDS_PATH, 'utf8'),
+      fs.readFile(FL165_FIELDS_PATH, 'utf8'),
+      fs.readFile(FL182_FIELDS_PATH, 'utf8'),
+      fs.readFile(FL191_FIELDS_PATH, 'utf8'),
+      fs.readFile(FL195_FIELDS_PATH, 'utf8'),
+      fs.readFile(FL272_FIELDS_PATH, 'utf8'),
+      fs.readFile(FL342A_FIELDS_PATH, 'utf8'),
+      fs.readFile(FL346_FIELDS_PATH, 'utf8'),
+      fs.readFile(FL347_FIELDS_PATH, 'utf8'),
+      fs.readFile(FL435_FIELDS_PATH, 'utf8'),
+      fs.readFile(FL460_FIELDS_PATH, 'utf8'),
+      fs.readFile(FL830_FIELDS_PATH, 'utf8'),
       fs.readFile(FL105_FIELDS_PATH, 'utf8'),
       fs.readFile(FL105A_FIELDS_PATH, 'utf8'),
+      fs.readFile(FL140_FIELDS_PATH, 'utf8'),
+      fs.readFile(FL141_FIELDS_PATH, 'utf8'),
+      fs.readFile(FL142_FIELDS_PATH, 'utf8'),
       fs.readFile(FL150_FIELDS_PATH, 'utf8'),
       fs.readFile(FL300_FIELDS_PATH, 'utf8'),
+      fs.readFile(FL319_FIELDS_PATH, 'utf8'),
       fs.readFile(FL311_FIELDS_PATH, 'utf8'),
       fs.readFile(FL312_FIELDS_PATH, 'utf8'),
       fs.readFile(FL341_FIELDS_PATH, 'utf8'),
@@ -509,14 +748,41 @@ async function loadTemplates() {
       fs.readFile(FL341C_FIELDS_PATH, 'utf8'),
       fs.readFile(FL341D_FIELDS_PATH, 'utf8'),
       fs.readFile(FL341E_FIELDS_PATH, 'utf8'),
-      fs.readFile(FW001_FIELDS_PATH, 'utf8'),
     ]).then(([
       fl100Bytes,
       fl110Bytes,
+      fl115Bytes,
+      fl117Bytes,
+      fl120Bytes,
+      fl160Bytes,
+      fl342Bytes,
+      fl343Bytes,
+      fl130Bytes,
+      fl144Bytes,
+      fl170Bytes,
+      fl180Bytes,
+      fl190Bytes,
+      fl345Bytes,
+      fl348Bytes,
+      fl165Bytes,
+      fl182Bytes,
+      fl191Bytes,
+      fl195Bytes,
+      fl272Bytes,
+      fl342aBytes,
+      fl346Bytes,
+      fl347Bytes,
+      fl435Bytes,
+      fl460Bytes,
+      fl830Bytes,
       fl105Bytes,
       fl105aBytes,
+      fl140Bytes,
+      fl141Bytes,
+      fl142Bytes,
       fl150Bytes,
       fl300Bytes,
+      fl319Bytes,
       fl311Bytes,
       fl312Bytes,
       fl341Bytes,
@@ -525,13 +791,40 @@ async function loadTemplates() {
       fl341cBytes,
       fl341dBytes,
       fl341eBytes,
-      fw001Bytes,
       fl100FieldsRaw,
       fl110FieldsRaw,
+      fl115FieldsRaw,
+      fl117FieldsRaw,
+      fl120FieldsRaw,
+      fl160FieldsRaw,
+      fl342FieldsRaw,
+      fl343FieldsRaw,
+      fl130FieldsRaw,
+      fl144FieldsRaw,
+      fl170FieldsRaw,
+      fl180FieldsRaw,
+      fl190FieldsRaw,
+      fl345FieldsRaw,
+      fl348FieldsRaw,
+      fl165FieldsRaw,
+      fl182FieldsRaw,
+      fl191FieldsRaw,
+      fl195FieldsRaw,
+      fl272FieldsRaw,
+      fl342aFieldsRaw,
+      fl346FieldsRaw,
+      fl347FieldsRaw,
+      fl435FieldsRaw,
+      fl460FieldsRaw,
+      fl830FieldsRaw,
       fl105FieldsRaw,
       fl105aFieldsRaw,
+      fl140FieldsRaw,
+      fl141FieldsRaw,
+      fl142FieldsRaw,
       fl150FieldsRaw,
       fl300FieldsRaw,
+      fl319FieldsRaw,
       fl311FieldsRaw,
       fl312FieldsRaw,
       fl341FieldsRaw,
@@ -540,14 +833,41 @@ async function loadTemplates() {
       fl341cFieldsRaw,
       fl341dFieldsRaw,
       fl341eFieldsRaw,
-      fw001FieldsRaw,
     ]) => ({
       fl100Bytes: new Uint8Array(fl100Bytes),
       fl110Bytes: new Uint8Array(fl110Bytes),
+      fl115Bytes: new Uint8Array(fl115Bytes),
+      fl117Bytes: new Uint8Array(fl117Bytes),
+      fl120Bytes: new Uint8Array(fl120Bytes),
+      fl160Bytes: new Uint8Array(fl160Bytes),
+      fl342Bytes: new Uint8Array(fl342Bytes),
+      fl343Bytes: new Uint8Array(fl343Bytes),
+      fl130Bytes: new Uint8Array(fl130Bytes),
+      fl144Bytes: new Uint8Array(fl144Bytes),
+      fl170Bytes: new Uint8Array(fl170Bytes),
+      fl180Bytes: new Uint8Array(fl180Bytes),
+      fl190Bytes: new Uint8Array(fl190Bytes),
+      fl345Bytes: new Uint8Array(fl345Bytes),
+      fl348Bytes: new Uint8Array(fl348Bytes),
+      fl165Bytes: new Uint8Array(fl165Bytes),
+      fl182Bytes: new Uint8Array(fl182Bytes),
+      fl191Bytes: new Uint8Array(fl191Bytes),
+      fl195Bytes: new Uint8Array(fl195Bytes),
+      fl272Bytes: new Uint8Array(fl272Bytes),
+      fl342aBytes: new Uint8Array(fl342aBytes),
+      fl346Bytes: new Uint8Array(fl346Bytes),
+      fl347Bytes: new Uint8Array(fl347Bytes),
+      fl435Bytes: new Uint8Array(fl435Bytes),
+      fl460Bytes: new Uint8Array(fl460Bytes),
+      fl830Bytes: new Uint8Array(fl830Bytes),
       fl105Bytes: new Uint8Array(fl105Bytes),
       fl105aBytes: new Uint8Array(fl105aBytes),
+      fl140Bytes: new Uint8Array(fl140Bytes),
+      fl141Bytes: new Uint8Array(fl141Bytes),
+      fl142Bytes: new Uint8Array(fl142Bytes),
       fl150Bytes: new Uint8Array(fl150Bytes),
       fl300Bytes: new Uint8Array(fl300Bytes),
+      fl319Bytes: new Uint8Array(fl319Bytes),
       fl311Bytes: new Uint8Array(fl311Bytes),
       fl312Bytes: new Uint8Array(fl312Bytes),
       fl341Bytes: new Uint8Array(fl341Bytes),
@@ -556,13 +876,40 @@ async function loadTemplates() {
       fl341cBytes: new Uint8Array(fl341cBytes),
       fl341dBytes: new Uint8Array(fl341dBytes),
       fl341eBytes: new Uint8Array(fl341eBytes),
-      fw001Bytes: new Uint8Array(fw001Bytes),
       fl100Fields: JSON.parse(fl100FieldsRaw) as TemplateField[],
       fl110Fields: JSON.parse(fl110FieldsRaw) as TemplateField[],
+      fl115Fields: JSON.parse(fl115FieldsRaw) as TemplateField[],
+      fl117Fields: JSON.parse(fl117FieldsRaw) as TemplateField[],
+      fl120Fields: JSON.parse(fl120FieldsRaw) as TemplateField[],
+      fl160Fields: JSON.parse(fl160FieldsRaw) as TemplateField[],
+      fl342Fields: JSON.parse(fl342FieldsRaw) as TemplateField[],
+      fl343Fields: JSON.parse(fl343FieldsRaw) as TemplateField[],
+      fl130Fields: JSON.parse(fl130FieldsRaw) as TemplateField[],
+      fl144Fields: JSON.parse(fl144FieldsRaw) as TemplateField[],
+      fl170Fields: JSON.parse(fl170FieldsRaw) as TemplateField[],
+      fl180Fields: JSON.parse(fl180FieldsRaw) as TemplateField[],
+      fl190Fields: JSON.parse(fl190FieldsRaw) as TemplateField[],
+      fl345Fields: JSON.parse(fl345FieldsRaw) as TemplateField[],
+      fl348Fields: JSON.parse(fl348FieldsRaw) as TemplateField[],
+      fl165Fields: JSON.parse(fl165FieldsRaw) as TemplateField[],
+      fl182Fields: JSON.parse(fl182FieldsRaw) as TemplateField[],
+      fl191Fields: JSON.parse(fl191FieldsRaw) as TemplateField[],
+      fl195Fields: JSON.parse(fl195FieldsRaw) as TemplateField[],
+      fl272Fields: JSON.parse(fl272FieldsRaw) as TemplateField[],
+      fl342aFields: JSON.parse(fl342aFieldsRaw) as TemplateField[],
+      fl346Fields: JSON.parse(fl346FieldsRaw) as TemplateField[],
+      fl347Fields: JSON.parse(fl347FieldsRaw) as TemplateField[],
+      fl435Fields: JSON.parse(fl435FieldsRaw) as TemplateField[],
+      fl460Fields: JSON.parse(fl460FieldsRaw) as TemplateField[],
+      fl830Fields: JSON.parse(fl830FieldsRaw) as TemplateField[],
       fl105Fields: JSON.parse(fl105FieldsRaw) as TemplateField[],
       fl105aFields: JSON.parse(fl105aFieldsRaw) as TemplateField[],
+      fl140Fields: JSON.parse(fl140FieldsRaw) as TemplateField[],
+      fl141Fields: JSON.parse(fl141FieldsRaw) as TemplateField[],
+      fl142Fields: JSON.parse(fl142FieldsRaw) as TemplateField[],
       fl150Fields: JSON.parse(fl150FieldsRaw) as TemplateField[],
       fl300Fields: JSON.parse(fl300FieldsRaw) as TemplateField[],
+      fl319Fields: JSON.parse(fl319FieldsRaw) as TemplateField[],
       fl311Fields: JSON.parse(fl311FieldsRaw) as TemplateField[],
       fl312Fields: JSON.parse(fl312FieldsRaw) as TemplateField[],
       fl341Fields: JSON.parse(fl341FieldsRaw) as TemplateField[],
@@ -571,7 +918,6 @@ async function loadTemplates() {
       fl341cFields: JSON.parse(fl341cFieldsRaw) as TemplateField[],
       fl341dFields: JSON.parse(fl341dFieldsRaw) as TemplateField[],
       fl341eFields: JSON.parse(fl341eFieldsRaw) as TemplateField[],
-      fw001Fields: JSON.parse(fw001FieldsRaw) as TemplateField[],
     }));
   }
 
@@ -825,6 +1171,19 @@ function fillCheckbox(pages: PDFPage[], fieldMap: Map<string, TemplateField[]>, 
   for (const field of getFieldRects(fieldMap, name)) {
     drawCheckMark(pages[field.page], field.rect);
   }
+}
+
+function fillTextFieldAt(pages: PDFPage[], fieldMap: Map<string, TemplateField[]>, name: string, value: string, font: PDFFont, index = 0, options?: { size?: number; multiline?: boolean }) {
+  const field = getFieldRects(fieldMap, name)[index];
+  if (!field) return;
+  drawTextToRect(pages[field.page], field.rect, value, font, options);
+}
+
+function fillCheckboxAt(pages: PDFPage[], fieldMap: Map<string, TemplateField[]>, name: string, checked: boolean, index = 0) {
+  if (!checked) return;
+  const field = getFieldRects(fieldMap, name)[index];
+  if (!field) return;
+  drawCheckMark(pages[field.page], field.rect);
 }
 
 function parseAttachmentPageCount(value: string | undefined | null) {
@@ -2607,61 +2966,834 @@ async function appendFl300RequestForOrderPages(
   return pages.length;
 }
 
-async function appendFw001FeeWaiverPages(
+async function appendFl140DeclarationOfDisclosurePages(
   output: PDFDocument,
-  fw001Template: PDFDocument,
-  fw001FieldMap: Map<string, TemplateField[]>,
+  fl140Template: PDFDocument,
+  fl140FieldMap: Map<string, TemplateField[]>,
   fontRegular: PDFFont,
   workspace: StarterPacketWorkspace,
   petitionerName: string,
   respondentName: string,
   caseNumber: string,
-  address: ReturnType<typeof parseAddress>,
 ) {
-  const pages = await output.copyPages(fw001Template, fw001Template.getPageIndices());
+  const pages = await output.copyPages(fl140Template, fl140Template.getPageIndices());
   pages.forEach((page) => output.addPage(page));
 
-  const filingCounty = sanitizeText(workspace.filingCounty?.value);
-  const courtLines = [
-    filingCounty ? `Superior Court of California, County of ${filingCounty}` : '',
-    sanitizeText(workspace.courtStreet?.value),
-    sanitizeText(workspace.courtMailingAddress?.value),
-    sanitizeText(workspace.courtCityZip?.value),
-    sanitizeText(workspace.courtBranch?.value),
+  const fl140 = workspace.fl140 ?? {};
+  const declarantRole = fl140.declarantRole?.value ?? 'petitioner';
+  const disclosureType = fl140.disclosureType?.value ?? 'preliminary';
+  const attorneyOrPartyLines = [
+    workspace.petitionerAttorneyOrPartyName?.value || petitionerName,
+    workspace.petitionerFirmName?.value,
+    workspace.petitionerAddress?.value,
+    workspace.petitionerStateBarNumber?.value ? `State Bar No.: ${workspace.petitionerStateBarNumber.value}` : '',
   ].filter(Boolean).join('\n');
-  const caseName = [petitionerName, respondentName].filter(Boolean).join(' v. ');
-  const signatureDate = formatDateForCourt(workspace.fl100?.signatureDate?.value) || formatDateForCourt(new Date().toISOString());
 
-  fillTextFields(pages, fw001FieldMap, 'CourtInfo[0]', courtLines, fontRegular, { size: 8, multiline: true });
-  fillTextFields(pages, fw001FieldMap, 'CaseNumber[0]', caseNumber, fontRegular, { size: 9 });
-  fillTextFields(pages, fw001FieldMap, 'CaseName[0]', caseName, fontRegular, { size: 9 });
-  fillTextFields(pages, fw001FieldMap, 'PetitionerName1[0]', petitionerName, fontRegular, { size: 9 });
-  fillTextFields(pages, fw001FieldMap, 'PetitionerStrAddress[0]', address.street, fontRegular, { size: 8 });
-  fillTextFields(pages, fw001FieldMap, 'PetitionerCity[0]', address.city, fontRegular, { size: 8 });
-  fillTextFields(pages, fw001FieldMap, 'PetitionerState[0]', address.state, fontRegular, { size: 8 });
-  fillTextFields(pages, fw001FieldMap, 'PetitionerZip[0]', address.zip, fontRegular, { size: 8 });
-  fillTextFields(pages, fw001FieldMap, 'PetitionerTel[0]', sanitizeText(workspace.petitionerPhone?.value), fontRegular, { size: 8 });
-  fillTextFields(pages, fw001FieldMap, 'PetitionerName[0]', petitionerName, fontRegular, { size: 9 });
-  fillTextFields(pages, fw001FieldMap, 'SigDate[0]', signatureDate, fontRegular, { size: 9 });
+  fillTextFields(pages, fl140FieldMap, 'FL-140.caption.attorneyOrParty', sanitizeMultilineText(attorneyOrPartyLines), fontRegular, { size: 7, multiline: true });
+  fillTextFields(pages, fl140FieldMap, 'FL-140.caption.phone', sanitizeText(workspace.petitionerPhone?.value), fontRegular, { size: 7 });
+  fillTextFields(pages, fl140FieldMap, 'FL-140.caption.fax', sanitizeText(workspace.petitionerFax?.value), fontRegular, { size: 7 });
+  fillTextFields(pages, fl140FieldMap, 'FL-140.caption.email', sanitizeText(workspace.petitionerEmail?.value), fontRegular, { size: 7 });
+  fillTextFields(pages, fl140FieldMap, 'FL-140.caption.attorneyFor', sanitizeText(workspace.petitionerAttorneyFor?.value || 'Self-Represented'), fontRegular, { size: 7 });
+  fillTextFields(pages, fl140FieldMap, 'FL-140.caption.county', sanitizeText(workspace.filingCounty?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl140FieldMap, 'FL-140.caption.street', sanitizeText(workspace.courtStreet?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl140FieldMap, 'FL-140.caption.mailing', sanitizeText(workspace.courtMailingAddress?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl140FieldMap, 'FL-140.caption.cityZip', sanitizeText(workspace.courtCityZip?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl140FieldMap, 'FL-140.caption.branch', sanitizeText(workspace.courtBranch?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl140FieldMap, 'FL-140.caption.petitioner', petitionerName, fontRegular, { size: 8 });
+  fillTextFields(pages, fl140FieldMap, 'FL-140.caption.respondent', respondentName, fontRegular, { size: 8 });
+  fillTextFields(pages, fl140FieldMap, 'FL-140.caption.caseNumber', caseNumber, fontRegular, { size: 9 });
 
-  // Safe defaults for a family-law starter packet: request Superior Court fee waiver
-  // and ask to waive all court fees/costs. The financial qualification section stays
-  // blank for the user to complete/review before filing.
-  fillCheckbox(pages, fw001FieldMap, 'PetLawyerAdvanceFeesY[1]', true);
-  fillCheckbox(pages, fw001FieldMap, 'WaiveSuperiorCrtFee[0]', true);
-  fillCheckbox(pages, fw001FieldMap, 'FeeRequestDef[0]', true);
+  fillCheckbox(pages, fl140FieldMap, 'FL-140.declarant.petitioner', declarantRole === 'petitioner');
+  fillCheckbox(pages, fl140FieldMap, 'FL-140.declarant.respondent', declarantRole === 'respondent');
+  fillCheckbox(pages, fl140FieldMap, 'FL-140.disclosure.preliminary', disclosureType === 'preliminary');
+  fillCheckbox(pages, fl140FieldMap, 'FL-140.disclosure.final', disclosureType === 'final');
+  fillCheckbox(pages, fl140FieldMap, 'FL-140.served.scheduleOrProperty', Boolean(fl140.servedScheduleOrPropertyDeclaration?.value));
+  fillCheckbox(pages, fl140FieldMap, 'FL-140.served.communityProperty', Boolean(fl140.scheduleIncludesCommunityProperty?.value));
+  fillCheckbox(pages, fl140FieldMap, 'FL-140.served.separateProperty', Boolean(fl140.scheduleIncludesSeparateProperty?.value));
+  fillCheckbox(pages, fl140FieldMap, 'FL-140.served.propertyDeclaration', Boolean(fl140.servedScheduleOrPropertyDeclaration?.value));
+  fillCheckbox(pages, fl140FieldMap, 'FL-140.served.incomeExpense', Boolean(fl140.servedIncomeExpenseDeclaration?.value));
+  fillCheckbox(pages, fl140FieldMap, 'FL-140.served.taxReturns', Boolean(fl140.servedTaxReturns?.value));
+  fillCheckbox(pages, fl140FieldMap, 'FL-140.served.noTaxReturns', Boolean(fl140.noTaxReturnsFiled?.value));
+  fillTextFields(pages, fl140FieldMap, 'FL-140.served.taxReturnsDetails', fl140.noTaxReturnsFiled?.value ? 'No tax returns were filed in the two years before service.' : 'Copies served with disclosure packet.', fontRegular, { size: 7 });
+  fillTextFields(pages, fl140FieldMap, 'FL-140.served.materialFacts', sanitizeMultilineText(fl140.materialFactsStatement?.value), fontRegular, { size: 7, multiline: true });
+  fillCheckbox(pages, fl140FieldMap, 'FL-140.served.obligationsStatement', Boolean(fl140.servedObligationsStatement?.value));
+  fillTextFields(pages, fl140FieldMap, 'FL-140.served.obligationsDetails', sanitizeMultilineText(fl140.obligationsStatement?.value), fontRegular, { size: 7, multiline: true });
+  fillCheckbox(pages, fl140FieldMap, 'FL-140.served.investmentOpportunity', Boolean(fl140.servedInvestmentOpportunityStatement?.value));
+  fillTextFields(pages, fl140FieldMap, 'FL-140.served.investmentDetails', sanitizeMultilineText(fl140.investmentOpportunityStatement?.value), fontRegular, { size: 7, multiline: true });
+  fillTextFields(pages, fl140FieldMap, 'FL-140.signature.date', formatDateForCourt(fl140.signatureDate?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl140FieldMap, 'FL-140.signature.name', sanitizeText(fl140.typePrintName?.value), fontRegular, { size: 8 });
 
   return pages.length;
 }
 
-export async function generateOfficialStarterPacketPdf(workspace: StarterPacketWorkspace): Promise<Uint8Array> {
+async function appendFl141DisclosureServicePages(
+  output: PDFDocument,
+  fl141Template: PDFDocument,
+  fl141FieldMap: Map<string, TemplateField[]>,
+  fontRegular: PDFFont,
+  workspace: StarterPacketWorkspace,
+  petitionerName: string,
+  respondentName: string,
+  caseNumber: string,
+) {
+  const pages = await output.copyPages(fl141Template, fl141Template.getPageIndices());
+  pages.forEach((page) => output.addPage(page));
+  const fl141 = workspace.fl141 ?? {};
+  const attorneyOrPartyLines = [workspace.petitionerAttorneyOrPartyName?.value || petitionerName, workspace.petitionerFirmName?.value, workspace.petitionerAddress?.value].filter(Boolean).join('\n');
+
+  fillTextFields(pages, fl141FieldMap, 'FL-141.caption.attorneyOrParty', sanitizeMultilineText(attorneyOrPartyLines), fontRegular, { size: 7, multiline: true });
+  fillTextFields(pages, fl141FieldMap, 'FL-141.caption.phone', sanitizeText(workspace.petitionerPhone?.value), fontRegular, { size: 7 });
+  fillTextFields(pages, fl141FieldMap, 'FL-141.caption.fax', sanitizeText(workspace.petitionerFax?.value), fontRegular, { size: 7 });
+  fillTextFields(pages, fl141FieldMap, 'FL-141.caption.email', sanitizeText(workspace.petitionerEmail?.value), fontRegular, { size: 7 });
+  fillTextFields(pages, fl141FieldMap, 'FL-141.caption.attorneyFor', sanitizeText(workspace.petitionerAttorneyFor?.value || 'Self-Represented'), fontRegular, { size: 7 });
+  fillTextFields(pages, fl141FieldMap, 'FL-141.caption.county', sanitizeText(workspace.filingCounty?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl141FieldMap, 'FL-141.caption.street', sanitizeText(workspace.courtStreet?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl141FieldMap, 'FL-141.caption.mailing', sanitizeText(workspace.courtMailingAddress?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl141FieldMap, 'FL-141.caption.cityZip', sanitizeText(workspace.courtCityZip?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl141FieldMap, 'FL-141.caption.branch', sanitizeText(workspace.courtBranch?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl141FieldMap, 'FL-141.caption.petitioner', petitionerName, fontRegular, { size: 8 });
+  fillTextFields(pages, fl141FieldMap, 'FL-141.caption.respondent', respondentName, fontRegular, { size: 8 });
+  fillTextFields(pages, fl141FieldMap, 'FL-141.caption.caseNumber', caseNumber, fontRegular, { size: 9 });
+
+  fillCheckbox(pages, fl141FieldMap, 'FL-141.disclosure.preliminary', fl141.disclosureType?.value === 'preliminary');
+  fillCheckbox(pages, fl141FieldMap, 'FL-141.disclosure.final', fl141.disclosureType?.value === 'final');
+  fillCheckbox(pages, fl141FieldMap, 'FL-141.servingParty.petitioner', fl141.servingParty?.value === 'petitioner');
+  fillCheckbox(pages, fl141FieldMap, 'FL-141.servingParty.respondent', fl141.servingParty?.value === 'respondent');
+  fillCheckbox(pages, fl141FieldMap, 'FL-141.servedOn.petitioner', fl141.servedOnParty?.value === 'petitioner');
+  fillCheckbox(pages, fl141FieldMap, 'FL-141.servedOn.respondent', fl141.servedOnParty?.value === 'respondent');
+  fillCheckbox(pages, fl141FieldMap, 'FL-141.service.personal', fl141.serviceMethod?.value === 'personal');
+  fillCheckbox(pages, fl141FieldMap, 'FL-141.service.mail', fl141.serviceMethod?.value === 'mail');
+  fillCheckbox(pages, fl141FieldMap, 'FL-141.preliminary.otherSelected', Boolean(fl141.otherDocuments?.value));
+  fillTextFields(pages, fl141FieldMap, 'FL-141.preliminary.otherText', sanitizeText(fl141.otherDocuments?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl141FieldMap, 'FL-141.preliminary.serviceDate', formatDateForCourt(fl141.serviceDate?.value), fontRegular, { size: 8 });
+  fillCheckbox(pages, fl141FieldMap, 'FL-141.final.otherSelected', Boolean(fl141.otherDocuments?.value));
+  fillTextFields(pages, fl141FieldMap, 'FL-141.final.otherText', sanitizeText(fl141.otherDocuments?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl141FieldMap, 'FL-141.final.serviceDate', formatDateForCourt(fl141.serviceDate?.value), fontRegular, { size: 8 });
+  fillCheckbox(pages, fl141FieldMap, 'FL-141.waiveFinalDeclaration', Boolean(fl141.waiveFinalDeclaration?.value));
+  fillCheckbox(pages, fl141FieldMap, 'FL-141.finalIncomeExpenseServed', Boolean(fl141.finalIncomeExpenseServed?.value));
+  fillCheckbox(pages, fl141FieldMap, 'FL-141.waiveReceipt', Boolean(fl141.waiveReceipt?.value));
+  fillTextFields(pages, fl141FieldMap, 'FL-141.waiverServiceDate', formatDateForCourt(fl141.serviceDate?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl141FieldMap, 'FL-141.signature.date', formatDateForCourt(fl141.signatureDate?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl141FieldMap, 'FL-141.signature.name', sanitizeText(fl141.typePrintName?.value), fontRegular, { size: 8 });
+  return pages.length;
+}
+
+async function appendFl142AssetsDebtsPages(
+  output: PDFDocument,
+  fl142Template: PDFDocument,
+  fl142FieldMap: Map<string, TemplateField[]>,
+  fontRegular: PDFFont,
+  workspace: StarterPacketWorkspace,
+  petitionerName: string,
+  respondentName: string,
+  caseNumber: string,
+) {
+  const pages = await output.copyPages(fl142Template, fl142Template.getPageIndices());
+  pages.forEach((page) => output.addPage(page));
+  const fl142 = workspace.fl142 ?? {};
+  const attorneyOrPartyLines = [workspace.petitionerAttorneyOrPartyName?.value || petitionerName, workspace.petitionerAddress?.value].filter(Boolean).join('\n');
+
+  fillTextFields(pages, fl142FieldMap, 'FL-142.caption.attorneyOrParty', sanitizeMultilineText(attorneyOrPartyLines), fontRegular, { size: 7, multiline: true });
+  fillTextFields(pages, fl142FieldMap, 'FL-142.caption.phone', sanitizeText(workspace.petitionerPhone?.value), fontRegular, { size: 7 });
+  fillTextFields(pages, fl142FieldMap, 'FL-142.caption.email', sanitizeText(workspace.petitionerEmail?.value), fontRegular, { size: 7 });
+  fillTextFields(pages, fl142FieldMap, 'FL-142.caption.county', sanitizeText(workspace.filingCounty?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl142FieldMap, 'FL-142.caption.petitioner', petitionerName, fontRegular, { size: 8 });
+  fillTextFields(pages, fl142FieldMap, 'FL-142.caption.respondent', respondentName, fontRegular, { size: 8 });
+  fillTextFields(pages, fl142FieldMap, 'FL-142.caption.caseNumber', caseNumber, fontRegular, { size: 9 });
+  fillCheckbox(pages, fl142FieldMap, 'FL-142.party.petitioner', fl142.partyRole?.value === 'petitioner');
+  fillCheckbox(pages, fl142FieldMap, 'FL-142.party.respondent', fl142.partyRole?.value === 'respondent');
+
+  Object.entries(fl142.assets ?? {}).forEach(([key, row]: [string, any]) => {
+    fillTextFields(pages, fl142FieldMap, `FL-142.asset.${key}.description`, sanitizeMultilineText(row.description?.value), fontRegular, { size: 6.5, multiline: true });
+    fillTextFields(pages, fl142FieldMap, `FL-142.asset.${key}.separateProperty`, sanitizeText(row.separateProperty?.value), fontRegular, { size: 6.5 });
+    fillTextFields(pages, fl142FieldMap, `FL-142.asset.${key}.dateAcquired`, sanitizeText(row.dateAcquired?.value), fontRegular, { size: 6.5 });
+    fillTextFields(pages, fl142FieldMap, `FL-142.asset.${key}.grossValue`, sanitizeText(row.grossValue?.value), fontRegular, { size: 6.5 });
+    fillTextFields(pages, fl142FieldMap, `FL-142.asset.${key}.amountOwed`, sanitizeText(row.amountOwed?.value), fontRegular, { size: 6.5 });
+  });
+  Object.entries(fl142.debts ?? {}).forEach(([key, row]: [string, any]) => {
+    fillTextFields(pages, fl142FieldMap, `FL-142.debt.${key}.description`, sanitizeMultilineText(row.description?.value), fontRegular, { size: 6.5, multiline: true });
+    fillTextFields(pages, fl142FieldMap, `FL-142.debt.${key}.separateProperty`, sanitizeText(row.separateProperty?.value), fontRegular, { size: 6.5 });
+    fillTextFields(pages, fl142FieldMap, `FL-142.debt.${key}.totalOwing`, sanitizeText(row.totalOwing?.value), fontRegular, { size: 6.5 });
+    fillTextFields(pages, fl142FieldMap, `FL-142.debt.${key}.dateAcquired`, sanitizeText(row.dateAcquired?.value), fontRegular, { size: 6.5 });
+  });
+  fillTextFields(pages, fl142FieldMap, 'FL-142.assetTotals.grossValue', sanitizeText(fl142.assetTotalGrossValue?.value), fontRegular, { size: 7 });
+  fillTextFields(pages, fl142FieldMap, 'FL-142.assetTotals.amountOwed', sanitizeText(fl142.assetTotalAmountOwed?.value), fontRegular, { size: 7 });
+  fillTextFields(pages, fl142FieldMap, 'FL-142.debtTotals.totalOwing', sanitizeText(fl142.debtTotalOwing?.value), fontRegular, { size: 7 });
+  fillCheckbox(pages, fl142FieldMap, 'FL-142.continuation.selected', Boolean(fl142.continuationPagesAttached?.value));
+  fillTextFields(pages, fl142FieldMap, 'FL-142.continuation.pageCount', sanitizeText(fl142.continuationPagesAttached?.value), fontRegular, { size: 7 });
+  fillTextFields(pages, fl142FieldMap, 'FL-142.signature.date', formatDateForCourt(fl142.signatureDate?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl142FieldMap, 'FL-142.signature.name', sanitizeText(fl142.typePrintName?.value), fontRegular, { size: 8 });
+  return pages.length;
+}
+
+
+async function appendFl115ProofOfServicePages(
+  output: PDFDocument,
+  fl115Template: PDFDocument,
+  fl115FieldMap: Map<string, TemplateField[]>,
+  workspace: StarterPacketWorkspace,
+  fontRegular: PDFFont,
+  petitionerName: string,
+  respondentName: string,
+  caseNumber: string,
+) {
+  const pages = await output.copyPages(fl115Template, fl115Template.getPageIndices());
+  pages.forEach((page) => output.addPage(page));
+  const fl115 = workspace.fl115 ?? {};
+  const attorneyOrParty = sanitizeText(workspace.petitionerAttorneyOrPartyName?.value) || petitionerName;
+  const address = parseAddress(sanitizeMultilineText(workspace.petitionerAddress?.value));
+
+  for (const pageIndex of [0, 1]) {
+    fillTextFieldAt(pages, fl115FieldMap, 'Petitioner_tf[0]', petitionerName, fontRegular, pageIndex, { size: 8 });
+    fillTextFieldAt(pages, fl115FieldMap, 'Respondent_tf[0]', respondentName, fontRegular, pageIndex, { size: 8 });
+    fillTextFieldAt(pages, fl115FieldMap, 'CaseNumber_ft[0]', caseNumber, fontRegular, pageIndex, { size: 8 });
+  }
+  fillTextFields(pages, fl115FieldMap, 'PartyAttyAddInfo_ft[0]', sanitizeText(workspace.petitionerStateBarNumber?.value), fontRegular, { size: 7 });
+  fillTextFieldAt(pages, fl115FieldMap, 'Phone_ft[0]', attorneyOrParty, fontRegular, 0, { size: 7 });
+  fillTextFieldAt(pages, fl115FieldMap, 'Phone_ft[1]', sanitizeText(workspace.petitionerFirmName?.value), fontRegular, 0, { size: 7 });
+  fillTextFieldAt(pages, fl115FieldMap, 'Phone_ft[2]', sanitizeText(address.street), fontRegular, 0, { size: 7 });
+  fillTextFieldAt(pages, fl115FieldMap, 'Phone_ft[3]', sanitizeText(address.city), fontRegular, 0, { size: 7 });
+  fillTextFieldAt(pages, fl115FieldMap, 'Phone_ft[4]', sanitizeText(address.state), fontRegular, 0, { size: 7 });
+  fillTextFieldAt(pages, fl115FieldMap, 'Phone_ft[5]', sanitizeText(address.zip), fontRegular, 0, { size: 7 });
+  fillTextFieldAt(pages, fl115FieldMap, 'Phone_ft[6]', sanitizeText(workspace.petitionerPhone?.value), fontRegular, 0, { size: 7 });
+  fillTextFieldAt(pages, fl115FieldMap, 'Phone_ft[7]', sanitizeText(workspace.petitionerFax?.value), fontRegular, 0, { size: 7 });
+  fillTextFields(pages, fl115FieldMap, 'Email_ft[0]', sanitizeText(workspace.petitionerEmail?.value), fontRegular, { size: 7 });
+  fillTextFields(pages, fl115FieldMap, 'AttyFor_ft[0]', sanitizeText(workspace.petitionerAttorneyFor?.value || 'Self-Represented'), fontRegular, { size: 7 });
+  fillTextFields(pages, fl115FieldMap, 'CrtCounty_ft[0]', sanitizeText(workspace.filingCounty?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl115FieldMap, 'Branch_ft[0]', sanitizeText(workspace.courtBranch?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl115FieldMap, 'CityZip_ft[0]', sanitizeText(workspace.courtCityZip?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl115FieldMap, 'Street_ft[0]', sanitizeText(workspace.courtStreet?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl115FieldMap, 'MailingAdd_ft[0]', sanitizeText(workspace.courtMailingAddress?.value), fontRegular, { size: 8 });
+
+  fillCheckboxAt(pages, fl115FieldMap, 'Check1[0]', true, 0);
+  fillCheckboxAt(pages, fl115FieldMap, 'CheckBox1[0]', Boolean(workspace.hasMinorChildren?.value), 1);
+  fillCheckboxAt(pages, fl115FieldMap, 'CheckBox1[0]', Boolean(workspace.fl140?.includeForm?.value), 2);
+  fillCheckboxAt(pages, fl115FieldMap, 'CheckBox1[0]', Boolean(workspace.fl142?.includeForm?.value), 3);
+  fillCheckboxAt(pages, fl115FieldMap, 'CheckBox1[0]', Boolean(workspace.fl150?.includeForm?.value), 4);
+  fillCheckboxAt(pages, fl115FieldMap, 'CheckBox1[0]', Boolean(workspace.fl300?.includeForm?.value), 7);
+
+  const serviceMethod = fl115.serviceMethod?.value ?? 'personal';
+  fillTextFields(pages, fl115FieldMap, 'AddressWhereServed_tf[0]', sanitizeMultilineText(fl115.addressWhereServed?.value), fontRegular, { size: 8, multiline: true });
+  fillCheckboxAt(pages, fl115FieldMap, 'CheckBox1[0]', serviceMethod === 'personal', 9);
+  fillTextFields(pages, fl115FieldMap, 'DatePersonalServiceCompleted_dt[0]', formatDateForCourt(fl115.serviceDate?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl115FieldMap, 'TimePersonalServiceCompleted_dt[0]', sanitizeText(fl115.serviceTime?.value), fontRegular, { size: 8 });
+  fillCheckboxAt(pages, fl115FieldMap, 'CheckBox1[0]', serviceMethod === 'mail_acknowledgment', 13);
+  fillTextFields(pages, fl115FieldMap, 'DateofMail_AcknowledgmentService_dt[0]', formatDateForCourt(fl115.dateMailed?.value || workspace.fl117?.dateMailed?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl115FieldMap, 'CityFromWhichSummonsMailed_tf[0]', sanitizeText(fl115.cityMailedFrom?.value), fontRegular, { size: 8 });
+  fillCheckbox(pages, fl115FieldMap, 'Checkbox1[0]', serviceMethod === 'mail_acknowledgment');
+
+  fillTextFields(pages, fl115FieldMap, 'NameofServer_tf[0]', sanitizeText(fl115.serverName?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl115FieldMap, 'ServersAddress_tf[0]', sanitizeMultilineText(fl115.serverAddress?.value), fontRegular, { size: 8, multiline: true });
+  fillTextFields(pages, fl115FieldMap, 'ServersTelephoneNumber_tf[0]', sanitizeText(fl115.serverPhone?.value), fontRegular, { size: 8 });
+  fillCheckboxAt(pages, fl115FieldMap, 'CheckBox1[0]', true, 17);
+  fillCheckboxAt(pages, fl115FieldMap, 'CheckBox1a[0]', true, 0);
+  fillTextFields(pages, fl115FieldMap, 'SigDate[0]', formatDateForCourt(fl115.signatureDate?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl115FieldMap, 'Name[0]', sanitizeText(fl115.serverName?.value), fontRegular, { size: 8 });
+}
+
+async function appendFl120ResponsePages(
+  output: PDFDocument,
+  fl120Template: PDFDocument,
+  fl120FieldMap: Map<string, TemplateField[]>,
+  workspace: StarterPacketWorkspace,
+  fontRegular: PDFFont,
+  petitionerName: string,
+  respondentName: string,
+  caseNumber: string,
+) {
+  const pages = await output.copyPages(fl120Template, fl120Template.getPageIndices());
+  pages.forEach((page) => output.addPage(page));
+  const attorneyOrParty = sanitizeText(workspace.respondentName?.value) || respondentName;
+  const fl100 = workspace.fl100;
+  const relationshipType = fl100?.relationshipType?.value ?? 'marriage';
+  const proceedingType = fl100?.proceedingType?.value ?? 'dissolution';
+  for (const pageIndex of [0, 1, 2]) {
+    fillTextFieldAt(pages, fl120FieldMap, 'Party1_ft[0]', petitionerName, fontRegular, pageIndex, { size: 8 });
+    fillTextFieldAt(pages, fl120FieldMap, 'Party2_ft[0]', respondentName, fontRegular, pageIndex, { size: 8 });
+    fillTextFieldAt(pages, fl120FieldMap, 'CaseNumber_ft[0]', caseNumber, fontRegular, pageIndex, { size: 8 });
+  }
+  fillTextFields(pages, fl120FieldMap, 'AttyName_ft[0]', attorneyOrParty, fontRegular, { size: 7 });
+  fillTextFields(pages, fl120FieldMap, 'CrtCounty_ft[0]', sanitizeText(workspace.filingCounty?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl120FieldMap, 'Street_ft[0]', sanitizeText(workspace.courtStreet?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl120FieldMap, 'MailingAdd_ft[0]', sanitizeText(workspace.courtMailingAddress?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl120FieldMap, 'CityZip_ft[0]', sanitizeText(workspace.courtCityZip?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl120FieldMap, 'Branch_ft[0]', sanitizeText(workspace.courtBranch?.value), fontRegular, { size: 8 });
+  fillCheckbox(pages, fl120FieldMap, 'DissolutionOf_cb[0]', proceedingType === 'dissolution');
+  fillCheckboxAt(pages, fl120FieldMap, 'Marriage_cb[0]', relationshipType === 'marriage' || relationshipType === 'both', 0);
+  fillCheckbox(pages, fl120FieldMap, 'DomesticPartnership_cb[0]', relationshipType === 'domestic_partnership' || relationshipType === 'both');
+  fillCheckbox(pages, fl120FieldMap, 'NullityOf_cb[0]', proceedingType === 'nullity');
+  fillCheckbox(pages, fl120FieldMap, 'LegalSeparationOf_cb[0]', proceedingType === 'legal_separation');
+  fillCheckbox(pages, fl120FieldMap, 'WeAreMarried_cb[0]', relationshipType === 'marriage' || relationshipType === 'both');
+  const hasMinorChildren = Boolean(workspace.hasMinorChildren?.value);
+  fillCheckbox(pages, fl120FieldMap, 'ThereAreNoMinorChildren_cb[0]', !hasMinorChildren);
+  fillCheckbox(pages, fl120FieldMap, 'MinorChildrenList_cb[0]', hasMinorChildren);
+  workspace.children.slice(0, 4).forEach((child, index) => {
+    const slot = index + 1;
+    fillTextFields(pages, fl120FieldMap, `Child${slot}Name_tf[0]`, sanitizeText(child.fullName?.value), fontRegular, { size: 7 });
+    fillTextFields(pages, fl120FieldMap, slot === 3 ? 'Child3Date_dt[0]' : `Child${slot}Birthdate_dt[0]`, formatDateForCourt(child.birthDate?.value), fontRegular, { size: 7 });
+  });
+  fillCheckbox(pages, fl120FieldMap, 'Attachment4b[0]', workspace.children.length > 4);
+  fillTextFields(pages, fl120FieldMap, 'DateOfMarriage_dt[0]', formatDateForCourt(workspace.marriageDate?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl120FieldMap, 'DateOfSeparation_dt[0]', formatDateForCourt(workspace.separationDate?.value), fontRegular, { size: 8 });
+  fillCheckbox(pages, fl120FieldMap, 'RespondentDeniesGroundsInPetition_cb[0]', Boolean(workspace.fl120?.denyPetitionGrounds?.value));
+  fillTextFields(pages, fl120FieldMap, 'SigDate[0]', formatDateForCourt(workspace.fl120?.signatureDate?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl120FieldMap, 'PrintRespondentName_tf[0]', sanitizeText(workspace.fl120?.respondentPrintedName?.value || respondentName), fontRegular, { size: 8 });
+}
+
+async function appendFl160PropertyDeclarationPages(
+  output: PDFDocument,
+  fl160Template: PDFDocument,
+  fl160FieldMap: Map<string, TemplateField[]>,
+  workspace: StarterPacketWorkspace,
+  fontRegular: PDFFont,
+  petitionerName: string,
+  respondentName: string,
+  caseNumber: string,
+) {
+  const pages = await output.copyPages(fl160Template, fl160Template.getPageIndices());
+  pages.forEach((page) => output.addPage(page));
+  const fl160 = workspace.fl160 ?? {};
+  const address = parseAddress(sanitizeMultilineText(workspace.petitionerAddress?.value));
+  const put = (name: string, value: unknown, size = 8) => fillTextFields(pages, fl160FieldMap, name, sanitizeText(String(value ?? '')), fontRegular, { size });
+  const check = (name: string, checked: boolean, index = 0) => fillCheckboxAt(pages, fl160FieldMap, name, checked, index);
+
+  put('AttyName_ft[0]', workspace.petitionerAttorneyOrPartyName?.value || petitionerName, 7);
+  put('AttyFirm_ft[0]', workspace.petitionerFirmName?.value, 7);
+  put('BarNo_ft[0]', workspace.petitionerStateBarNumber?.value, 7);
+  put('AttyStreet_ft[0]', address.street, 7);
+  put('AttyCity_ft[0]', address.city, 7);
+  put('AttyState_ft[0]', address.state, 7);
+  put('AttyZip_ft[0]', address.zip, 7);
+  put('Phone_ft[0]', workspace.petitionerPhone?.value, 7);
+  put('Fax_ft[0]', workspace.petitionerFax?.value, 7);
+  put('Email_ft[0]', workspace.petitionerEmail?.value, 7);
+  put('AttyFor_ft[0]', workspace.petitionerAttorneyFor?.value || 'Petitioner in pro per', 7);
+  put('CrtCounty_ft[0]', workspace.filingCounty?.value);
+  put('Street_ft[0]', workspace.courtStreet?.value);
+  put('MailingAdd_ft[0]', workspace.courtMailingAddress?.value);
+  put('CityZip_ft[0]', workspace.courtCityZip?.value);
+  put('Branch_ft[0]', workspace.courtBranch?.value);
+  put('Party1_ft[0]', petitionerName);
+  put('Party2_ft[0]', respondentName);
+  put('CaseNumber_ft[0]', caseNumber);
+  check('IDParty_cb[0]', fl160.partyRole?.value === 'petitioner', 0);
+  check('IDParty_cb[1]', fl160.partyRole?.value === 'respondent', 0);
+  check('PropertyType_cb[0]', fl160.propertyType?.value === 'community', 0);
+  check('PropertyType_cb[1]', fl160.propertyType?.value === 'separate', 0);
+  put('RealEstate1_Des_ft[0]', fl160.itemDescription?.value, 6.5);
+  put('RE1DateAcq_dt[0]', formatDateForCourt(fl160.dateAcquired?.value), 6.5);
+  put('RE1GrossFMV_dc[0]', fl160.grossFairMarketValue?.value, 6.5);
+  put('RE1Debt_dc[0]', fl160.debtAmount?.value, 6.5);
+  put('RE1NetFMV_dc[0]', fl160.netFairMarketValue?.value, 6.5);
+  put('RE1DivPet_ft[0]', fl160.proposedAwardPetitioner?.value, 6.5);
+  put('RE1DivRes_ft[0]', fl160.proposedAwardRespondent?.value, 6.5);
+  put('DateTimeField1[0]', formatDateForCourt(fl160.signatureDate?.value));
+  put('YourName_ft[0]', fl160.typePrintName?.value || petitionerName);
+}
+
+async function appendFl342ChildSupportPages(
+  output: PDFDocument,
+  fl342Template: PDFDocument,
+  fl342FieldMap: Map<string, TemplateField[]>,
+  workspace: StarterPacketWorkspace,
+  fontRegular: PDFFont,
+  petitionerName: string,
+  respondentName: string,
+  caseNumber: string,
+) {
+  const pages = await output.copyPages(fl342Template, fl342Template.getPageIndices());
+  pages.forEach((page) => output.addPage(page));
+  const fl342 = workspace.fl342 ?? {};
+  const put = (name: string, value: unknown, size = 8) => fillTextFields(pages, fl342FieldMap, name, sanitizeText(String(value ?? '')), fontRegular, { size });
+  const putAt = (name: string, value: unknown, index: number, size = 8) => fillTextFieldAt(pages, fl342FieldMap, name, sanitizeText(String(value ?? '')), fontRegular, index, { size });
+  const check = (name: string, checked: boolean, index = 0) => fillCheckboxAt(pages, fl342FieldMap, name, checked, index);
+
+  [0, 1, 2].forEach((index) => {
+    putAt('PetitionerTextField[0]', petitionerName, index);
+    putAt('RespondentTextField[0]', respondentName, index);
+    putAt('CaseNumberTextField[0]', caseNumber, index);
+  });
+  const attachTo = fl342.attachTo?.value ?? 'fl300';
+  check('AttachmentToCheckbox1[0]', attachTo === 'fl300');
+  check('AttachmentToCheckbox2[0]', attachTo === 'fl340');
+  check('AttachmentToCheckbox3[0]', attachTo === 'fl350');
+  check('AttachmentToCheckbox4[0]', attachTo === 'fl355');
+  check('AttachmentToCheckbox5[0]', attachTo === 'judgment' || attachTo === 'other');
+  put('AttachmentToTextField[0]', attachTo === 'other' ? fl342.attachToOther?.value : '');
+  check('Item2Checkbox[0]', true);
+  put('GrossIncomeCurrencyField1[0]', fl342.petitionerGrossIncome?.value);
+  put('NetIncomeCurrencyField1[0]', fl342.petitionerNetIncome?.value);
+  put('GrossIncomeCurrencyField2[0]', fl342.respondentGrossIncome?.value);
+  put('NetIncomeCurrencyField2[0]', fl342.respondentNetIncome?.value);
+  put('GrossIncomeCurrencyField3[0]', fl342.otherPartyGrossIncome?.value);
+  put('NetIncomeCurrencyField3[0]', fl342.otherPartyNetIncome?.value);
+  check('Item6Checkbox[0]', true);
+  check('Item6aCheckbox1[0]', true);
+  put('Item6aDateField[0]', formatDateForCourt(fl342.paymentStartDate?.value));
+  workspace.children.slice(0, 4).forEach((child, index) => {
+    const slot = index + 1;
+    put(`ChildNameTextField${slot}[0]`, child.fullName?.value, 7);
+    put(`DateOfBirthDateField${slot}[0]`, formatDateForCourt(child.birthDate?.value), 7);
+    put(`MonthlyAmountCurrencyField${slot}[0]`, fl342.baseMonthlyChildSupport?.value, 7);
+    put(`PayableToTextField${slot}[0]`, fl342.payableTo?.value, 7);
+  });
+  check('Item4Checkbox[0]', Boolean(fl342.childCareCosts?.value || fl342.healthCareCosts?.value || fl342.otherAddOnCosts?.value));
+  if (fl342.childCareCosts?.value) { check('Item4aCheckbox[0]', true); put('Item4aRespondentCurrencyField[0]', fl342.childCareCosts?.value); }
+  if (fl342.healthCareCosts?.value) { check('Item4bCheckbox[0]', true); put('Item4bRespondentCurrencyField[0]', fl342.healthCareCosts?.value); }
+  if (fl342.otherAddOnCosts?.value) { check('Item4cCheckbox[0]', true); put('Item4cRespondentCurrencyField[0]', fl342.otherAddOnCosts?.value); }
+  put('TotalChildSupportCalcCurrencyField[0]', fl342.guidelineTotal?.value || fl342.baseMonthlyChildSupport?.value);
+  if (fl342.otherOrders?.value) {
+    check('Item10Checkbox1[0]', true);
+    put('Item10TextField[0]', fl342.otherOrders?.value, 7);
+  }
+}
+
+async function appendFl343SupportPages(
+  output: PDFDocument,
+  fl343Template: PDFDocument,
+  fl343FieldMap: Map<string, TemplateField[]>,
+  workspace: StarterPacketWorkspace,
+  fontRegular: PDFFont,
+  petitionerName: string,
+  respondentName: string,
+  caseNumber: string,
+) {
+  const pages = await output.copyPages(fl343Template, fl343Template.getPageIndices());
+  pages.forEach((page) => output.addPage(page));
+  const fl343 = workspace.fl343 ?? {};
+  const putAt = (name: string, value: unknown, index: number, size = 8) => fillTextFieldAt(pages, fl343FieldMap, name, sanitizeText(String(value ?? '')), fontRegular, index, { size });
+  const check = (name: string, checked: boolean, index = 0) => fillCheckboxAt(pages, fl343FieldMap, name, checked, index);
+  const partyName = (role: string | undefined) => role === 'petitioner' ? petitionerName : respondentName;
+
+  [0, 1, 2].forEach((index) => {
+    putAt('Party1[0]', petitionerName, index);
+    putAt('Party2[0]', respondentName, index);
+    putAt('CaseNumber[0]', caseNumber, index);
+  });
+  check('CheckBox1[0]', fl343.supportType?.value === 'spousal', 0);
+  check('CheckBox2[0]', fl343.supportType?.value === 'domestic_partner', 0);
+  check('CheckBox3[0]', fl343.supportType?.value === 'family', 0);
+  check('CheckBox6[0]', fl343.payor?.value === 'petitioner', 0);
+  check('CheckBox7[0]', fl343.payor?.value === 'respondent', 0);
+  putAt('TextField1[0]', partyName(fl343.payor?.value), 0);
+  putAt('TextField2[0]', partyName(fl343.payee?.value), 0);
+  putAt('NumericField1[0]', fl343.monthlyAmount?.value, 0);
+  putAt('HearingDate[0]', formatDateForCourt(fl343.paymentStartDate?.value), 1);
+  putAt('on_date1[0]', formatDateForCourt(fl343.paymentEndDate?.value), 0);
+  check('Check1[0]', fl343.paymentFrequency?.value === 'monthly', 0);
+  check('Check1[0]', fl343.paymentFrequency?.value === 'twice_monthly', 1);
+  check('CheckBox1[0]', Boolean(fl343.wageAssignment?.value), 27);
+  check('CheckBox1[0]', Boolean(fl343.terminateOnDeathOrRemarriage?.value), 46);
+  if (fl343.otherOrders?.value) {
+    check('CheckBox1[0]', true, 40);
+    putAt('FillText1[0]', fl343.otherOrders?.value, 2, 7);
+  }
+}
+
+async function appendFl117AcknowledgmentPages(
+  output: PDFDocument,
+  fl117Template: PDFDocument,
+  fl117FieldMap: Map<string, TemplateField[]>,
+  fontRegular: PDFFont,
+  workspace: StarterPacketWorkspace,
+  petitionerName: string,
+  respondentName: string,
+  caseNumber: string,
+) {
+  const pages = await output.copyPages(fl117Template, fl117Template.getPageIndices());
+  pages.forEach((page) => output.addPage(page));
+  const fl117 = workspace.fl117 ?? {};
+  const address = parseAddress(workspace.petitionerAddress?.value ?? '');
+  const attorneyOrParty = workspace.petitionerAttorneyOrPartyName?.value || petitionerName;
+
+  fillTextFields(pages, fl117FieldMap, 'FL-117.caption.attorneyOrParty', sanitizeMultilineText([attorneyOrParty, workspace.petitionerAddress?.value].filter(Boolean).join('\n')), fontRegular, { size: 7, multiline: true });
+  fillTextFields(pages, fl117FieldMap, 'FL-117.caption.name', sanitizeText(attorneyOrParty), fontRegular, { size: 7 });
+  fillTextFields(pages, fl117FieldMap, 'FL-117.caption.street', sanitizeText(address.street), fontRegular, { size: 7 });
+  fillTextFields(pages, fl117FieldMap, 'FL-117.caption.cityStateZip', sanitizeText([address.city, address.state, address.zip].filter(Boolean).join(', ')), fontRegular, { size: 7 });
+  fillTextFields(pages, fl117FieldMap, 'FL-117.caption.phone', sanitizeText(workspace.petitionerPhone?.value), fontRegular, { size: 7 });
+  fillTextFields(pages, fl117FieldMap, 'FL-117.caption.fax', sanitizeText(workspace.petitionerFax?.value), fontRegular, { size: 7 });
+  fillTextFields(pages, fl117FieldMap, 'FL-117.caption.email', sanitizeText(workspace.petitionerEmail?.value), fontRegular, { size: 7 });
+  fillTextFields(pages, fl117FieldMap, 'FL-117.caption.attorneyFor', sanitizeText(workspace.petitionerAttorneyFor?.value || 'Self-Represented'), fontRegular, { size: 7 });
+  fillTextFields(pages, fl117FieldMap, 'FL-117.caption.county', sanitizeText(workspace.filingCounty?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl117FieldMap, 'FL-117.caption.streetAddress', sanitizeText(workspace.courtStreet?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl117FieldMap, 'FL-117.caption.mailingAddress', sanitizeText(workspace.courtMailingAddress?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl117FieldMap, 'FL-117.caption.cityZip', sanitizeText(workspace.courtCityZip?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl117FieldMap, 'FL-117.caption.branch', sanitizeText(workspace.courtBranch?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl117FieldMap, 'FL-117.caption.petitioner', petitionerName, fontRegular, { size: 8 });
+  fillTextFields(pages, fl117FieldMap, 'FL-117.caption.respondent', respondentName, fontRegular, { size: 8 });
+  fillTextFields(pages, fl117FieldMap, 'FL-117.caption.caseNumber', caseNumber, fontRegular, { size: 9 });
+  fillTextFields(pages, fl117FieldMap, 'FL-117.personServed', sanitizeText(fl117.personServedName?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl117FieldMap, 'FL-117.dateMailed', formatDateForCourt(fl117.dateMailed?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl117FieldMap, 'FL-117.petitionerPrintedName', sanitizeText(fl117.petitionerPrintedName?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl117FieldMap, 'FL-117.acknowledgment.dateSigned', formatDateForCourt(fl117.acknowledgmentDateSigned?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl117FieldMap, 'FL-117.acknowledgment.printName', sanitizeText(fl117.acknowledgmentPrintedName?.value), fontRegular, { size: 8 });
+  return pages.length;
+}
+
+async function appendFl319AttorneyFeesPages(
+  output: PDFDocument,
+  fl319Template: PDFDocument,
+  fl319FieldMap: Map<string, TemplateField[]>,
+  fontRegular: PDFFont,
+  workspace: StarterPacketWorkspace,
+  petitionerName: string,
+  respondentName: string,
+  caseNumber: string,
+) {
+  const pages = await output.copyPages(fl319Template, fl319Template.getPageIndices());
+  pages.forEach((page) => output.addPage(page));
+
+  const attorneyFees = workspace.fl300?.attorneyFees ?? {};
+  const paymentFrom = attorneyFees.paymentRequestedFrom?.value ?? 'unspecified';
+  const priorOrderExists = attorneyFees.priorFeeOrderExists?.value ?? 'unspecified';
+  const priorPayor = attorneyFees.priorFeeOrderPayor?.value ?? 'unspecified';
+  const paymentsStatus = attorneyFees.priorPaymentsStatus?.value ?? 'unspecified';
+  const additionalInformation = sanitizeMultilineText(attorneyFees.additionalInformation?.value);
+
+  fillTextFields(pages, fl319FieldMap, 'FL-319.caption.petitioner', petitionerName, fontRegular, { size: 8 });
+  fillTextFields(pages, fl319FieldMap, 'FL-319.caption.respondent', respondentName, fontRegular, { size: 8 });
+  fillTextFields(pages, fl319FieldMap, 'FL-319.caption.caseNumber', caseNumber, fontRegular, { size: 9 });
+  fillCheckbox(pages, fl319FieldMap, 'FL-319.freeLegalServices', Boolean(attorneyFees.freeLegalServices?.value));
+
+  fillCheckbox(pages, fl319FieldMap, 'FL-319.paymentFrom.petitioner', paymentFrom === 'petitioner');
+  fillCheckbox(pages, fl319FieldMap, 'FL-319.paymentFrom.respondent', paymentFrom === 'respondent');
+  fillCheckbox(pages, fl319FieldMap, 'FL-319.paymentFrom.other', paymentFrom === 'other');
+  fillTextFields(pages, fl319FieldMap, 'FL-319.paymentFrom.otherText', sanitizeText(attorneyFees.paymentRequestedFromOtherName?.value), fontRegular, { size: 8 });
+
+  const feesRequestedAmount = sanitizeText(attorneyFees.feesRequestedAmount?.value || attorneyFees.amount?.value);
+  const costsRequestedAmount = sanitizeText(attorneyFees.costsRequestedAmount?.value);
+  fillCheckbox(pages, fl319FieldMap, 'FL-319.request.fees', Boolean(feesRequestedAmount));
+  fillTextFields(pages, fl319FieldMap, 'FL-319.request.feesAmount', feesRequestedAmount, fontRegular, { size: 8 });
+  fillCheckbox(pages, fl319FieldMap, 'FL-319.request.costs', Boolean(costsRequestedAmount));
+  fillTextFields(pages, fl319FieldMap, 'FL-319.request.costsAmount', costsRequestedAmount, fontRegular, { size: 8 });
+
+  fillCheckbox(pages, fl319FieldMap, 'FL-319.order.feeAmount', Boolean(feesRequestedAmount));
+  fillTextFields(pages, fl319FieldMap, 'FL-319.order.feeAmountText', feesRequestedAmount, fontRegular, { size: 8 });
+  fillCheckbox(pages, fl319FieldMap, 'FL-319.order.incurredAmount', Boolean(attorneyFees.incurredToDateAmount?.value));
+  fillTextFields(pages, fl319FieldMap, 'FL-319.order.incurredAmountText', sanitizeText(attorneyFees.incurredToDateAmount?.value), fontRegular, { size: 8 });
+  fillCheckbox(pages, fl319FieldMap, 'FL-319.order.estimatedAmount', Boolean(attorneyFees.estimatedFutureAmount?.value));
+  fillTextFields(pages, fl319FieldMap, 'FL-319.order.estimatedAmountText', sanitizeText(attorneyFees.estimatedFutureAmount?.value), fontRegular, { size: 8 });
+  fillCheckbox(pages, fl319FieldMap, 'FL-319.order.limitedScopeAmount', Boolean(attorneyFees.limitedScopeAmount?.value));
+  fillTextFields(pages, fl319FieldMap, 'FL-319.order.limitedScopeAmountText', sanitizeText(attorneyFees.limitedScopeAmount?.value), fontRegular, { size: 8 });
+
+  fillCheckbox(pages, fl319FieldMap, 'FL-319.priorOrder.no', priorOrderExists === 'no');
+  fillCheckbox(pages, fl319FieldMap, 'FL-319.priorOrder.yes', priorOrderExists === 'yes');
+  fillCheckbox(pages, fl319FieldMap, 'FL-319.priorOrder.petitioner', priorPayor === 'petitioner');
+  fillCheckbox(pages, fl319FieldMap, 'FL-319.priorOrder.respondent', priorPayor === 'respondent');
+  fillCheckbox(pages, fl319FieldMap, 'FL-319.priorOrder.other', priorPayor === 'other');
+  fillTextFields(pages, fl319FieldMap, 'FL-319.priorOrder.amount', sanitizeText(attorneyFees.priorFeeOrderAmount?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl319FieldMap, 'FL-319.priorOrder.date', formatDateForCourt(attorneyFees.priorFeeOrderDate?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl319FieldMap, 'FL-319.paymentSources', sanitizeMultilineText(attorneyFees.paymentSources?.value), fontRegular, { size: 8, multiline: true });
+  fillCheckbox(pages, fl319FieldMap, 'FL-319.payments.made', paymentsStatus === 'made');
+  fillCheckbox(pages, fl319FieldMap, 'FL-319.payments.notMade', paymentsStatus === 'not_made');
+  fillCheckbox(pages, fl319FieldMap, 'FL-319.payments.partial', paymentsStatus === 'partial');
+  fillCheckbox(pages, fl319FieldMap, 'FL-319.additionalInfo.selected', Boolean(additionalInformation));
+  fillTextFields(pages, fl319FieldMap, 'FL-319.additionalInfo.text', additionalInformation, fontRegular, { size: 8, multiline: true });
+  fillTextFields(pages, fl319FieldMap, 'FL-319.pagesAttached', sanitizeText(attorneyFees.pagesAttached?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl319FieldMap, 'FL-319.signature.date', formatDateForCourt(workspace.fl300?.signatureDate?.value), fontRegular, { size: 8 });
+  fillTextFields(pages, fl319FieldMap, 'FL-319.signature.name', sanitizeText(workspace.fl300?.typePrintName?.value), fontRegular, { size: 9 });
+
+  return pages.length;
+}
+
+
+async function appendCoreJudgmentPropertyFormPages(
+  output: PDFDocument,
+  template: PDFDocument,
+  fieldMap: Map<string, TemplateField[]>,
+  fontRegular: PDFFont,
+  workspace: StarterPacketWorkspace,
+  formId: 'fl130' | 'fl144' | 'fl170' | 'fl180' | 'fl190' | 'fl345' | 'fl348',
+  petitionerName: string,
+  respondentName: string,
+  caseNumber: string,
+) {
+  const pages = await output.copyPages(template, template.getPageIndices());
+  pages.forEach((page) => output.addPage(page));
+
+  const section = workspace[formId] ?? {};
+  const put = (name: string, value: unknown, size = 8) => fillTextFields(pages, fieldMap, name, sanitizeText(String(value ?? '')), fontRegular, { size, multiline: true });
+  const putAt = (name: string, value: unknown, index: number, size = 8) => fillTextFieldAt(pages, fieldMap, name, sanitizeText(String(value ?? '')), fontRegular, index, { size, multiline: true });
+  const checkAt = (name: string, checked: boolean, index = 0) => fillCheckboxAt(pages, fieldMap, name, checked, index);
+
+  const attorneyName = sanitizeText(workspace.petitionerAttorneyOrPartyName?.value) || petitionerName;
+  const address = parseAddress(workspace.petitionerAddress?.value);
+  const courtCityZip = sanitizeText(workspace.courtCityZip?.value);
+
+  // Caption / court / party fields. Names vary by Judicial Council PDF, so this intentionally hits common aliases.
+  for (const name of ['Name[0]', 'AttyName_ft[0]']) put(name, attorneyName, 7);
+  for (const name of ['AttyFirm[0]', 'AttyFirm_ft[0]']) put(name, sanitizeText(workspace.petitionerFirmName?.value), 7);
+  for (const name of ['StateBarNo[0]', 'BarNo_ft[0]']) put(name, sanitizeText(workspace.petitionerStateBarNumber?.value), 7);
+  for (const name of ['Street[0]', 'AttyStreet_ft[0]']) put(name, sanitizeText(address.street), 7);
+  for (const name of ['City[0]', 'AttyCity_ft[0]']) put(name, sanitizeText(address.city), 7);
+  for (const name of ['State[0]', 'AttyState_ft[0]']) put(name, sanitizeText(address.state), 7);
+  for (const name of ['Zip[0]', 'AttyZip_ft[0]']) put(name, sanitizeText(address.zip), 7);
+  for (const name of ['Phone[0]', 'Phone_ft[0]']) put(name, sanitizeText(workspace.petitionerPhone?.value), 7);
+  for (const name of ['Fax[0]', 'Fax_ft[0]']) put(name, sanitizeText(workspace.petitionerFax?.value), 7);
+  for (const name of ['Email[0]', 'Email1[0]', 'Email_ft[0]']) put(name, sanitizeText(workspace.petitionerEmail?.value), 7);
+  for (const name of ['AttyFor[0]', 'AttyFor_ft[0]']) put(name, sanitizeText(workspace.petitionerAttorneyFor?.value || 'Self-Represented'), 7);
+  for (const name of ['CrtCounty[0]', 'CrtCounty_ft[0]']) put(name, sanitizeText(workspace.filingCounty?.value), 8);
+  for (const name of ['CrtStreet[0]', 'Street_ft[0]']) put(name, sanitizeText(workspace.courtStreet?.value), 8);
+  for (const name of ['CrtMailingAdd[0]', 'MailingAdd_ft[0]']) put(name, sanitizeText(workspace.courtMailingAddress?.value), 8);
+  for (const name of ['CrtCityZip[0]', 'CityZip_ft[0]']) put(name, courtCityZip, 8);
+  for (const name of ['CrtBranch[0]', 'Branch_ft[0]']) put(name, sanitizeText(workspace.courtBranch?.value), 8);
+  for (const name of ['Party1[0]', 'Party1_ft[0]', 'Party1w[0]', 'FillText25']) put(name, petitionerName, 8);
+  for (const name of ['Party2[0]', 'Party2_ft[0]', 'FillText180']) put(name, respondentName, 8);
+  for (const name of ['CaseNumber[0]', 'CaseNumber_ft[0]', 'FillText17']) put(name, caseNumber, 8);
+
+  if (formId === 'fl130') {
+    checkAt('CheckBoxappear[0]', section.appearanceBy?.value === 'respondent' || section.appearanceBy?.value === 'both', 0);
+    checkAt('CheckBoxappear[0]', section.appearanceBy?.value === 'petitioner' || section.appearanceBy?.value === 'both', 1);
+    checkAt('CheckBox1[0]', Boolean(section.agreementSummary?.value), 0);
+    put('Text3[0]', sanitizeMultilineText(section.agreementSummary?.value), 7);
+    put('SigDate[0]', formatDateForCourt(section.respondentSignatureDate?.value));
+    put('SigName[0]', sanitizeText(section.respondentPrintedName?.value || respondentName));
+    put('SigDate1[0]', formatDateForCourt(section.petitionerSignatureDate?.value));
+    put('SigName1[0]', sanitizeText(section.petitionerPrintedName?.value || petitionerName));
+  } else if (formId === 'fl144') {
+    put('Party3[0]', sanitizeText(section.thirdPartyName?.value));
+    put('SigDate[0]', formatDateForCourt(section.signatureDate?.value));
+    putAt('SigName[0]', sanitizeText(section.petitionerPrintedName?.value || petitionerName), 0);
+    putAt('SigName[0]', sanitizeText(section.respondentPrintedName?.value || respondentName), 1);
+  } else if (formId === 'fl170') {
+    const proceedingType = workspace.fl100?.proceedingType?.value ?? 'dissolution';
+    fillCheckbox(pages, fieldMap, 'DissolutionOf_cb[0]', proceedingType === 'dissolution');
+    fillCheckbox(pages, fieldMap, 'Amended_cb[0]', false);
+    checkAt('CheckBox1[0]', Boolean(section.isDefaultOrUncontested?.value), 0);
+    put('T313[0]', sanitizeMultilineText(section.declarationText?.value || section.agreementDate?.value), 7);
+    put('FillText109[0]', sanitizeMultilineText(section.declarationText?.value), 7);
+    put('SigDate[0]', formatDateForCourt(section.signatureDate?.value));
+    put('SigName[0]', sanitizeText(section.printedName?.value || petitionerName));
+  } else if (formId === 'fl180') {
+    const judgmentType = section.judgmentType?.value ?? workspace.fl100?.proceedingType?.value ?? 'dissolution';
+    checkAt('limited[0]', judgmentType === 'dissolution', 0);
+    checkAt('limited1[0]', judgmentType === 'legal_separation', 0);
+    checkAt('limited2[0]', judgmentType === 'nullity', 0);
+    put('DatePartnersSeparated_dt[0]', formatDateForCourt(workspace.separationDate?.value));
+    put('DateofHearing_dt1[0]', formatDateForCourt(section.statusTerminationDate?.value), 8);
+    put('DateofHearing_dt2[0]', formatDateForCourt(section.judgmentEnteredDate?.value), 8);
+    put('DateofHearing_dt3[0]', formatDateForCourt(section.agreementDate?.value), 8);
+    putAt('FillText1[0]', sanitizeMultilineText(section.propertyDebtOrders?.value), 3, 7);
+    putAt('FillText1[0]', sanitizeText(section.childSupportAmount?.value || workspace.fl342?.baseMonthlyChildSupport?.value), 4, 7);
+    putAt('FillText1[0]', sanitizeText(section.spousalSupportAmount?.value || workspace.fl343?.monthlyAmount?.value), 5, 7);
+  } else if (formId === 'fl190') {
+    put('Text3[0]', formatDateForCourt(section.judgmentEnteredDate?.value));
+    put('FillText1[0]', sanitizeMultilineText(section.noticeText?.value), 7);
+    put('SigDate[0]', formatDateForCourt(section.noticeDate?.value));
+    put('SigDate1[0]', formatDateForCourt(section.clerkMailingDate?.value));
+  } else if (formId === 'fl345') {
+    checkAt('CheckMark1[0]', true, 0);
+    putAt('FillText1[0]', sanitizeMultilineText(section.propertyAwardSummary?.value), 0, 7);
+    putAt('FillText1[0]', sanitizeMultilineText(section.debtAllocationSummary?.value), 1, 7);
+    putAt('FillText1[0]', sanitizeMultilineText(section.otherOrders?.value), 2, 7);
+    putAt('FillText1[0]', sanitizeText(section.equalizationPayment?.value), 3, 7);
+  } else if (formId === 'fl348') {
+    put('FillText21', sanitizeText(section.employeePartyName?.value), 8);
+    put('FillText26', sanitizeText(section.retirementPlanName?.value), 8);
+    put('FillText30', sanitizeText(section.claimantPartyName?.value), 8);
+    put('FillText51', sanitizeMultilineText(section.orderSummary?.value), 7);
+  }
+
+  return pages.length;
+}
+
+
+type RemainingFlFormId = 'fl165' | 'fl182' | 'fl191' | 'fl195' | 'fl272' | 'fl342a' | 'fl346' | 'fl347' | 'fl435' | 'fl460' | 'fl830' | 'fw001' | 'fw003' | 'fw010';
+type DvFormId = 'dv100' | 'dv101' | 'dv105' | 'dv108' | 'dv109' | 'dv110' | 'dv120' | 'dv130' | 'dv140' | 'dv200';
+
+function fillFirstAvailableText(
+  pages: PDFPage[],
+  fieldMap: Map<string, TemplateField[]>,
+  names: string[],
+  value: string,
+  font: PDFFont,
+  options?: { size?: number; multiline?: boolean },
+) {
+  const safeValue = sanitizeText(value);
+  if (!safeValue) return;
+  for (const name of names) {
+    const fields = getFieldRects(fieldMap, name);
+    if (fields.length === 0) continue;
+    fillTextFields(pages, fieldMap, name, safeValue, font, options);
+    return;
+  }
+}
+
+function fillFirstAvailableCheckbox(pages: PDFPage[], fieldMap: Map<string, TemplateField[]>, names: string[], checked: boolean) {
+  if (!checked) return;
+  for (const name of names) {
+    const fields = getFieldRects(fieldMap, name);
+    if (fields.length === 0) continue;
+    fillCheckboxAt(pages, fieldMap, name, true, 0);
+    return;
+  }
+}
+
+async function appendRemainingFamilyLawFormPages(
+  output: PDFDocument,
+  template: PDFDocument,
+  fieldMap: Map<string, TemplateField[]>,
+  fontRegular: PDFFont,
+  workspace: StarterPacketWorkspace,
+  formId: RemainingFlFormId,
+  petitionerName: string,
+  respondentName: string,
+  caseNumber: string,
+) {
+  const pages = await output.copyPages(template, template.getPageIndices());
+  pages.forEach((page) => output.addPage(page));
+  const section = workspace[formId] ?? {};
+  const address = parseAddress(sanitizeMultilineText(workspace.petitionerAddress?.value));
+  const primaryPartyName = section.primaryParty?.value === 'respondent'
+    ? respondentName
+    : section.primaryParty?.value === 'both'
+      ? `${petitionerName} and ${respondentName}`
+      : section.otherPartyName?.value || petitionerName;
+  const details = sanitizeMultilineText(section.details?.value);
+  const amount = sanitizeText(section.amount?.value);
+  const date = formatDateForCourt(section.date?.value);
+  const signatureDate = formatDateForCourt(section.signatureDate?.value || section.date?.value);
+  const printedName = sanitizeText(section.printedName?.value || primaryPartyName);
+  const otherName = sanitizeText(section.otherPartyName?.value);
+
+  fillFirstAvailableText(pages, fieldMap, ['Party1[0]', 'Party1_ft[0]', 'PetitionerTextField[0]', 'Petitioner2[0]', 'FillText41', '0'], petitionerName, fontRegular, { size: 8 });
+  fillFirstAvailableText(pages, fieldMap, ['Party2[0]', 'Party2_ft[0]', 'RespondentTextField[0]', 'FillText42', '1'], respondentName, fontRegular, { size: 8 });
+  fillFirstAvailableText(pages, fieldMap, ['CaseNumber[0]', 'CaseNumber_ft[0]', 'CaseNumberTextField[0]', 'CaseNumber_ft[0]', 'CaseNumber[0]', 'CaseIdentifierA[0]', 'OrderIdentifierA[0]', 'FillText43'], caseNumber, fontRegular, { size: 8 });
+  fillFirstAvailableText(pages, fieldMap, ['CrtCounty[0]', 'CrtCounty_ft[0]', 'CrtCounty_ft[0]'], sanitizeText(workspace.filingCounty?.value), fontRegular, { size: 8 });
+  fillFirstAvailableText(pages, fieldMap, ['CrtStreet[0]', 'Street_ft[0]'], sanitizeText(workspace.courtStreet?.value), fontRegular, { size: 8 });
+  fillFirstAvailableText(pages, fieldMap, ['CrtMailingAdd[0]', 'MailingAdd_ft[0]'], sanitizeText(workspace.courtMailingAddress?.value), fontRegular, { size: 8 });
+  fillFirstAvailableText(pages, fieldMap, ['CrtCityZip[0]', 'CityZip_ft[0]'], sanitizeText(workspace.courtCityZip?.value), fontRegular, { size: 8 });
+  fillFirstAvailableText(pages, fieldMap, ['CrtBranch[0]', 'Branch_ft[0]'], sanitizeText(workspace.courtBranch?.value), fontRegular, { size: 8 });
+
+  fillFirstAvailableText(pages, fieldMap, ['AttyBarNo[0]', 'AttyBarNo_dc[0]'], sanitizeText(workspace.petitionerStateBarNumber?.value), fontRegular, { size: 7 });
+  fillFirstAvailableText(pages, fieldMap, ['Name[0]', 'AttyName_ft[0]', 'TextField7[0]'], sanitizeText(workspace.petitionerAttorneyOrPartyName?.value || petitionerName), fontRegular, { size: 7 });
+  fillFirstAvailableText(pages, fieldMap, ['AttyFirm[0]', 'AttyFirm_ft[0]'], sanitizeText(workspace.petitionerFirmName?.value), fontRegular, { size: 7 });
+  fillFirstAvailableText(pages, fieldMap, ['Street[0]', 'AttyStreet_ft[0]'], sanitizeText(address.street), fontRegular, { size: 7 });
+  fillFirstAvailableText(pages, fieldMap, ['City[0]', 'AttyCity_ft[0]'], sanitizeText(address.city), fontRegular, { size: 7 });
+  fillFirstAvailableText(pages, fieldMap, ['State[0]', 'AttyState_ft[0]'], sanitizeText(address.state), fontRegular, { size: 7 });
+  fillFirstAvailableText(pages, fieldMap, ['Zip[0]', 'AttyZip_ft[0]'], sanitizeText(address.zip), fontRegular, { size: 7 });
+  fillFirstAvailableText(pages, fieldMap, ['Phone[0]', 'Phone_ft[0]'], sanitizeText(workspace.petitionerPhone?.value), fontRegular, { size: 7 });
+  fillFirstAvailableText(pages, fieldMap, ['Fax[0]', 'Fax_ft[0]'], sanitizeText(workspace.petitionerFax?.value), fontRegular, { size: 7 });
+  fillFirstAvailableText(pages, fieldMap, ['Email[0]', 'Email_ft[0]'], sanitizeText(workspace.petitionerEmail?.value), fontRegular, { size: 7 });
+  fillFirstAvailableText(pages, fieldMap, ['AttyFor[0]', 'AttyFor_ft[0]'], sanitizeText(workspace.petitionerAttorneyFor?.value || 'Self-Represented'), fontRegular, { size: 7 });
+
+  fillFirstAvailableText(pages, fieldMap, ['SigDate[0]', 'SigDate2[0]', 'SigDate5[0]', 'Date[0]', 'DocumentDate[0]', 'mailing_date[0]', 'date', 'on_date_ff[0]', 'IncomeWithholdingStartDate[0]'], signatureDate || date, fontRegular, { size: 8 });
+  fillFirstAvailableText(pages, fieldMap, ['SigName[0]', 'SigName1[0]', 'SigName2[0]', 'TextField1[0]', 'Petitioner2[1]'], printedName, fontRegular, { size: 8 });
+  fillFirstAvailableText(pages, fieldMap, ['FillText1[0]', 'FillText1', 'Other_tf[0]', 'Otherspecify_ft[0]', 'Other', 'other', 'Text9[0]', 'FillText06'], details, fontRegular, { size: 7, multiline: true });
+  fillFirstAvailableText(pages, fieldMap, ['IncomeAmount1_dc[0]', 'SupportCurrentChildAmount[0]', 'ObligationTotalAmount[0]', 'amount', 'Item1CurrencyField[0]', 'FillText23'], amount, fontRegular, { size: 8 });
+  fillFirstAvailableText(pages, fieldMap, ['EmployeeNameA[0]', 'ObligeeName[0]', 'Party3[0]', 'Party3_ft[0]', 'OtherPartyTextField[0]', 'TextField1[0]', '10[0]'], otherName || primaryPartyName, fontRegular, { size: 8 });
+  fillFirstAvailableText(pages, fieldMap, ['EmployeeDOB[0]'], formatDateForCourt(workspace.children?.[0]?.birthDate?.value), fontRegular, { size: 8 });
+
+  (workspace.children ?? []).slice(0, 6).forEach((child, index) => {
+    fillFirstAvailableText(pages, fieldMap, [`Child${index + 1}Name[0]`], sanitizeText(child.fullName?.value), fontRegular, { size: 7 });
+    fillFirstAvailableText(pages, fieldMap, [`Child${index + 1}BirthDate[0]`], formatDateForCourt(child.birthDate?.value), fontRegular, { size: 7 });
+  });
+
+  fillFirstAvailableCheckbox(pages, fieldMap, ['CheckBox1[0]', 'Checkbox[0]', 'Item1Checkbox1[0]', 'CheckBoxCaption[0]', 'petitioner_cb[0]', '1'], true);
+  fillFirstAvailableCheckbox(pages, fieldMap, ['CheckBox2[0]', 'Checkbox[1]', 'respondent_cb[0]', '2'], section.primaryParty?.value === 'respondent' || section.primaryParty?.value === 'both');
+  fillFirstAvailableCheckbox(pages, fieldMap, ['AttachmentToCheckbox1[0]', 'Attached1[0]'], section.attachTo?.value !== 'other');
+  fillFirstAvailableCheckbox(pages, fieldMap, ['AttachmentToCheckbox2[0]', 'Attached1[1]'], section.attachTo?.value === 'other');
+  fillFirstAvailableText(pages, fieldMap, ['AttachmentToTextField[0]', 'Other1[0]'], section.attachTo?.value === 'other' ? details : section.attachTo?.value ?? '', fontRegular, { size: 8 });
+
+  return pages.length;
+}
+
+async function appendCoreDomesticViolenceFormPages(
+  output: PDFDocument,
+  fontRegular: PDFFont,
+  workspace: StarterPacketWorkspace,
+  formId: DvFormId,
+  formNumber: string,
+  petitionerName: string,
+  respondentName: string,
+  caseNumber: string,
+) {
+  const fileStem = formNumber.toLowerCase();
+  const [templateBytes, fieldsRaw] = await Promise.all([
+    fs.readFile(path.join(TEMPLATES_DIR, `${fileStem}.template.pdf`)),
+    fs.readFile(path.join(TEMPLATES_DIR, `${fileStem}.fields.json`), 'utf8'),
+  ]);
+  const template = await PDFDocument.load(templateBytes, { ignoreEncryption: true });
+  const fields = JSON.parse(fieldsRaw) as TemplateField[];
+  const fieldMap = mapFields(fields);
+  const pages = await output.copyPages(template, template.getPageIndices());
+  pages.forEach((page) => output.addPage(page));
+
+  const section = workspace[formId] ?? {};
+  const address = parseAddress(sanitizeMultilineText(workspace.petitionerAddress?.value));
+  const protectedPartyName = sanitizeText(section.protectedPartyName?.value || petitionerName);
+  const restrainedPartyName = sanitizeText(section.restrainedPartyName?.value || respondentName);
+  const printedName = sanitizeText(section.printedName?.value || protectedPartyName || petitionerName);
+  const signatureDate = formatDateForCourt(section.signatureDate?.value);
+  const hearingDate = formatDateForCourt(section.hearingDate?.value);
+  const serviceDate = formatDateForCourt(section.serviceDate?.value);
+  const requestText = sanitizeMultilineText(section.requestSummary?.value);
+  const orderText = sanitizeMultilineText(section.orderSummary?.value);
+  const responseText = sanitizeMultilineText(section.responseSummary?.value);
+  const childrenText = sanitizeMultilineText(section.childNames?.value || (workspace.children ?? []).map((child) => child.fullName?.value).filter(Boolean).join('\n'));
+
+  fillFirstAvailableText(pages, fieldMap, ['CourtInfo_ft[0]', 'CourtInfo[0]'], [sanitizeText(workspace.courtStreet?.value), sanitizeText(workspace.courtMailingAddress?.value), sanitizeText(workspace.courtCityZip?.value), sanitizeText(workspace.courtBranch?.value)].filter(Boolean).join('\n'), fontRegular, { size: 7, multiline: true });
+  fillFirstAvailableText(pages, fieldMap, ['CaseNumber_ft[0]', 'CaseNumber[0]'], caseNumber, fontRegular, { size: 8 });
+  fillFirstAvailableText(pages, fieldMap, ['YourName_tf[0]', 'Yourname[0]', 'ProtectedFullName_ft[0]', 'FullName_ft[0]', 'TextFielditem1[0]', 'TextField2[0]', 'TextField[0]'], protectedPartyName, fontRegular, { size: 8 });
+  fillFirstAvailableText(pages, fieldMap, ['OtherParentsName[0]', 'RestrainedCity_ft[0]', 'who_ft[0]', 'T59[0]', 'TF1[0]', 'TextFielditem1Cont[0]'], restrainedPartyName, fontRegular, { size: 8 });
+  fillFirstAvailableText(pages, fieldMap, ['ParentRel[0]', 'ParentRel1[0]', 'ParentRel2[0]'], sanitizeText(section.relationship?.value), fontRegular, { size: 8 });
+  fillFirstAvailableText(pages, fieldMap, ['address_ft[0]', 'Street[0]'], sanitizeText(workspace.petitionerAddress?.value || address.street), fontRegular, { size: 7, multiline: true });
+  fillFirstAvailableText(pages, fieldMap, ['T70[0]', 'Phone[0]', 'Tel_tf[0]'], sanitizeText(workspace.petitionerPhone?.value), fontRegular, { size: 7 });
+  fillFirstAvailableText(pages, fieldMap, ['T76[0]', 'Email[0]'], sanitizeText(workspace.petitionerEmail?.value), fontRegular, { size: 7 });
+  fillFirstAvailableText(pages, fieldMap, ['HearingDate_dt[0]'], hearingDate, fontRegular, { size: 8 });
+  fillFirstAvailableText(pages, fieldMap, ['HearingTime_dt[0]'], sanitizeText(section.hearingTime?.value), fontRegular, { size: 8 });
+  fillFirstAvailableText(pages, fieldMap, ['HearingDept_ft[0]'], sanitizeText(section.hearingDepartment?.value), fontRegular, { size: 8 });
+  fillFirstAvailableText(pages, fieldMap, ['HearingRm_ft[0]'], sanitizeText(section.hearingRoom?.value), fontRegular, { size: 8 });
+  fillFirstAvailableText(pages, fieldMap, ['date[0]'], serviceDate || signatureDate, fontRegular, { size: 8 });
+  fillFirstAvailableText(pages, fieldMap, ['time[0]'], sanitizeText(section.serviceTime?.value), fontRegular, { size: 8 });
+  fillFirstAvailableText(pages, fieldMap, ['T1611[0]', 'T23[1]'], sanitizeText(section.servedByName?.value), fontRegular, { size: 8 });
+  fillFirstAvailableText(pages, fieldMap, ['item3FullName1_tf1[0]', 'item3FullName1_tf[0]', 'AdditionalProtectedPerson1_ft[0]'], sanitizeText(section.otherProtectedPeople?.value), fontRegular, { size: 7, multiline: true });
+  fillFirstAvailableText(pages, fieldMap, ['TextField35[0]', 'TextField34[0]', 'TextField2[1]'], childrenText, fontRegular, { size: 7, multiline: true });
+  fillFirstAvailableText(pages, fieldMap, ['OtherSpecify_tf[0]', 'OtherSpecify_tf[0]', 'TextField1[0]', 'TRODeniedFacts_ft[0]'], requestText || orderText || responseText, fontRegular, { size: 7, multiline: true });
+  fillFirstAvailableText(pages, fieldMap, ['Signature_dt[0]', 'SigDate[0]'], signatureDate, fontRegular, { size: 8 });
+  fillFirstAvailableText(pages, fieldMap, ['T214[0]', 'PrintName[0]'], printedName, fontRegular, { size: 8 });
+  fillFirstAvailableCheckbox(pages, fieldMap, ['OrigAmen_cb[0]', 'TopOrder_cb[0]', 'DV140_cb[0]', 'item4a_cb[0]', 'CheckBox2[0]'], true);
+
+  return pages.length;
+}
+
+export async function generateOfficialStarterPacketPdf(workspace: StarterPacketWorkspace, options?: { manualReadinessOverride?: boolean }): Promise<Uint8Array> {
+  const manualReadinessOverride = options?.manualReadinessOverride === true;
   const {
     fl100Bytes,
     fl110Bytes,
+    fl115Bytes,
+    fl117Bytes,
+    fl120Bytes,
+    fl160Bytes,
+    fl342Bytes,
+    fl343Bytes,
+    fl130Bytes,
+    fl144Bytes,
+    fl170Bytes,
+    fl180Bytes,
+    fl190Bytes,
+    fl345Bytes,
+    fl348Bytes,
+    fl165Bytes,
+    fl182Bytes,
+    fl191Bytes,
+    fl195Bytes,
+    fl272Bytes,
+    fl342aBytes,
+    fl346Bytes,
+    fl347Bytes,
+    fl435Bytes,
+    fl460Bytes,
+    fl830Bytes,
     fl105Bytes,
     fl105aBytes,
+    fl140Bytes,
+    fl141Bytes,
+    fl142Bytes,
     fl150Bytes,
     fl300Bytes,
+    fl319Bytes,
     fl311Bytes,
     fl312Bytes,
     fl341Bytes,
@@ -2670,13 +3802,40 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
     fl341cBytes,
     fl341dBytes,
     fl341eBytes,
-    fw001Bytes,
     fl100Fields,
     fl110Fields,
+    fl115Fields,
+    fl117Fields,
+    fl120Fields,
+    fl160Fields,
+    fl342Fields,
+    fl343Fields,
+    fl130Fields,
+    fl144Fields,
+    fl170Fields,
+    fl180Fields,
+    fl190Fields,
+    fl345Fields,
+    fl348Fields,
+    fl165Fields,
+    fl182Fields,
+    fl191Fields,
+    fl195Fields,
+    fl272Fields,
+    fl342aFields,
+    fl346Fields,
+    fl347Fields,
+    fl435Fields,
+    fl460Fields,
+    fl830Fields,
     fl105Fields,
     fl105aFields,
+    fl140Fields,
+    fl141Fields,
+    fl142Fields,
     fl150Fields,
     fl300Fields,
+    fl319Fields,
     fl311Fields,
     fl312Fields,
     fl341Fields,
@@ -2685,7 +3844,6 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
     fl341cFields,
     fl341dFields,
     fl341eFields,
-    fw001Fields,
   } = await loadTemplates();
   const output = await PDFDocument.create();
   const fontRegular = await output.embedFont(StandardFonts.Helvetica);
@@ -2693,10 +3851,38 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
 
   const fl100Template = await PDFDocument.load(fl100Bytes);
   const fl110Template = await PDFDocument.load(fl110Bytes);
+  const fl115Template = await PDFDocument.load(fl115Bytes, { ignoreEncryption: true });
+  const fl117Template = await PDFDocument.load(fl117Bytes, { ignoreEncryption: true });
+  const fl120Template = await PDFDocument.load(fl120Bytes, { ignoreEncryption: true });
+  const fl160Template = await PDFDocument.load(fl160Bytes, { ignoreEncryption: true });
+  const fl342Template = await PDFDocument.load(fl342Bytes, { ignoreEncryption: true });
+  const fl343Template = await PDFDocument.load(fl343Bytes, { ignoreEncryption: true });
+  const fl130Template = await PDFDocument.load(fl130Bytes, { ignoreEncryption: true });
+  const fl144Template = await PDFDocument.load(fl144Bytes, { ignoreEncryption: true });
+  const fl170Template = await PDFDocument.load(fl170Bytes, { ignoreEncryption: true });
+  const fl180Template = await PDFDocument.load(fl180Bytes, { ignoreEncryption: true });
+  const fl190Template = await PDFDocument.load(fl190Bytes, { ignoreEncryption: true });
+  const fl345Template = await PDFDocument.load(fl345Bytes, { ignoreEncryption: true });
+  const fl348Template = await PDFDocument.load(fl348Bytes, { ignoreEncryption: true });
+  const fl165Template = await PDFDocument.load(fl165Bytes, { ignoreEncryption: true });
+  const fl182Template = await PDFDocument.load(fl182Bytes, { ignoreEncryption: true });
+  const fl191Template = await PDFDocument.load(fl191Bytes, { ignoreEncryption: true });
+  const fl195Template = await PDFDocument.load(fl195Bytes, { ignoreEncryption: true });
+  const fl272Template = await PDFDocument.load(fl272Bytes, { ignoreEncryption: true });
+  const fl342aTemplate = await PDFDocument.load(fl342aBytes, { ignoreEncryption: true });
+  const fl346Template = await PDFDocument.load(fl346Bytes, { ignoreEncryption: true });
+  const fl347Template = await PDFDocument.load(fl347Bytes, { ignoreEncryption: true });
+  const fl435Template = await PDFDocument.load(fl435Bytes, { ignoreEncryption: true });
+  const fl460Template = await PDFDocument.load(fl460Bytes, { ignoreEncryption: true });
+  const fl830Template = await PDFDocument.load(fl830Bytes, { ignoreEncryption: true });
   const fl105Template = await PDFDocument.load(fl105Bytes);
   const fl105aTemplate = await PDFDocument.load(fl105aBytes);
+  const fl140Template = await PDFDocument.load(fl140Bytes, { ignoreEncryption: true });
+  const fl141Template = await PDFDocument.load(fl141Bytes, { ignoreEncryption: true });
+  const fl142Template = await PDFDocument.load(fl142Bytes, { ignoreEncryption: true });
   const fl150Template = await PDFDocument.load(fl150Bytes, { ignoreEncryption: true });
   const fl300Template = await PDFDocument.load(fl300Bytes, { ignoreEncryption: true });
+  const fl319Template = await PDFDocument.load(fl319Bytes);
   const fl311Template = await PDFDocument.load(fl311Bytes);
   const fl312Template = await PDFDocument.load(fl312Bytes);
   const fl341Template = await PDFDocument.load(fl341Bytes, { ignoreEncryption: true });
@@ -2705,18 +3891,44 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
   const fl341cTemplate = await PDFDocument.load(fl341cBytes, { ignoreEncryption: true });
   const fl341dTemplate = await PDFDocument.load(fl341dBytes, { ignoreEncryption: true });
   const fl341eTemplate = await PDFDocument.load(fl341eBytes, { ignoreEncryption: true });
-  const fw001Template = await PDFDocument.load(fw001Bytes, { ignoreEncryption: true });
   const fl100Pages = await output.copyPages(fl100Template, fl100Template.getPageIndices());
-  fl100Pages.forEach((page) => output.addPage(page));
   const fl110Pages = await output.copyPages(fl110Template, fl110Template.getPageIndices());
   const fl105Pages = await output.copyPages(fl105Template, fl105Template.getPageIndices());
 
   const fl100FieldMap = mapFields(fl100Fields);
   const fl110FieldMap = mapFields(fl110Fields);
+  const fl115FieldMap = mapFields(fl115Fields);
+  const fl117FieldMap = mapFields(fl117Fields);
+  const fl120FieldMap = mapFields(fl120Fields);
+  const fl160FieldMap = mapFields(fl160Fields);
+  const fl342FieldMap = mapFields(fl342Fields);
+  const fl343FieldMap = mapFields(fl343Fields);
+  const fl130FieldMap = mapFields(fl130Fields);
+  const fl144FieldMap = mapFields(fl144Fields);
+  const fl170FieldMap = mapFields(fl170Fields);
+  const fl180FieldMap = mapFields(fl180Fields);
+  const fl190FieldMap = mapFields(fl190Fields);
+  const fl345FieldMap = mapFields(fl345Fields);
+  const fl348FieldMap = mapFields(fl348Fields);
+  const fl165FieldMap = mapFields(fl165Fields);
+  const fl182FieldMap = mapFields(fl182Fields);
+  const fl191FieldMap = mapFields(fl191Fields);
+  const fl195FieldMap = mapFields(fl195Fields);
+  const fl272FieldMap = mapFields(fl272Fields);
+  const fl342aFieldMap = mapFields(fl342aFields);
+  const fl346FieldMap = mapFields(fl346Fields);
+  const fl347FieldMap = mapFields(fl347Fields);
+  const fl435FieldMap = mapFields(fl435Fields);
+  const fl460FieldMap = mapFields(fl460Fields);
+  const fl830FieldMap = mapFields(fl830Fields);
   const fl105FieldMap = mapFields(fl105Fields);
   const fl105aFieldMap = mapFields(fl105aFields);
+  const fl140FieldMap = mapFields(fl140Fields);
+  const fl141FieldMap = mapFields(fl141Fields);
+  const fl142FieldMap = mapFields(fl142Fields);
   const fl150FieldMap = mapFields(fl150Fields);
   const fl300FieldMap = mapFields(fl300Fields);
+  const fl319FieldMap = mapFields(fl319Fields);
   const fl311FieldMap = mapFields(fl311Fields);
   const fl312FieldMap = mapFields(fl312Fields);
   const fl341FieldMap = mapFields(fl341Fields);
@@ -2725,7 +3937,6 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
   const fl341cFieldMap = mapFields(fl341cFields);
   const fl341dFieldMap = mapFields(fl341dFields);
   const fl341eFieldMap = mapFields(fl341eFields);
-  const fw001FieldMap = mapFields(fw001Fields);
 
   const petitionerName = sanitizeText(workspace.petitionerName?.value);
   const respondentName = sanitizeText(workspace.respondentName?.value);
@@ -2796,10 +4007,12 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
     workspace.fl100?.residency?.respondentCountyMonths?.value,
   );
 
+  const fl100ShouldGenerate = workspace.fl100?.includeForm?.value !== false;
   const wantsCommunityProperty = Boolean(
-    workspace.requests?.propertyRightsDetermination?.value || workspace.fl100?.propertyDeclarations?.communityAndQuasiCommunity?.value,
+    fl100ShouldGenerate
+      && (workspace.requests?.propertyRightsDetermination?.value || workspace.fl100?.propertyDeclarations?.communityAndQuasiCommunity?.value),
   );
-  const wantsSeparateProperty = Boolean(workspace.fl100?.propertyDeclarations?.separateProperty?.value);
+  const wantsSeparateProperty = Boolean(fl100ShouldGenerate && workspace.fl100?.propertyDeclarations?.separateProperty?.value);
   const spousalSupportDirection = workspace.fl100?.spousalSupport?.supportOrderDirection?.value ?? 'none';
   const spousalSupportReserveJurisdictionFor = workspace.fl100?.spousalSupport?.reserveJurisdictionFor?.value ?? 'none';
   const spousalSupportTerminateJurisdictionFor = workspace.fl100?.spousalSupport?.terminateJurisdictionFor?.value ?? 'none';
@@ -2873,9 +4086,53 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
   const shortTitle = buildShortTitle(petitionerName, respondentName);
   const fl105 = workspace.fl105;
   const fl150 = workspace.fl150;
+  const fl110ShouldGenerate = workspace.fl110?.includeForm?.value !== false;
+  const fl140ShouldGenerate = Boolean(workspace.fl140?.includeForm?.value);
+  const fl141ShouldGenerate = Boolean(workspace.fl141?.includeForm?.value);
+  const fl142ShouldGenerate = Boolean(workspace.fl142?.includeForm?.value);
+  const fl115ShouldGenerate = Boolean(workspace.fl115?.includeForm?.value);
+  const fl117ShouldGenerate = Boolean(workspace.fl117?.includeForm?.value);
+  const fl120ShouldGenerate = Boolean(workspace.fl120?.includeForm?.value);
+  const fl160ShouldGenerate = Boolean(workspace.fl160?.includeForm?.value);
+  const fl342ShouldGenerate = Boolean(workspace.fl342?.includeForm?.value);
+  const fl343ShouldGenerate = Boolean(workspace.fl343?.includeForm?.value);
+  const fl130ShouldGenerate = Boolean(workspace.fl130?.includeForm?.value);
+  const fl144ShouldGenerate = Boolean(workspace.fl144?.includeForm?.value);
+  const fl170ShouldGenerate = Boolean(workspace.fl170?.includeForm?.value);
+  const fl180ShouldGenerate = Boolean(workspace.fl180?.includeForm?.value);
+  const fl190ShouldGenerate = Boolean(workspace.fl190?.includeForm?.value);
+  const fl345ShouldGenerate = Boolean(workspace.fl345?.includeForm?.value);
+  const fl348ShouldGenerate = Boolean(workspace.fl348?.includeForm?.value);
+  const fl165ShouldGenerate = Boolean(workspace.fl165?.includeForm?.value);
+  const fl182ShouldGenerate = Boolean(workspace.fl182?.includeForm?.value);
+  const fl191ShouldGenerate = Boolean(workspace.fl191?.includeForm?.value);
+  const fl195ShouldGenerate = Boolean(workspace.fl195?.includeForm?.value);
+  const fl272ShouldGenerate = Boolean(workspace.fl272?.includeForm?.value);
+  const fl342aShouldGenerate = Boolean(workspace.fl342a?.includeForm?.value);
+  const fl346ShouldGenerate = Boolean(workspace.fl346?.includeForm?.value);
+  const fl347ShouldGenerate = Boolean(workspace.fl347?.includeForm?.value);
+  const fl435ShouldGenerate = Boolean(workspace.fl435?.includeForm?.value);
+  const fl460ShouldGenerate = Boolean(workspace.fl460?.includeForm?.value);
+  const fl830ShouldGenerate = Boolean(workspace.fl830?.includeForm?.value);
+  const fw001ShouldGenerate = Boolean(workspace.fw001?.includeForm?.value);
+  const fw003ShouldGenerate = Boolean(workspace.fw003?.includeForm?.value);
+  const fw010ShouldGenerate = Boolean(workspace.fw010?.includeForm?.value);
+  const selectedDvForms = [
+    { id: 'dv100' as const, number: 'DV-100', section: workspace.dv100 },
+    { id: 'dv101' as const, number: 'DV-101', section: workspace.dv101 },
+    { id: 'dv105' as const, number: 'DV-105', section: workspace.dv105 },
+    { id: 'dv108' as const, number: 'DV-108', section: workspace.dv108 },
+    { id: 'dv109' as const, number: 'DV-109', section: workspace.dv109 },
+    { id: 'dv110' as const, number: 'DV-110', section: workspace.dv110 },
+    { id: 'dv120' as const, number: 'DV-120', section: workspace.dv120 },
+    { id: 'dv130' as const, number: 'DV-130', section: workspace.dv130 },
+    { id: 'dv140' as const, number: 'DV-140', section: workspace.dv140 },
+    { id: 'dv200' as const, number: 'DV-200', section: workspace.dv200 },
+  ].filter((entry): entry is { id: DvFormId; number: string; section: StarterPacketDvFormSection } => Boolean(entry.section?.includeForm?.value));
   const fl150ShouldGenerate = Boolean(fl150?.includeForm?.value);
   const fl300 = workspace.fl300;
   const fl300ShouldGenerate = Boolean(fl300?.includeForm?.value);
+  const fl319ShouldGenerate = Boolean(fl300ShouldGenerate && fl300?.requestTypes?.attorneyFeesCosts?.value && fl300?.attorneyFees?.includeFl319?.value);
 
   if (fl150ShouldGenerate) {
     const hasIncome = [
@@ -2902,14 +4159,14 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
       fl150?.expenses?.monthlyDebtPayments?.value,
       fl150?.expenses?.totalExpenses?.value,
     ].some((value) => sanitizeText(value).length > 0);
-    if (!hasIncome) throw new Error('FL-150 is selected but no explicit income amount was entered. Enter amounts explicitly or leave FL-150 unselected.');
-    if (!hasExpense) throw new Error('FL-150 is selected but no explicit monthly expense amount was entered.');
+    if (!manualReadinessOverride && !hasIncome) throw new Error('FL-150 is selected but no explicit income amount was entered. Enter amounts explicitly or leave FL-150 unselected.');
+    if (!manualReadinessOverride && !hasExpense) throw new Error('FL-150 is selected but no explicit monthly expense amount was entered.');
     if (sanitizeText(fl150?.employment?.payAmount?.value) && fl150?.employment?.payPeriod?.value === 'unspecified') throw new Error('FL-150 pay period is required when pay amount is entered.');
     if (fl150?.taxes?.filingStatus?.value === 'married_joint' && !sanitizeText(fl150?.taxes?.jointFilerName?.value)) throw new Error('FL-150 joint filer name is required for married filing jointly.');
     if (fl150?.taxes?.taxState?.value === 'other' && !sanitizeText(fl150?.taxes?.otherState?.value)) throw new Error('FL-150 other tax state is required when selected.');
     if (fl150?.childrenSupport?.hasChildrenHealthInsurance?.value === 'yes' && !sanitizeText(fl150?.childrenSupport?.insuranceCompanyName?.value)) throw new Error('FL-150 children health-insurance company name is required when insurance is selected.');
-    if (!sanitizeText(fl150?.signatureDate?.value)) throw new Error('FL-150 signature date is required.');
-    if (!sanitizeText(fl150?.typePrintName?.value)) throw new Error('FL-150 typed/printed name is required.');
+    if (!manualReadinessOverride && !sanitizeText(fl150?.signatureDate?.value)) throw new Error('FL-150 signature date is required.');
+    if (!manualReadinessOverride && !sanitizeText(fl150?.typePrintName?.value)) throw new Error('FL-150 typed/printed name is required.');
   }
 
   if (fl300ShouldGenerate) {
@@ -2932,8 +4189,15 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
     if (rt.propertyControl?.value && !sanitizeText(fl300.propertyControl?.propertyDescription?.value) && !sanitizeText(fl300.propertyControl?.debtPayTo?.value)) throw new Error('FL-300 property control needs property or debt-payment details.');
     if (rt.attorneyFeesCosts?.value && !sanitizeText(fl300.attorneyFees?.amount?.value)) throw new Error('FL-300 attorney fees/costs amount is required for v1.');
     if (rt.other?.value && !sanitizeText(fl300.otherOrdersRequested?.value)) throw new Error('FL-300 other orders text is required when other is selected.');
-    if (!sanitizeText(fl300.facts?.value)) throw new Error('FL-300 facts to support requested orders are required.');
-    if (!sanitizeText(fl300.signatureDate?.value)) throw new Error('FL-300 signature date is required.');
+    if (!manualReadinessOverride && !sanitizeText(fl300.facts?.value)) throw new Error('FL-300 facts to support requested orders are required.');
+    if (!manualReadinessOverride && !sanitizeText(fl300.signatureDate?.value)) throw new Error('FL-300 signature date is required.');
+  }
+
+  for (const dv of selectedDvForms) {
+    if (!sanitizeText(dv.section?.protectedPartyName?.value || petitionerName)) throw new Error(`${dv.number} is selected but protected party name is blank.`);
+    if (!sanitizeText(dv.section?.restrainedPartyName?.value || respondentName)) throw new Error(`${dv.number} is selected but restrained party name is blank.`);
+    if ((dv.id === 'dv109' || dv.id === 'dv110' || dv.id === 'dv130') && !sanitizeText(dv.section?.hearingDate?.value)) throw new Error(`${dv.number} is selected; add hearing/order date in the DV core fields.`);
+    if (dv.id === 'dv200' && !sanitizeText(dv.section?.serviceDate?.value)) throw new Error('DV-200 is selected; add service date.');
   }
 
   if (hasMinorChildren) {
@@ -3688,7 +4952,11 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
     );
   }
 
-  if (fl311ShouldGenerate) {
+  if (fl100ShouldGenerate) {
+    fl100Pages.forEach((page) => output.addPage(page));
+  }
+
+  if (fl100ShouldGenerate && fl311ShouldGenerate) {
     await appendFl311AttachmentPages(
       output,
       fl311Template,
@@ -3701,7 +4969,7 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
     );
   }
 
-  if (fl312ShouldGenerate) {
+  if (fl100ShouldGenerate && fl312ShouldGenerate) {
     await appendFl312AttachmentPages(
       output,
       fl312Template,
@@ -3801,6 +5069,58 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
     );
   }
 
+  if (fl140ShouldGenerate) {
+    await appendFl140DeclarationOfDisclosurePages(
+      output,
+      fl140Template,
+      fl140FieldMap,
+      fontRegular,
+      workspace,
+      petitionerName,
+      respondentName,
+      caseNumber,
+    );
+  }
+
+  if (fl141ShouldGenerate) {
+    await appendFl141DisclosureServicePages(
+      output,
+      fl141Template,
+      fl141FieldMap,
+      fontRegular,
+      workspace,
+      petitionerName,
+      respondentName,
+      caseNumber,
+    );
+  }
+
+  if (fl142ShouldGenerate) {
+    await appendFl142AssetsDebtsPages(
+      output,
+      fl142Template,
+      fl142FieldMap,
+      fontRegular,
+      workspace,
+      petitionerName,
+      respondentName,
+      caseNumber,
+    );
+  }
+
+  if (fl160ShouldGenerate) {
+    await appendFl160PropertyDeclarationPages(
+      output,
+      fl160Template,
+      fl160FieldMap,
+      workspace,
+      fontRegular,
+      petitionerName,
+      respondentName,
+      caseNumber,
+    );
+  }
+
   if (fl300ShouldGenerate) {
     await appendFl300RequestForOrderPages(
       output,
@@ -3815,34 +5135,166 @@ export async function generateOfficialStarterPacketPdf(workspace: StarterPacketW
     );
   }
 
-  fl110Pages.forEach((page) => output.addPage(page));
+  if (fl319ShouldGenerate) {
+    await appendFl319AttorneyFeesPages(
+      output,
+      fl319Template,
+      fl319FieldMap,
+      fontRegular,
+      workspace,
+      petitionerName,
+      respondentName,
+      caseNumber,
+    );
+  }
 
-  fillTextFields(fl110Pages, fl110FieldMap, 'FL-110[0].Page1[0].TextField2[0]', respondentName, fontRegular, { size: 10 });
-  fillTextFields(fl110Pages, fl110FieldMap, 'FL-110[0].Page1[0].TextField2[1]', petitionerName, fontRegular, { size: 10 });
-  fillTextFields(fl110Pages, fl110FieldMap, 'FL-110[0].Page1[0].#field[7]', respondentName, fontRegular, { size: 10 });
-  fillTextFields(fl110Pages, fl110FieldMap, 'FL-110[0].Page1[0].#field[8]', petitionerName, fontRegular, { size: 10 });
-  fillTextFields(
-    fl110Pages,
-    fl110FieldMap,
-    'FL-110[0].Page1[0].T89[0]',
-    [petitionerName, petitionerAddress, petitionerPhone ? `Phone: ${petitionerPhone}` : '', petitionerEmail ? `Email: ${petitionerEmail}` : '']
-      .filter(Boolean)
-      .join('\n'),
-    fontRegular,
-    { size: 9, multiline: true },
-  );
+  if (fl110ShouldGenerate) {
+    fl110Pages.forEach((page) => output.addPage(page));
 
-  await appendFw001FeeWaiverPages(
-    output,
-    fw001Template,
-    fw001FieldMap,
-    fontRegular,
-    workspace,
-    petitionerName,
-    respondentName,
-    caseNumber,
-    address,
-  );
+    fillTextFields(fl110Pages, fl110FieldMap, 'FL-110[0].Page1[0].TextField2[0]', respondentName, fontRegular, { size: 10 });
+    fillTextFields(fl110Pages, fl110FieldMap, 'FL-110[0].Page1[0].TextField2[1]', petitionerName, fontRegular, { size: 10 });
+    fillTextFields(fl110Pages, fl110FieldMap, 'FL-110[0].Page1[0].#field[7]', respondentName, fontRegular, { size: 10 });
+    fillTextFields(fl110Pages, fl110FieldMap, 'FL-110[0].Page1[0].#field[8]', petitionerName, fontRegular, { size: 10 });
+    fillTextFields(
+      fl110Pages,
+      fl110FieldMap,
+      'FL-110[0].Page1[0].T89[0]',
+      [petitionerName, petitionerAddress, petitionerPhone ? `Phone: ${petitionerPhone}` : '', petitionerEmail ? `Email: ${petitionerEmail}` : '']
+        .filter(Boolean)
+        .join('\n'),
+      fontRegular,
+      { size: 9, multiline: true },
+    );
+  }
+
+  if (fl115ShouldGenerate) {
+    await appendFl115ProofOfServicePages(
+      output,
+      fl115Template,
+      fl115FieldMap,
+      workspace,
+      fontRegular,
+      petitionerName,
+      respondentName,
+      caseNumber,
+    );
+  }
+
+  if (fl117ShouldGenerate) {
+    await appendFl117AcknowledgmentPages(
+      output,
+      fl117Template,
+      fl117FieldMap,
+      fontRegular,
+      workspace,
+      petitionerName,
+      respondentName,
+      caseNumber,
+    );
+  }
+
+  if (fl120ShouldGenerate) {
+    await appendFl120ResponsePages(
+      output,
+      fl120Template,
+      fl120FieldMap,
+      workspace,
+      fontRegular,
+      petitionerName,
+      respondentName,
+      caseNumber,
+    );
+  }
+
+  if (fl342ShouldGenerate) {
+    await appendFl342ChildSupportPages(
+      output,
+      fl342Template,
+      fl342FieldMap,
+      workspace,
+      fontRegular,
+      petitionerName,
+      respondentName,
+      caseNumber,
+    );
+  }
+
+  if (fl343ShouldGenerate) {
+    await appendFl343SupportPages(
+      output,
+      fl343Template,
+      fl343FieldMap,
+      workspace,
+      fontRegular,
+      petitionerName,
+      respondentName,
+      caseNumber,
+    );
+  }
+
+  if (fl130ShouldGenerate) {
+    await appendCoreJudgmentPropertyFormPages(output, fl130Template, fl130FieldMap, fontRegular, workspace, 'fl130', petitionerName, respondentName, caseNumber);
+  }
+  if (fl144ShouldGenerate) {
+    await appendCoreJudgmentPropertyFormPages(output, fl144Template, fl144FieldMap, fontRegular, workspace, 'fl144', petitionerName, respondentName, caseNumber);
+  }
+  if (fl170ShouldGenerate) {
+    await appendCoreJudgmentPropertyFormPages(output, fl170Template, fl170FieldMap, fontRegular, workspace, 'fl170', petitionerName, respondentName, caseNumber);
+  }
+  if (fl180ShouldGenerate) {
+    await appendCoreJudgmentPropertyFormPages(output, fl180Template, fl180FieldMap, fontRegular, workspace, 'fl180', petitionerName, respondentName, caseNumber);
+  }
+  if (fl190ShouldGenerate) {
+    await appendCoreJudgmentPropertyFormPages(output, fl190Template, fl190FieldMap, fontRegular, workspace, 'fl190', petitionerName, respondentName, caseNumber);
+  }
+  if (fl345ShouldGenerate) {
+    await appendCoreJudgmentPropertyFormPages(output, fl345Template, fl345FieldMap, fontRegular, workspace, 'fl345', petitionerName, respondentName, caseNumber);
+  }
+  if (fl348ShouldGenerate) {
+    await appendCoreJudgmentPropertyFormPages(output, fl348Template, fl348FieldMap, fontRegular, workspace, 'fl348', petitionerName, respondentName, caseNumber);
+  }
+
+  const remainingFamilyLawForms: Array<{
+    shouldGenerate: boolean;
+    template: PDFDocument;
+    fieldMap: Map<string, TemplateField[]>;
+    formId: RemainingFlFormId;
+  }> = [
+    { shouldGenerate: fl165ShouldGenerate, template: fl165Template, fieldMap: fl165FieldMap, formId: 'fl165' },
+    { shouldGenerate: fl182ShouldGenerate, template: fl182Template, fieldMap: fl182FieldMap, formId: 'fl182' },
+    { shouldGenerate: fl191ShouldGenerate, template: fl191Template, fieldMap: fl191FieldMap, formId: 'fl191' },
+    { shouldGenerate: fl195ShouldGenerate, template: fl195Template, fieldMap: fl195FieldMap, formId: 'fl195' },
+    { shouldGenerate: fl272ShouldGenerate, template: fl272Template, fieldMap: fl272FieldMap, formId: 'fl272' },
+    { shouldGenerate: fl342aShouldGenerate, template: fl342aTemplate, fieldMap: fl342aFieldMap, formId: 'fl342a' },
+    { shouldGenerate: fl346ShouldGenerate, template: fl346Template, fieldMap: fl346FieldMap, formId: 'fl346' },
+    { shouldGenerate: fl347ShouldGenerate, template: fl347Template, fieldMap: fl347FieldMap, formId: 'fl347' },
+    { shouldGenerate: fl435ShouldGenerate, template: fl435Template, fieldMap: fl435FieldMap, formId: 'fl435' },
+    { shouldGenerate: fl460ShouldGenerate, template: fl460Template, fieldMap: fl460FieldMap, formId: 'fl460' },
+    { shouldGenerate: fl830ShouldGenerate, template: fl830Template, fieldMap: fl830FieldMap, formId: 'fl830' },
+  ];
+
+  for (const form of remainingFamilyLawForms) {
+    if (!form.shouldGenerate) continue;
+    await appendRemainingFamilyLawFormPages(output, form.template, form.fieldMap, fontRegular, workspace, form.formId, petitionerName, respondentName, caseNumber);
+  }
+
+  const appendFeeWaiverForm = async (stem: 'fw-001' | 'fw-003' | 'fw-010', formId: 'fw001' | 'fw003' | 'fw010') => {
+    const [templateBytes, fieldsRaw] = await Promise.all([
+      fs.readFile(path.join(TEMPLATES_DIR, `${stem}.template.pdf`)),
+      fs.readFile(path.join(TEMPLATES_DIR, `${stem}.fields.json`), 'utf8'),
+    ]);
+    const template = await PDFDocument.load(templateBytes, { ignoreEncryption: true });
+    const fieldMap = mapFields(JSON.parse(fieldsRaw) as TemplateField[]);
+    await appendRemainingFamilyLawFormPages(output, template, fieldMap, fontRegular, workspace, formId, petitionerName, respondentName, caseNumber);
+  };
+
+  if (fw001ShouldGenerate) await appendFeeWaiverForm('fw-001', 'fw001');
+  if (fw003ShouldGenerate) await appendFeeWaiverForm('fw-003', 'fw003');
+  if (fw010ShouldGenerate) await appendFeeWaiverForm('fw-010', 'fw010');
+
+  for (const dv of selectedDvForms) {
+    await appendCoreDomesticViolenceFormPages(output, fontRegular, workspace, dv.id, dv.number, petitionerName, respondentName, caseNumber);
+  }
 
   if (hasMinorChildren) {
     fl105Pages.forEach((page) => output.addPage(page));

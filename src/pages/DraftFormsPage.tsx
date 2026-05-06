@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, CheckCircle2, Clock3, FileText, Loader2, Save, Sparkles, Wand2 } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, Clock3, FileText, Loader2, MessageSquareText, PencilLine, Save, Sparkles, Wand2 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -11,7 +11,7 @@ import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
-import { authService, type User } from '@/services/auth';
+import { authService, type ChatSession, type User } from '@/services/auth';
 import { getSupportScenarios } from '@/services/savedFiles';
 import { MariaDocumentError, createOfficialStarterPacketDocument } from '@/services/documents';
 import {
@@ -20,17 +20,24 @@ import {
   createBlankFl105OtherProceeding,
   createBlankFl105ResidenceHistoryEntry,
   createBlankFl105RestrainingOrder,
+  DRAFT_PACKET_PRESET_LABELS,
   FL105_FORM_CAPACITY,
+  applyDraftPacketPreset,
   createStarterPacketWorkspace,
   getDraftWorkspace,
   getLatestDraftFormsChatHandoff,
   hydrateDraftWorkspaceFromChatContext,
   hydrateDraftWorkspaceFromSupportScenario,
   listDraftWorkspaces,
+  replaceDraftWorkspaceChatHandoff,
   saveDraftWorkspace,
+  saveDraftWorkspaceToServer,
   setDraftFieldValue,
+  syncDraftWorkspacesFromServer,
   type DraftField,
   type DraftFormsWorkspace,
+  type DraftPacketPresetId,
+  type DraftIntakeFact,
 } from '@/services/formDrafts';
 import { toast } from 'sonner';
 
@@ -184,6 +191,72 @@ function getFl105AdditionalChildAttachmentPageCount(entries: DraftFormsWorkspace
 const FL100_SEPARATE_PROPERTY_VISIBLE_ROWS = 5;
 const GENERATED_CHILD_ATTACHMENT_ENTRIES_PER_PAGE = 6;
 
+type RemainingFlFormKey = 'fl165' | 'fl182' | 'fl191' | 'fl195' | 'fl272' | 'fl342a' | 'fl346' | 'fl347' | 'fl435' | 'fl460' | 'fl830' | 'fw001' | 'fw003' | 'fw010';
+type DvFormKey = 'dv100' | 'dv101' | 'dv105' | 'dv108' | 'dv109' | 'dv110' | 'dv120' | 'dv130' | 'dv140' | 'dv200';
+
+const remainingFlFormOptions: Array<{ key: RemainingFlFormKey; formNumber: string; title: string; note: string }> = [
+  { key: 'fl165', formNumber: 'FL-165', title: 'Request to Enter Default', note: 'Core default request fields, selected options, and signature.' },
+  { key: 'fl182', formNumber: 'FL-182', title: 'Judgment Checklist', note: 'Core checklist attachment option and notes.' },
+  { key: 'fl191', formNumber: 'FL-191', title: 'Child Support Case Registry', note: 'Basic support case registry/caption fields and order amount.' },
+  { key: 'fl195', formNumber: 'FL-195', title: 'Income Withholding for Support', note: 'Basic withholding amount/date, employee/obligee names, and children.' },
+  { key: 'fl272', formNumber: 'FL-272', title: 'Notice of Rights and Responsibilities', note: 'Core hearing/service dates and party selection.' },
+  { key: 'fl342a', formNumber: 'FL-342(A)', title: 'Non-Guideline Child Support Findings', note: 'Basic attachment selection, amount, date, and findings text.' },
+  { key: 'fl346', formNumber: 'FL-346', title: 'Attorney Fees and Costs Order', note: 'Core amount/date/order summary.' },
+  { key: 'fl347', formNumber: 'FL-347', title: 'Bifurcation of Status Attachment', note: 'Basic bifurcation order options and date.' },
+  { key: 'fl435', formNumber: 'FL-435', title: 'Earnings Assignment Order', note: 'Basic assignment amount/date and party names.' },
+  { key: 'fl460', formNumber: 'FL-460', title: 'Qualified Domestic Relations Order', note: 'Basic retirement/order details.' },
+  { key: 'fl830', formNumber: 'FL-830', title: 'Joint Petition service/mailing form', note: 'Core mailing date/place and caption.' },
+  { key: 'fw001', formNumber: 'FW-001', title: 'Request to Waive Court Fees', note: 'Fee waiver request; add income/benefits/household details before filing.' },
+  { key: 'fw003', formNumber: 'FW-003', title: 'Order on Court Fee Waiver', note: 'Proposed/order form usually completed by the court, included for complete packet review.' },
+  { key: 'fw010', formNumber: 'FW-010', title: 'Notice of Improved Financial Situation', note: 'Post-waiver notice for improved finances or settlement recovery.' },
+];
+
+const dvFormOptions: Array<{ key: DvFormKey; formNumber: string; title: string; note: string }> = [
+  { key: 'dv100', formNumber: 'DV-100', title: 'Request for Domestic Violence Restraining Order', note: 'Core protected/restrained parties, relationship, and requested relief text.' },
+  { key: 'dv101', formNumber: 'DV-101', title: 'Description of Abuse', note: 'Core incident/request summary only; not a full abuse narrative automation.' },
+  { key: 'dv105', formNumber: 'DV-105', title: 'Request for Child Custody and Visitation Orders', note: 'Core child names and custody/visitation request text.' },
+  { key: 'dv108', formNumber: 'DV-108', title: 'Request for Order: No Travel With Children', note: 'Core child/travel restriction request text.' },
+  { key: 'dv109', formNumber: 'DV-109', title: 'Notice of Court Hearing', note: 'Core hearing date/time/department/room and service notes.' },
+  { key: 'dv110', formNumber: 'DV-110', title: 'Temporary Restraining Order', note: 'Core temporary order fields and hearing information.' },
+  { key: 'dv120', formNumber: 'DV-120', title: 'Response to Request for DVRO', note: 'Core response text and signature fields.' },
+  { key: 'dv130', formNumber: 'DV-130', title: 'Restraining Order After Hearing', note: 'Core final order text, protected people, and expiration/hearing fields.' },
+  { key: 'dv140', formNumber: 'DV-140', title: 'Child Custody and Visitation Order', note: 'Core child custody/visitation order text.' },
+  { key: 'dv200', formNumber: 'DV-200', title: 'Proof of Personal Service', note: 'Core service date/time/server and served forms notes.' },
+];
+
+const packetPresetOptions: Array<{ id: DraftPacketPresetId; description: string; forms: string }> = [
+  { id: 'start_divorce', description: 'Initial petition/summons packet; keeps service and later-stage forms off.', forms: 'FL-100, FL-110, FL-105 if children' },
+  { id: 'respond_divorce', description: 'Respondent-side response packet with response fields enabled.', forms: 'FL-120 plus shared caption/family facts' },
+  { id: 'default_uncontested_judgment', description: 'Core judgment packet for default or uncontested workflows.', forms: 'FL-165, FL-170, FL-180, FL-190, FL-130/144/345' },
+  { id: 'rfo_support_fees', description: 'Request for temporary support and attorney-fee/cost orders.', forms: 'FL-300, FL-150, FL-319, FL-342/343' },
+  { id: 'dvro', description: 'Domestic violence restraining order request packet.', forms: 'DV-100/101/109/110/200, child DV forms if children' },
+];
+
+function getRemainingFlReadinessIssues(section: DraftFormsWorkspace[RemainingFlFormKey], formNumber: string) {
+  const issues: string[] = [];
+  if (!section.includeForm.value) return issues;
+  if (!section.details.value.trim() && !section.amount.value.trim() && !section.date.value.trim()) {
+    issues.push(`${formNumber}: add at least one amount, date, or details entry before generating`);
+  }
+  if (!section.printedName.value.trim() && !section.signatureDate.value.trim()) {
+    issues.push(`${formNumber}: printed name/signature date not set; generated signature block may be blank`);
+  }
+  return issues;
+}
+
+function getDvReadinessIssues(section: DraftFormsWorkspace[DvFormKey], formNumber: string) {
+  const issues: string[] = [];
+  if (!section.includeForm.value) return issues;
+  if (!section.protectedPartyName.value.trim()) issues.push(`${formNumber}: protected party name is required`);
+  if (!section.restrainedPartyName.value.trim()) issues.push(`${formNumber}: restrained party name is required`);
+  if (['DV-109', 'DV-110', 'DV-130'].includes(formNumber) && !section.hearingDate.value.trim()) issues.push(`${formNumber}: hearing/order date is required for this core draft`);
+  if (formNumber === 'DV-200' && !section.serviceDate.value.trim()) issues.push('DV-200: service date is required');
+  if (!section.requestSummary.value.trim() && !section.orderSummary.value.trim() && !section.responseSummary.value.trim() && !section.serviceDate.value.trim()) {
+    issues.push(`${formNumber}: add request/order/response/service details before generating`);
+  }
+  return issues;
+}
+
 function getGeneratedChildAttachmentPageCount(extraChildrenCount: number) {
   if (extraChildrenCount <= 0) return 0;
   return Math.ceil(extraChildrenCount / GENERATED_CHILD_ATTACHMENT_ENTRIES_PER_PAGE);
@@ -221,16 +294,233 @@ function FieldHeader({ label, field }: { label: string; field: DraftField<unknow
   );
 }
 
-function CompactFact({ label, value, field }: { label: string; value: string; field?: DraftField<unknown> }) {
+function CompactFact({
+  label,
+  value,
+  field,
+  inputType = 'text',
+  placeholder,
+  options,
+  readOnly = false,
+  onChange,
+}: {
+  label: string;
+  value: string;
+  field?: DraftField<unknown>;
+  inputType?: 'text' | 'date' | 'select';
+  placeholder?: string;
+  options?: Array<{ label: string; value: string }>;
+  readOnly?: boolean;
+  onChange?: (value: string) => void;
+}) {
   return (
     <div className="rounded-2xl border border-slate-200/80 bg-white/70 p-3 dark:border-white/10 dark:bg-white/5">
       <div className="flex flex-wrap items-center gap-2">
         <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">{label}</p>
         {field && <FieldSourceBadge field={field} />}
       </div>
-      <p className="mt-2 text-sm font-medium text-slate-900 dark:text-slate-100">{value || 'Missing'}</p>
+      {readOnly || !onChange ? (
+        <p className="mt-2 text-sm font-medium text-slate-900 dark:text-slate-100">{value || 'Missing'}</p>
+      ) : inputType === 'select' ? (
+        <select
+          value={value}
+          onChange={(event) => onChange(event.target.value)}
+          className="mt-2 flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-900 ring-offset-background focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:border-white/10 dark:bg-slate-950 dark:text-slate-100"
+        >
+          {options?.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
+        </select>
+      ) : (
+        <Input
+          type={inputType}
+          value={value}
+          onChange={(event) => onChange(event.target.value)}
+          placeholder={placeholder ?? 'Missing'}
+          className="mt-2 bg-white text-sm font-medium dark:bg-slate-950"
+        />
+      )}
     </div>
   );
+}
+
+interface IntakeReviewFact {
+  path: string[];
+  label: string;
+  value: string;
+  field: DraftField<unknown>;
+}
+
+function isDraftField(value: unknown): value is DraftField<unknown> {
+  return Boolean(value && typeof value === 'object' && 'value' in value);
+}
+
+function humanizePathPart(part: string) {
+  return part
+    .replace(/([a-z])([A-Z])/g, '$1 $2')
+    .replace(/fl(\d+)/gi, 'FL-$1')
+    .replace(/\b\w/g, (match) => match.toUpperCase());
+}
+
+function formatIntakeValue(value: unknown) {
+  if (typeof value === 'boolean') return value ? 'Yes' : 'No';
+  if (Array.isArray(value)) return value.length ? value.join(', ') : '';
+  if (value === null || value === undefined) return '';
+  return String(value).trim();
+}
+
+function shouldShowIntakeReviewFact(field: DraftField<unknown>) {
+  const displayValue = formatIntakeValue(field.value);
+  const sourceLabel = field.sourceLabel ?? '';
+  const isSystemScaffold = /^(Default|Preset|Cleared in Intake Review)/i.test(sourceLabel);
+  const isImportedSource = field.sourceType === 'chat'
+    || field.sourceType === 'upload'
+    || field.sourceType === 'profile'
+    || field.sourceType === 'support-snapshot';
+
+  if (!displayValue) return false;
+  if (isImportedSource) return true;
+  if (field.sourceType === 'manual' && !isSystemScaffold && field.needsReview) return true;
+  return false;
+}
+
+function collectIntakeReviewFacts(value: unknown, path: string[] = []): IntakeReviewFact[] {
+  if (isDraftField(value)) {
+    if (!shouldShowIntakeReviewFact(value)) return [];
+    const displayValue = formatIntakeValue(value.value);
+    return [{
+      path,
+      label: path.map(humanizePathPart).join(' › '),
+      value: displayValue,
+      field: value,
+    }];
+  }
+
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return [];
+
+  return Object.entries(value as Record<string, unknown>)
+    .filter(([key]) => !['id', 'userId', 'createdAt', 'updatedAt', 'status', 'packetType'].includes(key))
+    .flatMap(([key, child]) => collectIntakeReviewFacts(child, [...path, key]));
+}
+
+function isPathActiveForIntakeReview(path: string[], workspace: DraftFormsWorkspace) {
+  const section = path[0];
+  if (!section) return true;
+
+  const includedSectionMap: Partial<Record<keyof DraftFormsWorkspace, boolean>> = {
+    fl100: workspace.fl100.includeForm.value,
+    fl300: workspace.fl300.includeForm.value,
+    fl150: workspace.fl150.includeForm.value,
+    fl140: workspace.fl140.includeForm.value,
+    fl141: workspace.fl141.includeForm.value,
+    fl142: workspace.fl142.includeForm.value,
+    fl115: workspace.fl115.includeForm.value,
+    fl117: workspace.fl117.includeForm.value,
+    fl120: workspace.fl120.includeForm.value,
+    fl160: workspace.fl160.includeForm.value,
+    fl342: workspace.fl342.includeForm.value,
+    fl343: workspace.fl343.includeForm.value,
+    fl130: workspace.fl130.includeForm.value,
+    fl144: workspace.fl144.includeForm.value,
+    fl170: workspace.fl170.includeForm.value,
+    fl180: workspace.fl180.includeForm.value,
+    fl190: workspace.fl190.includeForm.value,
+    fl345: workspace.fl345.includeForm.value,
+    fl348: workspace.fl348.includeForm.value,
+    fl165: workspace.fl165.includeForm.value,
+    fl182: workspace.fl182.includeForm.value,
+    fl191: workspace.fl191.includeForm.value,
+    fl195: workspace.fl195.includeForm.value,
+    fl272: workspace.fl272.includeForm.value,
+    fl342a: workspace.fl342a.includeForm.value,
+    fl346: workspace.fl346.includeForm.value,
+    fl347: workspace.fl347.includeForm.value,
+    fl435: workspace.fl435.includeForm.value,
+    fl460: workspace.fl460.includeForm.value,
+    fl830: workspace.fl830.includeForm.value,
+    fw001: workspace.fw001.includeForm.value,
+    fw003: workspace.fw003.includeForm.value,
+    fw010: workspace.fw010.includeForm.value,
+    dv100: workspace.dv100.includeForm.value,
+    dv101: workspace.dv101.includeForm.value,
+    dv105: workspace.dv105.includeForm.value,
+    dv108: workspace.dv108.includeForm.value,
+    dv109: workspace.dv109.includeForm.value,
+    dv110: workspace.dv110.includeForm.value,
+    dv120: workspace.dv120.includeForm.value,
+    dv130: workspace.dv130.includeForm.value,
+    dv140: workspace.dv140.includeForm.value,
+    dv200: workspace.dv200.includeForm.value,
+  };
+
+  if (section === 'fl105') return workspace.hasMinorChildren.value;
+  if (section === 'children') {
+    return workspace.hasMinorChildren.value
+      || workspace.dv105.includeForm.value
+      || workspace.dv108.includeForm.value
+      || workspace.dv140.includeForm.value;
+  }
+
+  if (section in includedSectionMap) return Boolean(includedSectionMap[section as keyof DraftFormsWorkspace]);
+  return true;
+}
+
+function updateFieldAtPath(workspace: DraftFormsWorkspace, path: string[], updater: (field: DraftField<unknown>) => DraftField<unknown>) {
+  const next = structuredClone(workspace) as DraftFormsWorkspace;
+  let cursor: Record<string, unknown> = next as unknown as Record<string, unknown>;
+  for (const part of path.slice(0, -1)) {
+    const child = cursor[part];
+    if (!child || typeof child !== 'object') return workspace;
+    cursor = child as Record<string, unknown>;
+  }
+  const key = path[path.length - 1];
+  const field = cursor[key];
+  if (!isDraftField(field)) return workspace;
+  cursor[key] = updater(field);
+  return next;
+}
+
+function applyStagedIntakeFact(workspace: DraftFormsWorkspace, fact: DraftIntakeFact) {
+  const next = updateFieldAtPath(workspace, fact.path, (field) => ({
+    ...field,
+    value: fact.value,
+    sourceType: fact.sourceType,
+    sourceLabel: fact.sourceLabel,
+    confidence: fact.confidence,
+    needsReview: true,
+  })) as DraftFormsWorkspace;
+
+  return {
+    ...next,
+    intake: {
+      ...next.intake,
+      extractedFacts: (next.intake.extractedFacts ?? []).map((candidate) => (
+        candidate.id === fact.id ? { ...candidate, status: 'applied' as const } : candidate
+      )),
+    },
+  };
+}
+
+function dismissStagedIntakeFact(workspace: DraftFormsWorkspace, factId: string) {
+  return {
+    ...workspace,
+    intake: {
+      ...workspace.intake,
+      extractedFacts: (workspace.intake.extractedFacts ?? []).map((candidate) => (
+        candidate.id === factId ? { ...candidate, status: 'dismissed' as const } : candidate
+      )),
+    },
+  };
+}
+
+function clearDraftFieldValue(field: DraftField<unknown>): DraftField<unknown> {
+  const value = field.value;
+  return {
+    ...field,
+    value: typeof value === 'boolean' ? false : Array.isArray(value) ? [] : '',
+    sourceType: 'manual',
+    sourceLabel: 'Cleared in Intake Review',
+    confidence: 'high',
+    needsReview: false,
+  };
 }
 
 function FormStatusBadge({ status }: { status: 'Ready' | 'Needs review' | 'Not selected' | 'Optional' }) {
@@ -283,8 +573,18 @@ export function DraftFormsPage() {
   const [isGeneratingPacket, setIsGeneratingPacket] = useState(false);
   const [generatedPacketName, setGeneratedPacketName] = useState<string | null>(null);
   const [packetError, setPacketError] = useState<string | null>(null);
+  const [packetReadinessOverride, setPacketReadinessOverride] = useState(false);
   const [formMode, setFormMode] = useState<'simple' | 'advanced'>('simple');
   const [simplePanelsOpen, setSimplePanelsOpen] = useState({ handoff: false, fl300: false, fl150: false });
+  const [chatPickerOpen, setChatPickerOpen] = useState(false);
+  const [chatPickerLoading, setChatPickerLoading] = useState(false);
+  const [chatPickerSessions, setChatPickerSessions] = useState<ChatSession[]>([]);
+  const [selectedChatMessageIds, setSelectedChatMessageIds] = useState<Set<string>>(new Set());
+  const [editingIntakeFactKey, setEditingIntakeFactKey] = useState<string | null>(null);
+  const [editingIntakeFactValue, setEditingIntakeFactValue] = useState('');
+  const [editingPendingFactId, setEditingPendingFactId] = useState<string | null>(null);
+  const [editingPendingFactValue, setEditingPendingFactValue] = useState('');
+  const [requiresAuth, setRequiresAuth] = useState(false);
   const initializedRef = useRef(false);
 
   useEffect(() => {
@@ -296,9 +596,15 @@ export function DraftFormsPage() {
       setCurrentUser(user);
 
       if (!user) {
-        navigate('/', { replace: true });
+        setRequiresAuth(true);
         return;
       }
+
+      setRequiresAuth(false);
+
+      await syncDraftWorkspacesFromServer(user.id).catch((error) => {
+        console.error('Failed to sync Draft Forms workspaces from server.', error);
+      });
 
       const getLatestHandoff = async () => {
         const cached = getLatestDraftFormsChatHandoff(user.id);
@@ -391,8 +697,84 @@ export function DraftFormsPage() {
     commitWorkspace((current) => ({ ...current, fl105: updater(current.fl105) }));
   };
 
+  const updateFl110 = (updater: (fl110: DraftFormsWorkspace['fl110']) => DraftFormsWorkspace['fl110']) => {
+    commitWorkspace((current) => ({ ...current, fl110: updater(current.fl110) }));
+  };
+
   const updateFl300 = (updater: (fl300: DraftFormsWorkspace['fl300']) => DraftFormsWorkspace['fl300']) => {
     commitWorkspace((current) => ({ ...current, fl300: updater(current.fl300) }));
+  };
+
+  const updateFl140 = (updater: (fl140: DraftFormsWorkspace['fl140']) => DraftFormsWorkspace['fl140']) => {
+    commitWorkspace((current) => ({ ...current, fl140: updater(current.fl140) }));
+  };
+
+  const updateFl141 = (updater: (fl141: DraftFormsWorkspace['fl141']) => DraftFormsWorkspace['fl141']) => {
+    commitWorkspace((current) => ({ ...current, fl141: updater(current.fl141) }));
+  };
+
+  const updateFl142 = (updater: (fl142: DraftFormsWorkspace['fl142']) => DraftFormsWorkspace['fl142']) => {
+    commitWorkspace((current) => ({ ...current, fl142: updater(current.fl142) }));
+  };
+
+  const updateFl115 = (updater: (fl115: DraftFormsWorkspace['fl115']) => DraftFormsWorkspace['fl115']) => {
+    commitWorkspace((current) => ({ ...current, fl115: updater(current.fl115) }));
+  };
+
+  const updateFl117 = (updater: (fl117: DraftFormsWorkspace['fl117']) => DraftFormsWorkspace['fl117']) => {
+    commitWorkspace((current) => ({ ...current, fl117: updater(current.fl117) }));
+  };
+
+  const updateFl120 = (updater: (fl120: DraftFormsWorkspace['fl120']) => DraftFormsWorkspace['fl120']) => {
+    commitWorkspace((current) => ({ ...current, fl120: updater(current.fl120) }));
+  };
+
+  const updateFl160 = (updater: (fl160: DraftFormsWorkspace['fl160']) => DraftFormsWorkspace['fl160']) => {
+    commitWorkspace((current) => ({ ...current, fl160: updater(current.fl160) }));
+  };
+
+  const updateFl342 = (updater: (fl342: DraftFormsWorkspace['fl342']) => DraftFormsWorkspace['fl342']) => {
+    commitWorkspace((current) => ({ ...current, fl342: updater(current.fl342) }));
+  };
+
+  const updateFl343 = (updater: (fl343: DraftFormsWorkspace['fl343']) => DraftFormsWorkspace['fl343']) => {
+    commitWorkspace((current) => ({ ...current, fl343: updater(current.fl343) }));
+  };
+
+  const updateFl130 = (updater: (fl130: DraftFormsWorkspace['fl130']) => DraftFormsWorkspace['fl130']) => {
+    commitWorkspace((current) => ({ ...current, fl130: updater(current.fl130) }));
+  };
+
+  const updateFl144 = (updater: (fl144: DraftFormsWorkspace['fl144']) => DraftFormsWorkspace['fl144']) => {
+    commitWorkspace((current) => ({ ...current, fl144: updater(current.fl144) }));
+  };
+
+  const updateFl170 = (updater: (fl170: DraftFormsWorkspace['fl170']) => DraftFormsWorkspace['fl170']) => {
+    commitWorkspace((current) => ({ ...current, fl170: updater(current.fl170) }));
+  };
+
+  const updateFl180 = (updater: (fl180: DraftFormsWorkspace['fl180']) => DraftFormsWorkspace['fl180']) => {
+    commitWorkspace((current) => ({ ...current, fl180: updater(current.fl180) }));
+  };
+
+  const updateFl190 = (updater: (fl190: DraftFormsWorkspace['fl190']) => DraftFormsWorkspace['fl190']) => {
+    commitWorkspace((current) => ({ ...current, fl190: updater(current.fl190) }));
+  };
+
+  const updateFl345 = (updater: (fl345: DraftFormsWorkspace['fl345']) => DraftFormsWorkspace['fl345']) => {
+    commitWorkspace((current) => ({ ...current, fl345: updater(current.fl345) }));
+  };
+
+  const updateFl348 = (updater: (fl348: DraftFormsWorkspace['fl348']) => DraftFormsWorkspace['fl348']) => {
+    commitWorkspace((current) => ({ ...current, fl348: updater(current.fl348) }));
+  };
+
+  const updateRemainingFlForm = (key: RemainingFlFormKey, updater: (section: DraftFormsWorkspace[RemainingFlFormKey]) => DraftFormsWorkspace[RemainingFlFormKey]) => {
+    commitWorkspace((current) => ({ ...current, [key]: updater(current[key]) } as DraftFormsWorkspace));
+  };
+
+  const updateDvForm = (key: DvFormKey, updater: (section: DraftFormsWorkspace[DvFormKey]) => DraftFormsWorkspace[DvFormKey]) => {
+    commitWorkspace((current) => ({ ...current, [key]: updater(current[key]) } as DraftFormsWorkspace));
   };
 
   const updateFl150 = (updater: (fl150: DraftFormsWorkspace['fl150']) => DraftFormsWorkspace['fl150']) => {
@@ -401,6 +783,60 @@ export function DraftFormsPage() {
 
   const updateFl100 = (updater: (fl100: DraftFormsWorkspace['fl100']) => DraftFormsWorkspace['fl100']) => {
     commitWorkspace((current) => ({ ...current, fl100: updater(current.fl100) }));
+  };
+
+  const selectedChatMessages = useMemo(() => {
+    const selected = chatPickerSessions.flatMap((session) => session.messages.filter((message) => selectedChatMessageIds.has(message.id)));
+    return selected.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
+  }, [chatPickerSessions, selectedChatMessageIds]);
+
+  const loadMariaChatPicker = async () => {
+    if (!currentUser) return;
+    setChatPickerOpen(true);
+    if (chatPickerSessions.length > 0) return;
+
+    setChatPickerLoading(true);
+    try {
+      const sessions = await authService.getChatSessions(currentUser.id);
+      setChatPickerSessions(sessions);
+      const currentSourceIds = new Set((workspace?.sourceSessionId ? sessions.find((session) => session.id === workspace.sourceSessionId)?.messages : sessions[0]?.messages ?? [])?.map((message) => message.id) ?? []);
+      setSelectedChatMessageIds(currentSourceIds);
+    } catch (error) {
+      console.error('Failed to load Maria chats for Draft Forms picker.', error);
+      toast.error('Unable to load Maria chats for editing.');
+    } finally {
+      setChatPickerLoading(false);
+    }
+  };
+
+  const toggleChatMessageSelection = (messageId: string) => {
+    setSelectedChatMessageIds((current) => {
+      const next = new Set(current);
+      if (next.has(messageId)) {
+        next.delete(messageId);
+      } else {
+        next.add(messageId);
+      }
+      return next;
+    });
+  };
+
+  const applySelectedChatHandoff = () => {
+    if (!workspace) return;
+    if (selectedChatMessages.length === 0) {
+      toast.message('Pick at least one Maria chat message first.');
+      return;
+    }
+
+    const sourceSessionIds = new Set(chatPickerSessions
+      .filter((session) => session.messages.some((message) => selectedChatMessageIds.has(message.id)))
+      .map((session) => session.id));
+    const sourceSessionId = sourceSessionIds.size === 1 ? Array.from(sourceSessionIds)[0] : undefined;
+    const saved = saveDraftWorkspace(replaceDraftWorkspaceChatHandoff(workspace, selectedChatMessages, sourceSessionId));
+    setWorkspace(saved);
+    setChatPickerOpen(false);
+    setSimplePanelsOpen((current) => ({ ...current, handoff: true }));
+    toast.success(`Updated Draft Forms from ${selectedChatMessages.length} selected Maria message${selectedChatMessages.length === 1 ? '' : 's'}.`);
   };
 
   const updateFl341B = (updater: (fl341b: DraftFormsWorkspace['fl100']['childCustodyVisitation']['fl341']['fl341b']) => DraftFormsWorkspace['fl100']['childCustodyVisitation']['fl341']['fl341b']) => {
@@ -419,6 +855,7 @@ export function DraftFormsPage() {
   const missingItems = useMemo(() => {
     if (!workspace) return [] as string[];
     const missing: string[] = [];
+    const fl100Included = workspace.fl100.includeForm.value;
     const proceedingType = workspace.fl100.proceedingType.value;
     const isDissolutionProceeding = proceedingType === 'dissolution';
     const isNullityProceeding = proceedingType === 'nullity';
@@ -462,8 +899,8 @@ export function DraftFormsPage() {
     if (!workspace.filingCounty.value.trim()) missing.push('Filing county');
     if (!workspace.petitionerName.value.trim()) missing.push('Petitioner name');
     if (!workspace.respondentName.value.trim()) missing.push('Respondent name');
-    if (isMarriageRelationship && !workspace.marriageDate.value.trim()) missing.push('Date of marriage');
-    if (isDissolutionProceeding) {
+    if (fl100Included && isMarriageRelationship && !workspace.marriageDate.value.trim()) missing.push('Date of marriage');
+    if (fl100Included && isDissolutionProceeding) {
       if (petitionerCaliforniaProvided !== petitionerCountyProvided) {
         missing.push('Complete petitioner residency pair (California + filing county months)');
       }
@@ -483,22 +920,22 @@ export function DraftFormsPage() {
         missing.push('Dissolution residency qualification (6 months CA + 3 months county for either spouse)');
       }
     }
-    if (!isNullityProceeding && !workspace.fl100.legalGrounds.irreconcilableDifferences.value && !workspace.fl100.legalGrounds.permanentLegalIncapacity.value) {
+    if (fl100Included && !isNullityProceeding && !workspace.fl100.legalGrounds.irreconcilableDifferences.value && !workspace.fl100.legalGrounds.permanentLegalIncapacity.value) {
       missing.push('At least one legal ground for FL-100');
     }
-    if (isNullityProceeding && !hasNullityBasis) {
+    if (fl100Included && isNullityProceeding && !hasNullityBasis) {
       missing.push('At least one nullity basis');
     }
-    if (isDomesticPartnershipRelationship && workspace.fl100.domesticPartnership.establishment.value === 'unspecified') {
+    if (fl100Included && isDomesticPartnershipRelationship && workspace.fl100.domesticPartnership.establishment.value === 'unspecified') {
       missing.push('Domestic partnership establishment in California');
     }
-    if (isDomesticPartnershipRelationship && !domesticPartnershipRegistrationDate) {
+    if (fl100Included && isDomesticPartnershipRelationship && !domesticPartnershipRegistrationDate) {
       missing.push('Domestic partnership registration date');
     }
-    if (isDomesticPartnershipRelationship && !domesticPartnershipSeparationDate) {
+    if (fl100Included && isDomesticPartnershipRelationship && !domesticPartnershipSeparationDate) {
       missing.push('Domestic partnership date of separation');
     }
-    if (workspace.requests.restoreFormerName.value && !workspace.fl100.formerName.value.trim()) {
+    if (fl100Included && workspace.requests.restoreFormerName.value && !workspace.fl100.formerName.value.trim()) {
       missing.push('Former name to restore');
     }
     const communityWhereListed = workspace.fl100.propertyDeclarations.communityAndQuasiCommunityWhereListed.value;
@@ -507,7 +944,7 @@ export function DraftFormsPage() {
     const separatePropertyDetails = workspace.fl100.propertyDeclarations.separatePropertyDetails.value.trim();
     const separatePropertyAwardedTo = workspace.fl100.propertyDeclarations.separatePropertyAwardedTo.value.trim();
     const separateInlineEntries = splitNonEmptyLines(workspace.fl100.propertyDeclarations.separatePropertyDetails.value);
-    if (workspace.fl100.propertyDeclarations.communityAndQuasiCommunity.value) {
+    if (fl100Included && workspace.fl100.propertyDeclarations.communityAndQuasiCommunity.value) {
       if (communityWhereListed === 'unspecified') {
         missing.push('Community/quasi-community property list location');
       }
@@ -518,7 +955,7 @@ export function DraftFormsPage() {
         missing.push('Community / quasi-community attachment 10b details');
       }
     }
-    if (workspace.fl100.propertyDeclarations.separateProperty.value) {
+    if (fl100Included && workspace.fl100.propertyDeclarations.separateProperty.value) {
       if (separateWhereListed === 'unspecified') {
         missing.push('Separate property list location');
       }
@@ -551,24 +988,26 @@ export function DraftFormsPage() {
     const spousalSupportReserve = workspace.fl100.spousalSupport.reserveJurisdictionFor.value;
     const spousalSupportDetails = workspace.fl100.spousalSupport.details.value.trim();
     if (
-      workspace.requests.spousalSupport.value
+      fl100Included
+      && workspace.requests.spousalSupport.value
       && spousalSupportDirection === 'none'
       && spousalSupportReserve === 'none'
       && !spousalSupportDetails
     ) {
       missing.push('Spousal support direction or details');
     }
-    if (workspace.fl100.childSupport.requestAdditionalOrders.value && !workspace.fl100.childSupport.additionalOrdersDetails.value.trim()) {
+    if (fl100Included && workspace.fl100.childSupport.requestAdditionalOrders.value && !workspace.fl100.childSupport.additionalOrdersDetails.value.trim()) {
       missing.push('Additional child support order details');
     }
     if (
-      workspace.requests.childCustody.value
+      fl100Included
+      && workspace.requests.childCustody.value
       && workspace.fl100.childCustodyVisitation.legalCustodyTo.value === 'none'
       && workspace.fl100.childCustodyVisitation.physicalCustodyTo.value === 'none'
     ) {
       missing.push('Legal or physical custody direction');
     }
-    if (workspace.requests.visitation.value && workspace.fl100.childCustodyVisitation.visitationTo.value === 'none') {
+    if (fl100Included && workspace.requests.visitation.value && workspace.fl100.childCustodyVisitation.visitationTo.value === 'none') {
       missing.push('Visitation direction');
     }
     const fl311RelevantRequest = workspace.fl100.childCustodyVisitation.attachments.formFl311.value && (
@@ -578,7 +1017,7 @@ export function DraftFormsPage() {
       || workspace.fl100.childCustodyVisitation.physicalCustodyTo.value !== 'none'
       || workspace.fl100.childCustodyVisitation.visitationTo.value !== 'none'
     );
-    if (fl311RelevantRequest) {
+    if (fl100Included && fl311RelevantRequest) {
       if (!workspace.hasMinorChildren.value) {
         missing.push('Enable minor children before generating FL-311');
       }
@@ -610,7 +1049,7 @@ export function DraftFormsPage() {
       || workspace.fl100.childCustodyVisitation.physicalCustodyTo.value !== 'none'
       || workspace.fl100.childCustodyVisitation.visitationTo.value !== 'none'
     );
-    if (fl312RelevantRequest) {
+    if (fl100Included && fl312RelevantRequest) {
       const fl312 = workspace.fl100.childCustodyVisitation.fl312;
       const hasAbductionBy = fl312.abductionBy.petitioner.value || fl312.abductionBy.respondent.value || fl312.abductionBy.otherParentParty.value;
       const hasRiskInItem3 = fl312.riskDestinations.anotherCaliforniaCounty.value || fl312.riskDestinations.anotherState.value || fl312.riskDestinations.foreignCountry.value;
@@ -693,7 +1132,7 @@ export function DraftFormsPage() {
       || workspace.fl100.childCustodyVisitation.physicalCustodyTo.value !== 'none'
       || workspace.fl100.childCustodyVisitation.visitationTo.value !== 'none'
     );
-    if (fl341RelevantRequest) {
+    if (fl100Included && fl341RelevantRequest) {
       const fl341 = workspace.fl100.childCustodyVisitation.fl341;
       const fl341a = fl341.fl341a;
       const fl341b = fl341.fl341b;
@@ -856,16 +1295,16 @@ export function DraftFormsPage() {
         }
       }
     }
-    if (workspace.fl100.attorneyFeesAndCosts.requestAward.value && workspace.fl100.attorneyFeesAndCosts.payableBy.value === 'none') {
+    if (fl100Included && workspace.fl100.attorneyFeesAndCosts.requestAward.value && workspace.fl100.attorneyFeesAndCosts.payableBy.value === 'none') {
       missing.push('Who should pay attorney fees and costs');
     }
-    if (workspace.fl100.otherRequests.requestOtherRelief.value && !workspace.fl100.otherRequests.details.value.trim()) {
+    if (fl100Included && workspace.fl100.otherRequests.requestOtherRelief.value && !workspace.fl100.otherRequests.details.value.trim()) {
       missing.push('Other FL-100 request details');
     }
-    if (workspace.fl100.otherRequests.continuedOnAttachment.value && !workspace.fl100.otherRequests.requestOtherRelief.value) {
+    if (fl100Included && workspace.fl100.otherRequests.continuedOnAttachment.value && !workspace.fl100.otherRequests.requestOtherRelief.value) {
       missing.push('Enable FL-100 other relief before continuing it on attachment');
     }
-    if (workspace.fl100.otherRequests.continuedOnAttachment.value && !workspace.fl100.otherRequests.details.value.trim()) {
+    if (fl100Included && workspace.fl100.otherRequests.continuedOnAttachment.value && !workspace.fl100.otherRequests.details.value.trim()) {
       missing.push('FL-100 attachment 11c details');
     }
 
@@ -901,6 +1340,18 @@ export function DraftFormsPage() {
       if (fl300.requestTypes.spousalSupport.value && !fl300.supportRequests.spousalSupportAmount.value.trim() && !fl300.supportRequests.changeSpousalSupport.value && !fl300.supportRequests.endSpousalSupport.value && !fl300.supportRequests.spousalSupportChangeReasons.value.trim()) missing.push('FL-300 spousal/partner support amount, change/end, or reasons');
       if (fl300.requestTypes.propertyControl.value && !fl300.propertyControl.propertyDescription.value.trim() && !fl300.propertyControl.debtPayTo.value.trim()) missing.push('FL-300 property-control property or debt details');
       if (fl300.requestTypes.attorneyFeesCosts.value && !fl300.attorneyFees.amount.value.trim()) missing.push('FL-300 attorney fees/costs amount');
+      if (fl300.attorneyFees.includeFl319.value) {
+        if (!fl300.requestTypes.attorneyFeesCosts.value) missing.push('Select FL-300 attorney fees/costs before generating FL-319');
+        if (!fl300.attorneyFees.feesRequestedAmount.value.trim() && !fl300.attorneyFees.costsRequestedAmount.value.trim()) missing.push('FL-319 requested fees or costs amount');
+        if (fl300.attorneyFees.paymentRequestedFrom.value === 'unspecified') missing.push('FL-319 party who should pay fees/costs');
+        if (fl300.attorneyFees.paymentRequestedFrom.value === 'other' && !fl300.attorneyFees.paymentRequestedFromOtherName.value.trim()) missing.push('FL-319 other paying party name');
+        if (fl300.attorneyFees.priorFeeOrderExists.value === 'unspecified') missing.push('FL-319 prior fee order yes/no');
+        if (fl300.attorneyFees.priorFeeOrderExists.value === 'yes' && fl300.attorneyFees.priorFeeOrderPayor.value === 'unspecified') missing.push('FL-319 prior order paying party');
+        if (fl300.attorneyFees.priorFeeOrderExists.value === 'yes' && !fl300.attorneyFees.priorFeeOrderAmount.value.trim()) missing.push('FL-319 prior order amount');
+        if (fl300.attorneyFees.priorPaymentsStatus.value === 'unspecified') missing.push('FL-319 prior payments status');
+        if (!fl300.signatureDate.value.trim()) missing.push('FL-319 signature date');
+        if (!fl300.typePrintName.value.trim()) missing.push('FL-319 type/print name');
+      }
       if (fl300.requestTypes.other.value && !fl300.otherOrdersRequested.value.trim()) missing.push('FL-300 other orders text');
       if (!fl300.facts.value.trim()) missing.push('FL-300 facts supporting requested orders');
       if (!fl300.signatureDate.value.trim()) missing.push('FL-300 signature date');
@@ -940,6 +1391,71 @@ export function DraftFormsPage() {
       if (fl150.childrenSupport.hasChildrenHealthInsurance.value === 'yes' && !fl150.childrenSupport.insuranceCompanyName.value.trim()) missing.push('FL-150 children health-insurance company');
       if (!fl150.signatureDate.value.trim()) missing.push('FL-150 signature date');
       if (!fl150.typePrintName.value.trim()) missing.push('FL-150 typed/printed name');
+    }
+
+    if (workspace.fl140.includeForm.value) {
+      const fl140 = workspace.fl140;
+      if (fl140.servedTaxReturns.value && fl140.noTaxReturnsFiled.value) missing.push('FL-140 choose either served tax returns or no tax returns filed, not both');
+      if (!fl140.servedTaxReturns.value && !fl140.noTaxReturnsFiled.value) missing.push('FL-140 tax return service status');
+      if (fl140.servedObligationsStatement.value && !fl140.obligationsStatement.value.trim()) missing.push('FL-140 obligations statement details');
+      if (fl140.servedInvestmentOpportunityStatement.value && !fl140.investmentOpportunityStatement.value.trim()) missing.push('FL-140 investment opportunity statement details');
+      if (!fl140.signatureDate.value.trim()) missing.push('FL-140 signature date');
+      if (!fl140.typePrintName.value.trim()) missing.push('FL-140 typed/printed name');
+    }
+
+    if (workspace.fl141.includeForm.value) {
+      const fl141 = workspace.fl141;
+      if (!fl141.serviceDate.value.trim()) missing.push('FL-141 disclosure service date');
+      if (!fl141.signatureDate.value.trim()) missing.push('FL-141 signature date');
+      if (!fl141.typePrintName.value.trim()) missing.push('FL-141 typed/printed name');
+    }
+
+    if (workspace.fl142.includeForm.value) {
+      const hasAssetOrDebt = Object.values(workspace.fl142.assets).some((row) => row.description.value.trim() || row.grossValue.value.trim() || row.amountOwed.value.trim())
+        || Object.values(workspace.fl142.debts).some((row) => row.description.value.trim() || row.totalOwing.value.trim());
+      if (!hasAssetOrDebt) missing.push('FL-142 at least one asset or debt entry');
+      if (!workspace.fl142.signatureDate.value.trim()) missing.push('FL-142 signature date');
+      if (!workspace.fl142.typePrintName.value.trim()) missing.push('FL-142 typed/printed name');
+    }
+
+    if (workspace.fl115.includeForm.value) {
+      if (!workspace.fl115.addressWhereServed.value.trim()) missing.push('FL-115 address where served');
+      if (workspace.fl115.serviceMethod.value === 'personal' && !workspace.fl115.serviceDate.value.trim()) missing.push('FL-115 personal service date');
+      if (workspace.fl115.serviceMethod.value === 'mail_acknowledgment' && !workspace.fl115.dateMailed.value.trim()) missing.push('FL-115 date mailed');
+      if (!workspace.fl115.serverName.value.trim()) missing.push('FL-115 server name');
+      if (!workspace.fl115.serverAddress.value.trim()) missing.push('FL-115 server address');
+      if (!workspace.fl115.signatureDate.value.trim()) missing.push('FL-115 server signature date');
+    }
+
+    if (workspace.fl117.includeForm.value) {
+      if (!workspace.fl117.personServedName.value.trim()) missing.push('FL-117 person being served');
+      if (!workspace.fl117.dateMailed.value.trim()) missing.push('FL-117 date mailed');
+      if (!workspace.fl117.petitionerPrintedName.value.trim()) missing.push('FL-117 petitioner printed name');
+    }
+
+    if (workspace.fl120.includeForm.value) {
+      if (!workspace.fl120.respondentPrintedName.value.trim()) missing.push('FL-120 respondent printed name');
+      if (!workspace.fl120.signatureDate.value.trim()) missing.push('FL-120 signature date');
+    }
+
+    if (workspace.fl160.includeForm.value) {
+      if (!workspace.fl160.itemDescription.value.trim()) missing.push('FL-160 property description');
+      if (!workspace.fl160.grossFairMarketValue.value.trim()) missing.push('FL-160 gross fair market value');
+      if (!workspace.fl160.signatureDate.value.trim()) missing.push('FL-160 signature date');
+      if (!workspace.fl160.typePrintName.value.trim()) missing.push('FL-160 typed/printed name');
+    }
+
+    if (workspace.fl342.includeForm.value) {
+      if (!workspace.fl342.baseMonthlyChildSupport.value.trim()) missing.push('FL-342 base monthly child support amount');
+      if (!workspace.fl342.paymentStartDate.value.trim()) missing.push('FL-342 payment start date');
+      if (!workspace.fl342.payableTo.value.trim()) missing.push('FL-342 payable to');
+      if (workspace.fl342.attachTo.value === 'other' && !workspace.fl342.attachToOther.value.trim()) missing.push('FL-342 attachment-to description');
+    }
+
+    if (workspace.fl343.includeForm.value) {
+      if (!workspace.fl343.monthlyAmount.value.trim()) missing.push('FL-343 support amount');
+      if (!workspace.fl343.paymentStartDate.value.trim()) missing.push('FL-343 payment start date');
+      if (workspace.fl343.paymentFrequency.value === 'other' && !workspace.fl343.frequencyOther.value.trim()) missing.push('FL-343 payment frequency details');
     }
 
     if (workspace.hasMinorChildren.value) {
@@ -1098,8 +1614,8 @@ export function DraftFormsPage() {
 
   const handleGeneratePacket = async () => {
     if (!workspace) return;
-    if (missingItems.length > 0) {
-      toast.message('Finish the required Draft Forms fields before generating the official starter packet PDF.');
+    if (missingItems.length > 0 && !packetReadinessOverride) {
+      toast.message('Finish the required Draft Forms fields or enable the manual override before generating the packet.');
       return;
     }
 
@@ -1107,9 +1623,11 @@ export function DraftFormsPage() {
     setPacketError(null);
 
     try {
-      const document = await createOfficialStarterPacketDocument(workspace);
+      const document = await createOfficialStarterPacketDocument(workspace, { manualReadinessOverride: packetReadinessOverride && missingItems.length > 0 });
       setGeneratedPacketName(document.name);
-      toast.success('Official starter packet PDF saved to Saved Files.');
+      toast.success(packetReadinessOverride && missingItems.length > 0
+        ? 'Official packet PDF saved with manual readiness override.'
+        : 'Official starter packet PDF saved to Saved Files.');
     } catch (error) {
       const message = error instanceof MariaDocumentError
         ? error.message
@@ -1123,6 +1641,38 @@ export function DraftFormsPage() {
     }
   };
 
+  if (requiresAuth) {
+    return (
+      <div className="min-h-screen bg-[radial-gradient(circle_at_10%_0%,rgba(16,185,129,0.16),transparent_24%),linear-gradient(180deg,#f8fafc_0%,#ecfdf5_100%)] py-16 dark:bg-[radial-gradient(circle_at_10%_0%,rgba(16,185,129,0.18),transparent_22%),linear-gradient(180deg,#020617_0%,#03111f_100%)]">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+          <Card className="rounded-[2rem] border-white/70 bg-white/85 shadow-xl backdrop-blur dark:border-white/10 dark:bg-white/5">
+            <CardContent className="space-y-5 p-8 text-center sm:p-12">
+              <Badge className="border border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-200">
+                Draft Forms workspace
+              </Badge>
+              <h1 className="text-3xl font-semibold tracking-tight text-slate-950 dark:text-white">Sign in to open Draft Forms</h1>
+              <p className="mx-auto max-w-2xl text-base leading-7 text-slate-600 dark:text-slate-300">
+                Draft Forms saves intake facts, Maria handoffs, support scenarios, and generated packets to your case workspace. Sign in first so your draft does not disappear.
+              </p>
+              <div className="flex flex-wrap justify-center gap-3">
+                <Button
+                  type="button"
+                  className="rounded-full bg-emerald-700 text-white hover:bg-emerald-800"
+                  onClick={() => window.dispatchEvent(new CustomEvent('divorceos:auth-required'))}
+                >
+                  Sign in to continue
+                </Button>
+                <Button asChild type="button" variant="outline" className="rounded-full">
+                  <Link to="/forms">Browse blank court forms</Link>
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  }
+
   if (!currentUser || !workspace) {
     return (
       <div className="min-h-screen bg-[radial-gradient(circle_at_10%_0%,rgba(16,185,129,0.16),transparent_24%),linear-gradient(180deg,#f8fafc_0%,#ecfdf5_100%)] py-16 dark:bg-[radial-gradient(circle_at_10%_0%,rgba(16,185,129,0.18),transparent_22%),linear-gradient(180deg,#020617_0%,#03111f_100%)]">
@@ -1130,6 +1680,47 @@ export function DraftFormsPage() {
           <Card className="rounded-[2rem] border-white/70 bg-white/80 shadow-xl backdrop-blur dark:border-white/10 dark:bg-white/5">
             <CardContent className="flex min-h-[280px] items-center justify-center">
               <div className="text-center text-slate-500 dark:text-slate-300">Loading Draft Forms…</div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  }
+
+  const hasDraftFormsAccess = ['essential', 'plus', 'done-for-you'].includes(currentUser.subscription);
+
+  if (!hasDraftFormsAccess) {
+    return (
+      <div className="min-h-screen bg-[radial-gradient(circle_at_10%_0%,rgba(16,185,129,0.16),transparent_24%),linear-gradient(180deg,#f8fafc_0%,#ecfdf5_100%)] py-16 dark:bg-[radial-gradient(circle_at_10%_0%,rgba(16,185,129,0.18),transparent_22%),linear-gradient(180deg,#020617_0%,#03111f_100%)]">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+          <Card className="rounded-[2rem] border-white/70 bg-white/85 shadow-xl backdrop-blur dark:border-white/10 dark:bg-white/5">
+            <CardContent className="space-y-6 p-8 text-center sm:p-12">
+              <Badge className="border border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-200">
+                Essential+ feature
+              </Badge>
+              <h1 className="text-3xl font-semibold tracking-tight text-slate-950 dark:text-white">Draft Forms unlocks on Essential</h1>
+              <p className="mx-auto max-w-2xl text-base leading-7 text-slate-600 dark:text-slate-300">
+                Free and Basic users can browse blank official forms and Maria guidance. Essential, Plus, and Done-For-You unlock the Draft Forms workspace for saved intake facts, starter packet prep, and Maria handoffs.
+              </p>
+              <div className="grid gap-3 text-left sm:grid-cols-3">
+                {[
+                  'Preview the forms you may need',
+                  'Save intake facts to your case',
+                  'Generate cleaner starter packet drafts',
+                ].map((item) => (
+                  <div key={item} className="rounded-3xl border border-white/80 bg-white/70 p-4 text-sm font-medium text-slate-700 dark:border-white/10 dark:bg-white/5 dark:text-slate-200">
+                    {item}
+                  </div>
+                ))}
+              </div>
+              <div className="flex flex-wrap justify-center gap-3">
+                <Button asChild className="rounded-full bg-emerald-700 text-white hover:bg-emerald-800">
+                  <Link to="/pricing">Upgrade to Essential</Link>
+                </Button>
+                <Button asChild type="button" variant="outline" className="rounded-full">
+                  <Link to="/forms">Browse blank court forms</Link>
+                </Button>
+              </div>
             </CardContent>
           </Card>
         </div>
@@ -1152,11 +1743,28 @@ export function DraftFormsPage() {
   );
   const includedForms = workspace.hasMinorChildren.value
     ? [
-      'FL-100',
+      ...(workspace.fl100.includeForm.value ? ['FL-100'] : []),
       ...(workspace.fl300.includeForm.value ? ['FL-300'] : []),
+      ...(workspace.fl140.includeForm.value ? ['FL-140'] : []),
+      ...(workspace.fl141.includeForm.value ? ['FL-141'] : []),
+      ...(workspace.fl142.includeForm.value ? ['FL-142'] : []),
+      ...(workspace.fl160.includeForm.value ? ['FL-160'] : []),
       ...(workspace.fl150.includeForm.value ? ['FL-150'] : []),
-      'FL-110',
-      'FW-001',
+      ...(workspace.fl110.includeForm.value ? ['FL-110'] : []),
+      ...(workspace.fl115.includeForm.value ? ['FL-115'] : []),
+      ...(workspace.fl117.includeForm.value ? ['FL-117'] : []),
+      ...(workspace.fl120.includeForm.value ? ['FL-120'] : []),
+      ...(workspace.fl342.includeForm.value ? ['FL-342'] : []),
+      ...(workspace.fl343.includeForm.value ? ['FL-343'] : []),
+      ...(workspace.fl130.includeForm.value ? ['FL-130'] : []),
+      ...(workspace.fl144.includeForm.value ? ['FL-144'] : []),
+      ...(workspace.fl170.includeForm.value ? ['FL-170'] : []),
+      ...(workspace.fl180.includeForm.value ? ['FL-180'] : []),
+      ...(workspace.fl190.includeForm.value ? ['FL-190'] : []),
+      ...(workspace.fl345.includeForm.value ? ['FL-345'] : []),
+      ...(workspace.fl348.includeForm.value ? ['FL-348'] : []),
+      ...remainingFlFormOptions.filter((form) => workspace[form.key].includeForm.value).map((form) => form.formNumber),
+      ...dvFormOptions.filter((form) => workspace[form.key].includeForm.value).map((form) => form.formNumber),
       'FL-105/GC-120',
       ...(shouldIncludeFl341
         ? [
@@ -1170,11 +1778,28 @@ export function DraftFormsPage() {
         : []),
     ]
     : [
-      'FL-100',
+      ...(workspace.fl100.includeForm.value ? ['FL-100'] : []),
       ...(workspace.fl300.includeForm.value ? ['FL-300'] : []),
+      ...(workspace.fl140.includeForm.value ? ['FL-140'] : []),
+      ...(workspace.fl141.includeForm.value ? ['FL-141'] : []),
+      ...(workspace.fl142.includeForm.value ? ['FL-142'] : []),
+      ...(workspace.fl160.includeForm.value ? ['FL-160'] : []),
       ...(workspace.fl150.includeForm.value ? ['FL-150'] : []),
-      'FL-110',
-      'FW-001',
+      ...(workspace.fl110.includeForm.value ? ['FL-110'] : []),
+      ...(workspace.fl115.includeForm.value ? ['FL-115'] : []),
+      ...(workspace.fl117.includeForm.value ? ['FL-117'] : []),
+      ...(workspace.fl120.includeForm.value ? ['FL-120'] : []),
+      ...(workspace.fl342.includeForm.value ? ['FL-342'] : []),
+      ...(workspace.fl343.includeForm.value ? ['FL-343'] : []),
+      ...(workspace.fl130.includeForm.value ? ['FL-130'] : []),
+      ...(workspace.fl144.includeForm.value ? ['FL-144'] : []),
+      ...(workspace.fl170.includeForm.value ? ['FL-170'] : []),
+      ...(workspace.fl180.includeForm.value ? ['FL-180'] : []),
+      ...(workspace.fl190.includeForm.value ? ['FL-190'] : []),
+      ...(workspace.fl345.includeForm.value ? ['FL-345'] : []),
+      ...(workspace.fl348.includeForm.value ? ['FL-348'] : []),
+      ...remainingFlFormOptions.filter((form) => workspace[form.key].includeForm.value).map((form) => form.formNumber),
+      ...dvFormOptions.filter((form) => workspace[form.key].includeForm.value).map((form) => form.formNumber),
       ...(shouldIncludeFl341
         ? [
           'FL-341',
@@ -1229,40 +1854,286 @@ export function DraftFormsPage() {
     || fl105ClaimantOverflowCount > 0;
 
   const missingForForm = (prefixes: string[]) => missingItems.filter((item) => prefixes.some((prefix) => item.startsWith(prefix)));
-  const fl100Missing = missingItems.filter((item) => !item.startsWith('FL-105') && !item.startsWith('FL-300') && !item.startsWith('FL-150') && !item.startsWith('FL-341') && !item.startsWith('FL-311') && !item.startsWith('FL-312') && !item.startsWith('Child '));
+  const getMissingItemTargetId = (item: string) => {
+    if (item.startsWith('Dissolution residency')) return 'draft-field-residency-path';
+    if (item === 'FL-300 TO/served party selection') return 'draft-field-fl300-served-party';
+    if (item === 'FL-300 signature date') return 'draft-field-fl300-signature-date';
+    if (item === 'FL-300 facts supporting requested orders') return 'draft-field-fl300-facts';
+    if (item.startsWith('FL-300')) return 'draft-section-fl300';
+    if (item.startsWith('FL-150')) return 'draft-section-fl150';
+    return null;
+  };
+  const jumpToMissingItem = (item: string) => {
+    try {
+      const targetId = getMissingItemTargetId(item);
+      if (!targetId) {
+        toast.message('That item is not mapped to a field yet.');
+        return;
+      }
+      if (item.startsWith('FL-300') || targetId.startsWith('draft-field-fl300')) {
+        setSimplePanelsOpen((current) => ({ ...current, fl300: true }));
+      }
+      if (targetId === 'draft-section-fl150') {
+        setSimplePanelsOpen((current) => ({ ...current, fl150: true }));
+      }
+      window.setTimeout(() => {
+        try {
+          const target = document.getElementById(targetId);
+          if (!target) {
+            toast.message('That field is not visible on this page yet.');
+            return;
+          }
+          target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } catch {
+          toast.message('Could not jump to that field, but you are still on this page.');
+        }
+      }, 150);
+    } catch {
+      toast.message('Could not jump to that field, but you are still on this page.');
+    }
+  };
+  const fl100Missing = workspace.fl100.includeForm.value ? missingItems.filter((item) => !item.startsWith('FL-105') && !item.startsWith('FL-115') && !item.startsWith('FL-117') && !item.startsWith('FL-120') && !item.startsWith('FL-160') && !item.startsWith('FL-342') && !item.startsWith('FL-343') && !item.startsWith('FL-300') && !item.startsWith('FL-165') && !item.startsWith('FL-182') && !item.startsWith('FL-191') && !item.startsWith('FL-195') && !item.startsWith('FL-272') && !item.startsWith('FL-342(A)') && !item.startsWith('FL-346') && !item.startsWith('FL-347') && !item.startsWith('FL-435') && !item.startsWith('FL-460') && !item.startsWith('FL-830') && !item.startsWith('FW-001') && !item.startsWith('FW-003') && !item.startsWith('FW-010') && !item.startsWith('FL-140') && !item.startsWith('FL-141') && !item.startsWith('FL-142') && !item.startsWith('FL-150') && !item.startsWith('FL-341') && !item.startsWith('FL-311') && !item.startsWith('FL-312') && !item.startsWith('Child ')) : [];
   const fl110Missing: string[] = [];
+  const fl115Missing = workspace.fl115.includeForm.value ? missingForForm(['FL-115']) : [];
+  const fl117Missing = workspace.fl117.includeForm.value ? missingForForm(['FL-117']) : [];
+  const fl120Missing = workspace.fl120.includeForm.value ? missingForForm(['FL-120']) : [];
+  const fl160Missing = workspace.fl160.includeForm.value ? missingForForm(['FL-160']) : [];
+  const fl342Missing = workspace.fl342.includeForm.value ? missingForForm(['FL-342']) : [];
+  const fl343Missing = workspace.fl343.includeForm.value ? missingForForm(['FL-343']) : [];
+  const fl130Missing = workspace.fl130.includeForm.value ? missingForForm(['FL-130']) : [];
+  const fl144Missing = workspace.fl144.includeForm.value ? missingForForm(['FL-144']) : [];
+  const fl170Missing = workspace.fl170.includeForm.value ? missingForForm(['FL-170']) : [];
+  const fl180Missing = workspace.fl180.includeForm.value ? missingForForm(['FL-180']) : [];
+  const fl190Missing = workspace.fl190.includeForm.value ? missingForForm(['FL-190']) : [];
+  const fl345Missing = workspace.fl345.includeForm.value ? missingForForm(['FL-345']) : [];
+  const fl348Missing = workspace.fl348.includeForm.value ? missingForForm(['FL-348']) : [];
   const fl105Missing = workspace.hasMinorChildren.value ? [...missingForForm(['FL-105', 'Child ']), ...(missingItems.includes('At least one child entry or unborn child selection') ? ['At least one child entry or unborn child selection'] : [])] : [];
   const fl300Missing = workspace.fl300.includeForm.value ? missingForForm(['FL-300']) : [];
+  const fl140Missing = workspace.fl140.includeForm.value ? missingForForm(['FL-140']) : [];
+  const fl141Missing = workspace.fl141.includeForm.value ? missingForForm(['FL-141']) : [];
+  const fl142Missing = workspace.fl142.includeForm.value ? missingForForm(['FL-142']) : [];
   const fl150Missing = workspace.fl150.includeForm.value ? missingForForm(['FL-150']) : [];
   const fl341Missing = shouldIncludeFl341 ? missingForForm(['FL-341', 'FL-311', 'FL-312']) : [];
   const formOverview = [
-    { form: 'FL-100', title: 'Petition', status: fl100Missing.length ? 'Needs review' : 'Ready', note: fl100Missing[0] ?? 'Core petition facts are ready.' },
-    { form: 'FL-110', title: 'Summons', status: fl110Missing.length ? 'Needs review' : 'Ready', note: 'Uses the same caption and party information.' },
-    { form: 'FW-001', title: 'Request to Waive Court Fees', status: 'Ready', note: 'Prefills caption/contact fields and leaves financial qualification for user review.' },
+    { form: 'FL-100', title: 'Petition', status: workspace.fl100.includeForm.value ? (fl100Missing.length ? 'Needs review' : 'Ready') : 'Optional', note: workspace.fl100.includeForm.value ? (fl100Missing[0] ?? 'Core petition facts are ready.') : 'Use for petitioner-side divorce starts.' },
+    { form: 'FL-110', title: 'Summons', status: workspace.fl110.includeForm.value ? (fl110Missing.length ? 'Needs review' : 'Ready') : 'Optional', note: workspace.fl110.includeForm.value ? 'Uses the same caption and party information.' : 'Use with FL-100 when starting divorce.' },
+    { form: 'FL-115', title: 'Proof of Service of Summons', status: workspace.fl115.includeForm.value ? (fl115Missing.length ? 'Needs review' : 'Ready') : 'Optional', note: workspace.fl115.includeForm.value ? (fl115Missing[0] ?? 'Proof of service form is ready.') : 'Use after summons/petition service is completed.' },
+    { form: 'FL-117', title: 'Notice and Acknowledgment of Receipt', status: workspace.fl117.includeForm.value ? (fl117Missing.length ? 'Needs review' : 'Ready') : 'Optional', note: workspace.fl117.includeForm.value ? (fl117Missing[0] ?? 'Acknowledgment service form is ready.') : 'Use when respondent signs acknowledgment of service.' },
+    { form: 'FL-120', title: 'Response', status: workspace.fl120.includeForm.value ? (fl120Missing.length ? 'Needs review' : 'Ready') : 'Optional', note: workspace.fl120.includeForm.value ? (fl120Missing[0] ?? 'Response form is ready.') : 'Use for respondent-side filing flow.' },
+    { form: 'FL-160', title: 'Property Declaration', status: workspace.fl160.includeForm.value ? (fl160Missing.length ? 'Needs review' : 'Ready') : 'Optional', note: workspace.fl160.includeForm.value ? (fl160Missing[0] ?? 'Property declaration is ready.') : 'Use for property items listed on FL-160.' },
+    { form: 'FL-342', title: 'Child Support Order Attachment', status: workspace.fl342.includeForm.value ? (fl342Missing.length ? 'Needs review' : 'Ready') : 'Optional', note: workspace.fl342.includeForm.value ? (fl342Missing[0] ?? 'Child support attachment is ready.') : 'Use for child support orders.' },
+    { form: 'FL-343', title: 'Support Order Attachment', status: workspace.fl343.includeForm.value ? (fl343Missing.length ? 'Needs review' : 'Ready') : 'Optional', note: workspace.fl343.includeForm.value ? (fl343Missing[0] ?? 'Support attachment is ready.') : 'Use for spousal/partner/family support orders.' },
+    { form: 'FL-130', title: 'Appearance/Stipulations/Waivers', status: workspace.fl130.includeForm.value ? (fl130Missing.length ? 'Needs review' : 'Ready') : 'Optional', note: workspace.fl130.includeForm.value ? (fl130Missing[0] ?? 'FL-130 core fields are ready.') : 'Use for respondent appearance and judgment stipulations.' },
+    { form: 'FL-144', title: 'Stipulation to Waive Final Disclosure', status: workspace.fl144.includeForm.value ? (fl144Missing.length ? 'Needs review' : 'Ready') : 'Optional', note: workspace.fl144.includeForm.value ? (fl144Missing[0] ?? 'FL-144 core fields are ready.') : 'Use when parties agree to waive final declarations.' },
+    { form: 'FL-170', title: 'Declaration for Default or Uncontested Judgment', status: workspace.fl170.includeForm.value ? (fl170Missing.length ? 'Needs review' : 'Ready') : 'Optional', note: workspace.fl170.includeForm.value ? (fl170Missing[0] ?? 'FL-170 core fields are ready.') : 'Use for default/uncontested judgment declarations.' },
+    { form: 'FL-180', title: 'Judgment', status: workspace.fl180.includeForm.value ? (fl180Missing.length ? 'Needs review' : 'Ready') : 'Optional', note: workspace.fl180.includeForm.value ? (fl180Missing[0] ?? 'FL-180 core fields are ready.') : 'Core judgment page with dates and summary orders.' },
+    { form: 'FL-190', title: 'Notice of Entry of Judgment', status: workspace.fl190.includeForm.value ? (fl190Missing.length ? 'Needs review' : 'Ready') : 'Optional', note: workspace.fl190.includeForm.value ? (fl190Missing[0] ?? 'FL-190 core fields are ready.') : 'Notice after judgment entry.' },
+    { form: 'FL-345', title: 'Property Order Attachment', status: workspace.fl345.includeForm.value ? (fl345Missing.length ? 'Needs review' : 'Ready') : 'Optional', note: workspace.fl345.includeForm.value ? (fl345Missing[0] ?? 'FL-345 core fields are ready.') : 'Use for practical property/debt summaries.' },
+    { form: 'FL-348', title: 'Pension Benefits Attachment', status: workspace.fl348.includeForm.value ? (fl348Missing.length ? 'Needs review' : 'Ready') : 'Optional', note: workspace.fl348.includeForm.value ? (fl348Missing[0] ?? 'FL-348 core fields are ready.') : 'Use only when retirement/pension division applies.' },
+    ...remainingFlFormOptions.map((form) => {
+      const issues = getRemainingFlReadinessIssues(workspace[form.key], form.formNumber);
+      const status = (workspace[form.key].includeForm.value ? (issues.length ? 'Needs review' : 'Ready') : 'Optional') as 'Needs review' | 'Ready' | 'Optional';
+      return { form: form.formNumber, title: form.title, status, note: workspace[form.key].includeForm.value ? (issues[0] ?? `${form.formNumber} core fields are ready.`) : form.note };
+    }),
+    ...dvFormOptions.map((form) => {
+      const issues = getDvReadinessIssues(workspace[form.key], form.formNumber);
+      const status = (workspace[form.key].includeForm.value ? (issues.length ? 'Needs review' : 'Ready') : 'Optional') as 'Needs review' | 'Ready' | 'Optional';
+      return { form: form.formNumber, title: form.title, status, note: workspace[form.key].includeForm.value ? (issues[0] ?? `${form.formNumber} core fields are ready.`) : form.note };
+    }),
     { form: 'FL-105', title: 'UCCJEA child custody declaration', status: workspace.hasMinorChildren.value ? (fl105Missing.length ? 'Needs review' : 'Ready') : 'Not selected', note: workspace.hasMinorChildren.value ? (fl105Missing[0] ?? 'Child declaration is ready.') : 'Only included when minor children are enabled.' },
     { form: 'FL-300', title: 'Request for Order', status: workspace.fl300.includeForm.value ? (fl300Missing.length ? 'Needs review' : 'Ready') : 'Optional', note: workspace.fl300.includeForm.value ? (fl300Missing[0] ?? 'Optional RFO is ready.') : 'Leave off unless filing a request for orders now.' },
+    { form: 'FL-140', title: 'Declaration of Disclosure', status: workspace.fl140.includeForm.value ? (fl140Missing.length ? 'Needs review' : 'Ready') : 'Optional', note: workspace.fl140.includeForm.value ? (fl140Missing[0] ?? 'Disclosure declaration is ready.') : 'Use when preparing preliminary/final financial disclosures.' },
+    { form: 'FL-141', title: 'Declaration re Service of Disclosure', status: workspace.fl141.includeForm.value ? (fl141Missing.length ? 'Needs review' : 'Ready') : 'Optional', note: workspace.fl141.includeForm.value ? (fl141Missing[0] ?? 'Disclosure service declaration is ready.') : 'Use after disclosure documents are served.' },
+    { form: 'FL-142', title: 'Schedule of Assets and Debts', status: workspace.fl142.includeForm.value ? (fl142Missing.length ? 'Needs review' : 'Ready') : 'Optional', note: workspace.fl142.includeForm.value ? (fl142Missing[0] ?? 'Assets/debts schedule is ready.') : 'Use with FL-140 financial disclosures.' },
     { form: 'FL-150', title: 'Income and Expense Declaration', status: workspace.fl150.includeForm.value ? (fl150Missing.length ? 'Needs review' : 'Ready') : 'Optional', note: workspace.fl150.includeForm.value ? (fl150Missing[0] ?? 'Financial declaration is ready.') : 'Recommended for support or fee requests.' },
     { form: 'FL-341', title: 'Custody/visitation attachments', status: shouldIncludeFl341 ? (fl341Missing.length ? 'Needs review' : 'Ready') : 'Optional', note: shouldIncludeFl341 ? (fl341Missing[0] ?? 'Selected custody attachments are ready.') : 'Only included when custody attachment boxes are selected.' },
+  ] as const;
+  const activeFormOverview = formOverview.filter((item) => item.status !== 'Optional' && item.status !== 'Not selected');
+  const fl142AssetLabels = [
+    ['realEstate', 'Real estate'], ['household', 'Household furniture/furnishings'], ['jewelryArt', 'Jewelry, art, collections'], ['vehicles', 'Vehicles/boats/trailers'],
+    ['savings', 'Savings accounts'], ['checking', 'Checking accounts'], ['creditUnion', 'Credit union/deposit accounts'], ['cash', 'Cash'], ['taxRefund', 'Tax refund'],
+    ['lifeInsurance', 'Life insurance cash value'], ['stocksBonds', 'Stocks/bonds/mutual funds'], ['retirement', 'Retirement and pensions'], ['profitSharingIra', 'Profit sharing/annuities/IRAs'],
+    ['accountsReceivable', 'Accounts receivable/notes'], ['businessInterests', 'Business interests'], ['otherAssets', 'Other assets'],
+  ] as const;
+  const fl142DebtLabels = [
+    ['studentLoans', 'Student loans'], ['taxes', 'Taxes'], ['supportArrearages', 'Support arrearages'], ['unsecuredLoans', 'Unsecured loans'], ['creditCards', 'Credit cards'], ['otherDebts', 'Other debts'],
   ] as const;
   const supportSnapshotAvailable = workspace.fl150.includeForm.value
     || workspace.fl300.requestTypes.childSupport.value
     || workspace.fl300.requestTypes.spousalSupport.value
     || workspace.fl300.requestTypes.attorneyFeesCosts.value;
-  const lastSavedLabel = workspace.updatedAt
+  const lastAutosavedLabel = workspace.updatedAt
     ? new Date(workspace.updatedAt).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
     : null;
+  const intakeReviewFacts = collectIntakeReviewFacts(workspace)
+    .filter((fact) => isPathActiveForIntakeReview(fact.path, workspace));
+  const pendingStagedFacts = (workspace.intake.extractedFacts ?? []).filter((fact) => fact.status === 'pending');
+  const intakeNeedsReviewCount = intakeReviewFacts.filter((fact) => fact.field.needsReview).length;
+  const approveIntakeFact = (path: string[]) => commitWorkspace((current) => updateFieldAtPath(current, path, (field) => ({ ...field, needsReview: false })));
+  const getIntakeFactKey = (path: string[]) => path.join('.');
+  const parseIntakeFactEditValue = (rawValue: string, originalValue: unknown) => {
+    const trimmedValue = rawValue.trim();
+    if (typeof originalValue === 'boolean') {
+      const normalized = trimmedValue.toLowerCase();
+      if (['yes', 'true', '1', 'y'].includes(normalized)) return true;
+      if (['no', 'false', '0', 'n'].includes(normalized)) return false;
+      throw new Error('For yes/no fields, enter yes or no.');
+    }
+    if (Array.isArray(originalValue)) {
+      return trimmedValue.split(',').map((part) => part.trim()).filter(Boolean);
+    }
+    return trimmedValue;
+  };
+  const beginEditIntakeFact = (fact: IntakeReviewFact) => {
+    setEditingIntakeFactKey(getIntakeFactKey(fact.path));
+    setEditingIntakeFactValue(formatIntakeValue(fact.field.value));
+  };
+  const cancelEditIntakeFact = () => {
+    setEditingIntakeFactKey(null);
+    setEditingIntakeFactValue('');
+  };
+  const saveEditedIntakeFact = (fact: IntakeReviewFact) => {
+    let nextValue: unknown;
+    try {
+      nextValue = parseIntakeFactEditValue(editingIntakeFactValue, fact.field.value);
+    } catch (error) {
+      toast.message(error instanceof Error ? error.message : 'Could not save that value.');
+      return;
+    }
+    commitWorkspace((current) => updateFieldAtPath(current, fact.path, (field) => ({
+      ...field,
+      value: nextValue,
+      sourceType: 'manual',
+      sourceLabel: 'Edited in Intake Review',
+      confidence: 'high',
+      needsReview: false,
+      updatedAt: new Date().toISOString(),
+    } as DraftField<unknown>)));
+    cancelEditIntakeFact();
+    toast.success('Edited and approved intake fact.');
+  };
+  const beginEditPendingFact = (fact: DraftIntakeFact) => {
+    setEditingPendingFactId(fact.id);
+    setEditingPendingFactValue(formatIntakeValue(fact.value));
+  };
+  const cancelEditPendingFact = () => {
+    setEditingPendingFactId(null);
+    setEditingPendingFactValue('');
+  };
+  const saveEditedPendingFact = (fact: DraftIntakeFact) => {
+    let nextValue: string | boolean;
+    try {
+      nextValue = parseIntakeFactEditValue(editingPendingFactValue, fact.value) as string | boolean;
+    } catch (error) {
+      toast.message(error instanceof Error ? error.message : 'Could not save that value.');
+      return;
+    }
 
-  const handleSaveDraftForLater = () => {
+    commitWorkspace((current) => ({
+      ...current,
+      intake: {
+        ...current.intake,
+        extractedFacts: (current.intake.extractedFacts ?? []).map((candidate) => (
+          candidate.id === fact.id
+            ? {
+              ...candidate,
+              value: nextValue,
+              sourceType: 'manual' as const,
+              sourceLabel: 'Edited in Intake Review',
+              confidence: 'high' as const,
+            }
+            : candidate
+        )),
+      },
+    }));
+    cancelEditPendingFact();
+    toast.success('Edited pending fact.');
+  };
+  const clearIntakeFact = (path: string[]) => commitWorkspace((current) => updateFieldAtPath(current, path, clearDraftFieldValue));
+  const applyPendingFact = (fact: DraftIntakeFact) => commitWorkspace((current) => applyStagedIntakeFact(current, fact));
+  const dismissPendingFact = (factId: string) => commitWorkspace((current) => dismissStagedIntakeFact(current, factId));
+  const applyAllPendingFacts = () => commitWorkspace((current) => pendingStagedFacts.reduce((next, fact) => applyStagedIntakeFact(next, fact), current));
+  const applyPacketPreset = (presetId: DraftPacketPresetId) => {
+    commitWorkspace((current) => applyDraftPacketPreset(current, presetId));
+    toast.success(`${DRAFT_PACKET_PRESET_LABELS[presetId]} preset applied`, {
+      description: 'Relevant forms were selected and blank defaults were filled without replacing existing text fields.',
+    });
+  };
+  const approveAllIntakeFacts = () => commitWorkspace((current) => {
+    let next = current;
+    collectIntakeReviewFacts(current)
+      .filter((fact) => isPathActiveForIntakeReview(fact.path, current))
+      .filter((fact) => fact.field.needsReview)
+      .forEach((fact) => {
+        next = updateFieldAtPath(next, fact.path, (field) => ({ ...field, needsReview: false }));
+      });
+    return next;
+  });
+
+  const jumpToDraftSection = (sectionId: string) => {
+    window.setTimeout(() => {
+      const target = document.getElementById(sectionId);
+      if (!target) return;
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 50);
+  };
+
+  const unifiedIntakeStages = [
+    {
+      label: 'Choose packet',
+      status: includedForms.length > 0 ? `${includedForms.length} form${includedForms.length === 1 ? '' : 's'} selected` : 'Pick a workflow',
+      state: includedForms.length > 0 ? 'done' : 'attention',
+      actionLabel: 'Open packet builder',
+      onClick: () => jumpToDraftSection('draft-section-packet-presets'),
+    },
+    {
+      label: 'Review intake facts',
+      status: pendingStagedFacts.length > 0
+        ? `${pendingStagedFacts.length} pending fact${pendingStagedFacts.length === 1 ? '' : 's'}`
+        : intakeNeedsReviewCount > 0
+          ? `${intakeNeedsReviewCount} fact${intakeNeedsReviewCount === 1 ? '' : 's'} need approval`
+          : 'Facts reviewed',
+      state: pendingStagedFacts.length > 0 || intakeNeedsReviewCount > 0 ? 'attention' : 'done',
+      actionLabel: 'Open intake review',
+      onClick: () => jumpToDraftSection('draft-section-intake-review'),
+    },
+    {
+      label: 'Complete form answers',
+      status: missingItems.length > 0
+        ? `${missingItems.length} missing item${missingItems.length === 1 ? '' : 's'}`
+        : 'Required answers complete',
+      state: missingItems.length > 0 ? 'attention' : 'done',
+      actionLabel: missingItems.length > 0 ? 'Show first missing' : 'Review fields',
+      onClick: () => missingItems[0] ? jumpToMissingItem(missingItems[0]) : jumpToDraftSection('draft-section-form-fields'),
+    },
+    {
+      label: 'Generate draft packet',
+      status: generatedPacketName ? 'PDF saved' : missingItems.length > 0 ? 'Waiting on intake' : 'Ready to generate',
+      state: generatedPacketName || missingItems.length === 0 ? 'done' : 'locked',
+      actionLabel: 'Open generate panel',
+      onClick: () => jumpToDraftSection('draft-section-generate'),
+    },
+  ] as const;
+
+  const handleSaveDraftForLater = async () => {
     const saved = saveDraftWorkspace({
       ...workspace,
       status: missingItems.length === 0 ? 'ready' : 'in_review',
     });
     setWorkspace(saved);
-    toast.success('Draft saved for later.', {
-      description: missingItems.length === 0
-        ? 'This draft is marked ready and can still be edited.'
-        : `${missingItems.length} item${missingItems.length === 1 ? '' : 's'} still need review before generating.`,
-    });
+    try {
+      await saveDraftWorkspaceToServer(saved);
+      toast.success('Draft saved for later.', {
+        description: missingItems.length === 0
+          ? 'This draft is marked ready and can still be edited.'
+          : `${missingItems.length} item${missingItems.length === 1 ? '' : 's'} still need review before generating.`,
+      });
+    } catch (error) {
+      console.error('Draft saved locally but failed to sync to server.', error);
+      toast.warning('Draft saved locally; cloud sync failed.', {
+        description: error instanceof Error ? error.message : 'You can keep working in this browser. Server sync needs attention.',
+      });
+    }
   };
 
   return (
@@ -1271,18 +2142,29 @@ export function DraftFormsPage() {
         <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
           <div>
             <Badge className="mb-3 border border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-200">
-              Draft Forms MVP
+              Unified Draft Intake
             </Badge>
-            <h1 className="text-4xl font-semibold tracking-tight text-slate-950 dark:text-white">Starter packet workspace</h1>
+            <h1 className="text-4xl font-semibold tracking-tight text-slate-950 dark:text-white">One intake → one draft packet</h1>
+            <div className="mt-4 max-w-xl">
+              <label className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400" htmlFor="draft-workspace-title">Draft name</label>
+              <Input
+                id="draft-workspace-title"
+                className="mt-2 bg-white/80 text-base font-semibold text-slate-950 dark:bg-white/10 dark:text-white"
+                value={workspace.title}
+                placeholder="Name this draft workspace"
+                onChange={(event) => commitWorkspace((current) => ({ ...current, title: event.target.value }))}
+              />
+              <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">This is the saved workspace name. Generated packets still get their own PDF filename.</p>
+            </div>
             <p className="mt-3 max-w-3xl text-base leading-7 text-slate-600 dark:text-slate-300">
-              Maria can hand facts into an editable workspace before anything becomes a court-ready packet. Structured form data stays the source of truth.
+              The wizard, intake review, form fields, and PDF generation now live as one draft setup flow instead of separate tools. Structured form data stays the source of truth.
             </p>
             <div className="mt-3 flex flex-wrap items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
               <span className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white/70 px-3 py-1 dark:border-white/10 dark:bg-white/5">
                 <Clock3 className="h-3.5 w-3.5" />
-                {lastSavedLabel ? `Last saved ${lastSavedLabel}` : 'Not saved yet'}
+                {lastAutosavedLabel ? `Autosaved locally ${lastAutosavedLabel}` : 'Not autosaved yet'}
               </span>
-              <span className="text-xs">Incomplete drafts stay saved here so you can finish later.</span>
+              <span className="text-xs">Edits autosave in this browser. Use “Save draft for later” to sync the workspace record.</span>
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-3">
@@ -1322,9 +2204,89 @@ export function DraftFormsPage() {
           </div>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-[1.6fr_0.9fr]">
+        <Card className="mb-6 overflow-hidden rounded-[2rem] border-emerald-200/70 bg-white/90 shadow-xl backdrop-blur dark:border-emerald-400/20 dark:bg-white/5">
+          <CardHeader className="border-b border-emerald-100/80 bg-emerald-50/70 dark:border-emerald-400/10 dark:bg-emerald-400/10">
+            <div className="flex flex-wrap items-start justify-between gap-4">
+              <div>
+                <CardTitle className="flex items-center gap-2 text-slate-950 dark:text-white">
+                  <Sparkles className="h-5 w-5 text-emerald-600" />
+                  Intake-to-draft builder
+                </CardTitle>
+                <CardDescription className="mt-2 max-w-3xl">
+                  Start with the case story, choose the packet, approve the facts Maria found, fill only the gaps, then generate. No separate wizard handoff.
+                </CardDescription>
+              </div>
+              <Badge variant="outline" className="rounded-full border-emerald-200 bg-white/80 text-emerald-800 dark:border-emerald-400/20 dark:bg-white/10 dark:text-emerald-100">
+                {progressValue}% complete
+              </Badge>
+            </div>
+          </CardHeader>
+          <CardContent className="grid gap-3 p-4 md:grid-cols-2 xl:grid-cols-4">
+            {unifiedIntakeStages.map((stage, index) => (
+              <button
+                key={stage.label}
+                type="button"
+                onClick={stage.onClick}
+                className={cn(
+                  'group rounded-2xl border p-4 text-left transition hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500',
+                  stage.state === 'done' && 'border-emerald-200 bg-emerald-50/80 dark:border-emerald-400/20 dark:bg-emerald-400/10',
+                  stage.state === 'attention' && 'border-amber-200 bg-amber-50/80 dark:border-amber-400/20 dark:bg-amber-400/10',
+                  stage.state === 'locked' && 'border-slate-200 bg-slate-50/80 dark:border-white/10 dark:bg-white/5',
+                )}
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white text-sm font-semibold text-slate-900 shadow-sm dark:bg-slate-950 dark:text-slate-100">{index + 1}</span>
+                  {stage.state === 'done' ? <CheckCircle2 className="h-5 w-5 text-emerald-600" /> : <Clock3 className="h-5 w-5 text-amber-600" />}
+                </div>
+                <p className="mt-3 text-sm font-semibold text-slate-950 dark:text-white">{stage.label}</p>
+                <p className="mt-1 text-xs leading-5 text-slate-600 dark:text-slate-300">{stage.status}</p>
+                <p className="mt-3 text-xs font-semibold text-emerald-700 group-hover:text-emerald-800 dark:text-emerald-200">{stage.actionLabel} →</p>
+              </button>
+            ))}
+          </CardContent>
+        </Card>
+
+        <div id="draft-section-form-fields" className="grid gap-6 lg:grid-cols-[1.6fr_0.9fr]">
           <div className="space-y-6">
             {formMode === 'simple' && (
+              <>
+              <Card id="draft-section-packet-presets" className="scroll-mt-28 rounded-[1.75rem] border-white/70 bg-white/85 shadow-xl backdrop-blur dark:border-white/10 dark:bg-white/5">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-slate-950 dark:text-white">
+                    <Wand2 className="h-5 w-5 text-emerald-600" />
+                    Packet presets
+                  </CardTitle>
+                  <CardDescription>
+                    Choose a common workflow to turn on the right forms. Presets fill only blank helper defaults and will not replace names, dates, amounts, or text you already entered.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <Badge variant="outline" className="rounded-full border-emerald-200 bg-emerald-50 text-emerald-800 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-100">
+                      Selected: {DRAFT_PACKET_PRESET_LABELS[workspace.selectedPreset.value] ?? 'Custom packet'}
+                    </Badge>
+                    <span className="text-xs text-slate-500 dark:text-slate-400">Current forms: {includedForms.join(', ')}</span>
+                  </div>
+                  <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+                    {packetPresetOptions.map((preset) => (
+                      <div key={preset.id} className="rounded-2xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5">
+                        <div className="flex items-start justify-between gap-3">
+                          <div>
+                            <p className="text-sm font-semibold text-slate-950 dark:text-white">{DRAFT_PACKET_PRESET_LABELS[preset.id]}</p>
+                            <p className="mt-1 text-xs leading-5 text-slate-500 dark:text-slate-400">{preset.description}</p>
+                          </div>
+                          {workspace.selectedPreset.value === preset.id && <Badge className="bg-emerald-700 text-white">Active</Badge>}
+                        </div>
+                        <p className="mt-3 text-xs text-slate-600 dark:text-slate-300">{preset.forms}</p>
+                        <Button type="button" size="sm" variant="outline" className="mt-4 rounded-full" onClick={() => applyPacketPreset(preset.id)}>
+                          Apply preset
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
               <Card className="rounded-[1.75rem] border-white/70 bg-white/85 shadow-xl backdrop-blur dark:border-white/10 dark:bg-white/5">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-slate-950 dark:text-white">
@@ -1337,7 +2299,7 @@ export function DraftFormsPage() {
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-                    {formOverview.map((item) => (
+                    {activeFormOverview.map((item) => (
                       <div key={item.form} className="rounded-2xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5">
                         <div className="flex items-start justify-between gap-3">
                           <div>
@@ -1366,6 +2328,20 @@ export function DraftFormsPage() {
 
                     <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
                       <ScopeToggle
+                        title="FL-100 Petition"
+                        description="Petitioner-side form to start divorce/legal separation/nullity. Turn off for response, RFO, judgment-only, or DV packets."
+                        checked={workspace.fl100.includeForm.value}
+                        field={workspace.fl100.includeForm}
+                        onCheckedChange={(checked) => updateFl100((fl100) => ({ ...fl100, includeForm: setDraftFieldValue(fl100.includeForm, checked) }))}
+                      />
+                      <ScopeToggle
+                        title="FL-110 Summons"
+                        description="Summons used with FL-100 starter packets. Turn off when it is not part of this packet."
+                        checked={workspace.fl110.includeForm.value}
+                        field={workspace.fl110.includeForm}
+                        onCheckedChange={(checked) => updateFl110((fl110) => ({ ...fl110, includeForm: setDraftFieldValue(fl110.includeForm, checked) }))}
+                      />
+                      <ScopeToggle
                         title="FL-105 / GC-120"
                         description="Included when minor children are part of the case. Turning this off also removes the UCCJEA declaration."
                         checked={workspace.hasMinorChildren.value}
@@ -1388,6 +2364,118 @@ export function DraftFormsPage() {
                         checked={workspace.fl150.includeForm.value}
                         field={workspace.fl150.includeForm}
                         onCheckedChange={(checked) => updateFl150((fl150) => ({ ...fl150, includeForm: setDraftFieldValue(fl150.includeForm, checked) }))}
+                      />
+                      <ScopeToggle
+                        title="FL-140 Declaration of Disclosure"
+                        description="For preliminary/final financial disclosure packets."
+                        checked={workspace.fl140.includeForm.value}
+                        field={workspace.fl140.includeForm}
+                        onCheckedChange={(checked) => updateFl140((fl140) => ({ ...fl140, includeForm: setDraftFieldValue(fl140.includeForm, checked) }))}
+                      />
+                      <ScopeToggle
+                        title="FL-141 Disclosure Service"
+                        description="Proof that preliminary/final disclosures were served."
+                        checked={workspace.fl141.includeForm.value}
+                        field={workspace.fl141.includeForm}
+                        onCheckedChange={(checked) => updateFl141((fl141) => ({ ...fl141, includeForm: setDraftFieldValue(fl141.includeForm, checked) }))}
+                      />
+                      <ScopeToggle
+                        title="FL-142 Assets & Debts"
+                        description="Schedule of property, accounts, assets, and debts."
+                        checked={workspace.fl142.includeForm.value}
+                        field={workspace.fl142.includeForm}
+                        onCheckedChange={(checked) => updateFl142((fl142) => ({ ...fl142, includeForm: setDraftFieldValue(fl142.includeForm, checked) }))}
+                      />
+                      <ScopeToggle
+                        title="FL-160 Property Declaration"
+                        description="Property declaration attachment for FL-100/financial disclosure property lists."
+                        checked={workspace.fl160.includeForm.value}
+                        field={workspace.fl160.includeForm}
+                        onCheckedChange={(checked) => updateFl160((fl160) => ({ ...fl160, includeForm: setDraftFieldValue(fl160.includeForm, checked) }))}
+                      />
+                      <ScopeToggle
+                        title="FL-115 Proof of Service"
+                        description="Use after FL-100/FL-110 service is completed."
+                        checked={workspace.fl115.includeForm.value}
+                        field={workspace.fl115.includeForm}
+                        onCheckedChange={(checked) => updateFl115((fl115) => ({ ...fl115, includeForm: setDraftFieldValue(fl115.includeForm, checked) }))}
+                      />
+                      <ScopeToggle
+                        title="FL-120 Response"
+                        description="Respondent-side response to the divorce petition."
+                        checked={workspace.fl120.includeForm.value}
+                        field={workspace.fl120.includeForm}
+                        onCheckedChange={(checked) => updateFl120((fl120) => ({ ...fl120, includeForm: setDraftFieldValue(fl120.includeForm, checked) }))}
+                      />
+                      <ScopeToggle
+                        title="FL-117 Acknowledgment Service"
+                        description="Notice and acknowledgment of receipt for service by mail."
+                        checked={workspace.fl117.includeForm.value}
+                        field={workspace.fl117.includeForm}
+                        onCheckedChange={(checked) => updateFl117((fl117) => ({ ...fl117, includeForm: setDraftFieldValue(fl117.includeForm, checked) }))}
+                      />
+                      <ScopeToggle
+                        title="FL-342 Child Support"
+                        description="Child support information and order attachment."
+                        checked={workspace.fl342.includeForm.value}
+                        field={workspace.fl342.includeForm}
+                        onCheckedChange={(checked) => updateFl342((fl342) => ({ ...fl342, includeForm: setDraftFieldValue(fl342.includeForm, checked) }))}
+                      />
+                      <ScopeToggle
+                        title="FL-343 Support Order"
+                        description="Spousal, domestic partner, or family support order attachment."
+                        checked={workspace.fl343.includeForm.value}
+                        field={workspace.fl343.includeForm}
+                        onCheckedChange={(checked) => updateFl343((fl343) => ({ ...fl343, includeForm: setDraftFieldValue(fl343.includeForm, checked) }))}
+                      />
+                      <ScopeToggle
+                        title="FL-130 Appearance/Stipulations"
+                        description="Respondent appearance, stipulations, and waivers for judgment packets."
+                        checked={workspace.fl130.includeForm.value}
+                        field={workspace.fl130.includeForm}
+                        onCheckedChange={(checked) => updateFl130((fl130) => ({ ...fl130, includeForm: setDraftFieldValue(fl130.includeForm, checked) }))}
+                      />
+                      <ScopeToggle
+                        title="FL-144 Waive Final Disclosure"
+                        description="Use when parties stipulate to waive final disclosure declarations."
+                        checked={workspace.fl144.includeForm.value}
+                        field={workspace.fl144.includeForm}
+                        onCheckedChange={(checked) => updateFl144((fl144) => ({ ...fl144, includeForm: setDraftFieldValue(fl144.includeForm, checked) }))}
+                      />
+                      <ScopeToggle
+                        title="FL-170 Default/Uncontested"
+                        description="Declaration for default or uncontested judgment."
+                        checked={workspace.fl170.includeForm.value}
+                        field={workspace.fl170.includeForm}
+                        onCheckedChange={(checked) => updateFl170((fl170) => ({ ...fl170, includeForm: setDraftFieldValue(fl170.includeForm, checked) }))}
+                      />
+                      <ScopeToggle
+                        title="FL-180 Judgment"
+                        description="Core judgment form with key dates and order summaries."
+                        checked={workspace.fl180.includeForm.value}
+                        field={workspace.fl180.includeForm}
+                        onCheckedChange={(checked) => updateFl180((fl180) => ({ ...fl180, includeForm: setDraftFieldValue(fl180.includeForm, checked) }))}
+                      />
+                      <ScopeToggle
+                        title="FL-190 Entry Notice"
+                        description="Notice of entry of judgment."
+                        checked={workspace.fl190.includeForm.value}
+                        field={workspace.fl190.includeForm}
+                        onCheckedChange={(checked) => updateFl190((fl190) => ({ ...fl190, includeForm: setDraftFieldValue(fl190.includeForm, checked) }))}
+                      />
+                      <ScopeToggle
+                        title="FL-345 Property Order"
+                        description="Property/debt order attachment with practical summaries."
+                        checked={workspace.fl345.includeForm.value}
+                        field={workspace.fl345.includeForm}
+                        onCheckedChange={(checked) => updateFl345((fl345) => ({ ...fl345, includeForm: setDraftFieldValue(fl345.includeForm, checked) }))}
+                      />
+                      <ScopeToggle
+                        title="FL-348 Pension Benefits"
+                        description="Retirement/pension benefits attachment when applicable."
+                        checked={workspace.fl348.includeForm.value}
+                        field={workspace.fl348.includeForm}
+                        onCheckedChange={(checked) => updateFl348((fl348) => ({ ...fl348, includeForm: setDraftFieldValue(fl348.includeForm, checked) }))}
                       />
                       <ScopeToggle
                         title="FL-311 Custody/Visitation"
@@ -1475,15 +2563,63 @@ export function DraftFormsPage() {
                   </div>
 
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Already filled / sourced</p>
+                    <div className="flex flex-wrap items-end justify-between gap-2">
+                      <div>
+                        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Already filled / sourced</p>
+                        <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Edit imported facts here; changes immediately update the draft packet fields.</p>
+                      </div>
+                      <Button type="button" size="sm" variant="outline" className="rounded-full" onClick={() => jumpToDraftSection('draft-section-intake-review')}>
+                        Review every sourced fact
+                      </Button>
+                    </div>
                     <div className="mt-3 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-                      <CompactFact label="Petitioner" value={workspace.petitionerName.value} field={workspace.petitionerName} />
-                      <CompactFact label="Respondent" value={workspace.respondentName.value} field={workspace.respondentName} />
-                      <CompactFact label="County" value={workspace.filingCounty.value} field={workspace.filingCounty} />
-                      <CompactFact label="Marriage date" value={workspace.marriageDate.value} field={workspace.marriageDate} />
-                      <CompactFact label="Separation date" value={workspace.separationDate.value} field={workspace.separationDate} />
-                      <CompactFact label="Children" value={workspace.hasMinorChildren.value ? `${workspace.children.length || 'Unlisted'} child${workspace.children.length === 1 ? '' : 'ren'}` : 'No minor children selected'} field={workspace.hasMinorChildren} />
-                      <CompactFact label="Support snapshot" value={supportSnapshotAvailable ? 'Support/financial facts available' : 'No support snapshot selected'} />
+                      <CompactFact
+                        label="Petitioner"
+                        value={workspace.petitionerName.value}
+                        field={workspace.petitionerName}
+                        placeholder="Petitioner full legal name"
+                        onChange={(value) => commitWorkspace((current) => ({ ...current, petitionerName: setDraftFieldValue(current.petitionerName, value) }))}
+                      />
+                      <CompactFact
+                        label="Respondent"
+                        value={workspace.respondentName.value}
+                        field={workspace.respondentName}
+                        placeholder="Respondent full legal name"
+                        onChange={(value) => commitWorkspace((current) => ({ ...current, respondentName: setDraftFieldValue(current.respondentName, value) }))}
+                      />
+                      <CompactFact
+                        label="County"
+                        value={workspace.filingCounty.value}
+                        field={workspace.filingCounty}
+                        placeholder="County"
+                        onChange={(value) => commitWorkspace((current) => ({ ...current, filingCounty: setDraftFieldValue(current.filingCounty, value) }))}
+                      />
+                      <CompactFact
+                        label="Marriage date"
+                        value={workspace.marriageDate.value}
+                        field={workspace.marriageDate}
+                        inputType="date"
+                        onChange={(value) => commitWorkspace((current) => ({ ...current, marriageDate: setDraftFieldValue(current.marriageDate, value) }))}
+                      />
+                      <CompactFact
+                        label="Separation date"
+                        value={workspace.separationDate.value}
+                        field={workspace.separationDate}
+                        inputType="date"
+                        onChange={(value) => commitWorkspace((current) => ({ ...current, separationDate: setDraftFieldValue(current.separationDate, value) }))}
+                      />
+                      <CompactFact
+                        label="Minor children"
+                        value={workspace.hasMinorChildren.value ? 'yes' : 'no'}
+                        field={workspace.hasMinorChildren}
+                        inputType="select"
+                        options={[{ label: `Yes${workspace.children.length ? ` — ${workspace.children.length} listed` : ''}`, value: 'yes' }, { label: 'No minor children', value: 'no' }]}
+                        onChange={(value) => commitWorkspace((current) => ({
+                          ...current,
+                          hasMinorChildren: setDraftFieldValue(current.hasMinorChildren, value === 'yes'),
+                        }))}
+                      />
+                      <CompactFact label="Support snapshot" value={supportSnapshotAvailable ? 'Support/financial facts available' : 'No support snapshot selected'} readOnly />
                     </div>
                   </div>
 
@@ -1502,7 +2638,549 @@ export function DraftFormsPage() {
                   </div>
                 </CardContent>
               </Card>
+              </>
             )}
+
+            <Card id="draft-section-intake-review" className="scroll-mt-28 rounded-[1.75rem] border-white/70 bg-white/80 shadow-xl backdrop-blur dark:border-white/10 dark:bg-white/5">
+              <CardHeader>
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div>
+                    <CardTitle className="flex items-center gap-2 text-slate-950 dark:text-white">
+                      <Sparkles className="h-5 w-5 text-emerald-600" />
+                      Intake Review
+                    </CardTitle>
+                    <CardDescription>
+                      Every fact Maria, uploads, profile data, calculators, or manual edits send into the forms should be reviewed here before the packet is generated.
+                    </CardDescription>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <Badge variant="outline" className="rounded-full">{pendingStagedFacts.length} pending</Badge>
+                    <Badge variant="outline" className="rounded-full">{intakeReviewFacts.length} in forms</Badge>
+                    <Badge variant={intakeNeedsReviewCount ? 'destructive' : 'outline'} className="rounded-full">{intakeNeedsReviewCount} need review</Badge>
+                    <Button type="button" size="sm" variant="outline" className="rounded-full" onClick={applyAllPendingFacts} disabled={pendingStagedFacts.length === 0}>
+                      Apply all pending
+                    </Button>
+                    <Button type="button" size="sm" variant="outline" className="rounded-full" onClick={approveAllIntakeFacts} disabled={intakeNeedsReviewCount === 0}>
+                      Approve all reviewed facts
+                    </Button>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-5">
+                {pendingStagedFacts.length > 0 && (
+                  <div className="rounded-2xl border border-emerald-200/80 bg-emerald-50/60 p-4 dark:border-emerald-400/20 dark:bg-emerald-400/10">
+                    <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+                      <p className="text-sm font-semibold text-emerald-950 dark:text-emerald-100">Pending extracted facts</p>
+                      <p className="text-xs text-emerald-800/80 dark:text-emerald-100/70">These are staged from Maria/uploads and do not drive forms until applied.</p>
+                    </div>
+                    <div className="max-h-80 space-y-3 overflow-auto pr-1">
+                      {pendingStagedFacts.map((fact) => {
+                        const isEditing = editingPendingFactId === fact.id;
+                        return (
+                        <div key={fact.id} className="rounded-xl border border-white/80 bg-white/80 p-3 dark:border-white/10 dark:bg-slate-950/30">
+                          <div className="flex flex-wrap items-start justify-between gap-3">
+                            <div className="min-w-0 flex-1">
+                              <div className="flex flex-wrap items-center gap-2">
+                                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">{fact.label}</p>
+                                <Badge variant="outline" className="border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-400/20 dark:bg-amber-400/10 dark:text-amber-200">{fact.sourceType} · {fact.confidence}</Badge>
+                              </div>
+                              {isEditing ? (
+                                typeof fact.value === 'boolean' ? (
+                                  <select
+                                    className="mt-2 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 dark:border-white/10 dark:bg-slate-950 dark:text-slate-100"
+                                    value={editingPendingFactValue.toLowerCase().startsWith('n') ? 'No' : 'Yes'}
+                                    onChange={(event) => setEditingPendingFactValue(event.target.value)}
+                                  >
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                  </select>
+                                ) : (
+                                  <Textarea
+                                    className="mt-2 min-h-24 bg-white text-sm font-medium text-slate-900 dark:bg-slate-950 dark:text-slate-100"
+                                    value={editingPendingFactValue}
+                                    onChange={(event) => setEditingPendingFactValue(event.target.value)}
+                                    autoFocus
+                                  />
+                                )
+                              ) : (
+                                <p className="mt-2 whitespace-pre-wrap break-words text-sm font-medium text-slate-900 dark:text-slate-100">{formatIntakeValue(fact.value)}</p>
+                              )}
+                              <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Target: {fact.path.map(humanizePathPart).join(' › ')} · Source: {fact.sourceLabel}</p>
+                            </div>
+                            <div className="flex flex-wrap gap-2">
+                              {isEditing ? (
+                                <>
+                                  <Button type="button" size="sm" variant="outline" onClick={() => saveEditedPendingFact(fact)}>Save</Button>
+                                  <Button type="button" size="sm" variant="ghost" onClick={cancelEditPendingFact}>Cancel</Button>
+                                </>
+                              ) : (
+                                <>
+                                  <Button type="button" size="sm" variant="outline" onClick={() => beginEditPendingFact(fact)}>Edit</Button>
+                                  <Button type="button" size="sm" variant="outline" onClick={() => applyPendingFact(fact)}>Apply</Button>
+                                  <Button type="button" size="sm" variant="ghost" className="text-slate-500" onClick={() => dismissPendingFact(fact.id)}>Dismiss</Button>
+                                </>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                      })}
+                    </div>
+                  </div>
+                )}
+                {intakeReviewFacts.length === 0 ? (
+                  <p className="rounded-2xl border border-slate-200/80 bg-slate-50/80 p-4 text-sm text-slate-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-300">
+                    No extracted intake facts yet. Add Maria chat context, upload documents, edit profile details, or enter form fields manually.
+                  </p>
+                ) : (
+                  <div className="max-h-[520px] space-y-3 overflow-auto pr-1">
+                    {intakeReviewFacts.map((fact) => {
+                      const factKey = getIntakeFactKey(fact.path);
+                      const isEditing = editingIntakeFactKey === factKey;
+                      return (
+                      <div key={factKey} className="rounded-2xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5">
+                        <div className="flex flex-wrap items-start justify-between gap-3">
+                          <div className="min-w-0 flex-1">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">{fact.label}</p>
+                              <FieldSourceBadge field={fact.field} />
+                              {fact.field.needsReview && <Badge variant="outline" className="border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-400/20 dark:bg-amber-400/10 dark:text-amber-200">Needs review</Badge>}
+                            </div>
+                            {isEditing ? (
+                              typeof fact.field.value === 'boolean' ? (
+                                <select
+                                  className="mt-2 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 dark:border-white/10 dark:bg-slate-950 dark:text-slate-100"
+                                  value={editingIntakeFactValue.toLowerCase().startsWith('n') ? 'No' : 'Yes'}
+                                  onChange={(event) => setEditingIntakeFactValue(event.target.value)}
+                                >
+                                  <option value="Yes">Yes</option>
+                                  <option value="No">No</option>
+                                </select>
+                              ) : (
+                                <Textarea
+                                  className="mt-2 min-h-24 bg-white text-sm font-medium text-slate-900 dark:bg-slate-950 dark:text-slate-100"
+                                  value={editingIntakeFactValue}
+                                  onChange={(event) => setEditingIntakeFactValue(event.target.value)}
+                                  autoFocus
+                                />
+                              )
+                            ) : (
+                              <p className="mt-2 whitespace-pre-wrap break-words text-sm font-medium text-slate-900 dark:text-slate-100">{fact.value}</p>
+                            )}
+                            {fact.field.sourceLabel && <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Source: {fact.field.sourceLabel}</p>}
+                          </div>
+                          <div className="flex flex-wrap gap-2">
+                            {isEditing ? (
+                              <>
+                                <Button type="button" size="sm" variant="outline" onClick={() => saveEditedIntakeFact(fact)}>
+                                  Save
+                                </Button>
+                                <Button type="button" size="sm" variant="ghost" onClick={cancelEditIntakeFact}>
+                                  Cancel
+                                </Button>
+                              </>
+                            ) : (
+                              <>
+                                <Button type="button" size="sm" variant="outline" onClick={() => beginEditIntakeFact(fact)}>
+                                  Edit
+                                </Button>
+                                <Button type="button" size="sm" variant="outline" onClick={() => approveIntakeFact(fact.path)} disabled={!fact.field.needsReview}>
+                                  Approve
+                                </Button>
+                                <Button type="button" size="sm" variant="ghost" className="text-red-600 hover:text-red-700" onClick={() => clearIntakeFact(fact.path)}>
+                                  Clear
+                                </Button>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                    })}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            <Card className="rounded-[1.75rem] border-white/70 bg-white/80 shadow-xl backdrop-blur dark:border-white/10 dark:bg-white/5">
+              <CardHeader>
+                <CardTitle className="text-slate-950 dark:text-white">FL-115 Proof of Service of Summons</CardTitle>
+                <CardDescription>Optional proof filed after FL-100/FL-110 service is completed.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-5">
+                <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5">
+                  <Checkbox checked={workspace.fl115.includeForm.value} onCheckedChange={(checked) => updateFl115((fl115) => ({ ...fl115, includeForm: setDraftFieldValue(fl115.includeForm, checked === true) }))} />
+                  <div>
+                    <div className="flex flex-wrap items-center gap-2"><span className="text-sm font-medium text-slate-800 dark:text-slate-100">Include FL-115 in generated packet</span><FieldSourceBadge field={workspace.fl115.includeForm} /></div>
+                    <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Use when service has happened or when preparing a service checklist for the server.</p>
+                  </div>
+                </label>
+                {workspace.fl115.includeForm.value && (
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div><FieldHeader label="Service method" field={workspace.fl115.serviceMethod} /><select className="w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm dark:border-white/10 dark:bg-slate-950" value={workspace.fl115.serviceMethod.value} onChange={(e) => updateFl115((fl115) => ({ ...fl115, serviceMethod: setDraftFieldValue(fl115.serviceMethod, e.target.value as 'personal' | 'mail_acknowledgment') }))}><option value="personal">Personal service</option><option value="mail_acknowledgment">Mail + FL-117 acknowledgment</option></select></div>
+                    <div><FieldHeader label="Address where served" field={workspace.fl115.addressWhereServed} /><Input value={workspace.fl115.addressWhereServed.value} onChange={(e) => updateFl115((fl115) => ({ ...fl115, addressWhereServed: setDraftFieldValue(fl115.addressWhereServed, e.target.value) }))} /></div>
+                    <div><FieldHeader label="Service date" field={workspace.fl115.serviceDate} /><Input type="date" value={workspace.fl115.serviceDate.value} onChange={(e) => updateFl115((fl115) => ({ ...fl115, serviceDate: setDraftFieldValue(fl115.serviceDate, e.target.value) }))} /></div>
+                    <div><FieldHeader label="Service time" field={workspace.fl115.serviceTime} /><Input value={workspace.fl115.serviceTime.value} placeholder="e.g., 2:30 PM" onChange={(e) => updateFl115((fl115) => ({ ...fl115, serviceTime: setDraftFieldValue(fl115.serviceTime, e.target.value) }))} /></div>
+                    {workspace.fl115.serviceMethod.value === 'mail_acknowledgment' && <><div><FieldHeader label="Date mailed" field={workspace.fl115.dateMailed} /><Input type="date" value={workspace.fl115.dateMailed.value} onChange={(e) => updateFl115((fl115) => ({ ...fl115, dateMailed: setDraftFieldValue(fl115.dateMailed, e.target.value) }))} /></div><div><FieldHeader label="City mailed from" field={workspace.fl115.cityMailedFrom} /><Input value={workspace.fl115.cityMailedFrom.value} onChange={(e) => updateFl115((fl115) => ({ ...fl115, cityMailedFrom: setDraftFieldValue(fl115.cityMailedFrom, e.target.value) }))} /></div></>}
+                    <div><FieldHeader label="Server name" field={workspace.fl115.serverName} /><Input value={workspace.fl115.serverName.value} onChange={(e) => updateFl115((fl115) => ({ ...fl115, serverName: setDraftFieldValue(fl115.serverName, e.target.value) }))} /></div>
+                    <div><FieldHeader label="Server phone" field={workspace.fl115.serverPhone} /><Input value={workspace.fl115.serverPhone.value} onChange={(e) => updateFl115((fl115) => ({ ...fl115, serverPhone: setDraftFieldValue(fl115.serverPhone, e.target.value) }))} /></div>
+                    <div><FieldHeader label="Server address" field={workspace.fl115.serverAddress} /><Input value={workspace.fl115.serverAddress.value} onChange={(e) => updateFl115((fl115) => ({ ...fl115, serverAddress: setDraftFieldValue(fl115.serverAddress, e.target.value) }))} /></div>
+                    <div><FieldHeader label="Server signature date" field={workspace.fl115.signatureDate} /><Input type="date" value={workspace.fl115.signatureDate.value} onChange={(e) => updateFl115((fl115) => ({ ...fl115, signatureDate: setDraftFieldValue(fl115.signatureDate, e.target.value) }))} /></div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            <Card className="rounded-[1.75rem] border-white/70 bg-white/80 shadow-xl backdrop-blur dark:border-white/10 dark:bg-white/5">
+              <CardHeader>
+                <CardTitle className="text-slate-950 dark:text-white">FL-120 Response</CardTitle>
+                <CardDescription>Optional respondent-side response using the case caption and core family facts already captured.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-5">
+                <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5">
+                  <Checkbox checked={workspace.fl120.includeForm.value} onCheckedChange={(checked) => updateFl120((fl120) => ({ ...fl120, includeForm: setDraftFieldValue(fl120.includeForm, checked === true) }))} />
+                  <div>
+                    <div className="flex flex-wrap items-center gap-2"><span className="text-sm font-medium text-slate-800 dark:text-slate-100">Include FL-120 in generated packet</span><FieldSourceBadge field={workspace.fl120.includeForm} /></div>
+                    <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Use for the respondent workflow; defaults mirror the petition facts for review.</p>
+                  </div>
+                </label>
+                {workspace.fl120.includeForm.value && (
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5"><Checkbox checked={workspace.fl120.denyPetitionGrounds.value} onCheckedChange={(checked) => updateFl120((fl120) => ({ ...fl120, denyPetitionGrounds: setDraftFieldValue(fl120.denyPetitionGrounds, checked === true) }))} /><span className="text-sm text-slate-700 dark:text-slate-200">Respondent denies petition grounds</span></label>
+                    <div><FieldHeader label="Respondent printed name" field={workspace.fl120.respondentPrintedName} /><Input value={workspace.fl120.respondentPrintedName.value} onChange={(e) => updateFl120((fl120) => ({ ...fl120, respondentPrintedName: setDraftFieldValue(fl120.respondentPrintedName, e.target.value) }))} /></div>
+                    <div><FieldHeader label="Signature date" field={workspace.fl120.signatureDate} /><Input type="date" value={workspace.fl120.signatureDate.value} onChange={(e) => updateFl120((fl120) => ({ ...fl120, signatureDate: setDraftFieldValue(fl120.signatureDate, e.target.value) }))} /></div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+
+            <Card className="rounded-[1.75rem] border-white/70 bg-white/80 shadow-xl backdrop-blur dark:border-white/10 dark:bg-white/5">
+              <CardHeader>
+                <CardTitle className="text-slate-950 dark:text-white">FL-160 Property Declaration</CardTitle>
+                <CardDescription>Minimal property declaration fields for a first property row plus signature.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-5">
+                <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5">
+                  <Checkbox checked={workspace.fl160.includeForm.value} onCheckedChange={(checked) => updateFl160((fl160) => ({ ...fl160, includeForm: setDraftFieldValue(fl160.includeForm, checked === true) }))} />
+                  <div><div className="flex flex-wrap items-center gap-2"><span className="text-sm font-medium text-slate-800 dark:text-slate-100">Include FL-160 in generated packet</span><FieldSourceBadge field={workspace.fl160.includeForm} /></div></div>
+                </label>
+                {workspace.fl160.includeForm.value && (
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div><FieldHeader label="Party" field={workspace.fl160.partyRole} /><select className="w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm dark:border-white/10 dark:bg-slate-950" value={workspace.fl160.partyRole.value} onChange={(e) => updateFl160((fl160) => ({ ...fl160, partyRole: setDraftFieldValue(fl160.partyRole, e.target.value as 'petitioner' | 'respondent') }))}><option value="petitioner">Petitioner</option><option value="respondent">Respondent</option></select></div>
+                    <div><FieldHeader label="Property type" field={workspace.fl160.propertyType} /><select className="w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm dark:border-white/10 dark:bg-slate-950" value={workspace.fl160.propertyType.value} onChange={(e) => updateFl160((fl160) => ({ ...fl160, propertyType: setDraftFieldValue(fl160.propertyType, e.target.value as 'community' | 'separate') }))}><option value="community">Community/quasi-community</option><option value="separate">Separate property</option></select></div>
+                    <div className="md:col-span-2"><FieldHeader label="Property description" field={workspace.fl160.itemDescription} /><Input value={workspace.fl160.itemDescription.value} onChange={(e) => updateFl160((fl160) => ({ ...fl160, itemDescription: setDraftFieldValue(fl160.itemDescription, e.target.value) }))} /></div>
+                    <div><FieldHeader label="Date acquired" field={workspace.fl160.dateAcquired} /><Input type="date" value={workspace.fl160.dateAcquired.value} onChange={(e) => updateFl160((fl160) => ({ ...fl160, dateAcquired: setDraftFieldValue(fl160.dateAcquired, e.target.value) }))} /></div>
+                    <div><FieldHeader label="Gross fair market value" field={workspace.fl160.grossFairMarketValue} /><Input value={workspace.fl160.grossFairMarketValue.value} onChange={(e) => updateFl160((fl160) => ({ ...fl160, grossFairMarketValue: setDraftFieldValue(fl160.grossFairMarketValue, e.target.value) }))} /></div>
+                    <div><FieldHeader label="Debt amount" field={workspace.fl160.debtAmount} /><Input value={workspace.fl160.debtAmount.value} onChange={(e) => updateFl160((fl160) => ({ ...fl160, debtAmount: setDraftFieldValue(fl160.debtAmount, e.target.value) }))} /></div>
+                    <div><FieldHeader label="Net fair market value" field={workspace.fl160.netFairMarketValue} /><Input value={workspace.fl160.netFairMarketValue.value} onChange={(e) => updateFl160((fl160) => ({ ...fl160, netFairMarketValue: setDraftFieldValue(fl160.netFairMarketValue, e.target.value) }))} /></div>
+                    <div><FieldHeader label="Proposed award to petitioner" field={workspace.fl160.proposedAwardPetitioner} /><Input value={workspace.fl160.proposedAwardPetitioner.value} onChange={(e) => updateFl160((fl160) => ({ ...fl160, proposedAwardPetitioner: setDraftFieldValue(fl160.proposedAwardPetitioner, e.target.value) }))} /></div>
+                    <div><FieldHeader label="Proposed award to respondent" field={workspace.fl160.proposedAwardRespondent} /><Input value={workspace.fl160.proposedAwardRespondent.value} onChange={(e) => updateFl160((fl160) => ({ ...fl160, proposedAwardRespondent: setDraftFieldValue(fl160.proposedAwardRespondent, e.target.value) }))} /></div>
+                    <div><FieldHeader label="Signature date" field={workspace.fl160.signatureDate} /><Input type="date" value={workspace.fl160.signatureDate.value} onChange={(e) => updateFl160((fl160) => ({ ...fl160, signatureDate: setDraftFieldValue(fl160.signatureDate, e.target.value) }))} /></div>
+                    <div><FieldHeader label="Typed/printed name" field={workspace.fl160.typePrintName} /><Input value={workspace.fl160.typePrintName.value} onChange={(e) => updateFl160((fl160) => ({ ...fl160, typePrintName: setDraftFieldValue(fl160.typePrintName, e.target.value) }))} /></div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            <Card className="rounded-[1.75rem] border-white/70 bg-white/80 shadow-xl backdrop-blur dark:border-white/10 dark:bg-white/5">
+              <CardHeader>
+                <CardTitle className="text-slate-950 dark:text-white">FL-342 / FL-343 Support Attachments</CardTitle>
+                <CardDescription>Core order amounts, dates, parties, and free-text details for support attachments.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5"><Checkbox checked={workspace.fl342.includeForm.value} onCheckedChange={(checked) => updateFl342((fl342) => ({ ...fl342, includeForm: setDraftFieldValue(fl342.includeForm, checked === true) }))} /><span className="text-sm font-medium text-slate-800 dark:text-slate-100">Include FL-342 Child Support Attachment</span></label>
+                {workspace.fl342.includeForm.value && <div className="grid gap-4 md:grid-cols-2"><div><FieldHeader label="Attach to" field={workspace.fl342.attachTo} /><select className="w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm dark:border-white/10 dark:bg-slate-950" value={workspace.fl342.attachTo.value} onChange={(e) => updateFl342((fl342) => ({ ...fl342, attachTo: setDraftFieldValue(fl342.attachTo, e.target.value as DraftFormsWorkspace['fl342']['attachTo']['value']) }))}><option value="fl300">FL-300</option><option value="fl340">FL-340</option><option value="fl350">FL-350</option><option value="fl355">FL-355</option><option value="judgment">Judgment</option><option value="other">Other</option></select></div><div><FieldHeader label="Other attachment" field={workspace.fl342.attachToOther} /><Input value={workspace.fl342.attachToOther.value} onChange={(e) => updateFl342((fl342) => ({ ...fl342, attachToOther: setDraftFieldValue(fl342.attachToOther, e.target.value) }))} /></div><div><FieldHeader label="Base monthly child support" field={workspace.fl342.baseMonthlyChildSupport} /><Input value={workspace.fl342.baseMonthlyChildSupport.value} onChange={(e) => updateFl342((fl342) => ({ ...fl342, baseMonthlyChildSupport: setDraftFieldValue(fl342.baseMonthlyChildSupport, e.target.value) }))} /></div><div><FieldHeader label="Payment start date" field={workspace.fl342.paymentStartDate} /><Input type="date" value={workspace.fl342.paymentStartDate.value} onChange={(e) => updateFl342((fl342) => ({ ...fl342, paymentStartDate: setDraftFieldValue(fl342.paymentStartDate, e.target.value) }))} /></div><div><FieldHeader label="Payable to" field={workspace.fl342.payableTo} /><Input value={workspace.fl342.payableTo.value} onChange={(e) => updateFl342((fl342) => ({ ...fl342, payableTo: setDraftFieldValue(fl342.payableTo, e.target.value) }))} /></div><div><FieldHeader label="Guideline total" field={workspace.fl342.guidelineTotal} /><Input value={workspace.fl342.guidelineTotal.value} onChange={(e) => updateFl342((fl342) => ({ ...fl342, guidelineTotal: setDraftFieldValue(fl342.guidelineTotal, e.target.value) }))} /></div><div><FieldHeader label="Petitioner gross/net income" field={workspace.fl342.petitionerGrossIncome} /><Input value={workspace.fl342.petitionerGrossIncome.value} placeholder="Gross" onChange={(e) => updateFl342((fl342) => ({ ...fl342, petitionerGrossIncome: setDraftFieldValue(fl342.petitionerGrossIncome, e.target.value) }))} /><Input className="mt-2" value={workspace.fl342.petitionerNetIncome.value} placeholder="Net" onChange={(e) => updateFl342((fl342) => ({ ...fl342, petitionerNetIncome: setDraftFieldValue(fl342.petitionerNetIncome, e.target.value) }))} /></div><div><FieldHeader label="Respondent gross/net income" field={workspace.fl342.respondentGrossIncome} /><Input value={workspace.fl342.respondentGrossIncome.value} placeholder="Gross" onChange={(e) => updateFl342((fl342) => ({ ...fl342, respondentGrossIncome: setDraftFieldValue(fl342.respondentGrossIncome, e.target.value) }))} /><Input className="mt-2" value={workspace.fl342.respondentNetIncome.value} placeholder="Net" onChange={(e) => updateFl342((fl342) => ({ ...fl342, respondentNetIncome: setDraftFieldValue(fl342.respondentNetIncome, e.target.value) }))} /></div><div className="md:col-span-2"><FieldHeader label="Other child support orders" field={workspace.fl342.otherOrders} /><Textarea value={workspace.fl342.otherOrders.value} onChange={(e) => updateFl342((fl342) => ({ ...fl342, otherOrders: setDraftFieldValue(fl342.otherOrders, e.target.value) }))} /></div></div>}
+                <Separator />
+                <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5"><Checkbox checked={workspace.fl343.includeForm.value} onCheckedChange={(checked) => updateFl343((fl343) => ({ ...fl343, includeForm: setDraftFieldValue(fl343.includeForm, checked === true) }))} /><span className="text-sm font-medium text-slate-800 dark:text-slate-100">Include FL-343 Support Order Attachment</span></label>
+                {workspace.fl343.includeForm.value && <div className="grid gap-4 md:grid-cols-2"><div><FieldHeader label="Support type" field={workspace.fl343.supportType} /><select className="w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm dark:border-white/10 dark:bg-slate-950" value={workspace.fl343.supportType.value} onChange={(e) => updateFl343((fl343) => ({ ...fl343, supportType: setDraftFieldValue(fl343.supportType, e.target.value as DraftFormsWorkspace['fl343']['supportType']['value']) }))}><option value="spousal">Spousal</option><option value="domestic_partner">Domestic partner</option><option value="family">Family</option></select></div><div><FieldHeader label="Monthly amount" field={workspace.fl343.monthlyAmount} /><Input value={workspace.fl343.monthlyAmount.value} onChange={(e) => updateFl343((fl343) => ({ ...fl343, monthlyAmount: setDraftFieldValue(fl343.monthlyAmount, e.target.value) }))} /></div><div><FieldHeader label="Payor" field={workspace.fl343.payor} /><select className="w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm dark:border-white/10 dark:bg-slate-950" value={workspace.fl343.payor.value} onChange={(e) => updateFl343((fl343) => ({ ...fl343, payor: setDraftFieldValue(fl343.payor, e.target.value as 'petitioner' | 'respondent') }))}><option value="petitioner">Petitioner</option><option value="respondent">Respondent</option></select></div><div><FieldHeader label="Payee" field={workspace.fl343.payee} /><select className="w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm dark:border-white/10 dark:bg-slate-950" value={workspace.fl343.payee.value} onChange={(e) => updateFl343((fl343) => ({ ...fl343, payee: setDraftFieldValue(fl343.payee, e.target.value as 'petitioner' | 'respondent') }))}><option value="petitioner">Petitioner</option><option value="respondent">Respondent</option></select></div><div><FieldHeader label="Start date" field={workspace.fl343.paymentStartDate} /><Input type="date" value={workspace.fl343.paymentStartDate.value} onChange={(e) => updateFl343((fl343) => ({ ...fl343, paymentStartDate: setDraftFieldValue(fl343.paymentStartDate, e.target.value) }))} /></div><div><FieldHeader label="End date" field={workspace.fl343.paymentEndDate} /><Input type="date" value={workspace.fl343.paymentEndDate.value} onChange={(e) => updateFl343((fl343) => ({ ...fl343, paymentEndDate: setDraftFieldValue(fl343.paymentEndDate, e.target.value) }))} /></div><label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5"><Checkbox checked={workspace.fl343.wageAssignment.value} onCheckedChange={(checked) => updateFl343((fl343) => ({ ...fl343, wageAssignment: setDraftFieldValue(fl343.wageAssignment, checked === true) }))} /><span className="text-sm text-slate-700 dark:text-slate-200">Wage assignment</span></label><label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5"><Checkbox checked={workspace.fl343.terminateOnDeathOrRemarriage.value} onCheckedChange={(checked) => updateFl343((fl343) => ({ ...fl343, terminateOnDeathOrRemarriage: setDraftFieldValue(fl343.terminateOnDeathOrRemarriage, checked === true) }))} /><span className="text-sm text-slate-700 dark:text-slate-200">Terminate on death/remarriage</span></label><div className="md:col-span-2"><FieldHeader label="Other support orders" field={workspace.fl343.otherOrders} /><Textarea value={workspace.fl343.otherOrders.value} onChange={(e) => updateFl343((fl343) => ({ ...fl343, otherOrders: setDraftFieldValue(fl343.otherOrders, e.target.value) }))} /></div></div>}
+              </CardContent>
+            </Card>
+
+            <Card className="rounded-[1.75rem] border-white/70 bg-white/80 shadow-xl backdrop-blur dark:border-white/10 dark:bg-white/5">
+              <CardHeader>
+                <CardTitle className="text-slate-950 dark:text-white">Judgment and property forms</CardTitle>
+                <CardDescription>Practical v1 fields for FL-130, FL-144, FL-170, FL-180, FL-190, FL-345, and FL-348. These are intentionally core-only.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5"><Checkbox checked={workspace.fl130.includeForm.value} onCheckedChange={(checked) => updateFl130((fl130) => ({ ...fl130, includeForm: setDraftFieldValue(fl130.includeForm, checked === true) }))} /><span className="text-sm font-medium text-slate-800 dark:text-slate-100">Include FL-130 Appearance/Stipulations/Waivers</span></label>
+                {workspace.fl130.includeForm.value && <div className="grid gap-4 md:grid-cols-2"><div><FieldHeader label="Appearance by" field={workspace.fl130.appearanceBy} /><select className="w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm dark:border-white/10 dark:bg-slate-950" value={workspace.fl130.appearanceBy.value} onChange={(e) => updateFl130((fl130) => ({ ...fl130, appearanceBy: setDraftFieldValue(fl130.appearanceBy, e.target.value as DraftFormsWorkspace['fl130']['appearanceBy']['value']) }))}><option value="petitioner">Petitioner</option><option value="respondent">Respondent</option><option value="both">Both parties</option></select></div><div><FieldHeader label="Respondent signature date" field={workspace.fl130.respondentSignatureDate} /><Input type="date" value={workspace.fl130.respondentSignatureDate.value} onChange={(e) => updateFl130((fl130) => ({ ...fl130, respondentSignatureDate: setDraftFieldValue(fl130.respondentSignatureDate, e.target.value) }))} /></div><div><FieldHeader label="Petitioner printed name" field={workspace.fl130.petitionerPrintedName} /><Input value={workspace.fl130.petitionerPrintedName.value} onChange={(e) => updateFl130((fl130) => ({ ...fl130, petitionerPrintedName: setDraftFieldValue(fl130.petitionerPrintedName, e.target.value) }))} /></div><div><FieldHeader label="Respondent printed name" field={workspace.fl130.respondentPrintedName} /><Input value={workspace.fl130.respondentPrintedName.value} onChange={(e) => updateFl130((fl130) => ({ ...fl130, respondentPrintedName: setDraftFieldValue(fl130.respondentPrintedName, e.target.value) }))} /></div><div><FieldHeader label="Petitioner signature date" field={workspace.fl130.petitionerSignatureDate} /><Input type="date" value={workspace.fl130.petitionerSignatureDate.value} onChange={(e) => updateFl130((fl130) => ({ ...fl130, petitionerSignatureDate: setDraftFieldValue(fl130.petitionerSignatureDate, e.target.value) }))} /></div><div className="md:col-span-2"><FieldHeader label="Agreement/stipulation summary" field={workspace.fl130.agreementSummary} /><Textarea value={workspace.fl130.agreementSummary.value} onChange={(e) => updateFl130((fl130) => ({ ...fl130, agreementSummary: setDraftFieldValue(fl130.agreementSummary, e.target.value) }))} /></div></div>}
+
+                <Separator />
+                <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5"><Checkbox checked={workspace.fl144.includeForm.value} onCheckedChange={(checked) => updateFl144((fl144) => ({ ...fl144, includeForm: setDraftFieldValue(fl144.includeForm, checked === true) }))} /><span className="text-sm font-medium text-slate-800 dark:text-slate-100">Include FL-144 Stipulation to Waive Final Disclosure</span></label>
+                {workspace.fl144.includeForm.value && <div className="grid gap-4 md:grid-cols-2"><div><FieldHeader label="Signature date" field={workspace.fl144.signatureDate} /><Input type="date" value={workspace.fl144.signatureDate.value} onChange={(e) => updateFl144((fl144) => ({ ...fl144, signatureDate: setDraftFieldValue(fl144.signatureDate, e.target.value) }))} /></div><div><FieldHeader label="Other party/claimant name" field={workspace.fl144.thirdPartyName} /><Input value={workspace.fl144.thirdPartyName.value} onChange={(e) => updateFl144((fl144) => ({ ...fl144, thirdPartyName: setDraftFieldValue(fl144.thirdPartyName, e.target.value) }))} /></div><div><FieldHeader label="Petitioner printed name" field={workspace.fl144.petitionerPrintedName} /><Input value={workspace.fl144.petitionerPrintedName.value} onChange={(e) => updateFl144((fl144) => ({ ...fl144, petitionerPrintedName: setDraftFieldValue(fl144.petitionerPrintedName, e.target.value) }))} /></div><div><FieldHeader label="Respondent printed name" field={workspace.fl144.respondentPrintedName} /><Input value={workspace.fl144.respondentPrintedName.value} onChange={(e) => updateFl144((fl144) => ({ ...fl144, respondentPrintedName: setDraftFieldValue(fl144.respondentPrintedName, e.target.value) }))} /></div><div className="md:col-span-2"><FieldHeader label="Stipulation text" field={workspace.fl144.stipulationText} /><Textarea value={workspace.fl144.stipulationText.value} onChange={(e) => updateFl144((fl144) => ({ ...fl144, stipulationText: setDraftFieldValue(fl144.stipulationText, e.target.value) }))} /></div></div>}
+
+                <Separator />
+                <div className="grid gap-4 md:grid-cols-2">
+                  <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5"><Checkbox checked={workspace.fl170.includeForm.value} onCheckedChange={(checked) => updateFl170((fl170) => ({ ...fl170, includeForm: setDraftFieldValue(fl170.includeForm, checked === true) }))} /><span className="text-sm font-medium text-slate-800 dark:text-slate-100">Include FL-170</span></label>
+                  <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5"><Checkbox checked={workspace.fl180.includeForm.value} onCheckedChange={(checked) => updateFl180((fl180) => ({ ...fl180, includeForm: setDraftFieldValue(fl180.includeForm, checked === true) }))} /><span className="text-sm font-medium text-slate-800 dark:text-slate-100">Include FL-180 Judgment</span></label>
+                  <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5"><Checkbox checked={workspace.fl190.includeForm.value} onCheckedChange={(checked) => updateFl190((fl190) => ({ ...fl190, includeForm: setDraftFieldValue(fl190.includeForm, checked === true) }))} /><span className="text-sm font-medium text-slate-800 dark:text-slate-100">Include FL-190</span></label>
+                  <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5"><Checkbox checked={workspace.fl345.includeForm.value} onCheckedChange={(checked) => updateFl345((fl345) => ({ ...fl345, includeForm: setDraftFieldValue(fl345.includeForm, checked === true) }))} /><span className="text-sm font-medium text-slate-800 dark:text-slate-100">Include FL-345 Property Order</span></label>
+                  <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5"><Checkbox checked={workspace.fl348.includeForm.value} onCheckedChange={(checked) => updateFl348((fl348) => ({ ...fl348, includeForm: setDraftFieldValue(fl348.includeForm, checked === true) }))} /><span className="text-sm font-medium text-slate-800 dark:text-slate-100">Include FL-348 Pension Benefits</span></label>
+                </div>
+
+                {(workspace.fl170.includeForm.value || workspace.fl180.includeForm.value || workspace.fl190.includeForm.value || workspace.fl345.includeForm.value || workspace.fl348.includeForm.value) && <div className="grid gap-4 md:grid-cols-2">
+                  {workspace.fl170.includeForm.value && <><div><FieldHeader label="FL-170 signature date" field={workspace.fl170.signatureDate} /><Input type="date" value={workspace.fl170.signatureDate.value} onChange={(e) => updateFl170((fl170) => ({ ...fl170, signatureDate: setDraftFieldValue(fl170.signatureDate, e.target.value) }))} /></div><div><FieldHeader label="FL-170 printed name" field={workspace.fl170.printedName} /><Input value={workspace.fl170.printedName.value} onChange={(e) => updateFl170((fl170) => ({ ...fl170, printedName: setDraftFieldValue(fl170.printedName, e.target.value) }))} /></div><div className="md:col-span-2"><FieldHeader label="FL-170 declaration text" field={workspace.fl170.declarationText} /><Textarea value={workspace.fl170.declarationText.value} onChange={(e) => updateFl170((fl170) => ({ ...fl170, declarationText: setDraftFieldValue(fl170.declarationText, e.target.value) }))} /></div></>}
+                  {workspace.fl180.includeForm.value && <><div><FieldHeader label="FL-180 status termination date" field={workspace.fl180.statusTerminationDate} /><Input type="date" value={workspace.fl180.statusTerminationDate.value} onChange={(e) => updateFl180((fl180) => ({ ...fl180, statusTerminationDate: setDraftFieldValue(fl180.statusTerminationDate, e.target.value) }))} /></div><div><FieldHeader label="FL-180 judgment entered date" field={workspace.fl180.judgmentEnteredDate} /><Input type="date" value={workspace.fl180.judgmentEnteredDate.value} onChange={(e) => updateFl180((fl180) => ({ ...fl180, judgmentEnteredDate: setDraftFieldValue(fl180.judgmentEnteredDate, e.target.value) }))} /></div><div><FieldHeader label="FL-180 child support amount" field={workspace.fl180.childSupportAmount} /><Input value={workspace.fl180.childSupportAmount.value} onChange={(e) => updateFl180((fl180) => ({ ...fl180, childSupportAmount: setDraftFieldValue(fl180.childSupportAmount, e.target.value) }))} /></div><div><FieldHeader label="FL-180 spousal support amount" field={workspace.fl180.spousalSupportAmount} /><Input value={workspace.fl180.spousalSupportAmount.value} onChange={(e) => updateFl180((fl180) => ({ ...fl180, spousalSupportAmount: setDraftFieldValue(fl180.spousalSupportAmount, e.target.value) }))} /></div><div className="md:col-span-2"><FieldHeader label="FL-180 property/debt orders" field={workspace.fl180.propertyDebtOrders} /><Textarea value={workspace.fl180.propertyDebtOrders.value} onChange={(e) => updateFl180((fl180) => ({ ...fl180, propertyDebtOrders: setDraftFieldValue(fl180.propertyDebtOrders, e.target.value) }))} /></div></>}
+                  {workspace.fl190.includeForm.value && <><div><FieldHeader label="FL-190 notice date" field={workspace.fl190.noticeDate} /><Input type="date" value={workspace.fl190.noticeDate.value} onChange={(e) => updateFl190((fl190) => ({ ...fl190, noticeDate: setDraftFieldValue(fl190.noticeDate, e.target.value) }))} /></div><div><FieldHeader label="FL-190 judgment entered date" field={workspace.fl190.judgmentEnteredDate} /><Input type="date" value={workspace.fl190.judgmentEnteredDate.value} onChange={(e) => updateFl190((fl190) => ({ ...fl190, judgmentEnteredDate: setDraftFieldValue(fl190.judgmentEnteredDate, e.target.value) }))} /></div><div className="md:col-span-2"><FieldHeader label="FL-190 notice text" field={workspace.fl190.noticeText} /><Textarea value={workspace.fl190.noticeText.value} onChange={(e) => updateFl190((fl190) => ({ ...fl190, noticeText: setDraftFieldValue(fl190.noticeText, e.target.value) }))} /></div></>}
+                  {workspace.fl345.includeForm.value && <><div className="md:col-span-2"><FieldHeader label="FL-345 property award summary" field={workspace.fl345.propertyAwardSummary} /><Textarea value={workspace.fl345.propertyAwardSummary.value} onChange={(e) => updateFl345((fl345) => ({ ...fl345, propertyAwardSummary: setDraftFieldValue(fl345.propertyAwardSummary, e.target.value) }))} /></div><div className="md:col-span-2"><FieldHeader label="FL-345 debt allocation summary" field={workspace.fl345.debtAllocationSummary} /><Textarea value={workspace.fl345.debtAllocationSummary.value} onChange={(e) => updateFl345((fl345) => ({ ...fl345, debtAllocationSummary: setDraftFieldValue(fl345.debtAllocationSummary, e.target.value) }))} /></div><div><FieldHeader label="FL-345 equalization payment" field={workspace.fl345.equalizationPayment} /><Input value={workspace.fl345.equalizationPayment.value} onChange={(e) => updateFl345((fl345) => ({ ...fl345, equalizationPayment: setDraftFieldValue(fl345.equalizationPayment, e.target.value) }))} /></div></>}
+                  {workspace.fl348.includeForm.value && <><div><FieldHeader label="FL-348 employee party" field={workspace.fl348.employeePartyName} /><Input value={workspace.fl348.employeePartyName.value} onChange={(e) => updateFl348((fl348) => ({ ...fl348, employeePartyName: setDraftFieldValue(fl348.employeePartyName, e.target.value) }))} /></div><div><FieldHeader label="FL-348 retirement plan" field={workspace.fl348.retirementPlanName} /><Input value={workspace.fl348.retirementPlanName.value} onChange={(e) => updateFl348((fl348) => ({ ...fl348, retirementPlanName: setDraftFieldValue(fl348.retirementPlanName, e.target.value) }))} /></div><div><FieldHeader label="FL-348 claimant party" field={workspace.fl348.claimantPartyName} /><Input value={workspace.fl348.claimantPartyName.value} onChange={(e) => updateFl348((fl348) => ({ ...fl348, claimantPartyName: setDraftFieldValue(fl348.claimantPartyName, e.target.value) }))} /></div><div className="md:col-span-2"><FieldHeader label="FL-348 order summary" field={workspace.fl348.orderSummary} /><Textarea value={workspace.fl348.orderSummary.value} onChange={(e) => updateFl348((fl348) => ({ ...fl348, orderSummary: setDraftFieldValue(fl348.orderSummary, e.target.value) }))} /></div></>}
+                </div>}
+              </CardContent>
+            </Card>
+
+            <Card className="rounded-[1.75rem] border-white/70 bg-white/80 shadow-xl backdrop-blur dark:border-white/10 dark:bg-white/5">
+              <CardHeader>
+                <CardTitle className="text-slate-950 dark:text-white">Domestic violence forms</CardTitle>
+                <CardDescription>Core-only DV template wiring for DV-100, 101, 105, 108, 109, 110, 120, 130, 140, and 200. Review official forms before filing.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {dvFormOptions.map((form, index) => {
+                  const section = workspace[form.key];
+                  const issues = getDvReadinessIssues(section, form.formNumber);
+                  return (
+                    <div key={form.key} className="space-y-4">
+                      {index > 0 && <Separator />}
+                      <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5">
+                        <Checkbox checked={section.includeForm.value} onCheckedChange={(checked) => updateDvForm(form.key, (current) => ({ ...current, includeForm: setDraftFieldValue(current.includeForm, checked === true) }))} />
+                        <div>
+                          <div className="flex flex-wrap items-center gap-2"><span className="text-sm font-medium text-slate-800 dark:text-slate-100">Include {form.formNumber} — {form.title}</span><FieldSourceBadge field={section.includeForm} /></div>
+                          <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{form.note}</p>
+                        </div>
+                      </label>
+                      {section.includeForm.value && (
+                        <div className="grid gap-4 md:grid-cols-2">
+                          {issues.length > 0 && <div className="md:col-span-2 rounded-xl border border-amber-200 bg-amber-50 p-3 text-xs text-amber-900 dark:border-amber-400/20 dark:bg-amber-400/10 dark:text-amber-100">{issues.join(' · ')}</div>}
+                          <div><FieldHeader label="Protected party name" field={section.protectedPartyName} /><Input value={section.protectedPartyName.value} onChange={(e) => updateDvForm(form.key, (current) => ({ ...current, protectedPartyName: setDraftFieldValue(current.protectedPartyName, e.target.value) }))} /></div>
+                          <div><FieldHeader label="Restrained party name" field={section.restrainedPartyName} /><Input value={section.restrainedPartyName.value} onChange={(e) => updateDvForm(form.key, (current) => ({ ...current, restrainedPartyName: setDraftFieldValue(current.restrainedPartyName, e.target.value) }))} /></div>
+                          <div><FieldHeader label="Relationship / connection" field={section.relationship} /><Input value={section.relationship.value} onChange={(e) => updateDvForm(form.key, (current) => ({ ...current, relationship: setDraftFieldValue(current.relationship, e.target.value) }))} /></div>
+                          <div><FieldHeader label="Restrained person description" field={section.restrainedPersonDescription} /><Input value={section.restrainedPersonDescription.value} onChange={(e) => updateDvForm(form.key, (current) => ({ ...current, restrainedPersonDescription: setDraftFieldValue(current.restrainedPersonDescription, e.target.value) }))} /></div>
+                          <div className="md:col-span-2"><FieldHeader label="Other protected people" field={section.otherProtectedPeople} /><Textarea value={section.otherProtectedPeople.value} onChange={(e) => updateDvForm(form.key, (current) => ({ ...current, otherProtectedPeople: setDraftFieldValue(current.otherProtectedPeople, e.target.value) }))} /></div>
+                          <div className="md:col-span-2"><FieldHeader label="Children / child names" field={section.childNames} /><Textarea value={section.childNames.value} placeholder="Leave blank to use children already entered in Draft Forms." onChange={(e) => updateDvForm(form.key, (current) => ({ ...current, childNames: setDraftFieldValue(current.childNames, e.target.value) }))} /></div>
+                          <div><FieldHeader label="Hearing / order date" field={section.hearingDate} /><Input type="date" value={section.hearingDate.value} onChange={(e) => updateDvForm(form.key, (current) => ({ ...current, hearingDate: setDraftFieldValue(current.hearingDate, e.target.value) }))} /></div>
+                          <div><FieldHeader label="Hearing time" field={section.hearingTime} /><Input value={section.hearingTime.value} placeholder="e.g., 8:30 AM" onChange={(e) => updateDvForm(form.key, (current) => ({ ...current, hearingTime: setDraftFieldValue(current.hearingTime, e.target.value) }))} /></div>
+                          <div><FieldHeader label="Department" field={section.hearingDepartment} /><Input value={section.hearingDepartment.value} onChange={(e) => updateDvForm(form.key, (current) => ({ ...current, hearingDepartment: setDraftFieldValue(current.hearingDepartment, e.target.value) }))} /></div>
+                          <div><FieldHeader label="Room" field={section.hearingRoom} /><Input value={section.hearingRoom.value} onChange={(e) => updateDvForm(form.key, (current) => ({ ...current, hearingRoom: setDraftFieldValue(current.hearingRoom, e.target.value) }))} /></div>
+                          <div><FieldHeader label="Service date" field={section.serviceDate} /><Input type="date" value={section.serviceDate.value} onChange={(e) => updateDvForm(form.key, (current) => ({ ...current, serviceDate: setDraftFieldValue(current.serviceDate, e.target.value) }))} /></div>
+                          <div><FieldHeader label="Service time" field={section.serviceTime} /><Input value={section.serviceTime.value} placeholder="e.g., 2:15 PM" onChange={(e) => updateDvForm(form.key, (current) => ({ ...current, serviceTime: setDraftFieldValue(current.serviceTime, e.target.value) }))} /></div>
+                          <div><FieldHeader label="Served by" field={section.servedByName} /><Input value={section.servedByName.value} onChange={(e) => updateDvForm(form.key, (current) => ({ ...current, servedByName: setDraftFieldValue(current.servedByName, e.target.value) }))} /></div>
+                          <div><FieldHeader label="Printed name" field={section.printedName} /><Input value={section.printedName.value} onChange={(e) => updateDvForm(form.key, (current) => ({ ...current, printedName: setDraftFieldValue(current.printedName, e.target.value) }))} /></div>
+                          <div><FieldHeader label="Signature date" field={section.signatureDate} /><Input type="date" value={section.signatureDate.value} onChange={(e) => updateDvForm(form.key, (current) => ({ ...current, signatureDate: setDraftFieldValue(current.signatureDate, e.target.value) }))} /></div>
+                          <div className="md:col-span-2"><FieldHeader label="Request / facts summary" field={section.requestSummary} /><Textarea value={section.requestSummary.value} onChange={(e) => updateDvForm(form.key, (current) => ({ ...current, requestSummary: setDraftFieldValue(current.requestSummary, e.target.value) }))} /></div>
+                          <div className="md:col-span-2"><FieldHeader label="Order summary" field={section.orderSummary} /><Textarea value={section.orderSummary.value} onChange={(e) => updateDvForm(form.key, (current) => ({ ...current, orderSummary: setDraftFieldValue(current.orderSummary, e.target.value) }))} /></div>
+                          <div className="md:col-span-2"><FieldHeader label="Response summary" field={section.responseSummary} /><Textarea value={section.responseSummary.value} onChange={(e) => updateDvForm(form.key, (current) => ({ ...current, responseSummary: setDraftFieldValue(current.responseSummary, e.target.value) }))} /></div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </CardContent>
+            </Card>
+
+            <Card className="rounded-[1.75rem] border-white/70 bg-white/80 shadow-xl backdrop-blur dark:border-white/10 dark:bg-white/5">
+              <CardHeader>
+                <CardTitle className="text-slate-950 dark:text-white">Remaining family-law forms</CardTitle>
+                <CardDescription>Core-only generation for remaining FL assets. Captures caption, selected options, amounts/dates/text/name/signature fields where available.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {remainingFlFormOptions.map((form, index) => {
+                  const section = workspace[form.key];
+                  const issues = getRemainingFlReadinessIssues(section, form.formNumber);
+                  return (
+                    <div key={form.key} className="space-y-4">
+                      {index > 0 && <Separator />}
+                      <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5">
+                        <Checkbox checked={section.includeForm.value} onCheckedChange={(checked) => updateRemainingFlForm(form.key, (current) => ({ ...current, includeForm: setDraftFieldValue(current.includeForm, checked === true) }))} />
+                        <div>
+                          <div className="flex flex-wrap items-center gap-2"><span className="text-sm font-medium text-slate-800 dark:text-slate-100">Include {form.formNumber} — {form.title}</span><FieldSourceBadge field={section.includeForm} /></div>
+                          <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{form.note}</p>
+                        </div>
+                      </label>
+                      {section.includeForm.value && (
+                        <div className="grid gap-4 md:grid-cols-2">
+                          {issues.length > 0 && <div className="md:col-span-2 rounded-xl border border-amber-200 bg-amber-50 p-3 text-xs text-amber-900 dark:border-amber-400/20 dark:bg-amber-400/10 dark:text-amber-100">{issues.join(' · ')}</div>}
+                          <div><FieldHeader label="Primary party" field={section.primaryParty} /><select className="w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm dark:border-white/10 dark:bg-slate-950" value={section.primaryParty.value} onChange={(e) => updateRemainingFlForm(form.key, (current) => ({ ...current, primaryParty: setDraftFieldValue(current.primaryParty, e.target.value as DraftFormsWorkspace[RemainingFlFormKey]['primaryParty']['value']) }))}><option value="petitioner">Petitioner</option><option value="respondent">Respondent</option><option value="both">Both parties</option><option value="other">Other</option></select></div>
+                          <div><FieldHeader label="Attach to / order source" field={section.attachTo} /><select className="w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm dark:border-white/10 dark:bg-slate-950" value={section.attachTo.value} onChange={(e) => updateRemainingFlForm(form.key, (current) => ({ ...current, attachTo: setDraftFieldValue(current.attachTo, e.target.value as DraftFormsWorkspace[RemainingFlFormKey]['attachTo']['value']) }))}><option value="fl180">FL-180 / Judgment</option><option value="fl300">FL-300</option><option value="fl340">FL-340</option><option value="fl350">FL-350</option><option value="fl355">FL-355</option><option value="other">Other</option></select></div>
+                          <div><FieldHeader label="Amount" field={section.amount} /><Input value={section.amount.value} onChange={(e) => updateRemainingFlForm(form.key, (current) => ({ ...current, amount: setDraftFieldValue(current.amount, e.target.value) }))} /></div>
+                          <div><FieldHeader label="Date" field={section.date} /><Input type="date" value={section.date.value} onChange={(e) => updateRemainingFlForm(form.key, (current) => ({ ...current, date: setDraftFieldValue(current.date, e.target.value) }))} /></div>
+                          <div><FieldHeader label="Other party / employer / plan" field={section.otherPartyName} /><Input value={section.otherPartyName.value} onChange={(e) => updateRemainingFlForm(form.key, (current) => ({ ...current, otherPartyName: setDraftFieldValue(current.otherPartyName, e.target.value) }))} /></div>
+                          <div><FieldHeader label="Printed name" field={section.printedName} /><Input value={section.printedName.value} onChange={(e) => updateRemainingFlForm(form.key, (current) => ({ ...current, printedName: setDraftFieldValue(current.printedName, e.target.value) }))} /></div>
+                          <div><FieldHeader label="Signature date" field={section.signatureDate} /><Input type="date" value={section.signatureDate.value} onChange={(e) => updateRemainingFlForm(form.key, (current) => ({ ...current, signatureDate: setDraftFieldValue(current.signatureDate, e.target.value) }))} /></div>
+                          <div className="md:col-span-2"><FieldHeader label="Options / findings / order details" field={section.details} /><Textarea value={section.details.value} onChange={(e) => updateRemainingFlForm(form.key, (current) => ({ ...current, details: setDraftFieldValue(current.details, e.target.value) }))} /></div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </CardContent>
+            </Card>
+
+            <Card className="rounded-[1.75rem] border-white/70 bg-white/80 shadow-xl backdrop-blur dark:border-white/10 dark:bg-white/5">
+              <CardHeader>
+                <CardTitle className="text-slate-950 dark:text-white">FL-117 Notice and Acknowledgment of Receipt</CardTitle>
+                <CardDescription>Optional service-by-mail acknowledgment. The respondent signs the acknowledgment portion after receipt.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-5">
+                <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5">
+                  <Checkbox checked={workspace.fl117.includeForm.value} onCheckedChange={(checked) => updateFl117((fl117) => ({ ...fl117, includeForm: setDraftFieldValue(fl117.includeForm, checked === true) }))} />
+                  <div>
+                    <div className="flex flex-wrap items-center gap-2"><span className="text-sm font-medium text-slate-800 dark:text-slate-100">Include FL-117 in generated packet</span><FieldSourceBadge field={workspace.fl117.includeForm} /></div>
+                    <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Use only when the receiving party will acknowledge receipt.</p>
+                  </div>
+                </label>
+                {workspace.fl117.includeForm.value && (
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div><FieldHeader label="Person being served" field={workspace.fl117.personServedName} /><Input value={workspace.fl117.personServedName.value} onChange={(e) => updateFl117((fl117) => ({ ...fl117, personServedName: setDraftFieldValue(fl117.personServedName, e.target.value) }))} /></div>
+                    <div><FieldHeader label="Date mailed" field={workspace.fl117.dateMailed} /><Input type="date" value={workspace.fl117.dateMailed.value} onChange={(e) => updateFl117((fl117) => ({ ...fl117, dateMailed: setDraftFieldValue(fl117.dateMailed, e.target.value) }))} /></div>
+                    <div><FieldHeader label="Petitioner printed name" field={workspace.fl117.petitionerPrintedName} /><Input value={workspace.fl117.petitionerPrintedName.value} onChange={(e) => updateFl117((fl117) => ({ ...fl117, petitionerPrintedName: setDraftFieldValue(fl117.petitionerPrintedName, e.target.value) }))} /></div>
+                    <div><FieldHeader label="Acknowledgment date signed" field={workspace.fl117.acknowledgmentDateSigned} /><Input type="date" value={workspace.fl117.acknowledgmentDateSigned.value} onChange={(e) => updateFl117((fl117) => ({ ...fl117, acknowledgmentDateSigned: setDraftFieldValue(fl117.acknowledgmentDateSigned, e.target.value) }))} /></div>
+                    <div className="md:col-span-2"><FieldHeader label="Acknowledgment printed name" field={workspace.fl117.acknowledgmentPrintedName} /><Input value={workspace.fl117.acknowledgmentPrintedName.value} onChange={(e) => updateFl117((fl117) => ({ ...fl117, acknowledgmentPrintedName: setDraftFieldValue(fl117.acknowledgmentPrintedName, e.target.value) }))} /></div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            <Card className="rounded-[1.75rem] border-white/70 bg-white/80 shadow-xl backdrop-blur dark:border-white/10 dark:bg-white/5">
+              <CardHeader>
+                <CardTitle className="text-slate-950 dark:text-white">FL-142 Schedule of Assets and Debts</CardTitle>
+                <CardDescription>Optional schedule used with FL-140 disclosures. Enter only known facts; leave unknown cells blank.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-5">
+                <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5">
+                  <Checkbox checked={workspace.fl142.includeForm.value} onCheckedChange={(checked) => updateFl142((fl142) => ({ ...fl142, includeForm: setDraftFieldValue(fl142.includeForm, checked === true) }))} />
+                  <div>
+                    <div className="flex flex-wrap items-center gap-2"><span className="text-sm font-medium text-slate-800 dark:text-slate-100">Include FL-142 in generated packet</span><FieldSourceBadge field={workspace.fl142.includeForm} /></div>
+                    <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Good companion to FL-140 when listing assets and debts.</p>
+                  </div>
+                </label>
+                {workspace.fl142.includeForm.value && (
+                  <div className="space-y-5">
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div><FieldHeader label="Whose schedule" field={workspace.fl142.partyRole} /><select value={workspace.fl142.partyRole.value} onChange={(e) => updateFl142((fl142) => ({ ...fl142, partyRole: setDraftFieldValue(fl142.partyRole, e.target.value as 'petitioner' | 'respondent') }))} className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"><option value="petitioner">Petitioner</option><option value="respondent">Respondent</option></select></div>
+                      <div><FieldHeader label="Continuation pages attached" field={workspace.fl142.continuationPagesAttached} /><Input value={workspace.fl142.continuationPagesAttached.value} onChange={(e) => updateFl142((fl142) => ({ ...fl142, continuationPagesAttached: setDraftFieldValue(fl142.continuationPagesAttached, e.target.value) }))} /></div>
+                    </div>
+                    <details open className="rounded-2xl border border-slate-200/80 p-4 dark:border-white/10">
+                      <summary className="cursor-pointer text-sm font-semibold text-slate-900 dark:text-white">Assets</summary>
+                      <div className="mt-4 space-y-4">
+                        {fl142AssetLabels.map(([key, label]) => {
+                          const row = workspace.fl142.assets[key];
+                          return (
+                            <div key={key} className="rounded-xl border border-slate-200/80 bg-slate-50/80 p-3 dark:border-white/10 dark:bg-white/5">
+                              <p className="text-sm font-semibold text-slate-900 dark:text-white">{label}</p>
+                              <div className="mt-3 grid gap-3 md:grid-cols-5">
+                                <div className="md:col-span-2"><Input placeholder="Description" value={row.description.value} onChange={(e) => updateFl142((fl142) => ({ ...fl142, assets: { ...fl142.assets, [key]: { ...fl142.assets[key], description: setDraftFieldValue(fl142.assets[key].description, e.target.value) } } }))} /></div>
+                                <Input placeholder="Sep. prop" value={row.separateProperty.value} onChange={(e) => updateFl142((fl142) => ({ ...fl142, assets: { ...fl142.assets, [key]: { ...fl142.assets[key], separateProperty: setDraftFieldValue(fl142.assets[key].separateProperty, e.target.value) } } }))} />
+                                <Input placeholder="Date acquired" value={row.dateAcquired.value} onChange={(e) => updateFl142((fl142) => ({ ...fl142, assets: { ...fl142.assets, [key]: { ...fl142.assets[key], dateAcquired: setDraftFieldValue(fl142.assets[key].dateAcquired, e.target.value) } } }))} />
+                                <Input placeholder="Gross value" value={row.grossValue.value} onChange={(e) => updateFl142((fl142) => ({ ...fl142, assets: { ...fl142.assets, [key]: { ...fl142.assets[key], grossValue: setDraftFieldValue(fl142.assets[key].grossValue, e.target.value) } } }))} />
+                                <Input placeholder="Amount owed" value={row.amountOwed.value} onChange={(e) => updateFl142((fl142) => ({ ...fl142, assets: { ...fl142.assets, [key]: { ...fl142.assets[key], amountOwed: setDraftFieldValue(fl142.assets[key].amountOwed, e.target.value) } } }))} />
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </details>
+                    <details className="rounded-2xl border border-slate-200/80 p-4 dark:border-white/10">
+                      <summary className="cursor-pointer text-sm font-semibold text-slate-900 dark:text-white">Debts</summary>
+                      <div className="mt-4 space-y-4">
+                        {fl142DebtLabels.map(([key, label]) => {
+                          const row = workspace.fl142.debts[key];
+                          return (
+                            <div key={key} className="rounded-xl border border-slate-200/80 bg-slate-50/80 p-3 dark:border-white/10 dark:bg-white/5">
+                              <p className="text-sm font-semibold text-slate-900 dark:text-white">{label}</p>
+                              <div className="mt-3 grid gap-3 md:grid-cols-4">
+                                <div className="md:col-span-2"><Input placeholder="Description" value={row.description.value} onChange={(e) => updateFl142((fl142) => ({ ...fl142, debts: { ...fl142.debts, [key]: { ...fl142.debts[key], description: setDraftFieldValue(fl142.debts[key].description, e.target.value) } } }))} /></div>
+                                <Input placeholder="Sep. prop" value={row.separateProperty.value} onChange={(e) => updateFl142((fl142) => ({ ...fl142, debts: { ...fl142.debts, [key]: { ...fl142.debts[key], separateProperty: setDraftFieldValue(fl142.debts[key].separateProperty, e.target.value) } } }))} />
+                                <Input placeholder="Total owing" value={row.totalOwing.value} onChange={(e) => updateFl142((fl142) => ({ ...fl142, debts: { ...fl142.debts, [key]: { ...fl142.debts[key], totalOwing: setDraftFieldValue(fl142.debts[key].totalOwing, e.target.value) } } }))} />
+                                <Input placeholder="Date acquired" value={row.dateAcquired.value} onChange={(e) => updateFl142((fl142) => ({ ...fl142, debts: { ...fl142.debts, [key]: { ...fl142.debts[key], dateAcquired: setDraftFieldValue(fl142.debts[key].dateAcquired, e.target.value) } } }))} />
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </details>
+                    <div className="grid gap-4 md:grid-cols-3"><div><FieldHeader label="Total asset gross value" field={workspace.fl142.assetTotalGrossValue} /><Input value={workspace.fl142.assetTotalGrossValue.value} onChange={(e) => updateFl142((fl142) => ({ ...fl142, assetTotalGrossValue: setDraftFieldValue(fl142.assetTotalGrossValue, e.target.value) }))} /></div><div><FieldHeader label="Total asset encumbrance" field={workspace.fl142.assetTotalAmountOwed} /><Input value={workspace.fl142.assetTotalAmountOwed.value} onChange={(e) => updateFl142((fl142) => ({ ...fl142, assetTotalAmountOwed: setDraftFieldValue(fl142.assetTotalAmountOwed, e.target.value) }))} /></div><div><FieldHeader label="Total debts" field={workspace.fl142.debtTotalOwing} /><Input value={workspace.fl142.debtTotalOwing.value} onChange={(e) => updateFl142((fl142) => ({ ...fl142, debtTotalOwing: setDraftFieldValue(fl142.debtTotalOwing, e.target.value) }))} /></div></div>
+                    <div className="grid gap-4 md:grid-cols-2"><div><FieldHeader label="Signature date" field={workspace.fl142.signatureDate} /><Input type="date" value={workspace.fl142.signatureDate.value} onChange={(e) => updateFl142((fl142) => ({ ...fl142, signatureDate: setDraftFieldValue(fl142.signatureDate, e.target.value) }))} /></div><div><FieldHeader label="Type/print name" field={workspace.fl142.typePrintName} /><Input value={workspace.fl142.typePrintName.value} onChange={(e) => updateFl142((fl142) => ({ ...fl142, typePrintName: setDraftFieldValue(fl142.typePrintName, e.target.value) }))} /></div></div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            <Card className="rounded-[1.75rem] border-white/70 bg-white/80 shadow-xl backdrop-blur dark:border-white/10 dark:bg-white/5">
+              <CardHeader>
+                <CardTitle className="text-slate-950 dark:text-white">FL-141 Declaration Regarding Service of Disclosure</CardTitle>
+                <CardDescription>Optional service declaration for preliminary/final financial disclosures.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-5">
+                <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5">
+                  <Checkbox checked={workspace.fl141.includeForm.value} onCheckedChange={(checked) => updateFl141((fl141) => ({ ...fl141, includeForm: setDraftFieldValue(fl141.includeForm, checked === true) }))} />
+                  <div>
+                    <div className="flex flex-wrap items-center gap-2"><span className="text-sm font-medium text-slate-800 dark:text-slate-100">Include FL-141 in generated packet</span><FieldSourceBadge field={workspace.fl141.includeForm} /></div>
+                    <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Use after disclosures are actually served.</p>
+                  </div>
+                </label>
+                {workspace.fl141.includeForm.value && (
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div><FieldHeader label="Disclosure type" field={workspace.fl141.disclosureType} /><select value={workspace.fl141.disclosureType.value} onChange={(e) => updateFl141((fl141) => ({ ...fl141, disclosureType: setDraftFieldValue(fl141.disclosureType, e.target.value as 'preliminary' | 'final') }))} className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"><option value="preliminary">Preliminary</option><option value="final">Final</option></select></div>
+                    <div><FieldHeader label="Service method" field={workspace.fl141.serviceMethod} /><select value={workspace.fl141.serviceMethod.value} onChange={(e) => updateFl141((fl141) => ({ ...fl141, serviceMethod: setDraftFieldValue(fl141.serviceMethod, e.target.value as 'personal' | 'mail') }))} className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"><option value="personal">Personal service</option><option value="mail">By mail</option></select></div>
+                    <div><FieldHeader label="Serving party" field={workspace.fl141.servingParty} /><select value={workspace.fl141.servingParty.value} onChange={(e) => updateFl141((fl141) => ({ ...fl141, servingParty: setDraftFieldValue(fl141.servingParty, e.target.value as 'petitioner' | 'respondent') }))} className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"><option value="petitioner">Petitioner</option><option value="respondent">Respondent</option></select></div>
+                    <div><FieldHeader label="Served on" field={workspace.fl141.servedOnParty} /><select value={workspace.fl141.servedOnParty.value} onChange={(e) => updateFl141((fl141) => ({ ...fl141, servedOnParty: setDraftFieldValue(fl141.servedOnParty, e.target.value as 'petitioner' | 'respondent') }))} className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"><option value="petitioner">Petitioner</option><option value="respondent">Respondent</option></select></div>
+                    <div><FieldHeader label="Service date" field={workspace.fl141.serviceDate} /><Input type="date" value={workspace.fl141.serviceDate.value} onChange={(e) => updateFl141((fl141) => ({ ...fl141, serviceDate: setDraftFieldValue(fl141.serviceDate, e.target.value) }))} /></div>
+                    <div><FieldHeader label="Other documents served" field={workspace.fl141.otherDocuments} /><Input value={workspace.fl141.otherDocuments.value} onChange={(e) => updateFl141((fl141) => ({ ...fl141, otherDocuments: setDraftFieldValue(fl141.otherDocuments, e.target.value) }))} /></div>
+                    <label className="flex items-start gap-2"><Checkbox checked={workspace.fl141.waiveFinalDeclaration.value} onCheckedChange={(checked) => updateFl141((fl141) => ({ ...fl141, waiveFinalDeclaration: setDraftFieldValue(fl141.waiveFinalDeclaration, checked === true) }))} /><span className="text-sm">Final declaration waived</span></label>
+                    <label className="flex items-start gap-2"><Checkbox checked={workspace.fl141.finalIncomeExpenseServed.value} onCheckedChange={(checked) => updateFl141((fl141) => ({ ...fl141, finalIncomeExpenseServed: setDraftFieldValue(fl141.finalIncomeExpenseServed, checked === true) }))} /><span className="text-sm">Final FL-150 served</span></label>
+                    <label className="flex items-start gap-2"><Checkbox checked={workspace.fl141.waiveReceipt.value} onCheckedChange={(checked) => updateFl141((fl141) => ({ ...fl141, waiveReceipt: setDraftFieldValue(fl141.waiveReceipt, checked === true) }))} /><span className="text-sm">Receipt/waiver served</span></label>
+                    <div />
+                    <div><FieldHeader label="Signature date" field={workspace.fl141.signatureDate} /><Input type="date" value={workspace.fl141.signatureDate.value} onChange={(e) => updateFl141((fl141) => ({ ...fl141, signatureDate: setDraftFieldValue(fl141.signatureDate, e.target.value) }))} /></div>
+                    <div><FieldHeader label="Type/print name" field={workspace.fl141.typePrintName} /><Input value={workspace.fl141.typePrintName.value} onChange={(e) => updateFl141((fl141) => ({ ...fl141, typePrintName: setDraftFieldValue(fl141.typePrintName, e.target.value) }))} /></div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            <Card className="rounded-[1.75rem] border-white/70 bg-white/80 shadow-xl backdrop-blur dark:border-white/10 dark:bg-white/5">
+              <CardHeader>
+                <CardTitle className="text-slate-950 dark:text-white">FL-140 Declaration of Disclosure</CardTitle>
+                <CardDescription>Optional declaration for preliminary or final financial disclosures.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-5">
+                <label className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5">
+                  <Checkbox checked={workspace.fl140.includeForm.value} onCheckedChange={(checked) => updateFl140((fl140) => ({ ...fl140, includeForm: setDraftFieldValue(fl140.includeForm, checked === true) }))} />
+                  <div>
+                    <div className="flex flex-wrap items-center gap-2"><span className="text-sm font-medium text-slate-800 dark:text-slate-100">Include FL-140 in generated packet</span><FieldSourceBadge field={workspace.fl140.includeForm} /></div>
+                    <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Use for preliminary/final disclosure service. This does not replace actually serving the supporting disclosures.</p>
+                  </div>
+                </label>
+                {workspace.fl140.includeForm.value && (
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div>
+                      <FieldHeader label="Declarant" field={workspace.fl140.declarantRole} />
+                      <select value={workspace.fl140.declarantRole.value} onChange={(e) => updateFl140((fl140) => ({ ...fl140, declarantRole: setDraftFieldValue(fl140.declarantRole, e.target.value as 'petitioner' | 'respondent') }))} className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background">
+                        <option value="petitioner">Petitioner</option><option value="respondent">Respondent</option>
+                      </select>
+                    </div>
+                    <div>
+                      <FieldHeader label="Disclosure type" field={workspace.fl140.disclosureType} />
+                      <select value={workspace.fl140.disclosureType.value} onChange={(e) => updateFl140((fl140) => ({ ...fl140, disclosureType: setDraftFieldValue(fl140.disclosureType, e.target.value as 'preliminary' | 'final') }))} className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background">
+                        <option value="preliminary">Preliminary</option><option value="final">Final</option>
+                      </select>
+                    </div>
+                    <label className="flex items-start gap-2"><Checkbox checked={workspace.fl140.servedScheduleOrPropertyDeclaration.value} onCheckedChange={(checked) => updateFl140((fl140) => ({ ...fl140, servedScheduleOrPropertyDeclaration: setDraftFieldValue(fl140.servedScheduleOrPropertyDeclaration, checked === true) }))} /><span className="text-sm">Served FL-142 or FL-160</span></label>
+                    <label className="flex items-start gap-2"><Checkbox checked={workspace.fl140.servedIncomeExpenseDeclaration.value} onCheckedChange={(checked) => updateFl140((fl140) => ({ ...fl140, servedIncomeExpenseDeclaration: setDraftFieldValue(fl140.servedIncomeExpenseDeclaration, checked === true) }))} /><span className="text-sm">Served FL-150 Income & Expense</span></label>
+                    <label className="flex items-start gap-2"><Checkbox checked={workspace.fl140.scheduleIncludesCommunityProperty.value} onCheckedChange={(checked) => updateFl140((fl140) => ({ ...fl140, scheduleIncludesCommunityProperty: setDraftFieldValue(fl140.scheduleIncludesCommunityProperty, checked === true) }))} /><span className="text-sm">Property schedule includes community/quasi-community property</span></label>
+                    <label className="flex items-start gap-2"><Checkbox checked={workspace.fl140.scheduleIncludesSeparateProperty.value} onCheckedChange={(checked) => updateFl140((fl140) => ({ ...fl140, scheduleIncludesSeparateProperty: setDraftFieldValue(fl140.scheduleIncludesSeparateProperty, checked === true) }))} /><span className="text-sm">Property schedule includes separate property</span></label>
+                    <label className="flex items-start gap-2"><Checkbox checked={workspace.fl140.servedTaxReturns.value} onCheckedChange={(checked) => updateFl140((fl140) => ({ ...fl140, servedTaxReturns: setDraftFieldValue(fl140.servedTaxReturns, checked === true) }))} /><span className="text-sm">Served two years of tax returns</span></label>
+                    <label className="flex items-start gap-2"><Checkbox checked={workspace.fl140.noTaxReturnsFiled.value} onCheckedChange={(checked) => updateFl140((fl140) => ({ ...fl140, noTaxReturnsFiled: setDraftFieldValue(fl140.noTaxReturnsFiled, checked === true) }))} /><span className="text-sm">No tax returns filed in the prior two years</span></label>
+                    <label className="flex items-start gap-2"><Checkbox checked={workspace.fl140.servedObligationsStatement.value} onCheckedChange={(checked) => updateFl140((fl140) => ({ ...fl140, servedObligationsStatement: setDraftFieldValue(fl140.servedObligationsStatement, checked === true) }))} /><span className="text-sm">Served obligations statement</span></label>
+                    <label className="flex items-start gap-2"><Checkbox checked={workspace.fl140.servedInvestmentOpportunityStatement.value} onCheckedChange={(checked) => updateFl140((fl140) => ({ ...fl140, servedInvestmentOpportunityStatement: setDraftFieldValue(fl140.servedInvestmentOpportunityStatement, checked === true) }))} /><span className="text-sm">Served investment opportunity statement</span></label>
+                    <div className="md:col-span-2"><FieldHeader label="Material facts statement" field={workspace.fl140.materialFactsStatement} /><Textarea className="min-h-[72px]" value={workspace.fl140.materialFactsStatement.value} onChange={(e) => updateFl140((fl140) => ({ ...fl140, materialFactsStatement: setDraftFieldValue(fl140.materialFactsStatement, e.target.value) }))} /></div>
+                    <div className="md:col-span-2"><FieldHeader label="Obligations statement details" field={workspace.fl140.obligationsStatement} /><Textarea className="min-h-[72px]" value={workspace.fl140.obligationsStatement.value} onChange={(e) => updateFl140((fl140) => ({ ...fl140, obligationsStatement: setDraftFieldValue(fl140.obligationsStatement, e.target.value) }))} /></div>
+                    <div className="md:col-span-2"><FieldHeader label="Investment opportunity statement details" field={workspace.fl140.investmentOpportunityStatement} /><Textarea className="min-h-[72px]" value={workspace.fl140.investmentOpportunityStatement.value} onChange={(e) => updateFl140((fl140) => ({ ...fl140, investmentOpportunityStatement: setDraftFieldValue(fl140.investmentOpportunityStatement, e.target.value) }))} /></div>
+                    <div><FieldHeader label="Signature date" field={workspace.fl140.signatureDate} /><Input type="date" value={workspace.fl140.signatureDate.value} onChange={(e) => updateFl140((fl140) => ({ ...fl140, signatureDate: setDraftFieldValue(fl140.signatureDate, e.target.value) }))} /></div>
+                    <div><FieldHeader label="Type/print name" field={workspace.fl140.typePrintName} /><Input value={workspace.fl140.typePrintName.value} onChange={(e) => updateFl140((fl140) => ({ ...fl140, typePrintName: setDraftFieldValue(fl140.typePrintName, e.target.value) }))} /></div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
 
             <Card className="rounded-[1.75rem] border-white/70 bg-white/80 shadow-xl backdrop-blur dark:border-white/10 dark:bg-white/5">
               <details
@@ -1524,10 +3202,98 @@ export function DraftFormsPage() {
                         Raw Maria handoff is available for audit, but the form fields below remain the source of truth.
                       </p>
                     </div>
-                    <Badge variant="outline" className="rounded-full">Chat context</Badge>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <Badge variant="outline" className="rounded-full">Chat context</Badge>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        className="rounded-full"
+                        onClick={(event) => {
+                          event.preventDefault();
+                          event.stopPropagation();
+                          void loadMariaChatPicker();
+                        }}
+                      >
+                        <PencilLine className="mr-2 h-4 w-4" />
+                        Edit Maria chats
+                      </Button>
+                    </div>
                   </div>
                 </summary>
                 <CardContent className="space-y-5 border-t border-slate-200/70 pt-5 dark:border-white/10">
+                  {chatPickerOpen && (
+                    <div className="rounded-2xl border border-emerald-200/80 bg-emerald-50/70 p-4 dark:border-emerald-400/20 dark:bg-emerald-400/10">
+                      <div className="flex flex-wrap items-start justify-between gap-3">
+                        <div>
+                          <p className="flex items-center gap-2 text-sm font-semibold text-slate-950 dark:text-white">
+                            <MessageSquareText className="h-4 w-4 text-emerald-600" />
+                            Choose exactly what Maria chat context goes into this form
+                          </p>
+                          <p className="mt-1 text-xs leading-5 text-slate-600 dark:text-slate-300">
+                            Selected messages replace the captured handoff below, so random unrelated chat text does not get mixed into the draft.
+                          </p>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          <Button type="button" size="sm" onClick={applySelectedChatHandoff} disabled={chatPickerLoading || selectedChatMessages.length === 0}>
+                            Use {selectedChatMessages.length} selected
+                          </Button>
+                          <Button type="button" size="sm" variant="ghost" onClick={() => setChatPickerOpen(false)}>
+                            Cancel
+                          </Button>
+                        </div>
+                      </div>
+                      {chatPickerLoading ? (
+                        <div className="mt-4 flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
+                          <Loader2 className="h-4 w-4 animate-spin" /> Loading Maria chats...
+                        </div>
+                      ) : chatPickerSessions.length === 0 ? (
+                        <p className="mt-4 text-sm text-slate-600 dark:text-slate-300">No saved Maria chats were found yet.</p>
+                      ) : (
+                        <div className="mt-4 max-h-96 space-y-4 overflow-auto pr-1">
+                          {chatPickerSessions.map((session) => (
+                            <div key={session.id} className="rounded-xl border border-slate-200/80 bg-white/80 p-3 dark:border-white/10 dark:bg-slate-950/30">
+                              <div className="mb-2 flex items-center justify-between gap-3">
+                                <p className="truncate text-sm font-semibold text-slate-900 dark:text-white">{session.title || 'Maria chat'}</p>
+                                <Button
+                                  type="button"
+                                  size="sm"
+                                  variant="ghost"
+                                  className="h-7 rounded-full px-3 text-xs"
+                                  onClick={() => {
+                                    setSelectedChatMessageIds((current) => {
+                                      const next = new Set(current);
+                                      const allSelected = session.messages.every((message) => next.has(message.id));
+                                      session.messages.forEach((message) => allSelected ? next.delete(message.id) : next.add(message.id));
+                                      return next;
+                                    });
+                                  }}
+                                >
+                                  Toggle chat
+                                </Button>
+                              </div>
+                              <div className="space-y-2">
+                                {session.messages.map((message) => (
+                                  <label key={message.id} className="flex cursor-pointer gap-3 rounded-lg border border-slate-200/70 bg-slate-50/70 p-3 text-sm dark:border-white/10 dark:bg-white/5">
+                                    <Checkbox checked={selectedChatMessageIds.has(message.id)} onCheckedChange={() => toggleChatMessageSelection(message.id)} />
+                                    <div className="min-w-0 flex-1">
+                                      <div className="mb-1 flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">
+                                        <span>{message.role === 'assistant' ? 'Maria' : 'User'}</span>
+                                        <span>{new Date(message.timestamp).toLocaleString()}</span>
+                                      </div>
+                                      <p className="line-clamp-4 whitespace-pre-wrap text-slate-700 dark:text-slate-200">
+                                        {message.content || (message.attachments?.length ? `Attachments: ${message.attachments.map((attachment) => attachment.name).join(', ')}` : 'Empty message')}
+                                      </p>
+                                    </div>
+                                  </label>
+                                ))}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )}
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">User request</p>
                     <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-700 dark:text-slate-200">
@@ -1558,7 +3324,7 @@ export function DraftFormsPage() {
               </details>
             </Card>
 
-            <Card className="rounded-[1.75rem] border-white/70 bg-white/80 shadow-xl backdrop-blur dark:border-white/10 dark:bg-white/5">
+            <Card id="draft-section-fl300" className="scroll-mt-24 rounded-[1.75rem] border-white/70 bg-white/80 shadow-xl backdrop-blur dark:border-white/10 dark:bg-white/5">
               <CardHeader>
                 <CardTitle className="text-slate-950 dark:text-white">FL-300 Request for Order</CardTitle>
                 <CardDescription>Optional RFO generation. Every legally material choice here is explicit; Draft Forms will not infer orders from the starter packet.</CardDescription>
@@ -1574,7 +3340,7 @@ export function DraftFormsPage() {
                       <span className="text-sm font-medium text-slate-800 dark:text-slate-100">Include FL-300 in generated packet</span>
                       <FieldSourceBadge field={workspace.fl300.includeForm} />
                     </div>
-                    <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Use only when you are deliberately filing a Request for Order. Financial requests are supported as a safe v1 subset until FL-150/FL-319 attachment workflows are added.</p>
+                    <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Use only when you are deliberately filing a Request for Order. Financial requests are supported as a safe v1 subset with optional FL-150 and FL-319 attachments.</p>
                   </div>
                 </label>
 
@@ -1624,7 +3390,7 @@ export function DraftFormsPage() {
                       </div>
                     </div>
 
-                    <div>
+                    <div id="draft-field-fl300-served-party" className="scroll-mt-24">
                       <p className="text-sm font-medium text-slate-800 dark:text-slate-100">TO / served party</p>
                       <div className="mt-3 grid gap-2 md:grid-cols-4">
                         {[
@@ -1702,10 +3468,56 @@ export function DraftFormsPage() {
                       <label className="mt-7 flex items-start gap-2"><Checkbox checked={workspace.fl300.supportRequests.childSupportGuideline.value} onCheckedChange={(checked) => updateFl300((fl300) => ({ ...fl300, supportRequests: { ...fl300.supportRequests, childSupportGuideline: setDraftFieldValue(fl300.supportRequests.childSupportGuideline, checked === true) } }))} /><span className="text-sm">Request guideline child support</span></label>
                       <div><FieldHeader label="Spousal support amount" field={workspace.fl300.supportRequests.spousalSupportAmount} /><Input value={workspace.fl300.supportRequests.spousalSupportAmount.value} onChange={(e) => updateFl300((fl300) => ({ ...fl300, supportRequests: { ...fl300.supportRequests, spousalSupportAmount: setDraftFieldValue(fl300.supportRequests.spousalSupportAmount, e.target.value) } }))} /></div>
                       <div><FieldHeader label="Attorney fees/costs amount" field={workspace.fl300.attorneyFees.amount} /><Input value={workspace.fl300.attorneyFees.amount.value} onChange={(e) => updateFl300((fl300) => ({ ...fl300, attorneyFees: { ...fl300.attorneyFees, amount: setDraftFieldValue(fl300.attorneyFees.amount, e.target.value) } }))} /></div>
+                      {workspace.fl300.requestTypes.attorneyFeesCosts.value && (
+                        <div className="md:col-span-2 rounded-xl border border-slate-200/80 bg-white/70 p-3 dark:border-white/10 dark:bg-white/5">
+                          <label className="flex items-start gap-2">
+                            <Checkbox checked={workspace.fl300.attorneyFees.includeFl319.value} onCheckedChange={(checked) => updateFl300((fl300) => ({ ...fl300, attorneyFees: { ...fl300.attorneyFees, includeFl319: setDraftFieldValue(fl300.attorneyFees.includeFl319, checked === true) } }))} />
+                            <span className="text-sm font-medium text-slate-800 dark:text-slate-100">Include FL-319 attorney fees/costs attachment</span>
+                          </label>
+                          <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Use this when FL-300 asks the court to order another party to pay attorney fees or costs.</p>
+                          {workspace.fl300.attorneyFees.includeFl319.value && (
+                            <div className="mt-4 grid gap-3 md:grid-cols-3">
+                              <label className="flex items-start gap-2 md:col-span-3"><Checkbox checked={workspace.fl300.attorneyFees.freeLegalServices.value} onCheckedChange={(checked) => updateFl300((fl300) => ({ ...fl300, attorneyFees: { ...fl300.attorneyFees, freeLegalServices: setDraftFieldValue(fl300.attorneyFees.freeLegalServices, checked === true) } }))} /><span className="text-sm">Receiving free legal services</span></label>
+                              <div><FieldHeader label="Fees requested" field={workspace.fl300.attorneyFees.feesRequestedAmount} /><Input value={workspace.fl300.attorneyFees.feesRequestedAmount.value} onChange={(e) => updateFl300((fl300) => ({ ...fl300, attorneyFees: { ...fl300.attorneyFees, feesRequestedAmount: setDraftFieldValue(fl300.attorneyFees.feesRequestedAmount, e.target.value) } }))} placeholder="$5,000" /></div>
+                              <div><FieldHeader label="Costs requested" field={workspace.fl300.attorneyFees.costsRequestedAmount} /><Input value={workspace.fl300.attorneyFees.costsRequestedAmount.value} onChange={(e) => updateFl300((fl300) => ({ ...fl300, attorneyFees: { ...fl300.attorneyFees, costsRequestedAmount: setDraftFieldValue(fl300.attorneyFees.costsRequestedAmount, e.target.value) } }))} placeholder="$750" /></div>
+                              <div><FieldHeader label="Fees/costs incurred to date" field={workspace.fl300.attorneyFees.incurredToDateAmount} /><Input value={workspace.fl300.attorneyFees.incurredToDateAmount.value} onChange={(e) => updateFl300((fl300) => ({ ...fl300, attorneyFees: { ...fl300.attorneyFees, incurredToDateAmount: setDraftFieldValue(fl300.attorneyFees.incurredToDateAmount, e.target.value) } }))} /></div>
+                              <div><FieldHeader label="Estimated future fees/costs" field={workspace.fl300.attorneyFees.estimatedFutureAmount} /><Input value={workspace.fl300.attorneyFees.estimatedFutureAmount.value} onChange={(e) => updateFl300((fl300) => ({ ...fl300, attorneyFees: { ...fl300.attorneyFees, estimatedFutureAmount: setDraftFieldValue(fl300.attorneyFees.estimatedFutureAmount, e.target.value) } }))} /></div>
+                              <div><FieldHeader label="Limited scope fees/costs" field={workspace.fl300.attorneyFees.limitedScopeAmount} /><Input value={workspace.fl300.attorneyFees.limitedScopeAmount.value} onChange={(e) => updateFl300((fl300) => ({ ...fl300, attorneyFees: { ...fl300.attorneyFees, limitedScopeAmount: setDraftFieldValue(fl300.attorneyFees.limitedScopeAmount, e.target.value) } }))} /></div>
+                              <div>
+                                <FieldHeader label="Payment requested from" field={workspace.fl300.attorneyFees.paymentRequestedFrom} />
+                                <select value={workspace.fl300.attorneyFees.paymentRequestedFrom.value} onChange={(e) => updateFl300((fl300) => ({ ...fl300, attorneyFees: { ...fl300.attorneyFees, paymentRequestedFrom: setDraftFieldValue(fl300.attorneyFees.paymentRequestedFrom, e.target.value as 'unspecified' | 'petitioner' | 'respondent' | 'other') } }))} className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background">
+                                  <option value="unspecified">Not selected</option><option value="petitioner">Petitioner</option><option value="respondent">Respondent</option><option value="other">Other</option>
+                                </select>
+                              </div>
+                              {workspace.fl300.attorneyFees.paymentRequestedFrom.value === 'other' && <div><FieldHeader label="Other paying party name" field={workspace.fl300.attorneyFees.paymentRequestedFromOtherName} /><Input value={workspace.fl300.attorneyFees.paymentRequestedFromOtherName.value} onChange={(e) => updateFl300((fl300) => ({ ...fl300, attorneyFees: { ...fl300.attorneyFees, paymentRequestedFromOtherName: setDraftFieldValue(fl300.attorneyFees.paymentRequestedFromOtherName, e.target.value) } }))} /></div>}
+                              <div>
+                                <FieldHeader label="Prior fee order?" field={workspace.fl300.attorneyFees.priorFeeOrderExists} />
+                                <select value={workspace.fl300.attorneyFees.priorFeeOrderExists.value} onChange={(e) => updateFl300((fl300) => ({ ...fl300, attorneyFees: { ...fl300.attorneyFees, priorFeeOrderExists: setDraftFieldValue(fl300.attorneyFees.priorFeeOrderExists, e.target.value as 'unspecified' | 'no' | 'yes') } }))} className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background">
+                                  <option value="unspecified">Not selected</option><option value="no">No</option><option value="yes">Yes</option>
+                                </select>
+                              </div>
+                              {workspace.fl300.attorneyFees.priorFeeOrderExists.value === 'yes' && <>
+                                <div><FieldHeader label="Prior order payor" field={workspace.fl300.attorneyFees.priorFeeOrderPayor} /><select value={workspace.fl300.attorneyFees.priorFeeOrderPayor.value} onChange={(e) => updateFl300((fl300) => ({ ...fl300, attorneyFees: { ...fl300.attorneyFees, priorFeeOrderPayor: setDraftFieldValue(fl300.attorneyFees.priorFeeOrderPayor, e.target.value as 'unspecified' | 'petitioner' | 'respondent' | 'other') } }))} className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"><option value="unspecified">Not selected</option><option value="petitioner">Petitioner</option><option value="respondent">Respondent</option><option value="other">Other</option></select></div>
+                                <div><FieldHeader label="Prior order amount" field={workspace.fl300.attorneyFees.priorFeeOrderAmount} /><Input value={workspace.fl300.attorneyFees.priorFeeOrderAmount.value} onChange={(e) => updateFl300((fl300) => ({ ...fl300, attorneyFees: { ...fl300.attorneyFees, priorFeeOrderAmount: setDraftFieldValue(fl300.attorneyFees.priorFeeOrderAmount, e.target.value) } }))} /></div>
+                                <div><FieldHeader label="Prior order date" field={workspace.fl300.attorneyFees.priorFeeOrderDate} /><Input type="date" value={workspace.fl300.attorneyFees.priorFeeOrderDate.value} onChange={(e) => updateFl300((fl300) => ({ ...fl300, attorneyFees: { ...fl300.attorneyFees, priorFeeOrderDate: setDraftFieldValue(fl300.attorneyFees.priorFeeOrderDate, e.target.value) } }))} /></div>
+                              </>}
+                              <div>
+                                <FieldHeader label="Prior payments status" field={workspace.fl300.attorneyFees.priorPaymentsStatus} />
+                                <select value={workspace.fl300.attorneyFees.priorPaymentsStatus.value} onChange={(e) => updateFl300((fl300) => ({ ...fl300, attorneyFees: { ...fl300.attorneyFees, priorPaymentsStatus: setDraftFieldValue(fl300.attorneyFees.priorPaymentsStatus, e.target.value as 'unspecified' | 'made' | 'not_made' | 'partial') } }))} className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background">
+                                  <option value="unspecified">Not selected</option><option value="made">Have been made</option><option value="not_made">Have not been made</option><option value="partial">Have been made in part</option>
+                                </select>
+                              </div>
+                              <div><FieldHeader label="Pages attached to FL-319" field={workspace.fl300.attorneyFees.pagesAttached} /><Input value={workspace.fl300.attorneyFees.pagesAttached.value} onChange={(e) => updateFl300((fl300) => ({ ...fl300, attorneyFees: { ...fl300.attorneyFees, pagesAttached: setDraftFieldValue(fl300.attorneyFees.pagesAttached, e.target.value) } }))} /></div>
+                              <div className="md:col-span-3"><FieldHeader label="Payment sources, if known" field={workspace.fl300.attorneyFees.paymentSources} /><Textarea className="min-h-[72px]" value={workspace.fl300.attorneyFees.paymentSources.value} onChange={(e) => updateFl300((fl300) => ({ ...fl300, attorneyFees: { ...fl300.attorneyFees, paymentSources: setDraftFieldValue(fl300.attorneyFees.paymentSources, e.target.value) } }))} /></div>
+                              <div className="md:col-span-3"><FieldHeader label="Additional FL-319 information" field={workspace.fl300.attorneyFees.additionalInformation} /><Textarea className="min-h-[90px]" value={workspace.fl300.attorneyFees.additionalInformation.value} onChange={(e) => updateFl300((fl300) => ({ ...fl300, attorneyFees: { ...fl300.attorneyFees, additionalInformation: setDraftFieldValue(fl300.attorneyFees.additionalInformation, e.target.value) } }))} /></div>
+                            </div>
+                          )}
+                        </div>
+                      )}
                       <div className="md:col-span-2"><FieldHeader label="Property-control property/debt details" field={workspace.fl300.propertyControl.propertyDescription} /><Textarea className="min-h-[72px]" value={workspace.fl300.propertyControl.propertyDescription.value} onChange={(e) => updateFl300((fl300) => ({ ...fl300, propertyControl: { ...fl300.propertyControl, propertyDescription: setDraftFieldValue(fl300.propertyControl.propertyDescription, e.target.value) } }))} /></div>
                       <div className="md:col-span-2"><FieldHeader label="Other orders requested" field={workspace.fl300.otherOrdersRequested} /><Textarea className="min-h-[72px]" value={workspace.fl300.otherOrdersRequested.value} onChange={(e) => updateFl300((fl300) => ({ ...fl300, otherOrdersRequested: setDraftFieldValue(fl300.otherOrdersRequested, e.target.value) }))} /></div>
-                      <div className="md:col-span-2"><FieldHeader label="Facts supporting the requested orders" field={workspace.fl300.facts} /><Textarea className="min-h-[110px]" value={workspace.fl300.facts.value} onChange={(e) => updateFl300((fl300) => ({ ...fl300, facts: setDraftFieldValue(fl300.facts, e.target.value) }))} placeholder="Required. Longer facts will generate an Attachment 9 continuation." /></div>
-                      <div><FieldHeader label="Signature date" field={workspace.fl300.signatureDate} /><Input type="date" value={workspace.fl300.signatureDate.value} onChange={(e) => updateFl300((fl300) => ({ ...fl300, signatureDate: setDraftFieldValue(fl300.signatureDate, e.target.value) }))} /></div>
+                      <div id="draft-field-fl300-facts" className="scroll-mt-24 md:col-span-2"><FieldHeader label="Facts supporting the requested orders" field={workspace.fl300.facts} /><Textarea className="min-h-[110px]" value={workspace.fl300.facts.value} onChange={(e) => updateFl300((fl300) => ({ ...fl300, facts: setDraftFieldValue(fl300.facts, e.target.value) }))} placeholder="Required. Longer facts will generate an Attachment 9 continuation." /></div>
+                      <div id="draft-field-fl300-signature-date" className="scroll-mt-24"><FieldHeader label="Signature date" field={workspace.fl300.signatureDate} /><Input type="date" value={workspace.fl300.signatureDate.value} onChange={(e) => updateFl300((fl300) => ({ ...fl300, signatureDate: setDraftFieldValue(fl300.signatureDate, e.target.value) }))} /></div>
                       <div><FieldHeader label="Type/print name" field={workspace.fl300.typePrintName} /><Input value={workspace.fl300.typePrintName.value} onChange={(e) => updateFl300((fl300) => ({ ...fl300, typePrintName: setDraftFieldValue(fl300.typePrintName, e.target.value) }))} /></div>
                     </div>
                     </div>
@@ -1714,7 +3526,7 @@ export function DraftFormsPage() {
               </CardContent>
             </Card>
 
-            <Card className="rounded-[1.75rem] border-white/70 bg-white/80 shadow-xl backdrop-blur dark:border-white/10 dark:bg-white/5">
+            <Card id="draft-section-fl150" className="scroll-mt-24 rounded-[1.75rem] border-white/70 bg-white/80 shadow-xl backdrop-blur dark:border-white/10 dark:bg-white/5">
               <CardHeader>
                 <CardTitle className="text-slate-950 dark:text-white">FL-150 Income and Expense Declaration</CardTitle>
                 <CardDescription>Optional financial declaration for support/fee requests. Values are never inferred from FL-300; enter only explicit financial facts.</CardDescription>
@@ -1807,7 +3619,7 @@ export function DraftFormsPage() {
                     </div>
                     <div className="grid gap-4 md:grid-cols-3">
                       <div><FieldHeader label="Attachment page count" field={workspace.fl150.attachmentPageCount} /><Input value={workspace.fl150.attachmentPageCount.value} onChange={(e) => updateFl150((fl150) => ({ ...fl150, attachmentPageCount: setDraftFieldValue(fl150.attachmentPageCount, e.target.value) }))} /></div>
-                      <div><FieldHeader label="Signature date" field={workspace.fl150.signatureDate} /><Input type="date" value={workspace.fl150.signatureDate.value} onChange={(e) => updateFl150((fl150) => ({ ...fl150, signatureDate: setDraftFieldValue(fl150.signatureDate, e.target.value) }))} /></div>
+                      <div id="draft-field-fl150-signature-date" className="scroll-mt-24"><FieldHeader label="Signature date" field={workspace.fl150.signatureDate} /><Input type="date" value={workspace.fl150.signatureDate.value} onChange={(e) => updateFl150((fl150) => ({ ...fl150, signatureDate: setDraftFieldValue(fl150.signatureDate, e.target.value) }))} /></div>
                       <div><FieldHeader label="Type/print name" field={workspace.fl150.typePrintName} /><Input value={workspace.fl150.typePrintName.value} onChange={(e) => updateFl150((fl150) => ({ ...fl150, typePrintName: setDraftFieldValue(fl150.typePrintName, e.target.value) }))} /></div>
                       <div className="md:col-span-3"><FieldHeader label="Other support information / hardship explanation" field={workspace.fl150.supportOtherInformation} /><Textarea className="min-h-[80px]" value={workspace.fl150.supportOtherInformation.value} onChange={(e) => updateFl150((fl150) => ({ ...fl150, supportOtherInformation: setDraftFieldValue(fl150.supportOtherInformation, e.target.value) }))} /></div>
                     </div>
@@ -2273,7 +4085,7 @@ export function DraftFormsPage() {
                 )}
 
                 <div className="rounded-2xl border border-slate-200/80 bg-slate-50/80 p-4 dark:border-white/10 dark:bg-white/5">
-                  <p className="text-sm font-medium text-slate-800 dark:text-slate-100">Residency for filing eligibility</p>
+                  <p id="draft-field-residency-path" className="scroll-mt-24 text-sm font-medium text-slate-800 dark:text-slate-100">Residency for filing eligibility</p>
                   <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
                     {isDissolutionProceeding
                       ? 'For dissolution, FL-100 residency qualification is typically 6 months in California and 3 months in the filing county for either spouse (unless a listed jurisdiction exception applies).'
@@ -6526,7 +8338,7 @@ export function DraftFormsPage() {
           </div>
 
           <div className="space-y-6 lg:sticky lg:top-24 lg:self-start">
-            <Card className="rounded-[1.75rem] border-white/70 bg-white/80 shadow-xl backdrop-blur dark:border-white/10 dark:bg-white/5">
+            <Card id="draft-section-generate" className="scroll-mt-28 rounded-[1.75rem] border-white/70 bg-white/80 shadow-xl backdrop-blur dark:border-white/10 dark:bg-white/5">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-slate-950 dark:text-white">
                   <FileText className="h-5 w-5 text-emerald-600" />
@@ -6561,12 +8373,79 @@ export function DraftFormsPage() {
                     </div>
                   ) : (
                     <ul className="mt-3 space-y-2 text-sm text-slate-700 dark:text-slate-200">
-                      {missingItems.slice(0, 8).map((item) => (
-                        <li key={item}>• {item}</li>
-                      ))}
+                      {missingItems.slice(0, 8).map((item) => {
+                        const targetId = getMissingItemTargetId(item);
+                        return (
+                          <li key={item}>
+                            <span>{item}</span>
+                            {targetId && (
+                              <span
+                                role="button"
+                                tabIndex={0}
+                                onClick={(event) => {
+                                  event.preventDefault();
+                                  event.stopPropagation();
+                                  jumpToMissingItem(item);
+                                }}
+                                onKeyDown={(event) => {
+                                  if (event.key === 'Enter' || event.key === ' ') {
+                                    event.preventDefault();
+                                    event.stopPropagation();
+                                    jumpToMissingItem(item);
+                                  }
+                                }}
+                                className="ml-2 inline-flex h-7 cursor-pointer items-center rounded-full border border-slate-200 bg-white px-3 text-xs font-medium text-slate-700 hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 dark:border-white/10 dark:bg-white/10 dark:text-slate-100 dark:hover:bg-white/15"
+                              >
+                                Show section
+                              </span>
+                            )}
+                          </li>
+                        );
+                      })}
                     </ul>
                   )}
                 </div>
+
+                {(missingItems.includes('FL-300 custody/visitation order source') || missingItems.includes('FL-300 facts supporting requested orders') || missingItems.includes('FL-150 signature date')) && (
+                  <div className="rounded-2xl border border-amber-200 bg-amber-50/80 p-4 dark:border-amber-300/20 dark:bg-amber-500/10">
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-700 dark:text-amber-200">Quick fill missing fields</p>
+                    <div className="mt-3 space-y-3">
+                      {missingItems.includes('FL-300 custody/visitation order source') && (
+                        <div>
+                          <Label className="text-xs font-semibold text-amber-950 dark:text-amber-100">FL-300 custody/visitation order source</Label>
+                          <Textarea
+                            className="mt-1 min-h-[72px] bg-white/80 dark:bg-slate-950/60"
+                            placeholder="Example: As follows: temporary joint legal custody, primary physical custody to petitioner, visitation as agreed or by court schedule."
+                            value={workspace.fl300.custodyRequests.asFollowsText.value}
+                            onChange={(event) => updateFl300((fl300) => ({ ...fl300, custodyRequests: { ...fl300.custodyRequests, asFollowsText: setDraftFieldValue(fl300.custodyRequests.asFollowsText, event.target.value) } }))}
+                          />
+                        </div>
+                      )}
+                      {missingItems.includes('FL-300 facts supporting requested orders') && (
+                        <div>
+                          <Label className="text-xs font-semibold text-amber-950 dark:text-amber-100">FL-300 facts supporting requested orders</Label>
+                          <Textarea
+                            className="mt-1 min-h-[90px] bg-white/80 dark:bg-slate-950/60"
+                            placeholder="Enter the facts supporting the orders requested. Longer text becomes an Attachment 9 continuation."
+                            value={workspace.fl300.facts.value}
+                            onChange={(event) => updateFl300((fl300) => ({ ...fl300, facts: setDraftFieldValue(fl300.facts, event.target.value) }))}
+                          />
+                        </div>
+                      )}
+                      {missingItems.includes('FL-150 signature date') && (
+                        <div>
+                          <Label className="text-xs font-semibold text-amber-950 dark:text-amber-100">FL-150 signature date</Label>
+                          <Input
+                            type="date"
+                            className="mt-1 bg-white/80 dark:bg-slate-950/60"
+                            value={workspace.fl150.signatureDate.value}
+                            onChange={(event) => updateFl150((fl150) => ({ ...fl150, signatureDate: setDraftFieldValue(fl150.signatureDate, event.target.value) }))}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
 
                 <div className="rounded-2xl border border-emerald-200 bg-emerald-50/80 p-4 dark:border-emerald-400/20 dark:bg-emerald-400/10">
                   <div className="flex items-start gap-3">
@@ -6591,10 +8470,22 @@ export function DraftFormsPage() {
                   </div>
                 )}
 
+                {missingItems.length > 0 && (
+                  <label className="flex items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50/80 p-4 text-sm text-amber-950 dark:border-amber-300/20 dark:bg-amber-500/10 dark:text-amber-100">
+                    <Checkbox
+                      checked={packetReadinessOverride}
+                      onCheckedChange={(checked) => setPacketReadinessOverride(checked === true)}
+                    />
+                    <span>
+                      <span className="font-semibold">Manual override:</span> generate the packet anyway. I’ll fill or verify the remaining items manually before filing.
+                    </span>
+                  </label>
+                )}
+
                 <div className="grid gap-3">
                   <Button
                     onClick={handleGeneratePacket}
-                    disabled={isGeneratingPacket || missingItems.length > 0}
+                    disabled={isGeneratingPacket || (missingItems.length > 0 && !packetReadinessOverride)}
                     className="rounded-full bg-emerald-700 text-white hover:bg-emerald-800 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-emerald-600 dark:hover:bg-emerald-500"
                   >
                     {isGeneratingPacket ? (

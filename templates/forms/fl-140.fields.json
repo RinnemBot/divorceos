@@ -1,0 +1,431 @@
+[
+  {
+    "page": 0,
+    "name": "FL-140.caption.attorneyOrParty",
+    "fullName": "FL-140.caption.attorneyOrParty",
+    "rect": [
+      37.001,
+      687.6,
+      391.502,
+      738.0
+    ],
+    "type": "/Tx",
+    "tooltip": "PartyAttyAddInfo_ft"
+  },
+  {
+    "page": 0,
+    "name": "FL-140.caption.phone",
+    "fullName": "FL-140.caption.phone",
+    "rect": [
+      97.091,
+      676.097,
+      220.34,
+      686.514
+    ],
+    "type": "/Tx",
+    "tooltip": "TELEPHONE NO.:"
+  },
+  {
+    "page": 0,
+    "name": "FL-140.caption.fax",
+    "fullName": "FL-140.caption.fax",
+    "rect": [
+      270.568,
+      676.097,
+      390.991,
+      686.514
+    ],
+    "type": "/Tx",
+    "tooltip": "FAX NO. :"
+  },
+  {
+    "page": 0,
+    "name": "FL-140.caption.email",
+    "fullName": "FL-140.caption.email",
+    "rect": [
+      97.01,
+      666.244,
+      390.992,
+      676.244
+    ],
+    "type": "/Tx",
+    "tooltip": "E-MAIL ADDRESS:"
+  },
+  {
+    "page": 0,
+    "name": "FL-140.caption.attorneyFor",
+    "fullName": "FL-140.caption.attorneyFor",
+    "rect": [
+      116.513,
+      656.819,
+      390.992,
+      666.819
+    ],
+    "type": "/Tx",
+    "tooltip": "ATTORNEY FOR (Name):"
+  },
+  {
+    "page": 0,
+    "name": "FL-140.caption.county",
+    "fullName": "FL-140.caption.county",
+    "rect": [
+      230.395,
+      641.196,
+      391.502,
+      651.197
+    ],
+    "type": "/Tx",
+    "tooltip": "SUPERIOR COURT OF CALIFORNIA, COUNTY OF"
+  },
+  {
+    "page": 0,
+    "name": "FL-140.caption.street",
+    "fullName": "FL-140.caption.street",
+    "rect": [
+      104.574,
+      630.994,
+      391.502,
+      640.995
+    ],
+    "type": "/Tx",
+    "tooltip": "STREET ADDRESS:"
+  },
+  {
+    "page": 0,
+    "name": "FL-140.caption.mailing",
+    "fullName": "FL-140.caption.mailing",
+    "rect": [
+      104.328,
+      620.795,
+      391.502,
+      630.796
+    ],
+    "type": "/Tx",
+    "tooltip": "MAILING ADDRESS:"
+  },
+  {
+    "page": 0,
+    "name": "FL-140.caption.cityZip",
+    "fullName": "FL-140.caption.cityZip",
+    "rect": [
+      104.385,
+      610.593,
+      391.502,
+      620.594
+    ],
+    "type": "/Tx",
+    "tooltip": "CITY AND ZIP CODE:"
+  },
+  {
+    "page": 0,
+    "name": "FL-140.caption.branch",
+    "fullName": "FL-140.caption.branch",
+    "rect": [
+      104.317,
+      600.389,
+      391.502,
+      610.39
+    ],
+    "type": "/Tx",
+    "tooltip": "BRANCH NAME:"
+  },
+  {
+    "page": 0,
+    "name": "FL-140.caption.petitioner",
+    "fullName": "FL-140.caption.petitioner",
+    "rect": [
+      151.157,
+      584.736,
+      388.8,
+      594.737
+    ],
+    "type": "/Tx",
+    "tooltip": "PETITIONER:"
+  },
+  {
+    "page": 0,
+    "name": "FL-140.caption.respondent",
+    "fullName": "FL-140.caption.respondent",
+    "rect": [
+      151.808,
+      572.479,
+      388.8,
+      582.48
+    ],
+    "type": "/Tx",
+    "tooltip": "RESPONDENT:"
+  },
+  {
+    "page": 0,
+    "name": "FL-140.caption.otherParentParty",
+    "fullName": "FL-140.caption.otherParentParty",
+    "rect": [
+      151.157,
+      560.239,
+      388.8,
+      570.24
+    ],
+    "type": "/Tx",
+    "tooltip": "OTHER PARENT/PARTY:"
+  },
+  {
+    "page": 0,
+    "name": "FL-140.caption.caseNumber",
+    "fullName": "FL-140.caption.caseNumber",
+    "rect": [
+      400.005,
+      529.795,
+      572.805,
+      541.395
+    ],
+    "type": "/Tx",
+    "tooltip": "CASE NUMBER:"
+  },
+  {
+    "page": 0,
+    "name": "FL-140.declarant.petitioner",
+    "fullName": "FL-140.declarant.petitioner",
+    "rect": [
+      83.341,
+      528.521,
+      93.341,
+      538.521
+    ],
+    "type": "/Btn",
+    "tooltip": "Petitioner's"
+  },
+  {
+    "page": 0,
+    "name": "FL-140.declarant.respondent",
+    "fullName": "FL-140.declarant.respondent",
+    "rect": [
+      83.341,
+      514.121,
+      93.341,
+      524.121
+    ],
+    "type": "/Btn",
+    "tooltip": "Respondent's"
+  },
+  {
+    "page": 0,
+    "name": "FL-140.disclosure.preliminary",
+    "fullName": "FL-140.disclosure.preliminary",
+    "rect": [
+      227.341,
+      528.521,
+      237.341,
+      538.521
+    ],
+    "type": "/Btn",
+    "tooltip": "Preliminary"
+  },
+  {
+    "page": 0,
+    "name": "FL-140.disclosure.final",
+    "fullName": "FL-140.disclosure.final",
+    "rect": [
+      227.341,
+      514.119,
+      237.341,
+      524.119
+    ],
+    "type": "/Btn",
+    "tooltip": "Final"
+  },
+  {
+    "page": 0,
+    "name": "FL-140.served.scheduleOrProperty",
+    "fullName": "FL-140.served.scheduleOrProperty",
+    "rect": [
+      54.561,
+      315.394,
+      64.561,
+      325.394
+    ],
+    "type": "/Btn",
+    "tooltip": "A completed Schedule of Assets and Debts (form FL-142) or "
+  },
+  {
+    "page": 0,
+    "name": "FL-140.served.communityProperty",
+    "fullName": "FL-140.served.communityProperty",
+    "rect": [
+      76.037,
+      304.141,
+      86.037,
+      314.141
+    ],
+    "type": "/Btn",
+    "tooltip": "Community and Quasi-Community Property"
+  },
+  {
+    "page": 0,
+    "name": "FL-140.served.separateProperty",
+    "fullName": "FL-140.served.separateProperty",
+    "rect": [
+      284.837,
+      304.141,
+      294.837,
+      314.141
+    ],
+    "type": "/Btn",
+    "tooltip": "Separate Property."
+  },
+  {
+    "page": 0,
+    "name": "FL-140.served.propertyDeclaration",
+    "fullName": "FL-140.served.propertyDeclaration",
+    "rect": [
+      328.141,
+      315.58,
+      338.141,
+      325.58
+    ],
+    "type": "/Btn",
+    "tooltip": "A Property Declaration (form FL-160) for (specify):"
+  },
+  {
+    "page": 0,
+    "name": "FL-140.served.incomeExpense",
+    "fullName": "FL-140.served.incomeExpense",
+    "rect": [
+      54.535,
+      288.759,
+      64.535,
+      298.759
+    ],
+    "type": "/Btn",
+    "tooltip": "A completed Income and Expense Declaration (form FL-150)."
+  },
+  {
+    "page": 0,
+    "name": "FL-140.served.taxReturns",
+    "fullName": "FL-140.served.taxReturns",
+    "rect": [
+      53.615,
+      273.455,
+      63.615,
+      283.455
+    ],
+    "type": "/Btn",
+    "tooltip": "taxreturns_cb"
+  },
+  {
+    "page": 0,
+    "name": "FL-140.served.taxReturnsDetails",
+    "fullName": "FL-140.served.taxReturnsDetails",
+    "rect": [
+      72.0,
+      257.04,
+      576.0,
+      269.52
+    ],
+    "type": "/Tx",
+    "tooltip": "All tax returns filed by the party in the two years before the date that the party served the disclosure documents."
+  },
+  {
+    "page": 0,
+    "name": "FL-140.served.noTaxReturns",
+    "fullName": "FL-140.served.noTaxReturns",
+    "rect": [
+      53.561,
+      244.66,
+      63.561,
+      254.66
+    ],
+    "type": "/Btn",
+    "tooltip": "CheckBox61"
+  },
+  {
+    "page": 0,
+    "name": "FL-140.served.materialFacts",
+    "fullName": "FL-140.served.materialFacts",
+    "rect": [
+      72.0,
+      212.386,
+      575.87,
+      228.932
+    ],
+    "type": "/Tx",
+    "tooltip": "A statement of all material facts and information regarding valuation of all assets that are community property or in which the community has an interest (not a form)."
+  },
+  {
+    "page": 0,
+    "name": "FL-140.served.obligationsStatement",
+    "fullName": "FL-140.served.obligationsStatement",
+    "rect": [
+      53.615,
+      199.295,
+      63.615,
+      209.295
+    ],
+    "type": "/Btn",
+    "tooltip": "obligations_stmt_cb"
+  },
+  {
+    "page": 0,
+    "name": "FL-140.served.obligationsDetails",
+    "fullName": "FL-140.served.obligationsDetails",
+    "rect": [
+      72.124,
+      181.276,
+      575.994,
+      194.25
+    ],
+    "type": "/Tx",
+    "tooltip": "A statement of all material facts and information regarding obligations for which the community is liable (not a form)."
+  },
+  {
+    "page": 0,
+    "name": "FL-140.served.investmentOpportunity",
+    "fullName": "FL-140.served.investmentOpportunity",
+    "rect": [
+      53.615,
+      169.891,
+      63.615,
+      179.891
+    ],
+    "type": "/Btn",
+    "tooltip": "investment_opp_db"
+  },
+  {
+    "page": 0,
+    "name": "FL-140.served.investmentDetails",
+    "fullName": "FL-140.served.investmentDetails",
+    "rect": [
+      72.0,
+      124.773,
+      576.0,
+      144.0
+    ],
+    "type": "/Tx",
+    "tooltip": "An accurate and complete written disclosure of any investment opportunity, business opportunity, or other income-producing opportunity presented since the date of separation that results from any investment, significant business, or other income-producing opportunity from the date of marriage to the date of separation (not a form)."
+  },
+  {
+    "page": 0,
+    "name": "FL-140.signature.date",
+    "fullName": "FL-140.signature.date",
+    "rect": [
+      63.079,
+      95.04,
+      223.2,
+      108.0
+    ],
+    "type": "/Tx",
+    "tooltip": "Date:"
+  },
+  {
+    "page": 0,
+    "name": "FL-140.signature.name",
+    "fullName": "FL-140.signature.name",
+    "rect": [
+      36.0,
+      80.64,
+      270.482,
+      93.6
+    ],
+    "type": "/Tx",
+    "tooltip": "print_name_ft"
+  }
+]

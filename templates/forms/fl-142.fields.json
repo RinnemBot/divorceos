@@ -1,0 +1,1562 @@
+[
+  {
+    "page": 0,
+    "name": "FL-142.caption.attorneyOrParty",
+    "fullName": "FL-142.caption.attorneyOrParty",
+    "rect": [
+      38.146,
+      649.117,
+      572.769,
+      712.259
+    ],
+    "type": "/Tx",
+    "tooltip": "ATTORNEY OR PARTY WITHOUT ATTORNEY (Name and Address)"
+  },
+  {
+    "page": 0,
+    "name": "FL-142.caption.phone",
+    "fullName": "FL-142.caption.phone",
+    "rect": [
+      441.477,
+      711.689,
+      555.891,
+      720.689
+    ],
+    "type": "/Tx",
+    "tooltip": "Phone number"
+  },
+  {
+    "page": 0,
+    "name": "FL-142.caption.email",
+    "fullName": "FL-142.caption.email",
+    "rect": [
+      120.382,
+      638.093,
+      574.719,
+      647.093
+    ],
+    "type": "/Tx",
+    "tooltip": "ATTORNEY FOR (Name)"
+  },
+  {
+    "page": 0,
+    "name": "FL-142.caption.county",
+    "fullName": "FL-142.caption.county",
+    "rect": [
+      38.146,
+      605.951,
+      574.719,
+      619.013
+    ],
+    "type": "/Tx",
+    "tooltip": "SUPERIOR COURT OF CALIFORNIA, COUNTY OF"
+  },
+  {
+    "page": 0,
+    "name": "FL-142.caption.petitioner",
+    "fullName": "FL-142.caption.petitioner",
+    "rect": [
+      106.97,
+      588.861,
+      574.719,
+      597.861
+    ],
+    "type": "/Tx",
+    "tooltip": "PETITIONER"
+  },
+  {
+    "page": 0,
+    "name": "FL-142.caption.respondent",
+    "fullName": "FL-142.caption.respondent",
+    "rect": [
+      106.97,
+      575.308,
+      574.719,
+      584.606
+    ],
+    "type": "/Tx",
+    "tooltip": "RESPONDENT"
+  },
+  {
+    "page": 0,
+    "name": "FL-142.caption.caseNumber",
+    "fullName": "FL-142.caption.caseNumber",
+    "rect": [
+      400.005,
+      546.996,
+      572.805,
+      561.898
+    ],
+    "type": "/Tx",
+    "tooltip": "CASE NUMBER"
+  },
+  {
+    "page": 0,
+    "name": "FL-142.party.petitioner",
+    "fullName": "FL-142.party.petitioner",
+    "rect": [
+      133.506,
+      547.402,
+      142.506,
+      556.402
+    ],
+    "type": "/Btn",
+    "tooltip": "Petitioner's"
+  },
+  {
+    "page": 0,
+    "name": "FL-142.party.respondent",
+    "fullName": "FL-142.party.respondent",
+    "rect": [
+      211.929,
+      547.402,
+      220.929,
+      556.402
+    ],
+    "type": "/Btn",
+    "tooltip": "Respondent's"
+  },
+  {
+    "page": 0,
+    "name": "FL-142.asset.realEstate.description",
+    "fullName": "FL-142.asset.realEstate.description",
+    "rect": [
+      37.092,
+      234.604,
+      301.888,
+      374.207
+    ],
+    "type": "/Tx",
+    "tooltip": "1. REAL ESTATE (Give street addresses and attach copies of  \r    deeds with legal descriptions and latest lender's statement.)"
+  },
+  {
+    "page": 0,
+    "name": "FL-142.asset.realEstate.separateProperty",
+    "fullName": "FL-142.asset.realEstate.separateProperty",
+    "rect": [
+      305.49,
+      234.606,
+      340.01,
+      374.207
+    ],
+    "type": "/Tx",
+    "tooltip": "\rSEP.\rPROP"
+  },
+  {
+    "page": 0,
+    "name": "FL-142.asset.realEstate.dateAcquired",
+    "fullName": "FL-142.asset.realEstate.dateAcquired",
+    "rect": [
+      343.086,
+      234.606,
+      396.142,
+      374.207
+    ],
+    "type": "/Tx",
+    "tooltip": "\rDATE\rACQUIRED"
+  },
+  {
+    "page": 0,
+    "name": "FL-142.asset.realEstate.grossValue",
+    "fullName": "FL-142.asset.realEstate.grossValue",
+    "rect": [
+      399.765,
+      234.606,
+      480.119,
+      374.207
+    ],
+    "type": "/Tx",
+    "tooltip": "CURRENT GROSS\rFAIR MARKET\rVALUE"
+  },
+  {
+    "page": 0,
+    "name": "FL-142.asset.realEstate.amountOwed",
+    "fullName": "FL-142.asset.realEstate.amountOwed",
+    "rect": [
+      484.753,
+      234.606,
+      575.425,
+      374.207
+    ],
+    "type": "/Tx",
+    "tooltip": "AMOUNT OF MONEY\rOWED OR\rENCUMBRANCE"
+  },
+  {
+    "page": 0,
+    "name": "FL-142.asset.household.description",
+    "fullName": "FL-142.asset.household.description",
+    "rect": [
+      37.091,
+      124.294,
+      301.887,
+      211.876
+    ],
+    "type": "/Tx",
+    "tooltip": "2. HOUSEHOLD FURNITURE, FURNISHINGS, APPLIANCES\r    (Identify.)"
+  },
+  {
+    "page": 0,
+    "name": "FL-142.asset.household.separateProperty",
+    "fullName": "FL-142.asset.household.separateProperty",
+    "rect": [
+      305.49,
+      124.294,
+      340.01,
+      211.876
+    ],
+    "type": "/Tx",
+    "tooltip": "\rSEP.\rPROP"
+  },
+  {
+    "page": 0,
+    "name": "FL-142.asset.household.dateAcquired",
+    "fullName": "FL-142.asset.household.dateAcquired",
+    "rect": [
+      343.086,
+      124.294,
+      396.142,
+      211.876
+    ],
+    "type": "/Tx",
+    "tooltip": "\rDATE\rACQUIRED"
+  },
+  {
+    "page": 0,
+    "name": "FL-142.asset.household.grossValue",
+    "fullName": "FL-142.asset.household.grossValue",
+    "rect": [
+      399.765,
+      124.294,
+      480.119,
+      211.876
+    ],
+    "type": "/Tx",
+    "tooltip": "CURRENT GROSS\rFAIR MARKET\rVALUE"
+  },
+  {
+    "page": 0,
+    "name": "FL-142.asset.household.amountOwed",
+    "fullName": "FL-142.asset.household.amountOwed",
+    "rect": [
+      484.753,
+      124.294,
+      575.425,
+      211.876
+    ],
+    "type": "/Tx",
+    "tooltip": "AMOUNT OF MONEY\rOWED OR\rENCUMBRANCE"
+  },
+  {
+    "page": 0,
+    "name": "FL-142.asset.jewelryArt.description",
+    "fullName": "FL-142.asset.jewelryArt.description",
+    "rect": [
+      37.091,
+      57.309,
+      301.887,
+      101.175
+    ],
+    "type": "/Tx",
+    "tooltip": "3. JEWELRY, ANTIQUES, ART, COIN COLLECTIONS, etc. \r    (Identify.)"
+  },
+  {
+    "page": 0,
+    "name": "FL-142.asset.jewelryArt.separateProperty",
+    "fullName": "FL-142.asset.jewelryArt.separateProperty",
+    "rect": [
+      305.49,
+      58.108,
+      340.01,
+      101.175
+    ],
+    "type": "/Tx",
+    "tooltip": "\rSEP.\rPROP"
+  },
+  {
+    "page": 0,
+    "name": "FL-142.asset.jewelryArt.dateAcquired",
+    "fullName": "FL-142.asset.jewelryArt.dateAcquired",
+    "rect": [
+      343.086,
+      58.108,
+      396.142,
+      101.175
+    ],
+    "type": "/Tx",
+    "tooltip": "\rDATE\rACQUIRED"
+  },
+  {
+    "page": 0,
+    "name": "FL-142.asset.jewelryArt.grossValue",
+    "fullName": "FL-142.asset.jewelryArt.grossValue",
+    "rect": [
+      399.765,
+      58.108,
+      480.119,
+      101.175
+    ],
+    "type": "/Tx",
+    "tooltip": "CURRENT GROSS\rFAIR MARKET\rVALUE"
+  },
+  {
+    "page": 0,
+    "name": "FL-142.asset.jewelryArt.amountOwed",
+    "fullName": "FL-142.asset.jewelryArt.amountOwed",
+    "rect": [
+      484.753,
+      58.108,
+      575.425,
+      101.175
+    ],
+    "type": "/Tx",
+    "tooltip": "AMOUNT OF MONEY\rOWED OR\rENCUMBRANCE"
+  },
+  {
+    "page": 1,
+    "name": "FL-142.asset.vehicles.description",
+    "fullName": "FL-142.asset.vehicles.description",
+    "rect": [
+      37.031,
+      559.154,
+      301.827,
+      698.757
+    ],
+    "type": "/Tx",
+    "tooltip": "4. VEHICLES, BOATS, TRAILERS (Describe and attach copy of\r    title document.)"
+  },
+  {
+    "page": 1,
+    "name": "FL-142.asset.vehicles.separateProperty",
+    "fullName": "FL-142.asset.vehicles.separateProperty",
+    "rect": [
+      305.43,
+      559.156,
+      339.95,
+      698.757
+    ],
+    "type": "/Tx",
+    "tooltip": "\rSEP.\rPROP"
+  },
+  {
+    "page": 1,
+    "name": "FL-142.asset.vehicles.dateAcquired",
+    "fullName": "FL-142.asset.vehicles.dateAcquired",
+    "rect": [
+      343.026,
+      559.156,
+      396.082,
+      698.757
+    ],
+    "type": "/Tx",
+    "tooltip": "\rDATE\rACQUIRED"
+  },
+  {
+    "page": 1,
+    "name": "FL-142.asset.vehicles.grossValue",
+    "fullName": "FL-142.asset.vehicles.grossValue",
+    "rect": [
+      399.705,
+      559.156,
+      480.059,
+      698.757
+    ],
+    "type": "/Tx",
+    "tooltip": "CURRENT GROSS\rFAIR MARKET\rVALUE"
+  },
+  {
+    "page": 1,
+    "name": "FL-142.asset.vehicles.amountOwed",
+    "fullName": "FL-142.asset.vehicles.amountOwed",
+    "rect": [
+      484.693,
+      559.156,
+      575.365,
+      698.757
+    ],
+    "type": "/Tx",
+    "tooltip": "AMOUNT OF MONEY\rOWED OR\rENCUMBRANCE"
+  },
+  {
+    "page": 1,
+    "name": "FL-142.asset.savings.description",
+    "fullName": "FL-142.asset.savings.description",
+    "rect": [
+      37.031,
+      448.844,
+      301.827,
+      536.426
+    ],
+    "type": "/Tx",
+    "tooltip": "5. SAVINGS ACCOUNTS (Account name, account number,\r    bank, and branch. Attach copy of latest statement.)"
+  },
+  {
+    "page": 1,
+    "name": "FL-142.asset.savings.separateProperty",
+    "fullName": "FL-142.asset.savings.separateProperty",
+    "rect": [
+      305.43,
+      448.844,
+      339.95,
+      536.426
+    ],
+    "type": "/Tx",
+    "tooltip": "\rSEP.\rPROP"
+  },
+  {
+    "page": 1,
+    "name": "FL-142.asset.savings.dateAcquired",
+    "fullName": "FL-142.asset.savings.dateAcquired",
+    "rect": [
+      343.026,
+      448.844,
+      396.082,
+      536.426
+    ],
+    "type": "/Tx",
+    "tooltip": "\rDATE\rACQUIRED"
+  },
+  {
+    "page": 1,
+    "name": "FL-142.asset.savings.grossValue",
+    "fullName": "FL-142.asset.savings.grossValue",
+    "rect": [
+      399.705,
+      448.844,
+      480.059,
+      536.426
+    ],
+    "type": "/Tx",
+    "tooltip": "CURRENT GROSS\rFAIR MARKET\rVALUE"
+  },
+  {
+    "page": 1,
+    "name": "FL-142.asset.savings.amountOwed",
+    "fullName": "FL-142.asset.savings.amountOwed",
+    "rect": [
+      484.693,
+      448.844,
+      575.365,
+      536.426
+    ],
+    "type": "/Tx",
+    "tooltip": "AMOUNT OF MONEY\rOWED OR\rENCUMBRANCE"
+  },
+  {
+    "page": 1,
+    "name": "FL-142.asset.checking.description",
+    "fullName": "FL-142.asset.checking.description",
+    "rect": [
+      37.031,
+      392.764,
+      301.827,
+      425.725
+    ],
+    "type": "/Tx",
+    "tooltip": "6. CHECKING ACCOUNTS (Account name and number, bank,\r    and branch. Attach copy of latest statement.)"
+  },
+  {
+    "page": 1,
+    "name": "FL-142.asset.checking.separateProperty",
+    "fullName": "FL-142.asset.checking.separateProperty",
+    "rect": [
+      305.43,
+      392.764,
+      339.95,
+      425.725
+    ],
+    "type": "/Tx",
+    "tooltip": "\rSEP.\rPROP"
+  },
+  {
+    "page": 1,
+    "name": "FL-142.asset.checking.dateAcquired",
+    "fullName": "FL-142.asset.checking.dateAcquired",
+    "rect": [
+      343.026,
+      392.764,
+      396.082,
+      425.725
+    ],
+    "type": "/Tx",
+    "tooltip": "\rDATE\rACQUIRED"
+  },
+  {
+    "page": 1,
+    "name": "FL-142.asset.checking.grossValue",
+    "fullName": "FL-142.asset.checking.grossValue",
+    "rect": [
+      399.705,
+      392.764,
+      480.059,
+      425.725
+    ],
+    "type": "/Tx",
+    "tooltip": "CURRENT GROSS\rFAIR MARKET\rVALUE"
+  },
+  {
+    "page": 1,
+    "name": "FL-142.asset.checking.amountOwed",
+    "fullName": "FL-142.asset.checking.amountOwed",
+    "rect": [
+      484.693,
+      392.764,
+      575.365,
+      425.725
+    ],
+    "type": "/Tx",
+    "tooltip": "AMOUNT OF MONEY\rOWED OR\rENCUMBRANCE"
+  },
+  {
+    "page": 1,
+    "name": "FL-142.asset.creditUnion.description",
+    "fullName": "FL-142.asset.creditUnion.description",
+    "rect": [
+      37.031,
+      284.057,
+      301.827,
+      360.428
+    ],
+    "type": "/Tx",
+    "tooltip": "7. CREDIT UNION, OTHER DEPOSIT ACCOUNTS (Account\r    name and number, bank, and branch. Attach copy of latest\r    statement.)"
+  },
+  {
+    "page": 1,
+    "name": "FL-142.asset.creditUnion.separateProperty",
+    "fullName": "FL-142.asset.creditUnion.separateProperty",
+    "rect": [
+      305.43,
+      284.06,
+      339.95,
+      360.428
+    ],
+    "type": "/Tx",
+    "tooltip": "\rSEP.\rPROP"
+  },
+  {
+    "page": 1,
+    "name": "FL-142.asset.creditUnion.dateAcquired",
+    "fullName": "FL-142.asset.creditUnion.dateAcquired",
+    "rect": [
+      343.026,
+      284.057,
+      396.082,
+      360.428
+    ],
+    "type": "/Tx",
+    "tooltip": "\rDATE\rACQUIRED"
+  },
+  {
+    "page": 1,
+    "name": "FL-142.asset.creditUnion.grossValue",
+    "fullName": "FL-142.asset.creditUnion.grossValue",
+    "rect": [
+      399.705,
+      284.057,
+      480.059,
+      360.428
+    ],
+    "type": "/Tx",
+    "tooltip": "CURRENT GROSS\rFAIR MARKET\rVALUE"
+  },
+  {
+    "page": 1,
+    "name": "FL-142.asset.creditUnion.amountOwed",
+    "fullName": "FL-142.asset.creditUnion.amountOwed",
+    "rect": [
+      484.693,
+      284.057,
+      575.365,
+      360.428
+    ],
+    "type": "/Tx",
+    "tooltip": "AMOUNT OF MONEY\rOWED OR\rENCUMBRANCE"
+  },
+  {
+    "page": 1,
+    "name": "FL-142.asset.cash.description",
+    "fullName": "FL-142.asset.cash.description",
+    "rect": [
+      37.031,
+      210.594,
+      301.827,
+      270.808
+    ],
+    "type": "/Tx",
+    "tooltip": "8. CASH (Give location.)"
+  },
+  {
+    "page": 1,
+    "name": "FL-142.asset.cash.separateProperty",
+    "fullName": "FL-142.asset.cash.separateProperty",
+    "rect": [
+      305.43,
+      210.595,
+      339.95,
+      270.811
+    ],
+    "type": "/Tx",
+    "tooltip": "\rSEP.\rPROP"
+  },
+  {
+    "page": 1,
+    "name": "FL-142.asset.cash.dateAcquired",
+    "fullName": "FL-142.asset.cash.dateAcquired",
+    "rect": [
+      343.026,
+      210.594,
+      396.082,
+      270.808
+    ],
+    "type": "/Tx",
+    "tooltip": "\rDATE\rACQUIRED"
+  },
+  {
+    "page": 1,
+    "name": "FL-142.asset.cash.grossValue",
+    "fullName": "FL-142.asset.cash.grossValue",
+    "rect": [
+      399.705,
+      210.594,
+      480.059,
+      270.808
+    ],
+    "type": "/Tx",
+    "tooltip": "CURRENT GROSS\rFAIR MARKET\rVALUE"
+  },
+  {
+    "page": 1,
+    "name": "FL-142.asset.cash.amountOwed",
+    "fullName": "FL-142.asset.cash.amountOwed",
+    "rect": [
+      484.693,
+      210.594,
+      575.365,
+      270.808
+    ],
+    "type": "/Tx",
+    "tooltip": "AMOUNT OF MONEY\rOWED OR\rENCUMBRANCE"
+  },
+  {
+    "page": 1,
+    "name": "FL-142.asset.taxRefund.description",
+    "fullName": "FL-142.asset.taxRefund.description",
+    "rect": [
+      37.031,
+      141.364,
+      301.827,
+      195.976
+    ],
+    "type": "/Tx",
+    "tooltip": "9. TAX REFUND"
+  },
+  {
+    "page": 1,
+    "name": "FL-142.asset.taxRefund.separateProperty",
+    "fullName": "FL-142.asset.taxRefund.separateProperty",
+    "rect": [
+      305.43,
+      141.361,
+      339.95,
+      195.976
+    ],
+    "type": "/Tx",
+    "tooltip": "\rSEP.\rPROP"
+  },
+  {
+    "page": 1,
+    "name": "FL-142.asset.taxRefund.dateAcquired",
+    "fullName": "FL-142.asset.taxRefund.dateAcquired",
+    "rect": [
+      343.026,
+      141.364,
+      396.082,
+      195.976
+    ],
+    "type": "/Tx",
+    "tooltip": "\rDATE\rACQUIRED"
+  },
+  {
+    "page": 1,
+    "name": "FL-142.asset.taxRefund.grossValue",
+    "fullName": "FL-142.asset.taxRefund.grossValue",
+    "rect": [
+      399.705,
+      141.364,
+      480.059,
+      195.976
+    ],
+    "type": "/Tx",
+    "tooltip": "CURRENT GROSS\rFAIR MARKET\rVALUE"
+  },
+  {
+    "page": 1,
+    "name": "FL-142.asset.taxRefund.amountOwed",
+    "fullName": "FL-142.asset.taxRefund.amountOwed",
+    "rect": [
+      484.693,
+      141.364,
+      575.365,
+      195.976
+    ],
+    "type": "/Tx",
+    "tooltip": "AMOUNT OF MONEY\rOWED OR\rENCUMBRANCE"
+  },
+  {
+    "page": 1,
+    "name": "FL-142.asset.lifeInsurance.description",
+    "fullName": "FL-142.asset.lifeInsurance.description",
+    "rect": [
+      37.031,
+      62.023,
+      301.827,
+      116.635
+    ],
+    "type": "/Tx",
+    "tooltip": "10. LIFE INSURANCE WITH CASH SURRENDER OR LOAN\r      VALUE (Attach copy of declaration page for each policy.)"
+  },
+  {
+    "page": 1,
+    "name": "FL-142.asset.lifeInsurance.separateProperty",
+    "fullName": "FL-142.asset.lifeInsurance.separateProperty",
+    "rect": [
+      305.43,
+      62.023,
+      339.95,
+      116.635
+    ],
+    "type": "/Tx",
+    "tooltip": "\rSEP.\rPROP"
+  },
+  {
+    "page": 1,
+    "name": "FL-142.asset.lifeInsurance.dateAcquired",
+    "fullName": "FL-142.asset.lifeInsurance.dateAcquired",
+    "rect": [
+      343.026,
+      62.023,
+      396.082,
+      116.635
+    ],
+    "type": "/Tx",
+    "tooltip": "\rDATE\rACQUIRED"
+  },
+  {
+    "page": 1,
+    "name": "FL-142.asset.lifeInsurance.grossValue",
+    "fullName": "FL-142.asset.lifeInsurance.grossValue",
+    "rect": [
+      399.705,
+      62.023,
+      480.059,
+      116.635
+    ],
+    "type": "/Tx",
+    "tooltip": "CURRENT GROSS\rFAIR MARKET\rVALUE"
+  },
+  {
+    "page": 1,
+    "name": "FL-142.asset.lifeInsurance.amountOwed",
+    "fullName": "FL-142.asset.lifeInsurance.amountOwed",
+    "rect": [
+      484.693,
+      62.023,
+      575.365,
+      116.635
+    ],
+    "type": "/Tx",
+    "tooltip": "AMOUNT OF MONEY\rOWED OR\rENCUMBRANCE"
+  },
+  {
+    "page": 2,
+    "name": "FL-142.asset.stocksBonds.description",
+    "fullName": "FL-142.asset.stocksBonds.description",
+    "rect": [
+      38.508,
+      608.61,
+      303.304,
+      687.424
+    ],
+    "type": "/Tx",
+    "tooltip": "11. STOCKS, BONDS, SECURED NOTES, MUTUAL FUNDS\r     (Give certificate number and attach copy of the certificate or \r     copy of latest statement.)"
+  },
+  {
+    "page": 2,
+    "name": "FL-142.asset.stocksBonds.separateProperty",
+    "fullName": "FL-142.asset.stocksBonds.separateProperty",
+    "rect": [
+      305.433,
+      608.612,
+      339.953,
+      687.424
+    ],
+    "type": "/Tx",
+    "tooltip": "\rSEP.\rPROP"
+  },
+  {
+    "page": 2,
+    "name": "FL-142.asset.stocksBonds.dateAcquired",
+    "fullName": "FL-142.asset.stocksBonds.dateAcquired",
+    "rect": [
+      343.029,
+      608.612,
+      396.085,
+      687.424
+    ],
+    "type": "/Tx",
+    "tooltip": "\rDATE\rACQUIRED"
+  },
+  {
+    "page": 2,
+    "name": "FL-142.asset.stocksBonds.grossValue",
+    "fullName": "FL-142.asset.stocksBonds.grossValue",
+    "rect": [
+      399.708,
+      608.612,
+      480.062,
+      687.424
+    ],
+    "type": "/Tx",
+    "tooltip": "CURRENT GROSS\rFAIR MARKET\rVALUE"
+  },
+  {
+    "page": 2,
+    "name": "FL-142.asset.stocksBonds.amountOwed",
+    "fullName": "FL-142.asset.stocksBonds.amountOwed",
+    "rect": [
+      484.696,
+      608.612,
+      575.368,
+      687.424
+    ],
+    "type": "/Tx",
+    "tooltip": "AMOUNT OF MONEY\rOWED OR\rENCUMBRANCE"
+  },
+  {
+    "page": 2,
+    "name": "FL-142.asset.retirement.description",
+    "fullName": "FL-142.asset.retirement.description",
+    "rect": [
+      38.508,
+      497.486,
+      303.304,
+      585.068
+    ],
+    "type": "/Tx",
+    "tooltip": "12. RETIREMENT AND PENSIONS (Attach copy of latest\r      summary plan documents and latest benefit statement.)"
+  },
+  {
+    "page": 2,
+    "name": "FL-142.asset.retirement.separateProperty",
+    "fullName": "FL-142.asset.retirement.separateProperty",
+    "rect": [
+      305.433,
+      497.486,
+      339.953,
+      585.068
+    ],
+    "type": "/Tx",
+    "tooltip": "\rSEP.\rPROP"
+  },
+  {
+    "page": 2,
+    "name": "FL-142.asset.retirement.dateAcquired",
+    "fullName": "FL-142.asset.retirement.dateAcquired",
+    "rect": [
+      343.029,
+      497.486,
+      396.085,
+      585.068
+    ],
+    "type": "/Tx",
+    "tooltip": "\rDATE\rACQUIRED"
+  },
+  {
+    "page": 2,
+    "name": "FL-142.asset.retirement.grossValue",
+    "fullName": "FL-142.asset.retirement.grossValue",
+    "rect": [
+      399.708,
+      497.486,
+      480.062,
+      585.068
+    ],
+    "type": "/Tx",
+    "tooltip": "CURRENT GROSS\rFAIR MARKET\rVALUE"
+  },
+  {
+    "page": 2,
+    "name": "FL-142.asset.retirement.amountOwed",
+    "fullName": "FL-142.asset.retirement.amountOwed",
+    "rect": [
+      484.696,
+      497.486,
+      575.368,
+      585.068
+    ],
+    "type": "/Tx",
+    "tooltip": "AMOUNT OF MONEY\rOWED OR\rENCUMBRANCE"
+  },
+  {
+    "page": 2,
+    "name": "FL-142.asset.profitSharingIra.description",
+    "fullName": "FL-142.asset.profitSharingIra.description",
+    "rect": [
+      38.508,
+      392.607,
+      303.304,
+      471.419
+    ],
+    "type": "/Tx",
+    "tooltip": "13. PROFIT - SHARING, ANNUITIES, IRAS, DEFERRED\r      COMPENSATION (Attach copy of latest statement.)"
+  },
+  {
+    "page": 2,
+    "name": "FL-142.asset.profitSharingIra.separateProperty",
+    "fullName": "FL-142.asset.profitSharingIra.separateProperty",
+    "rect": [
+      305.433,
+      392.607,
+      339.953,
+      471.419
+    ],
+    "type": "/Tx",
+    "tooltip": "\rSEP.\rPROP"
+  },
+  {
+    "page": 2,
+    "name": "FL-142.asset.profitSharingIra.dateAcquired",
+    "fullName": "FL-142.asset.profitSharingIra.dateAcquired",
+    "rect": [
+      343.029,
+      392.607,
+      396.085,
+      471.419
+    ],
+    "type": "/Tx",
+    "tooltip": "\rDATE\rACQUIRED"
+  },
+  {
+    "page": 2,
+    "name": "FL-142.asset.profitSharingIra.grossValue",
+    "fullName": "FL-142.asset.profitSharingIra.grossValue",
+    "rect": [
+      399.708,
+      392.607,
+      480.062,
+      471.419
+    ],
+    "type": "/Tx",
+    "tooltip": "CURRENT GROSS\rFAIR MARKET\rVALUE"
+  },
+  {
+    "page": 2,
+    "name": "FL-142.asset.profitSharingIra.amountOwed",
+    "fullName": "FL-142.asset.profitSharingIra.amountOwed",
+    "rect": [
+      484.696,
+      392.607,
+      575.368,
+      471.419
+    ],
+    "type": "/Tx",
+    "tooltip": "AMOUNT OF MONEY\rOWED OR\rENCUMBRANCE"
+  },
+  {
+    "page": 2,
+    "name": "FL-142.asset.accountsReceivable.description",
+    "fullName": "FL-142.asset.accountsReceivable.description",
+    "rect": [
+      38.508,
+      290.461,
+      303.304,
+      369.273
+    ],
+    "type": "/Tx",
+    "tooltip": "14. ACCOUNTS RECEIVABLE AND UNSECURED\r      NOTES (Attach copy of each.)"
+  },
+  {
+    "page": 2,
+    "name": "FL-142.asset.accountsReceivable.separateProperty",
+    "fullName": "FL-142.asset.accountsReceivable.separateProperty",
+    "rect": [
+      305.433,
+      290.461,
+      339.953,
+      369.273
+    ],
+    "type": "/Tx",
+    "tooltip": "\rSEP.\rPROP"
+  },
+  {
+    "page": 2,
+    "name": "FL-142.asset.accountsReceivable.dateAcquired",
+    "fullName": "FL-142.asset.accountsReceivable.dateAcquired",
+    "rect": [
+      343.029,
+      290.461,
+      396.085,
+      369.273
+    ],
+    "type": "/Tx",
+    "tooltip": "\rDATE\rACQUIRED"
+  },
+  {
+    "page": 2,
+    "name": "FL-142.asset.accountsReceivable.grossValue",
+    "fullName": "FL-142.asset.accountsReceivable.grossValue",
+    "rect": [
+      399.708,
+      290.461,
+      480.062,
+      369.273
+    ],
+    "type": "/Tx",
+    "tooltip": "CURRENT GROSS\rFAIR MARKET\rVALUE"
+  },
+  {
+    "page": 2,
+    "name": "FL-142.asset.accountsReceivable.amountOwed",
+    "fullName": "FL-142.asset.accountsReceivable.amountOwed",
+    "rect": [
+      484.696,
+      290.461,
+      575.368,
+      369.273
+    ],
+    "type": "/Tx",
+    "tooltip": "AMOUNT OF MONEY\rOWED OR\rENCUMBRANCE"
+  },
+  {
+    "page": 2,
+    "name": "FL-142.asset.businessInterests.description",
+    "fullName": "FL-142.asset.businessInterests.description",
+    "rect": [
+      38.508,
+      200.608,
+      303.304,
+      266.386
+    ],
+    "type": "/Tx",
+    "tooltip": "15. PARTNERSHIPS AND OTHER BUSINESS INTERESTS\r     (Attach copy of most current K-1 form and Schedule C.)"
+  },
+  {
+    "page": 2,
+    "name": "FL-142.asset.businessInterests.separateProperty",
+    "fullName": "FL-142.asset.businessInterests.separateProperty",
+    "rect": [
+      305.433,
+      200.608,
+      339.953,
+      266.386
+    ],
+    "type": "/Tx",
+    "tooltip": "\rSEP.\rPROP"
+  },
+  {
+    "page": 2,
+    "name": "FL-142.asset.businessInterests.dateAcquired",
+    "fullName": "FL-142.asset.businessInterests.dateAcquired",
+    "rect": [
+      343.029,
+      200.608,
+      396.085,
+      266.386
+    ],
+    "type": "/Tx",
+    "tooltip": "\rDATE\rACQUIRED"
+  },
+  {
+    "page": 2,
+    "name": "FL-142.asset.businessInterests.grossValue",
+    "fullName": "FL-142.asset.businessInterests.grossValue",
+    "rect": [
+      399.708,
+      200.608,
+      480.062,
+      266.386
+    ],
+    "type": "/Tx",
+    "tooltip": "CURRENT GROSS\rFAIR MARKET\rVALUE"
+  },
+  {
+    "page": 2,
+    "name": "FL-142.asset.businessInterests.amountOwed",
+    "fullName": "FL-142.asset.businessInterests.amountOwed",
+    "rect": [
+      484.696,
+      200.608,
+      575.368,
+      266.386
+    ],
+    "type": "/Tx",
+    "tooltip": "AMOUNT OF MONEY\rOWED OR\rENCUMBRANCE"
+  },
+  {
+    "page": 2,
+    "name": "FL-142.asset.otherAssets.description",
+    "fullName": "FL-142.asset.otherAssets.description",
+    "rect": [
+      38.508,
+      91.401,
+      303.304,
+      187.719
+    ],
+    "type": "/Tx",
+    "tooltip": "16. OTHER ASSETS"
+  },
+  {
+    "page": 2,
+    "name": "FL-142.asset.otherAssets.separateProperty",
+    "fullName": "FL-142.asset.otherAssets.separateProperty",
+    "rect": [
+      305.433,
+      91.398,
+      339.953,
+      187.719
+    ],
+    "type": "/Tx",
+    "tooltip": "\rSEP.\rPROP"
+  },
+  {
+    "page": 2,
+    "name": "FL-142.asset.otherAssets.dateAcquired",
+    "fullName": "FL-142.asset.otherAssets.dateAcquired",
+    "rect": [
+      343.029,
+      91.398,
+      396.085,
+      187.719
+    ],
+    "type": "/Tx",
+    "tooltip": "\rDATE\rACQUIRED"
+  },
+  {
+    "page": 2,
+    "name": "FL-142.asset.otherAssets.grossValue",
+    "fullName": "FL-142.asset.otherAssets.grossValue",
+    "rect": [
+      399.708,
+      91.398,
+      480.062,
+      187.719
+    ],
+    "type": "/Tx",
+    "tooltip": "CURRENT GROSS\rFAIR MARKET\rVALUE"
+  },
+  {
+    "page": 2,
+    "name": "FL-142.asset.otherAssets.amountOwed",
+    "fullName": "FL-142.asset.otherAssets.amountOwed",
+    "rect": [
+      484.696,
+      91.398,
+      575.368,
+      187.719
+    ],
+    "type": "/Tx",
+    "tooltip": "AMOUNT OF MONEY\rOWED OR\rENCUMBRANCE"
+  },
+  {
+    "page": 2,
+    "name": "FL-142.assetTotals.grossValue",
+    "fullName": "FL-142.assetTotals.grossValue",
+    "rect": [
+      406.131,
+      59.365,
+      478.452,
+      69.365
+    ],
+    "type": "/Tx",
+    "tooltip": "CURRENT GROSS\rFAIR MARKET\rVALUE"
+  },
+  {
+    "page": 2,
+    "name": "FL-142.assetTotals.amountOwed",
+    "fullName": "FL-142.assetTotals.amountOwed",
+    "rect": [
+      491.119,
+      59.365,
+      563.44,
+      69.365
+    ],
+    "type": "/Tx",
+    "tooltip": "AMOUNT OF MONEY\rOWED OR\rENCUMBRANCE"
+  },
+  {
+    "page": 3,
+    "name": "FL-142.debt.studentLoans.description",
+    "fullName": "FL-142.debt.studentLoans.description",
+    "rect": [
+      37.128,
+      615.132,
+      392.751,
+      660.478
+    ],
+    "type": "/Tx",
+    "tooltip": "20. TAXES (Give details.)"
+  },
+  {
+    "page": 3,
+    "name": "FL-142.debt.studentLoans.separateProperty",
+    "fullName": "FL-142.debt.studentLoans.separateProperty",
+    "rect": [
+      396.349,
+      674.175,
+      428.281,
+      709.73
+    ],
+    "type": "/Tx",
+    "tooltip": "\rSEP.\rPROP"
+  },
+  {
+    "page": 3,
+    "name": "FL-142.debt.studentLoans.totalOwing",
+    "fullName": "FL-142.debt.studentLoans.totalOwing",
+    "rect": [
+      431.376,
+      674.175,
+      500.397,
+      709.73
+    ],
+    "type": "/Tx",
+    "tooltip": "\rTOTAL\rOWING"
+  },
+  {
+    "page": 3,
+    "name": "FL-142.debt.studentLoans.dateAcquired",
+    "fullName": "FL-142.debt.studentLoans.dateAcquired",
+    "rect": [
+      504.527,
+      674.175,
+      573.987,
+      709.73
+    ],
+    "type": "/Tx",
+    "tooltip": "\rDATE\rACQUIRED"
+  },
+  {
+    "page": 3,
+    "name": "FL-142.debt.taxes.description",
+    "fullName": "FL-142.debt.taxes.description",
+    "rect": [
+      37.128,
+      554.301,
+      392.751,
+      599.647
+    ],
+    "type": "/Tx",
+    "tooltip": "21. SUPPORT ARREARAGES (Attach copies of orders and statements.)"
+  },
+  {
+    "page": 3,
+    "name": "FL-142.debt.taxes.separateProperty",
+    "fullName": "FL-142.debt.taxes.separateProperty",
+    "rect": [
+      396.349,
+      615.132,
+      428.281,
+      660.478
+    ],
+    "type": "/Tx",
+    "tooltip": "\rSEP.\rPROP"
+  },
+  {
+    "page": 3,
+    "name": "FL-142.debt.taxes.totalOwing",
+    "fullName": "FL-142.debt.taxes.totalOwing",
+    "rect": [
+      431.379,
+      615.132,
+      500.397,
+      660.478
+    ],
+    "type": "/Tx",
+    "tooltip": "\rTOTAL\rOWING"
+  },
+  {
+    "page": 3,
+    "name": "FL-142.debt.taxes.dateAcquired",
+    "fullName": "FL-142.debt.taxes.dateAcquired",
+    "rect": [
+      504.53,
+      615.132,
+      573.987,
+      660.478
+    ],
+    "type": "/Tx",
+    "tooltip": "\rDATE\rACQUIRED"
+  },
+  {
+    "page": 3,
+    "name": "FL-142.debt.supportArrearages.description",
+    "fullName": "FL-142.debt.supportArrearages.description",
+    "rect": [
+      37.128,
+      483.151,
+      392.751,
+      528.497
+    ],
+    "type": "/Tx",
+    "tooltip": "22. LOANS\u2014UNSECURED (Give bank name and loan number and attach copy of latest\r      statement.)"
+  },
+  {
+    "page": 3,
+    "name": "FL-142.debt.supportArrearages.separateProperty",
+    "fullName": "FL-142.debt.supportArrearages.separateProperty",
+    "rect": [
+      396.349,
+      554.301,
+      428.281,
+      599.647
+    ],
+    "type": "/Tx",
+    "tooltip": "\rSEP.\rPROP"
+  },
+  {
+    "page": 3,
+    "name": "FL-142.debt.supportArrearages.totalOwing",
+    "fullName": "FL-142.debt.supportArrearages.totalOwing",
+    "rect": [
+      431.379,
+      554.301,
+      500.397,
+      599.647
+    ],
+    "type": "/Tx",
+    "tooltip": "\rTOTAL\rOWING"
+  },
+  {
+    "page": 3,
+    "name": "FL-142.debt.supportArrearages.dateAcquired",
+    "fullName": "FL-142.debt.supportArrearages.dateAcquired",
+    "rect": [
+      504.53,
+      554.301,
+      573.987,
+      599.647
+    ],
+    "type": "/Tx",
+    "tooltip": "\rDATE\rACQUIRED"
+  },
+  {
+    "page": 3,
+    "name": "FL-142.debt.unsecuredLoans.description",
+    "fullName": "FL-142.debt.unsecuredLoans.description",
+    "rect": [
+      37.128,
+      364.056,
+      392.751,
+      457.347
+    ],
+    "type": "/Tx",
+    "tooltip": "23. CREDIT CARDS (Give creditor's name and address and the account number. Attach\r      copy of latest statement.)"
+  },
+  {
+    "page": 3,
+    "name": "FL-142.debt.unsecuredLoans.separateProperty",
+    "fullName": "FL-142.debt.unsecuredLoans.separateProperty",
+    "rect": [
+      396.349,
+      483.151,
+      428.281,
+      528.497
+    ],
+    "type": "/Tx",
+    "tooltip": "\rSEP.\rPROP"
+  },
+  {
+    "page": 3,
+    "name": "FL-142.debt.unsecuredLoans.totalOwing",
+    "fullName": "FL-142.debt.unsecuredLoans.totalOwing",
+    "rect": [
+      431.379,
+      483.151,
+      500.397,
+      528.497
+    ],
+    "type": "/Tx",
+    "tooltip": "\rTOTAL\rOWING"
+  },
+  {
+    "page": 3,
+    "name": "FL-142.debt.unsecuredLoans.dateAcquired",
+    "fullName": "FL-142.debt.unsecuredLoans.dateAcquired",
+    "rect": [
+      504.53,
+      483.151,
+      573.987,
+      528.497
+    ],
+    "type": "/Tx",
+    "tooltip": "\rDATE\rACQUIRED"
+  },
+  {
+    "page": 3,
+    "name": "FL-142.debt.creditCards.description",
+    "fullName": "FL-142.debt.creditCards.description",
+    "rect": [
+      37.128,
+      200.271,
+      392.751,
+      350.093
+    ],
+    "type": "/Tx",
+    "tooltip": "24. OTHER DEBTS (Specify.):"
+  },
+  {
+    "page": 3,
+    "name": "FL-142.debt.creditCards.separateProperty",
+    "fullName": "FL-142.debt.creditCards.separateProperty",
+    "rect": [
+      396.349,
+      364.056,
+      428.281,
+      457.347
+    ],
+    "type": "/Tx",
+    "tooltip": "\rSEP.\rPROP"
+  },
+  {
+    "page": 3,
+    "name": "FL-142.debt.creditCards.totalOwing",
+    "fullName": "FL-142.debt.creditCards.totalOwing",
+    "rect": [
+      431.379,
+      364.056,
+      500.397,
+      457.347
+    ],
+    "type": "/Tx",
+    "tooltip": "\rTOTAL\rOWING"
+  },
+  {
+    "page": 3,
+    "name": "FL-142.debt.creditCards.dateAcquired",
+    "fullName": "FL-142.debt.creditCards.dateAcquired",
+    "rect": [
+      504.53,
+      364.056,
+      573.987,
+      457.347
+    ],
+    "type": "/Tx",
+    "tooltip": "\rDATE\rACQUIRED"
+  },
+  {
+    "page": 3,
+    "name": "FL-142.debt.otherDebts.description",
+    "fullName": "FL-142.debt.otherDebts.description",
+    "rect": [
+      396.349,
+      185.131,
+      428.281,
+      197.371
+    ],
+    "type": "/Tx",
+    "tooltip": "\rSEP.\rPROP"
+  },
+  {
+    "page": 3,
+    "name": "FL-142.debt.otherDebts.separateProperty",
+    "fullName": "FL-142.debt.otherDebts.separateProperty",
+    "rect": [
+      396.349,
+      200.271,
+      428.281,
+      350.093
+    ],
+    "type": "/Tx",
+    "tooltip": "\rSEP.\rPROP"
+  },
+  {
+    "page": 3,
+    "name": "FL-142.debt.otherDebts.totalOwing",
+    "fullName": "FL-142.debt.otherDebts.totalOwing",
+    "rect": [
+      431.379,
+      200.271,
+      500.397,
+      350.093
+    ],
+    "type": "/Tx",
+    "tooltip": "\rTOTAL\rOWING"
+  },
+  {
+    "page": 3,
+    "name": "FL-142.debt.otherDebts.dateAcquired",
+    "fullName": "FL-142.debt.otherDebts.dateAcquired",
+    "rect": [
+      504.53,
+      200.271,
+      573.987,
+      350.093
+    ],
+    "type": "/Tx",
+    "tooltip": "\rDATE\rACQUIRED"
+  },
+  {
+    "page": 3,
+    "name": "FL-142.debtTotals.totalOwing",
+    "fullName": "FL-142.debtTotals.totalOwing",
+    "rect": [
+      437.802,
+      164.254,
+      501.571,
+      174.255
+    ],
+    "type": "/Tx",
+    "tooltip": "\rTOTAL\rOWING"
+  },
+  {
+    "page": 3,
+    "name": "FL-142.continuation.selected",
+    "fullName": "FL-142.continuation.selected",
+    "rect": [
+      59.978,
+      135.469,
+      68.978,
+      144.469
+    ],
+    "type": "/Btn",
+    "tooltip": "27. specify number of pages"
+  },
+  {
+    "page": 3,
+    "name": "FL-142.continuation.pageCount",
+    "fullName": "FL-142.continuation.pageCount",
+    "rect": [
+      151.865,
+      134.527,
+      195.709,
+      144.885
+    ],
+    "type": "/Tx",
+    "tooltip": "Specify number of pages are attached as continuation sheets"
+  },
+  {
+    "page": 3,
+    "name": "FL-142.signature.date",
+    "fullName": "FL-142.signature.date",
+    "rect": [
+      61.2,
+      91.015,
+      169.2,
+      101.016
+    ],
+    "type": "/Tx",
+    "tooltip": "Date"
+  },
+  {
+    "page": 3,
+    "name": "FL-142.signature.name",
+    "fullName": "FL-142.signature.name",
+    "rect": [
+      36.0,
+      66.515,
+      275.876,
+      80.626
+    ],
+    "type": "/Tx",
+    "tooltip": "(TYPE OR PRINT NAME)"
+  }
+]

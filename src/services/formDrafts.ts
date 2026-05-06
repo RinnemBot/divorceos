@@ -8,6 +8,16 @@ const FORM_DRAFTS_CHAT_HANDOFF_KEY = 'divorceos_form_drafts_latest_chat_handoff'
 export type DraftFieldSourceType = 'chat' | 'upload' | 'profile' | 'manual' | 'support-snapshot';
 export type DraftFieldConfidence = 'high' | 'medium' | 'low';
 export type DraftWorkspaceStatus = 'not_started' | 'in_review' | 'ready';
+export type DraftPacketPresetId = 'custom' | 'start_divorce' | 'respond_divorce' | 'default_uncontested_judgment' | 'rfo_support_fees' | 'dvro';
+
+export const DRAFT_PACKET_PRESET_LABELS: Record<DraftPacketPresetId, string> = {
+  custom: 'Custom packet',
+  start_divorce: 'Start divorce',
+  respond_divorce: 'Respond to divorce',
+  default_uncontested_judgment: 'Default / uncontested judgment',
+  rfo_support_fees: 'RFO support / fees',
+  dvro: 'DVRO',
+};
 export type DraftFl100PropertyListLocation = 'unspecified' | 'fl160' | 'attachment' | 'inline_list';
 
 export interface DraftField<T> {
@@ -16,6 +26,18 @@ export interface DraftField<T> {
   sourceLabel?: string;
   confidence?: DraftFieldConfidence;
   needsReview?: boolean;
+}
+
+export interface DraftIntakeFact {
+  id: string;
+  path: string[];
+  label: string;
+  value: string | boolean;
+  sourceType: DraftFieldSourceType;
+  sourceLabel: string;
+  confidence: DraftFieldConfidence;
+  status: 'pending' | 'applied' | 'dismissed';
+  createdAt: string;
 }
 
 export interface DraftChild {
@@ -362,6 +384,7 @@ export interface DraftFl341Section {
 }
 
 export interface DraftFl100Section {
+  includeForm: DraftField<boolean>;
   proceedingType: DraftField<'dissolution' | 'legal_separation' | 'nullity'>;
   isAmended: DraftField<boolean>;
   relationshipType: DraftField<'marriage' | 'domestic_partnership' | 'both'>;
@@ -551,6 +574,23 @@ export interface DraftFl300Section {
   };
   attorneyFees: {
     amount: DraftField<string>;
+    includeFl319: DraftField<boolean>;
+    feesRequestedAmount: DraftField<string>;
+    costsRequestedAmount: DraftField<string>;
+    incurredToDateAmount: DraftField<string>;
+    estimatedFutureAmount: DraftField<string>;
+    limitedScopeAmount: DraftField<string>;
+    paymentRequestedFrom: DraftField<'unspecified' | 'petitioner' | 'respondent' | 'other'>;
+    paymentRequestedFromOtherName: DraftField<string>;
+    priorFeeOrderExists: DraftField<'unspecified' | 'no' | 'yes'>;
+    priorFeeOrderPayor: DraftField<'unspecified' | 'petitioner' | 'respondent' | 'other'>;
+    priorFeeOrderAmount: DraftField<string>;
+    priorFeeOrderDate: DraftField<string>;
+    paymentSources: DraftField<string>;
+    priorPaymentsStatus: DraftField<'unspecified' | 'made' | 'not_made' | 'partial'>;
+    additionalInformation: DraftField<string>;
+    freeLegalServices: DraftField<boolean>;
+    pagesAttached: DraftField<string>;
   };
   otherOrdersRequested: DraftField<string>;
   facts: DraftField<string>;
@@ -718,11 +758,260 @@ export interface DraftFl150Section {
   typePrintName: DraftField<string>;
 }
 
+export interface DraftFl140Section {
+  includeForm: DraftField<boolean>;
+  declarantRole: DraftField<'petitioner' | 'respondent'>;
+  disclosureType: DraftField<'preliminary' | 'final'>;
+  servedScheduleOrPropertyDeclaration: DraftField<boolean>;
+  scheduleIncludesCommunityProperty: DraftField<boolean>;
+  scheduleIncludesSeparateProperty: DraftField<boolean>;
+  servedIncomeExpenseDeclaration: DraftField<boolean>;
+  servedTaxReturns: DraftField<boolean>;
+  noTaxReturnsFiled: DraftField<boolean>;
+  materialFactsStatement: DraftField<string>;
+  servedObligationsStatement: DraftField<boolean>;
+  obligationsStatement: DraftField<string>;
+  servedInvestmentOpportunityStatement: DraftField<boolean>;
+  investmentOpportunityStatement: DraftField<string>;
+  signatureDate: DraftField<string>;
+  typePrintName: DraftField<string>;
+}
+
+export interface DraftFl141Section {
+  includeForm: DraftField<boolean>;
+  disclosureType: DraftField<'preliminary' | 'final'>;
+  servingParty: DraftField<'petitioner' | 'respondent'>;
+  servedOnParty: DraftField<'petitioner' | 'respondent'>;
+  serviceMethod: DraftField<'personal' | 'mail'>;
+  serviceDate: DraftField<string>;
+  otherDocuments: DraftField<string>;
+  waiveFinalDeclaration: DraftField<boolean>;
+  finalIncomeExpenseServed: DraftField<boolean>;
+  waiveReceipt: DraftField<boolean>;
+  signatureDate: DraftField<string>;
+  typePrintName: DraftField<string>;
+}
+
+export interface DraftFl142AssetRow {
+  description: DraftField<string>;
+  separateProperty: DraftField<string>;
+  dateAcquired: DraftField<string>;
+  grossValue: DraftField<string>;
+  amountOwed: DraftField<string>;
+}
+
+export interface DraftFl142DebtRow {
+  description: DraftField<string>;
+  separateProperty: DraftField<string>;
+  totalOwing: DraftField<string>;
+  dateAcquired: DraftField<string>;
+}
+
+export interface DraftFl142Section {
+  includeForm: DraftField<boolean>;
+  partyRole: DraftField<'petitioner' | 'respondent'>;
+  assets: Record<string, DraftFl142AssetRow>;
+  debts: Record<string, DraftFl142DebtRow>;
+  assetTotalGrossValue: DraftField<string>;
+  assetTotalAmountOwed: DraftField<string>;
+  debtTotalOwing: DraftField<string>;
+  continuationPagesAttached: DraftField<string>;
+  signatureDate: DraftField<string>;
+  typePrintName: DraftField<string>;
+}
+
+export interface DraftFl117Section {
+  includeForm: DraftField<boolean>;
+  personServedName: DraftField<string>;
+  dateMailed: DraftField<string>;
+  petitionerPrintedName: DraftField<string>;
+  acknowledgmentDateSigned: DraftField<string>;
+  acknowledgmentPrintedName: DraftField<string>;
+}
+
+export type DraftFl115ServiceMethod = 'personal' | 'mail_acknowledgment';
+
+export interface DraftFl115Section {
+  includeForm: DraftField<boolean>;
+  serviceMethod: DraftField<DraftFl115ServiceMethod>;
+  addressWhereServed: DraftField<string>;
+  serviceDate: DraftField<string>;
+  serviceTime: DraftField<string>;
+  dateMailed: DraftField<string>;
+  cityMailedFrom: DraftField<string>;
+  serverName: DraftField<string>;
+  serverAddress: DraftField<string>;
+  serverPhone: DraftField<string>;
+  signatureDate: DraftField<string>;
+}
+
+export interface DraftFl120Section {
+  includeForm: DraftField<boolean>;
+  denyPetitionGrounds: DraftField<boolean>;
+  respondentPrintedName: DraftField<string>;
+  signatureDate: DraftField<string>;
+}
+
+export interface DraftFl160Section {
+  includeForm: DraftField<boolean>;
+  partyRole: DraftField<'petitioner' | 'respondent'>;
+  propertyType: DraftField<'community' | 'separate'>;
+  itemDescription: DraftField<string>;
+  dateAcquired: DraftField<string>;
+  grossFairMarketValue: DraftField<string>;
+  debtAmount: DraftField<string>;
+  netFairMarketValue: DraftField<string>;
+  proposedAwardPetitioner: DraftField<string>;
+  proposedAwardRespondent: DraftField<string>;
+  signatureDate: DraftField<string>;
+  typePrintName: DraftField<string>;
+}
+
+export interface DraftFl342Section {
+  includeForm: DraftField<boolean>;
+  attachTo: DraftField<'fl300' | 'fl340' | 'fl350' | 'fl355' | 'judgment' | 'other'>;
+  attachToOther: DraftField<string>;
+  petitionerGrossIncome: DraftField<string>;
+  petitionerNetIncome: DraftField<string>;
+  respondentGrossIncome: DraftField<string>;
+  respondentNetIncome: DraftField<string>;
+  otherPartyGrossIncome: DraftField<string>;
+  otherPartyNetIncome: DraftField<string>;
+  baseMonthlyChildSupport: DraftField<string>;
+  childCareCosts: DraftField<string>;
+  healthCareCosts: DraftField<string>;
+  otherAddOnCosts: DraftField<string>;
+  paymentStartDate: DraftField<string>;
+  payableTo: DraftField<string>;
+  guidelineTotal: DraftField<string>;
+  otherOrders: DraftField<string>;
+}
+
+export interface DraftFl343Section {
+  includeForm: DraftField<boolean>;
+  supportType: DraftField<'spousal' | 'domestic_partner' | 'family'>;
+  payor: DraftField<'petitioner' | 'respondent'>;
+  payee: DraftField<'petitioner' | 'respondent'>;
+  monthlyAmount: DraftField<string>;
+  paymentStartDate: DraftField<string>;
+  paymentEndDate: DraftField<string>;
+  paymentFrequency: DraftField<'monthly' | 'twice_monthly' | 'biweekly' | 'weekly' | 'other'>;
+  frequencyOther: DraftField<string>;
+  wageAssignment: DraftField<boolean>;
+  terminateOnDeathOrRemarriage: DraftField<boolean>;
+  otherOrders: DraftField<string>;
+}
+
+export interface DraftFl130Section {
+  includeForm: DraftField<boolean>;
+  appearanceBy: DraftField<'petitioner' | 'respondent' | 'both'>;
+  agreementSummary: DraftField<string>;
+  petitionerSignatureDate: DraftField<string>;
+  petitionerPrintedName: DraftField<string>;
+  respondentSignatureDate: DraftField<string>;
+  respondentPrintedName: DraftField<string>;
+}
+
+export interface DraftFl144Section {
+  includeForm: DraftField<boolean>;
+  thirdPartyName: DraftField<string>;
+  stipulationText: DraftField<string>;
+  signatureDate: DraftField<string>;
+  petitionerPrintedName: DraftField<string>;
+  respondentPrintedName: DraftField<string>;
+}
+
+export interface DraftFl170Section {
+  includeForm: DraftField<boolean>;
+  isDefaultOrUncontested: DraftField<boolean>;
+  agreementDate: DraftField<string>;
+  declarationText: DraftField<string>;
+  signatureDate: DraftField<string>;
+  printedName: DraftField<string>;
+}
+
+export interface DraftFl180Section {
+  includeForm: DraftField<boolean>;
+  judgmentType: DraftField<'dissolution' | 'legal_separation' | 'nullity'>;
+  statusTerminationDate: DraftField<string>;
+  judgmentEnteredDate: DraftField<string>;
+  agreementDate: DraftField<string>;
+  propertyDebtOrders: DraftField<string>;
+  childSupportAmount: DraftField<string>;
+  spousalSupportAmount: DraftField<string>;
+}
+
+export interface DraftFl190Section {
+  includeForm: DraftField<boolean>;
+  noticeDate: DraftField<string>;
+  judgmentEnteredDate: DraftField<string>;
+  noticeText: DraftField<string>;
+  clerkMailingDate: DraftField<string>;
+}
+
+export interface DraftFl345Section {
+  includeForm: DraftField<boolean>;
+  attachTo: DraftField<'fl180' | 'other'>;
+  attachToOther: DraftField<string>;
+  propertyAwardSummary: DraftField<string>;
+  debtAllocationSummary: DraftField<string>;
+  equalizationPayment: DraftField<string>;
+  otherOrders: DraftField<string>;
+}
+
+export interface DraftFl348Section {
+  includeForm: DraftField<boolean>;
+  employeePartyName: DraftField<string>;
+  retirementPlanName: DraftField<string>;
+  claimantPartyName: DraftField<string>;
+  orderSummary: DraftField<string>;
+  signatureDate: DraftField<string>;
+}
+
+
+export type DraftRemainingFlFormId = 'fl165' | 'fl182' | 'fl191' | 'fl195' | 'fl272' | 'fl342a' | 'fl346' | 'fl347' | 'fl435' | 'fl460' | 'fl830';
+export type DraftDvFormId = 'dv100' | 'dv101' | 'dv105' | 'dv108' | 'dv109' | 'dv110' | 'dv120' | 'dv130' | 'dv140' | 'dv200';
+
+export interface DraftRemainingFlFormSection {
+  includeForm: DraftField<boolean>;
+  primaryParty: DraftField<'petitioner' | 'respondent' | 'both' | 'other'>;
+  attachTo: DraftField<'fl180' | 'fl300' | 'fl340' | 'fl350' | 'fl355' | 'other'>;
+  amount: DraftField<string>;
+  date: DraftField<string>;
+  otherPartyName: DraftField<string>;
+  details: DraftField<string>;
+  signatureDate: DraftField<string>;
+  printedName: DraftField<string>;
+}
+
+export interface DraftDvFormSection {
+  includeForm: DraftField<boolean>;
+  protectedPartyName: DraftField<string>;
+  restrainedPartyName: DraftField<string>;
+  relationship: DraftField<string>;
+  restrainedPersonDescription: DraftField<string>;
+  otherProtectedPeople: DraftField<string>;
+  childNames: DraftField<string>;
+  hearingDate: DraftField<string>;
+  hearingTime: DraftField<string>;
+  hearingDepartment: DraftField<string>;
+  hearingRoom: DraftField<string>;
+  serviceDate: DraftField<string>;
+  serviceTime: DraftField<string>;
+  servedByName: DraftField<string>;
+  requestSummary: DraftField<string>;
+  orderSummary: DraftField<string>;
+  responseSummary: DraftField<string>;
+  signatureDate: DraftField<string>;
+  printedName: DraftField<string>;
+}
+
 export interface DraftFormsWorkspace {
   id: string;
   userId: string;
   title: string;
   packetType: 'starter_packet_v1';
+  selectedPreset: DraftField<DraftPacketPresetId>;
   status: DraftWorkspaceStatus;
   createdAt: string;
   updatedAt: string;
@@ -732,6 +1021,7 @@ export interface DraftFormsWorkspace {
     userRequest?: string;
     mariaSummary?: string;
     attachmentNames: string[];
+    extractedFacts?: DraftIntakeFact[];
   };
   caseNumber: DraftField<string>;
   filingCounty: DraftField<string>;
@@ -754,7 +1044,48 @@ export interface DraftFormsWorkspace {
   hasMinorChildren: DraftField<boolean>;
   children: DraftChild[];
   fl100: DraftFl100Section;
+  fl110: { includeForm: DraftField<boolean> };
   fl300: DraftFl300Section;
+  fl140: DraftFl140Section;
+  fl141: DraftFl141Section;
+  fl142: DraftFl142Section;
+  fl115: DraftFl115Section;
+  fl117: DraftFl117Section;
+  fl120: DraftFl120Section;
+  fl160: DraftFl160Section;
+  fl342: DraftFl342Section;
+  fl343: DraftFl343Section;
+  fl130: DraftFl130Section;
+  fl144: DraftFl144Section;
+  fl170: DraftFl170Section;
+  fl180: DraftFl180Section;
+  fl190: DraftFl190Section;
+  fl345: DraftFl345Section;
+  fl348: DraftFl348Section;
+  fl165: DraftRemainingFlFormSection;
+  fl182: DraftRemainingFlFormSection;
+  fl191: DraftRemainingFlFormSection;
+  fl195: DraftRemainingFlFormSection;
+  fl272: DraftRemainingFlFormSection;
+  fl342a: DraftRemainingFlFormSection;
+  fl346: DraftRemainingFlFormSection;
+  fl347: DraftRemainingFlFormSection;
+  fl435: DraftRemainingFlFormSection;
+  fl460: DraftRemainingFlFormSection;
+  fl830: DraftRemainingFlFormSection;
+  fw001: DraftRemainingFlFormSection;
+  fw003: DraftRemainingFlFormSection;
+  fw010: DraftRemainingFlFormSection;
+  dv100: DraftDvFormSection;
+  dv101: DraftDvFormSection;
+  dv105: DraftDvFormSection;
+  dv108: DraftDvFormSection;
+  dv109: DraftDvFormSection;
+  dv110: DraftDvFormSection;
+  dv120: DraftDvFormSection;
+  dv130: DraftDvFormSection;
+  dv140: DraftDvFormSection;
+  dv200: DraftDvFormSection;
   fl150: DraftFl150Section;
   fl105: DraftFl105Section;
   requests: {
@@ -934,6 +1265,53 @@ function writeWorkspaces(workspaces: DraftFormsWorkspace[]) {
   storage.setItem(FORM_DRAFTS_KEY, JSON.stringify(workspaces));
 }
 
+async function requestFormDrafts<T>(body: Record<string, unknown>): Promise<T> {
+  const response = await fetch('/api/auth', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+    credentials: 'same-origin',
+  });
+
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(payload.error || 'Form draft request failed');
+  }
+
+  return payload as T;
+}
+
+function mergeWorkspaces(local: DraftFormsWorkspace[], remote: DraftFormsWorkspace[]) {
+  const byId = new Map<string, DraftFormsWorkspace>();
+  [...local, ...remote].forEach((workspace) => {
+    const existing = byId.get(workspace.id);
+    if (!existing || new Date(workspace.updatedAt).getTime() >= new Date(existing.updatedAt).getTime()) {
+      byId.set(workspace.id, workspace);
+    }
+  });
+
+  return Array.from(byId.values()).sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+}
+
+export async function syncDraftWorkspacesFromServer(userId: string) {
+  const result = await requestFormDrafts<{ drafts: DraftFormsWorkspace[] }>({ action: 'form-drafts-list' });
+  const remote = Array.isArray(result.drafts)
+    ? result.drafts.filter((draft) => draft?.userId === userId).map((draft) => normalizeWorkspace(draft))
+    : [];
+  const merged = mergeWorkspaces(readWorkspaces().filter((workspace) => workspace.userId === userId), remote);
+  const others = readWorkspaces().filter((workspace) => workspace.userId !== userId);
+  writeWorkspaces([...merged, ...others]);
+  return merged;
+}
+
+export async function saveDraftWorkspaceToServer(workspace: DraftFormsWorkspace) {
+  const result = await requestFormDrafts<{ draft: DraftFormsWorkspace }>({
+    action: 'form-drafts-save',
+    workspace,
+  });
+  return normalizeWorkspace(result.draft);
+}
+
 function sanitizeHandoffMessage(message: ChatMessage): ChatMessage {
   return {
     id: message.id,
@@ -1034,6 +1412,7 @@ function createDefaultFl100Section(): DraftFl100Section {
   };
 
   return {
+    includeForm: createField(true, { sourceType: 'manual', sourceLabel: 'Default starter packet form', confidence: 'medium', needsReview: false }),
     proceedingType: createField('dissolution', {
       sourceType: 'manual',
       sourceLabel: 'Default starter packet assumption',
@@ -1596,6 +1975,23 @@ function createDefaultFl300Section(petitionerName = ''): DraftFl300Section {
     },
     attorneyFees: {
       amount: createField('', { needsReview: false }),
+      includeFl319: createField(false, explicitRequired),
+      feesRequestedAmount: createField('', { needsReview: false }),
+      costsRequestedAmount: createField('', { needsReview: false }),
+      incurredToDateAmount: createField('', { needsReview: false }),
+      estimatedFutureAmount: createField('', { needsReview: false }),
+      limitedScopeAmount: createField('', { needsReview: false }),
+      paymentRequestedFrom: createField('unspecified', explicitRequired),
+      paymentRequestedFromOtherName: createField('', { needsReview: false }),
+      priorFeeOrderExists: createField('unspecified', explicitRequired),
+      priorFeeOrderPayor: createField('unspecified', explicitRequired),
+      priorFeeOrderAmount: createField('', { needsReview: false }),
+      priorFeeOrderDate: createField('', { needsReview: false }),
+      paymentSources: createField('', { needsReview: false }),
+      priorPaymentsStatus: createField('unspecified', explicitRequired),
+      additionalInformation: createField('', { needsReview: false }),
+      freeLegalServices: createField(false, explicitRequired),
+      pagesAttached: createField('', { needsReview: false }),
     },
     otherOrdersRequested: createField('', { needsReview: false }),
     facts: createField('', { needsReview: true }),
@@ -1613,6 +2009,388 @@ function createDefaultFl150AmountPair(): DraftFl150AmountPair {
   return {
     lastMonth: createField('', { needsReview: false }),
     averageMonthly: createField('', { needsReview: false }),
+  };
+}
+
+function createDefaultFl140Section(petitionerName = ''): DraftFl140Section {
+  const explicitRequired = {
+    sourceType: 'manual' as const,
+    sourceLabel: 'FL-140 explicit Draft Forms data required',
+    confidence: 'low' as const,
+    needsReview: true,
+  };
+
+  return {
+    includeForm: createField(false, explicitRequired),
+    declarantRole: createField('petitioner', explicitRequired),
+    disclosureType: createField('preliminary', explicitRequired),
+    servedScheduleOrPropertyDeclaration: createField(true, explicitRequired),
+    scheduleIncludesCommunityProperty: createField(true, explicitRequired),
+    scheduleIncludesSeparateProperty: createField(true, explicitRequired),
+    servedIncomeExpenseDeclaration: createField(false, explicitRequired),
+    servedTaxReturns: createField(true, explicitRequired),
+    noTaxReturnsFiled: createField(false, explicitRequired),
+    materialFactsStatement: createField('Included with disclosure packet.', { needsReview: true }),
+    servedObligationsStatement: createField(true, explicitRequired),
+    obligationsStatement: createField('Included with disclosure packet.', { needsReview: true }),
+    servedInvestmentOpportunityStatement: createField(true, explicitRequired),
+    investmentOpportunityStatement: createField('Included with disclosure packet.', { needsReview: true }),
+    signatureDate: createField('', { needsReview: true }),
+    typePrintName: createField(petitionerName, { needsReview: true }),
+  };
+}
+
+function createDefaultFl141Section(petitionerName = ''): DraftFl141Section {
+  const explicitRequired = {
+    sourceType: 'manual' as const,
+    sourceLabel: 'FL-141 explicit Draft Forms data required',
+    confidence: 'low' as const,
+    needsReview: true,
+  };
+
+  return {
+    includeForm: createField(false, explicitRequired),
+    disclosureType: createField('preliminary', explicitRequired),
+    servingParty: createField('petitioner', explicitRequired),
+    servedOnParty: createField('respondent', explicitRequired),
+    serviceMethod: createField('mail', explicitRequired),
+    serviceDate: createField('', { needsReview: true }),
+    otherDocuments: createField('', { needsReview: false }),
+    waiveFinalDeclaration: createField(false, explicitRequired),
+    finalIncomeExpenseServed: createField(false, explicitRequired),
+    waiveReceipt: createField(false, explicitRequired),
+    signatureDate: createField('', { needsReview: true }),
+    typePrintName: createField(petitionerName, { needsReview: true }),
+  };
+}
+
+function createDefaultFl142AssetRow(): DraftFl142AssetRow {
+  return {
+    description: createField('', { needsReview: false }),
+    separateProperty: createField('', { needsReview: false }),
+    dateAcquired: createField('', { needsReview: false }),
+    grossValue: createField('', { needsReview: false }),
+    amountOwed: createField('', { needsReview: false }),
+  };
+}
+
+function createDefaultFl142DebtRow(): DraftFl142DebtRow {
+  return {
+    description: createField('', { needsReview: false }),
+    separateProperty: createField('', { needsReview: false }),
+    totalOwing: createField('', { needsReview: false }),
+    dateAcquired: createField('', { needsReview: false }),
+  };
+}
+
+function createDefaultFl142Section(petitionerName = ''): DraftFl142Section {
+  const explicitRequired = {
+    sourceType: 'manual' as const,
+    sourceLabel: 'FL-142 explicit Draft Forms data required',
+    confidence: 'low' as const,
+    needsReview: true,
+  };
+  const assetKeys = ['realEstate', 'household', 'jewelryArt', 'vehicles', 'savings', 'checking', 'creditUnion', 'cash', 'taxRefund', 'lifeInsurance', 'stocksBonds', 'retirement', 'profitSharingIra', 'accountsReceivable', 'businessInterests', 'otherAssets'];
+  const debtKeys = ['studentLoans', 'taxes', 'supportArrearages', 'unsecuredLoans', 'creditCards', 'otherDebts'];
+
+  return {
+    includeForm: createField(false, explicitRequired),
+    partyRole: createField('petitioner', explicitRequired),
+    assets: Object.fromEntries(assetKeys.map((key) => [key, createDefaultFl142AssetRow()])),
+    debts: Object.fromEntries(debtKeys.map((key) => [key, createDefaultFl142DebtRow()])),
+    assetTotalGrossValue: createField('', { needsReview: false }),
+    assetTotalAmountOwed: createField('', { needsReview: false }),
+    debtTotalOwing: createField('', { needsReview: false }),
+    continuationPagesAttached: createField('', { needsReview: false }),
+    signatureDate: createField('', { needsReview: true }),
+    typePrintName: createField(petitionerName, { needsReview: true }),
+  };
+}
+
+function createDefaultFl117Section(petitionerName = '', respondentName = ''): DraftFl117Section {
+  const explicitRequired = {
+    sourceType: 'manual' as const,
+    sourceLabel: 'FL-117 explicit Draft Forms data required',
+    confidence: 'low' as const,
+    needsReview: true,
+  };
+
+  return {
+    includeForm: createField(false, explicitRequired),
+    personServedName: createField(respondentName, { needsReview: true }),
+    dateMailed: createField('', { needsReview: true }),
+    petitionerPrintedName: createField(petitionerName, { needsReview: true }),
+    acknowledgmentDateSigned: createField('', { needsReview: false }),
+    acknowledgmentPrintedName: createField('', { needsReview: false }),
+  };
+}
+
+
+function createDefaultFl115Section(): DraftFl115Section {
+  const explicitRequired = {
+    sourceType: 'manual' as const,
+    sourceLabel: 'FL-115 explicit Draft Forms data required',
+    confidence: 'low' as const,
+    needsReview: true,
+  };
+  return {
+    includeForm: createField(false, explicitRequired),
+    serviceMethod: createField('personal', explicitRequired),
+    addressWhereServed: createField('', explicitRequired),
+    serviceDate: createField('', explicitRequired),
+    serviceTime: createField('', { needsReview: false }),
+    dateMailed: createField('', { needsReview: false }),
+    cityMailedFrom: createField('', { needsReview: false }),
+    serverName: createField('', explicitRequired),
+    serverAddress: createField('', explicitRequired),
+    serverPhone: createField('', { needsReview: false }),
+    signatureDate: createField('', explicitRequired),
+  };
+}
+
+function createDefaultFl120Section(respondentName = ''): DraftFl120Section {
+  const explicitRequired = {
+    sourceType: 'manual' as const,
+    sourceLabel: 'FL-120 explicit Draft Forms data required',
+    confidence: 'low' as const,
+    needsReview: true,
+  };
+  return {
+    includeForm: createField(false, explicitRequired),
+    denyPetitionGrounds: createField(false, { needsReview: false }),
+    respondentPrintedName: createField(respondentName, { needsReview: respondentName.length === 0 }),
+    signatureDate: createField('', explicitRequired),
+  };
+}
+
+function createDefaultFl160Section(petitionerName = ''): DraftFl160Section {
+  const explicitRequired = {
+    sourceType: 'manual' as const,
+    sourceLabel: 'FL-160 explicit Draft Forms data required',
+    confidence: 'low' as const,
+    needsReview: true,
+  };
+  return {
+    includeForm: createField(false, explicitRequired),
+    partyRole: createField('petitioner', explicitRequired),
+    propertyType: createField('community', explicitRequired),
+    itemDescription: createField('', explicitRequired),
+    dateAcquired: createField('', { needsReview: false }),
+    grossFairMarketValue: createField('', explicitRequired),
+    debtAmount: createField('', { needsReview: false }),
+    netFairMarketValue: createField('', { needsReview: false }),
+    proposedAwardPetitioner: createField('', { needsReview: false }),
+    proposedAwardRespondent: createField('', { needsReview: false }),
+    signatureDate: createField('', explicitRequired),
+    typePrintName: createField(petitionerName, { needsReview: petitionerName.length === 0 }),
+  };
+}
+
+function createDefaultFl342Section(): DraftFl342Section {
+  const explicitRequired = {
+    sourceType: 'manual' as const,
+    sourceLabel: 'FL-342 explicit Draft Forms data required',
+    confidence: 'low' as const,
+    needsReview: true,
+  };
+  return {
+    includeForm: createField(false, explicitRequired),
+    attachTo: createField('fl300', explicitRequired),
+    attachToOther: createField('', { needsReview: false }),
+    petitionerGrossIncome: createField('', { needsReview: false }),
+    petitionerNetIncome: createField('', { needsReview: false }),
+    respondentGrossIncome: createField('', { needsReview: false }),
+    respondentNetIncome: createField('', { needsReview: false }),
+    otherPartyGrossIncome: createField('', { needsReview: false }),
+    otherPartyNetIncome: createField('', { needsReview: false }),
+    baseMonthlyChildSupport: createField('', explicitRequired),
+    childCareCosts: createField('', { needsReview: false }),
+    healthCareCosts: createField('', { needsReview: false }),
+    otherAddOnCosts: createField('', { needsReview: false }),
+    paymentStartDate: createField('', explicitRequired),
+    payableTo: createField('', explicitRequired),
+    guidelineTotal: createField('', { needsReview: false }),
+    otherOrders: createField('', { needsReview: false }),
+  };
+}
+
+function createDefaultFl343Section(): DraftFl343Section {
+  const explicitRequired = {
+    sourceType: 'manual' as const,
+    sourceLabel: 'FL-343 explicit Draft Forms data required',
+    confidence: 'low' as const,
+    needsReview: true,
+  };
+  return {
+    includeForm: createField(false, explicitRequired),
+    supportType: createField('spousal', explicitRequired),
+    payor: createField('respondent', explicitRequired),
+    payee: createField('petitioner', explicitRequired),
+    monthlyAmount: createField('', explicitRequired),
+    paymentStartDate: createField('', explicitRequired),
+    paymentEndDate: createField('', { needsReview: false }),
+    paymentFrequency: createField('monthly', explicitRequired),
+    frequencyOther: createField('', { needsReview: false }),
+    wageAssignment: createField(false, { needsReview: false }),
+    terminateOnDeathOrRemarriage: createField(true, { needsReview: false }),
+    otherOrders: createField('', { needsReview: false }),
+  };
+}
+
+
+function createJudgmentPropertyExplicitRequired(formName: string) {
+  return {
+    sourceType: 'manual' as const,
+    sourceLabel: `${formName} explicit Draft Forms data required`,
+    confidence: 'low' as const,
+    needsReview: true,
+  };
+}
+
+function createDefaultFl130Section(petitionerName = '', respondentName = ''): DraftFl130Section {
+  const explicitRequired = createJudgmentPropertyExplicitRequired('FL-130');
+  return {
+    includeForm: createField(false, explicitRequired),
+    appearanceBy: createField('respondent', explicitRequired),
+    agreementSummary: createField('', { needsReview: false }),
+    petitionerSignatureDate: createField('', { needsReview: false }),
+    petitionerPrintedName: createField(petitionerName, { needsReview: petitionerName.length === 0 }),
+    respondentSignatureDate: createField('', explicitRequired),
+    respondentPrintedName: createField(respondentName, { needsReview: respondentName.length === 0 }),
+  };
+}
+
+function createDefaultFl144Section(petitionerName = '', respondentName = ''): DraftFl144Section {
+  const explicitRequired = createJudgmentPropertyExplicitRequired('FL-144');
+  return {
+    includeForm: createField(false, explicitRequired),
+    thirdPartyName: createField('', { needsReview: false }),
+    stipulationText: createField('The parties stipulate to waive final declarations of disclosure as permitted by Family Code section 2105(d).', explicitRequired),
+    signatureDate: createField('', explicitRequired),
+    petitionerPrintedName: createField(petitionerName, { needsReview: petitionerName.length === 0 }),
+    respondentPrintedName: createField(respondentName, { needsReview: respondentName.length === 0 }),
+  };
+}
+
+function createDefaultFl170Section(petitionerName = ''): DraftFl170Section {
+  const explicitRequired = createJudgmentPropertyExplicitRequired('FL-170');
+  return {
+    includeForm: createField(false, explicitRequired),
+    isDefaultOrUncontested: createField(true, explicitRequired),
+    agreementDate: createField('', { needsReview: false }),
+    declarationText: createField('', { needsReview: false }),
+    signatureDate: createField('', explicitRequired),
+    printedName: createField(petitionerName, { needsReview: petitionerName.length === 0 }),
+  };
+}
+
+function createDefaultFl180Section(): DraftFl180Section {
+  const explicitRequired = createJudgmentPropertyExplicitRequired('FL-180');
+  return {
+    includeForm: createField(false, explicitRequired),
+    judgmentType: createField('dissolution', explicitRequired),
+    statusTerminationDate: createField('', explicitRequired),
+    judgmentEnteredDate: createField('', { needsReview: false }),
+    agreementDate: createField('', { needsReview: false }),
+    propertyDebtOrders: createField('', { needsReview: false }),
+    childSupportAmount: createField('', { needsReview: false }),
+    spousalSupportAmount: createField('', { needsReview: false }),
+  };
+}
+
+function createDefaultFl190Section(): DraftFl190Section {
+  const explicitRequired = createJudgmentPropertyExplicitRequired('FL-190');
+  return {
+    includeForm: createField(false, explicitRequired),
+    noticeDate: createField('', explicitRequired),
+    judgmentEnteredDate: createField('', { needsReview: false }),
+    noticeText: createField('', { needsReview: false }),
+    clerkMailingDate: createField('', { needsReview: false }),
+  };
+}
+
+function createDefaultFl345Section(): DraftFl345Section {
+  const explicitRequired = createJudgmentPropertyExplicitRequired('FL-345');
+  return {
+    includeForm: createField(false, explicitRequired),
+    attachTo: createField('fl180', explicitRequired),
+    attachToOther: createField('', { needsReview: false }),
+    propertyAwardSummary: createField('', explicitRequired),
+    debtAllocationSummary: createField('', { needsReview: false }),
+    equalizationPayment: createField('', { needsReview: false }),
+    otherOrders: createField('', { needsReview: false }),
+  };
+}
+
+function createDefaultFl348Section(): DraftFl348Section {
+  const explicitRequired = createJudgmentPropertyExplicitRequired('FL-348');
+  return {
+    includeForm: createField(false, explicitRequired),
+    employeePartyName: createField('', explicitRequired),
+    retirementPlanName: createField('', explicitRequired),
+    claimantPartyName: createField('', { needsReview: false }),
+    orderSummary: createField('', { needsReview: false }),
+    signatureDate: createField('', { needsReview: false }),
+  };
+}
+
+
+function createDefaultRemainingFlFormSection(formName: string, petitionerName = ''): DraftRemainingFlFormSection {
+  const explicitRequired = createJudgmentPropertyExplicitRequired(formName);
+  return {
+    includeForm: createField(false, explicitRequired),
+    primaryParty: createField('petitioner', explicitRequired),
+    attachTo: createField('fl180', { needsReview: false }),
+    amount: createField('', { needsReview: false }),
+    date: createField('', { needsReview: false }),
+    otherPartyName: createField('', { needsReview: false }),
+    details: createField('', { needsReview: false }),
+    signatureDate: createField('', { needsReview: false }),
+    printedName: createField(petitionerName, { needsReview: petitionerName.length === 0 }),
+  };
+}
+
+function createDefaultDvFormSection(formName: string, petitionerName = '', respondentName = ''): DraftDvFormSection {
+  return {
+    includeForm: createField(false, {
+      sourceType: 'manual',
+      sourceLabel: `Optional ${formName} toggle`,
+      confidence: 'low',
+      needsReview: false,
+    }),
+    protectedPartyName: createField(petitionerName, {
+      sourceType: petitionerName ? 'profile' : undefined,
+      sourceLabel: petitionerName ? 'Account profile' : undefined,
+      confidence: petitionerName ? 'high' : undefined,
+      needsReview: true,
+    }),
+    restrainedPartyName: createField(respondentName, {
+      sourceType: respondentName ? 'chat' : undefined,
+      sourceLabel: respondentName ? 'Maria chat intake' : undefined,
+      confidence: respondentName ? 'low' : undefined,
+      needsReview: true,
+    }),
+    relationship: createField('', { needsReview: true }),
+    restrainedPersonDescription: createField('', { needsReview: false }),
+    otherProtectedPeople: createField('', { needsReview: false }),
+    childNames: createField('', { needsReview: false }),
+    hearingDate: createField('', { needsReview: false }),
+    hearingTime: createField('', { needsReview: false }),
+    hearingDepartment: createField('', { needsReview: false }),
+    hearingRoom: createField('', { needsReview: false }),
+    serviceDate: createField('', { needsReview: false }),
+    serviceTime: createField('', { needsReview: false }),
+    servedByName: createField('', { needsReview: false }),
+    requestSummary: createField('', { needsReview: false }),
+    orderSummary: createField('', { needsReview: false }),
+    responseSummary: createField('', { needsReview: false }),
+    signatureDate: createField('', { needsReview: true }),
+    printedName: createField(petitionerName, {
+      sourceType: petitionerName ? 'profile' : undefined,
+      sourceLabel: petitionerName ? 'Account profile' : undefined,
+      confidence: petitionerName ? 'high' : undefined,
+      needsReview: true,
+    }),
   };
 }
 
@@ -1999,7 +2777,48 @@ function createDefaultFl105Section(petitionerName = ''): DraftFl105Section {
 function normalizeWorkspace(workspace: DraftFormsWorkspace): DraftFormsWorkspace {
   const defaultFl100 = createDefaultFl100Section();
   const petitionerName = workspace.petitionerName?.value ?? '';
+  const respondentName = workspace.respondentName?.value ?? '';
   const defaultFl300 = createDefaultFl300Section(petitionerName);
+  const defaultFl140 = createDefaultFl140Section(petitionerName);
+  const defaultFl141 = createDefaultFl141Section(petitionerName);
+  const defaultFl142 = createDefaultFl142Section(petitionerName);
+  const defaultFl115 = createDefaultFl115Section();
+  const defaultFl117 = createDefaultFl117Section(petitionerName, respondentName);
+  const defaultFl120 = createDefaultFl120Section(respondentName);
+  const defaultFl160 = createDefaultFl160Section(petitionerName);
+  const defaultFl342 = createDefaultFl342Section();
+  const defaultFl343 = createDefaultFl343Section();
+  const defaultFl130 = createDefaultFl130Section(petitionerName, respondentName);
+  const defaultFl144 = createDefaultFl144Section(petitionerName, respondentName);
+  const defaultFl170 = createDefaultFl170Section(petitionerName);
+  const defaultFl180 = createDefaultFl180Section();
+  const defaultFl190 = createDefaultFl190Section();
+  const defaultFl345 = createDefaultFl345Section();
+  const defaultFl348 = createDefaultFl348Section();
+  const defaultFl165 = createDefaultRemainingFlFormSection('FL-165', petitionerName);
+  const defaultFl182 = createDefaultRemainingFlFormSection('FL-182', petitionerName);
+  const defaultFl191 = createDefaultRemainingFlFormSection('FL-191', petitionerName);
+  const defaultFl195 = createDefaultRemainingFlFormSection('FL-195', petitionerName);
+  const defaultFl272 = createDefaultRemainingFlFormSection('FL-272', petitionerName);
+  const defaultFl342a = createDefaultRemainingFlFormSection('FL-342(A)', petitionerName);
+  const defaultFl346 = createDefaultRemainingFlFormSection('FL-346', petitionerName);
+  const defaultFl347 = createDefaultRemainingFlFormSection('FL-347', petitionerName);
+  const defaultFl435 = createDefaultRemainingFlFormSection('FL-435', petitionerName);
+  const defaultFl460 = createDefaultRemainingFlFormSection('FL-460', petitionerName);
+  const defaultFl830 = createDefaultRemainingFlFormSection('FL-830', petitionerName);
+  const defaultFw001 = createDefaultRemainingFlFormSection('FW-001', petitionerName);
+  const defaultFw003 = createDefaultRemainingFlFormSection('FW-003', petitionerName);
+  const defaultFw010 = createDefaultRemainingFlFormSection('FW-010', petitionerName);
+  const defaultDv100 = createDefaultDvFormSection('DV-100', petitionerName, respondentName);
+  const defaultDv101 = createDefaultDvFormSection('DV-101', petitionerName, respondentName);
+  const defaultDv105 = createDefaultDvFormSection('DV-105', petitionerName, respondentName);
+  const defaultDv108 = createDefaultDvFormSection('DV-108', petitionerName, respondentName);
+  const defaultDv109 = createDefaultDvFormSection('DV-109', petitionerName, respondentName);
+  const defaultDv110 = createDefaultDvFormSection('DV-110', petitionerName, respondentName);
+  const defaultDv120 = createDefaultDvFormSection('DV-120', petitionerName, respondentName);
+  const defaultDv130 = createDefaultDvFormSection('DV-130', petitionerName, respondentName);
+  const defaultDv140 = createDefaultDvFormSection('DV-140', petitionerName, respondentName);
+  const defaultDv200 = createDefaultDvFormSection('DV-200', petitionerName, respondentName);
   const defaultFl150 = createDefaultFl150Section(petitionerName);
   const defaultFl105 = createDefaultFl105Section(petitionerName);
   const normalizedChildren = Array.isArray(workspace.children)
@@ -2019,6 +2838,14 @@ function normalizeWorkspace(workspace: DraftFormsWorkspace): DraftFormsWorkspace
 
   return {
     ...workspace,
+    packetType: 'starter_packet_v1',
+    selectedPreset: workspace.selectedPreset ?? createField('custom', { needsReview: false }),
+    intake: {
+      userRequest: workspace.intake?.userRequest,
+      mariaSummary: workspace.intake?.mariaSummary,
+      attachmentNames: workspace.intake?.attachmentNames ?? [],
+      extractedFacts: workspace.intake?.extractedFacts ?? [],
+    },
     caseNumber: workspace.caseNumber ?? createField('', { needsReview: false }),
     filingCounty: workspace.filingCounty ?? createField('', { needsReview: true }),
     courtStreet: workspace.courtStreet ?? createField('', { needsReview: false }),
@@ -2050,6 +2877,7 @@ function normalizeWorkspace(workspace: DraftFormsWorkspace): DraftFormsWorkspace
     hasMinorChildren: workspace.hasMinorChildren ?? createField(false, { needsReview: true }),
     children: normalizedChildren,
     fl100: {
+      includeForm: workspace.fl100?.includeForm ?? defaultFl100.includeForm,
       proceedingType: workspace.fl100?.proceedingType ?? defaultFl100.proceedingType,
       isAmended: workspace.fl100?.isAmended ?? defaultFl100.isAmended,
       relationshipType: workspace.fl100?.relationshipType ?? defaultFl100.relationshipType,
@@ -2430,6 +3258,7 @@ function normalizeWorkspace(workspace: DraftFormsWorkspace): DraftFormsWorkspace
       signatureDate: workspace.fl100?.signatureDate ?? defaultFl100.signatureDate,
       formerName: workspace.fl100?.formerName ?? defaultFl100.formerName,
     },
+    fl110: { includeForm: workspace.fl110?.includeForm ?? createField(true, { sourceType: 'manual', sourceLabel: 'Default starter packet form', confidence: 'medium', needsReview: false }) },
     fl300: {
       includeForm: workspace.fl300?.includeForm ?? defaultFl300.includeForm,
       requestTypes: { ...defaultFl300.requestTypes, ...(workspace.fl300?.requestTypes ?? {}) },
@@ -2449,6 +3278,51 @@ function normalizeWorkspace(workspace: DraftFormsWorkspace): DraftFormsWorkspace
       signatureDate: workspace.fl300?.signatureDate ?? defaultFl300.signatureDate,
       typePrintName: workspace.fl300?.typePrintName ?? defaultFl300.typePrintName,
     },
+    fl140: { ...defaultFl140, ...(workspace.fl140 ?? {}) },
+    fl141: { ...defaultFl141, ...(workspace.fl141 ?? {}) },
+    fl142: {
+      ...defaultFl142,
+      ...(workspace.fl142 ?? {}),
+      assets: { ...defaultFl142.assets, ...(workspace.fl142?.assets ?? {}) },
+      debts: { ...defaultFl142.debts, ...(workspace.fl142?.debts ?? {}) },
+    },
+    fl115: { ...defaultFl115, ...(workspace.fl115 ?? {}) },
+    fl117: { ...defaultFl117, ...(workspace.fl117 ?? {}) },
+    fl120: { ...defaultFl120, ...(workspace.fl120 ?? {}) },
+    fl160: { ...defaultFl160, ...(workspace.fl160 ?? {}) },
+    fl342: { ...defaultFl342, ...(workspace.fl342 ?? {}) },
+    fl343: { ...defaultFl343, ...(workspace.fl343 ?? {}) },
+    fl130: { ...defaultFl130, ...(workspace.fl130 ?? {}) },
+    fl144: { ...defaultFl144, ...(workspace.fl144 ?? {}) },
+    fl170: { ...defaultFl170, ...(workspace.fl170 ?? {}) },
+    fl180: { ...defaultFl180, ...(workspace.fl180 ?? {}) },
+    fl190: { ...defaultFl190, ...(workspace.fl190 ?? {}) },
+    fl345: { ...defaultFl345, ...(workspace.fl345 ?? {}) },
+    fl348: { ...defaultFl348, ...(workspace.fl348 ?? {}) },
+    fl165: { ...defaultFl165, ...(workspace.fl165 ?? {}) },
+    fl182: { ...defaultFl182, ...(workspace.fl182 ?? {}) },
+    fl191: { ...defaultFl191, ...(workspace.fl191 ?? {}) },
+    fl195: { ...defaultFl195, ...(workspace.fl195 ?? {}) },
+    fl272: { ...defaultFl272, ...(workspace.fl272 ?? {}) },
+    fl342a: { ...defaultFl342a, ...(workspace.fl342a ?? {}) },
+    fl346: { ...defaultFl346, ...(workspace.fl346 ?? {}) },
+    fl347: { ...defaultFl347, ...(workspace.fl347 ?? {}) },
+    fl435: { ...defaultFl435, ...(workspace.fl435 ?? {}) },
+    fl460: { ...defaultFl460, ...(workspace.fl460 ?? {}) },
+    fl830: { ...defaultFl830, ...(workspace.fl830 ?? {}) },
+    fw001: { ...defaultFw001, ...(workspace.fw001 ?? {}) },
+    fw003: { ...defaultFw003, ...(workspace.fw003 ?? {}) },
+    fw010: { ...defaultFw010, ...(workspace.fw010 ?? {}) },
+    dv100: { ...defaultDv100, ...(workspace.dv100 ?? {}) },
+    dv101: { ...defaultDv101, ...(workspace.dv101 ?? {}) },
+    dv105: { ...defaultDv105, ...(workspace.dv105 ?? {}) },
+    dv108: { ...defaultDv108, ...(workspace.dv108 ?? {}) },
+    dv109: { ...defaultDv109, ...(workspace.dv109 ?? {}) },
+    dv110: { ...defaultDv110, ...(workspace.dv110 ?? {}) },
+    dv120: { ...defaultDv120, ...(workspace.dv120 ?? {}) },
+    dv130: { ...defaultDv130, ...(workspace.dv130 ?? {}) },
+    dv140: { ...defaultDv140, ...(workspace.dv140 ?? {}) },
+    dv200: { ...defaultDv200, ...(workspace.dv200 ?? {}) },
     fl150: mergeFl150Section(workspace.fl150, defaultFl150),
     fl105: {
       representationRole: workspace.fl105?.representationRole ?? defaultFl105.representationRole,
@@ -2590,10 +3464,6 @@ interface ChatIntakePrefill {
   separationDate?: string;
   hasMinorChildren?: boolean;
   children: Array<{ fullName?: string; age?: string }>;
-  requestedForms: {
-    fl300: boolean;
-    fl150: boolean;
-  };
   fl150: {
     employer?: string;
     employerAddress?: string;
@@ -2863,20 +3733,85 @@ function extractChatIntakePrefill(user: User, text: string): ChatIntakePrefill {
     separationDate: extractDateByLabel(combined, ['separated', 'date\\s+of\\s+separation', 'separation\\s+date']),
     hasMinorChildren: typeof user.profile?.hasChildren === 'boolean' ? user.profile.hasChildren : children.length > 0 || hasChildrenFromText || undefined,
     children,
-    requestedForms: inferRequestedForms(combined),
     fl150: extractFl150ChatPrefill(combined),
-  };
-}
-
-function inferRequestedForms(text: string): ChatIntakePrefill['requestedForms'] {
-  return {
-    fl300: /\b(?:fl\s*-?\s*300|form\s+300|request\s+for\s+order|rfo)\b/i.test(text),
-    fl150: /\b(?:fl\s*-?\s*150|form\s+150|income\s+and\s+expense\s+declaration|i\s*&\s*e)\b/i.test(text),
   };
 }
 
 function createChatField<T>(value: T, needsReview = true): DraftField<T> {
   return createField(value, { ...CHAT_PREFILL_SOURCE, needsReview });
+}
+
+function addIntakeFact(
+  facts: DraftIntakeFact[],
+  path: string[],
+  label: string,
+  value: string | boolean | undefined,
+  sourceLabel = 'Maria chat intake',
+  sourceType: DraftFieldSourceType = 'chat',
+) {
+  if (value === undefined) return;
+  if (typeof value === 'string' && value.trim().length === 0) return;
+  facts.push({
+    id: uuidv4(),
+    path,
+    label,
+    value,
+    sourceType,
+    sourceLabel,
+    confidence: 'low',
+    status: 'pending',
+    createdAt: new Date().toISOString(),
+  });
+}
+
+function buildIntakeFactsFromChatPrefill(prefill: ChatIntakePrefill, sourceLabel = 'Maria chat intake', sourceType: DraftFieldSourceType = 'chat'): DraftIntakeFact[] {
+  const facts: DraftIntakeFact[] = [];
+  addIntakeFact(facts, ['caseNumber'], 'Case number', prefill.caseNumber, sourceLabel, sourceType);
+  addIntakeFact(facts, ['filingCounty'], 'Filing county', prefill.filingCounty, sourceLabel, sourceType);
+  addIntakeFact(facts, ['petitionerName'], 'Petitioner name', prefill.petitionerName, sourceLabel, sourceType);
+  addIntakeFact(facts, ['petitionerAddress'], 'Petitioner address', prefill.petitionerAddress, sourceLabel, sourceType);
+  addIntakeFact(facts, ['petitionerPhone'], 'Petitioner phone', prefill.petitionerPhone, sourceLabel, sourceType);
+  addIntakeFact(facts, ['petitionerEmail'], 'Petitioner email', prefill.petitionerEmail, sourceLabel, sourceType);
+  addIntakeFact(facts, ['respondentName'], 'Respondent name', prefill.respondentName, sourceLabel, sourceType);
+  addIntakeFact(facts, ['marriageDate'], 'Marriage date', prefill.marriageDate, sourceLabel, sourceType);
+  addIntakeFact(facts, ['separationDate'], 'Separation date', prefill.separationDate, sourceLabel, sourceType);
+  addIntakeFact(facts, ['hasMinorChildren'], 'Has minor children', prefill.hasMinorChildren, sourceLabel, sourceType);
+  prefill.children.forEach((child, index) => {
+    addIntakeFact(facts, ['children', String(index), 'fullName'], `Child ${index + 1} full name`, child.fullName, sourceLabel, sourceType);
+    addIntakeFact(facts, ['children', String(index), 'birthDate'], `Child ${index + 1} age mentioned`, child.age, sourceLabel, sourceType);
+  });
+  addIntakeFact(facts, ['fl150', 'employment', 'employerName'], 'FL-150 employer', prefill.fl150.employer, sourceLabel, sourceType);
+  addIntakeFact(facts, ['fl150', 'employment', 'employerAddress'], 'FL-150 employer address', prefill.fl150.employerAddress, sourceLabel, sourceType);
+  addIntakeFact(facts, ['fl150', 'employment', 'employerPhone'], 'FL-150 employer phone', prefill.fl150.employerPhone, sourceLabel, sourceType);
+  addIntakeFact(facts, ['fl150', 'employment', 'occupation'], 'FL-150 occupation', prefill.fl150.occupation, sourceLabel, sourceType);
+  addIntakeFact(facts, ['fl150', 'employment', 'hoursPerWeek'], 'FL-150 hours per week', prefill.fl150.hoursPerWeek, sourceLabel, sourceType);
+  addIntakeFact(facts, ['fl150', 'income', 'salaryWages', 'averageMonthly'], 'FL-150 average monthly salary/wages', prefill.fl150.salaryAverageMonthly, sourceLabel, sourceType);
+  addIntakeFact(facts, ['fl150', 'expenses', 'rentOrMortgage'], 'FL-150 rent/mortgage', prefill.fl150.rentOrMortgage, sourceLabel, sourceType);
+  addIntakeFact(facts, ['fl150', 'expenses', 'groceriesHousehold'], 'FL-150 groceries/household supplies', prefill.fl150.groceriesHousehold, sourceLabel, sourceType);
+  addIntakeFact(facts, ['fl150', 'expenses', 'utilities'], 'FL-150 utilities', prefill.fl150.utilities, sourceLabel, sourceType);
+  addIntakeFact(facts, ['fl150', 'expenses', 'phoneExpense'], 'FL-150 phone expense', prefill.fl150.phoneExpense, sourceLabel, sourceType);
+  addIntakeFact(facts, ['fl150', 'expenses', 'auto'], 'FL-150 auto expense', prefill.fl150.auto, sourceLabel, sourceType);
+  addIntakeFact(facts, ['fl150', 'expenses', 'autoInsurance'], 'FL-150 auto insurance', prefill.fl150.autoInsurance, sourceLabel, sourceType);
+  addIntakeFact(facts, ['fl150', 'childrenSupport', 'childCareCosts'], 'FL-150 child care costs', prefill.fl150.childCareCosts, sourceLabel, sourceType);
+  addIntakeFact(facts, ['fl150', 'childrenSupport', 'healthCareCostsNotCovered'], 'FL-150 uncovered health care costs', prefill.fl150.healthCareCostsNotCovered, sourceLabel, sourceType);
+  addIntakeFact(facts, ['fl150', 'deductions', 'medicalInsurance'], 'FL-150 medical insurance deduction', prefill.fl150.medicalInsuranceDeduction, sourceLabel, sourceType);
+  addIntakeFact(facts, ['fl150', 'assets', 'cashChecking'], 'FL-150 cash/checking', prefill.fl150.cashChecking, sourceLabel, sourceType);
+  addIntakeFact(facts, ['fl150', 'assets', 'savingsCreditUnion'], 'FL-150 savings/credit union', prefill.fl150.savingsCreditUnion, sourceLabel, sourceType);
+  addIntakeFact(facts, ['fl150', 'expenses', 'monthlyDebtPayments'], 'FL-150 monthly debt payments', prefill.fl150.monthlyDebtPayments, sourceLabel, sourceType);
+  return facts;
+}
+
+function buildIntakeFactsFromMessages(user: User, messages: ChatMessage[], conversationContext: string, sourceLabel = 'Maria chat intake') {
+  const facts = buildIntakeFactsFromChatPrefill(extractChatIntakePrefill(user, conversationContext), sourceLabel, 'chat');
+  messages.forEach((message) => {
+    const uploadContext = message.draftContext?.trim();
+    if (!uploadContext) return;
+    const attachmentLabel = message.attachments?.length
+      ? `Uploaded file(s): ${message.attachments.map((attachment) => attachment.name).join(', ')}`
+      : 'Uploaded document context';
+    facts.push(...buildIntakeFactsFromChatPrefill(extractChatIntakePrefill(user, uploadContext), attachmentLabel, 'upload'));
+  });
+  return facts;
 }
 
 function createSupportSnapshotField<T>(value: T): DraftField<T> {
@@ -2941,6 +3876,7 @@ export function hydrateDraftWorkspaceFromSupportScenario(workspace: DraftFormsWo
       childSupport: scenario.childSupport > 0 ? withSupportSnapshotValue(workspace.requests.childSupport, true) : workspace.requests.childSupport,
       spousalSupport: scenario.spousalSupport > 0 ? withSupportSnapshotValue(workspace.requests.spousalSupport, true) : workspace.requests.spousalSupport,
     },
+    fl110: { includeForm: workspace.fl110?.includeForm ?? createField(true, { sourceType: 'manual', sourceLabel: 'Default starter packet form', confidence: 'medium', needsReview: false }) },
     fl300: {
       ...workspace.fl300,
       requestTypes: {
@@ -2984,47 +3920,7 @@ export function hydrateDraftWorkspaceFromSupportScenario(workspace: DraftFormsWo
   };
 }
 
-function applyChatPrefillToFl300(section: DraftFl300Section, requested: boolean, intakeText: string): DraftFl300Section {
-  if (!requested) return section;
-
-  const childCustody = /\b(?:custody|legal custody|physical custody)\b/i.test(intakeText);
-  const visitation = /\b(?:visitation|parenting time|timeshare|time share)\b/i.test(intakeText);
-  const childSupport = /\bchild support\b/i.test(intakeText);
-  const spousalSupport = /\b(?:spousal support|alimony)\b/i.test(intakeText);
-  const attorneyFeesCosts = /\b(?:attorney'?s? fees?|lawyer fees?|costs?|fee waiver|fees)\b/i.test(intakeText);
-  const propertyControl = /\b(?:property control|exclusive use|move[-\s]?out|control of property|debt payment)\b/i.test(intakeText);
-  const changeModify = /\b(?:change|modify|modification|existing order|current order)\b/i.test(intakeText);
-  const temporaryEmergencyOrders = /\b(?:temporary emergency|emergency order|ex parte|shorter service)\b/i.test(intakeText);
-  const other = !childCustody && !visitation && !childSupport && !spousalSupport && !attorneyFeesCosts && !propertyControl;
-  const facts = intakeText.trim()
-    ? truncateIntakeText(intakeText, 1800)
-    : section.facts.value;
-
-  return {
-    ...section,
-    includeForm: createChatField(true),
-    requestTypes: {
-      ...section.requestTypes,
-      childCustody: childCustody ? createChatField(true) : section.requestTypes.childCustody,
-      visitation: visitation ? createChatField(true) : section.requestTypes.visitation,
-      childSupport: childSupport ? createChatField(true) : section.requestTypes.childSupport,
-      spousalSupport: spousalSupport ? createChatField(true) : section.requestTypes.spousalSupport,
-      propertyControl: propertyControl ? createChatField(true) : section.requestTypes.propertyControl,
-      attorneyFeesCosts: attorneyFeesCosts ? createChatField(true) : section.requestTypes.attorneyFeesCosts,
-      other: other ? createChatField(true) : section.requestTypes.other,
-      changeModify: changeModify ? createChatField(true) : section.requestTypes.changeModify,
-      temporaryEmergencyOrders: temporaryEmergencyOrders ? createChatField(true) : section.requestTypes.temporaryEmergencyOrders,
-    },
-    requestedAgainst: {
-      ...section.requestedAgainst,
-      respondent: createChatField(true),
-    },
-    otherOrdersRequested: other ? createChatField('See supporting facts from Maria intake; convert into specific requested orders before filing.') : section.otherOrdersRequested,
-    facts: facts ? createChatField(facts) : section.facts,
-  };
-}
-
-function applyChatPrefillToFl150(section: DraftFl150Section, prefill: ChatIntakePrefill['fl150'], forceInclude = false): DraftFl150Section {
+function applyChatPrefillToFl150(section: DraftFl150Section, prefill: ChatIntakePrefill['fl150']): DraftFl150Section {
   const hasFinancialPrefill = Object.values(prefill).some((value) => typeof value === 'string' ? value.trim().length > 0 : Boolean(value));
   const hasExpensePrefill = [
     prefill.rentOrMortgage,
@@ -3038,7 +3934,7 @@ function applyChatPrefillToFl150(section: DraftFl150Section, prefill: ChatIntake
 
   return {
     ...section,
-    includeForm: hasFinancialPrefill || forceInclude ? createChatField(true) : section.includeForm,
+    includeForm: hasFinancialPrefill ? createChatField(false) : section.includeForm,
     employment: {
       ...section.employment,
       employer: withChatValue(section.employment.employer, prefill.employer),
@@ -3136,8 +4032,7 @@ function applyChatPrefillToBlankWorkspaceFields(workspace: DraftFormsWorkspace):
       ? createChatField(prefill.hasMinorChildren)
       : workspace.hasMinorChildren,
     children: nextChildren,
-    fl300: applyChatPrefillToFl300(workspace.fl300, prefill.requestedForms.fl300, intakeText),
-    fl150: applyChatPrefillToFl150(workspace.fl150, prefill.fl150, prefill.requestedForms.fl150),
+    fl150: applyChatPrefillToFl150(workspace.fl150, prefill.fl150),
   };
 }
 
@@ -3228,6 +4123,262 @@ function inferRequests(user: User, userRequest?: string, mariaSummary?: string) 
   };
 }
 
+
+function presetField<T>(current: DraftField<T>, value: T, presetLabel: string): DraftField<T> {
+  return {
+    ...current,
+    value,
+    sourceType: 'manual',
+    sourceLabel: `Packet preset: ${presetLabel}`,
+    confidence: 'medium',
+    needsReview: false,
+  };
+}
+
+function presetStringIfBlank(current: DraftField<string>, value: string, presetLabel: string) {
+  return current.value.trim() ? current : presetField(current, value, presetLabel);
+}
+
+function presetPrintedNameIfBlank(current: DraftField<string>, fallback: string, presetLabel: string) {
+  return presetStringIfBlank(current, fallback, presetLabel);
+}
+
+function presetInclude<T extends { includeForm: DraftField<boolean> }>(section: T, include: boolean, presetLabel: string): T {
+  return {
+    ...section,
+    includeForm: presetField(section.includeForm, include, presetLabel),
+  };
+}
+
+function applyPresetFormScope(workspace: DraftFormsWorkspace, presetId: DraftPacketPresetId, presetLabel: string): DraftFormsWorkspace {
+  if (presetId === 'custom') return workspace;
+
+  const include = (formId: DraftPacketPresetId, included: boolean) => presetId === formId && included;
+  const includeChildren = workspace.hasMinorChildren.value;
+
+  return {
+    ...workspace,
+    fl100: presetInclude(workspace.fl100, include('start_divorce', true), presetLabel),
+    fl110: presetInclude(workspace.fl110, include('start_divorce', true), presetLabel),
+    fl300: presetInclude(workspace.fl300, include('rfo_support_fees', true), presetLabel),
+    fl150: presetInclude(workspace.fl150, include('rfo_support_fees', true), presetLabel),
+    fl140: presetInclude(workspace.fl140, false, presetLabel),
+    fl141: presetInclude(workspace.fl141, false, presetLabel),
+    fl142: presetInclude(workspace.fl142, false, presetLabel),
+    fl115: presetInclude(workspace.fl115, false, presetLabel),
+    fl117: presetInclude(workspace.fl117, false, presetLabel),
+    fl120: presetInclude(workspace.fl120, include('respond_divorce', true), presetLabel),
+    fl160: presetInclude(workspace.fl160, false, presetLabel),
+    fl342: presetInclude(workspace.fl342, include('rfo_support_fees', includeChildren), presetLabel),
+    fl343: presetInclude(workspace.fl343, include('rfo_support_fees', true), presetLabel),
+    fl130: presetInclude(workspace.fl130, include('default_uncontested_judgment', true), presetLabel),
+    fl144: presetInclude(workspace.fl144, include('default_uncontested_judgment', true), presetLabel),
+    fl170: presetInclude(workspace.fl170, include('default_uncontested_judgment', true), presetLabel),
+    fl180: presetInclude(workspace.fl180, include('default_uncontested_judgment', true), presetLabel),
+    fl190: presetInclude(workspace.fl190, include('default_uncontested_judgment', true), presetLabel),
+    fl345: presetInclude(workspace.fl345, include('default_uncontested_judgment', true), presetLabel),
+    fl348: presetInclude(workspace.fl348, false, presetLabel),
+    fl165: presetInclude(workspace.fl165, include('default_uncontested_judgment', true), presetLabel),
+    fl182: presetInclude(workspace.fl182, false, presetLabel),
+    fl191: presetInclude(workspace.fl191, false, presetLabel),
+    fl195: presetInclude(workspace.fl195, false, presetLabel),
+    fl272: presetInclude(workspace.fl272, false, presetLabel),
+    fl342a: presetInclude(workspace.fl342a, false, presetLabel),
+    fl346: presetInclude(workspace.fl346, false, presetLabel),
+    fl347: presetInclude(workspace.fl347, false, presetLabel),
+    fl435: presetInclude(workspace.fl435, false, presetLabel),
+    fl460: presetInclude(workspace.fl460, false, presetLabel),
+    fl830: presetInclude(workspace.fl830, false, presetLabel),
+    fw001: presetInclude(workspace.fw001, include('start_divorce', true) || include('respond_divorce', true), presetLabel),
+    fw003: presetInclude(workspace.fw003, false, presetLabel),
+    fw010: presetInclude(workspace.fw010, false, presetLabel),
+    dv100: presetInclude(workspace.dv100, include('dvro', true), presetLabel),
+    dv101: presetInclude(workspace.dv101, include('dvro', true), presetLabel),
+    dv105: presetInclude(workspace.dv105, include('dvro', includeChildren), presetLabel),
+    dv108: presetInclude(workspace.dv108, false, presetLabel),
+    dv109: presetInclude(workspace.dv109, include('dvro', true), presetLabel),
+    dv110: presetInclude(workspace.dv110, include('dvro', true), presetLabel),
+    dv120: presetInclude(workspace.dv120, false, presetLabel),
+    dv130: presetInclude(workspace.dv130, false, presetLabel),
+    dv140: presetInclude(workspace.dv140, include('dvro', includeChildren), presetLabel),
+    dv200: presetInclude(workspace.dv200, include('dvro', true), presetLabel),
+  };
+}
+
+export function applyDraftPacketPreset(workspace: DraftFormsWorkspace, presetId: DraftPacketPresetId): DraftFormsWorkspace {
+  const presetLabel = DRAFT_PACKET_PRESET_LABELS[presetId];
+  const petitionerName = workspace.petitionerName.value.trim();
+  const respondentName = workspace.respondentName.value.trim();
+  const selectedPreset = presetField(workspace.selectedPreset ?? createField('custom', { needsReview: false }), presetId, presetLabel);
+
+  let next: DraftFormsWorkspace = {
+    ...workspace,
+    selectedPreset,
+  };
+
+  if (presetId === 'custom') return next;
+
+  next = applyPresetFormScope(next, presetId, presetLabel);
+
+  if (presetId === 'start_divorce') {
+    next = {
+      ...next,
+      requests: {
+        ...next.requests,
+        propertyRightsDetermination: presetField(next.requests.propertyRightsDetermination, true, presetLabel),
+      },
+      fl110: { includeForm: presetField(next.fl110?.includeForm ?? createField(true, { needsReview: false }), true, presetLabel) },
+      fl100: {
+        ...next.fl100,
+        includeForm: presetField(next.fl100.includeForm, true, presetLabel),
+        proceedingType: presetField(next.fl100.proceedingType, 'dissolution', presetLabel),
+        legalGrounds: {
+          ...next.fl100.legalGrounds,
+          irreconcilableDifferences: presetField(next.fl100.legalGrounds.irreconcilableDifferences, true, presetLabel),
+        },
+        propertyDeclarations: {
+          ...next.fl100.propertyDeclarations,
+          communityAndQuasiCommunity: presetField(next.fl100.propertyDeclarations.communityAndQuasiCommunity, true, presetLabel),
+          communityAndQuasiCommunityWhereListed: presetField(next.fl100.propertyDeclarations.communityAndQuasiCommunityWhereListed, 'fl160', presetLabel),
+        },
+      },
+    };
+  }
+
+  if (presetId === 'respond_divorce') {
+    next = {
+      ...next,
+      fl100: { ...next.fl100, includeForm: presetField(next.fl100.includeForm, false, presetLabel) },
+      fl110: { includeForm: presetField(next.fl110?.includeForm ?? createField(true, { needsReview: false }), false, presetLabel) },
+      fl120: {
+        ...next.fl120,
+        includeForm: presetField(next.fl120.includeForm, true, presetLabel),
+        respondentPrintedName: presetPrintedNameIfBlank(next.fl120.respondentPrintedName, respondentName, presetLabel),
+      },
+    };
+  }
+
+  if (presetId === 'default_uncontested_judgment') {
+    next = {
+      ...next,
+      fl100: { ...next.fl100, includeForm: presetField(next.fl100.includeForm, false, presetLabel) },
+      fl110: { includeForm: presetField(next.fl110?.includeForm ?? createField(true, { needsReview: false }), false, presetLabel) },
+      fl130: {
+        ...next.fl130,
+        includeForm: presetField(next.fl130.includeForm, true, presetLabel),
+        appearanceBy: presetField(next.fl130.appearanceBy, 'respondent', presetLabel),
+        petitionerPrintedName: presetPrintedNameIfBlank(next.fl130.petitionerPrintedName, petitionerName, presetLabel),
+        respondentPrintedName: presetPrintedNameIfBlank(next.fl130.respondentPrintedName, respondentName, presetLabel),
+      },
+      fl144: {
+        ...next.fl144,
+        includeForm: presetField(next.fl144.includeForm, true, presetLabel),
+        petitionerPrintedName: presetPrintedNameIfBlank(next.fl144.petitionerPrintedName, petitionerName, presetLabel),
+        respondentPrintedName: presetPrintedNameIfBlank(next.fl144.respondentPrintedName, respondentName, presetLabel),
+      },
+      fl165: {
+        ...next.fl165,
+        includeForm: presetField(next.fl165.includeForm, true, presetLabel),
+        details: presetStringIfBlank(next.fl165.details, 'Request to enter default / default judgment workflow. Review local court requirements before filing.', presetLabel),
+        printedName: presetPrintedNameIfBlank(next.fl165.printedName, petitionerName, presetLabel),
+      },
+      fl170: {
+        ...next.fl170,
+        includeForm: presetField(next.fl170.includeForm, true, presetLabel),
+        isDefaultOrUncontested: presetField(next.fl170.isDefaultOrUncontested, true, presetLabel),
+        printedName: presetPrintedNameIfBlank(next.fl170.printedName, petitionerName, presetLabel),
+      },
+      fl180: {
+        ...next.fl180,
+        includeForm: presetField(next.fl180.includeForm, true, presetLabel),
+        judgmentType: presetField(next.fl180.judgmentType, 'dissolution', presetLabel),
+      },
+      fl190: {
+        ...next.fl190,
+        includeForm: presetField(next.fl190.includeForm, true, presetLabel),
+      },
+      fl345: {
+        ...next.fl345,
+        includeForm: presetField(next.fl345.includeForm, true, presetLabel),
+        attachTo: presetField(next.fl345.attachTo, 'fl180', presetLabel),
+        propertyAwardSummary: presetStringIfBlank(next.fl345.propertyAwardSummary, 'Property and debts to be divided according to the parties’ written agreement or attached judgment terms.', presetLabel),
+      },
+    };
+  }
+
+  if (presetId === 'rfo_support_fees') {
+    const includeChildSupport = next.hasMinorChildren.value || next.requests.childSupport.value;
+    next = {
+      ...next,
+      fl110: { includeForm: workspace.fl110?.includeForm ?? createField(true, { sourceType: 'manual', sourceLabel: 'Default starter packet form', confidence: 'medium', needsReview: false }) },
+    fl300: {
+        ...next.fl300,
+        includeForm: presetField(next.fl300.includeForm, true, presetLabel),
+        requestTypes: {
+          ...next.fl300.requestTypes,
+          childSupport: presetField(next.fl300.requestTypes.childSupport, includeChildSupport, presetLabel),
+          spousalSupport: presetField(next.fl300.requestTypes.spousalSupport, true, presetLabel),
+          attorneyFeesCosts: presetField(next.fl300.requestTypes.attorneyFeesCosts, true, presetLabel),
+        },
+        requestedAgainst: {
+          ...next.fl300.requestedAgainst,
+          respondent: presetField(next.fl300.requestedAgainst.respondent, true, presetLabel),
+        },
+        attorneyFees: {
+          ...next.fl300.attorneyFees,
+          includeFl319: presetField(next.fl300.attorneyFees.includeFl319, true, presetLabel),
+          paymentRequestedFrom: presetField(next.fl300.attorneyFees.paymentRequestedFrom, 'respondent', presetLabel),
+        },
+        typePrintName: presetPrintedNameIfBlank(next.fl300.typePrintName, petitionerName, presetLabel),
+      },
+      fl150: {
+        ...next.fl150,
+        includeForm: presetField(next.fl150.includeForm, true, presetLabel),
+        typePrintName: presetPrintedNameIfBlank(next.fl150.typePrintName, petitionerName, presetLabel),
+      },
+      fl342: {
+        ...next.fl342,
+        includeForm: presetField(next.fl342.includeForm, includeChildSupport, presetLabel),
+        attachTo: presetField(next.fl342.attachTo, 'fl300', presetLabel),
+        payableTo: presetPrintedNameIfBlank(next.fl342.payableTo, petitionerName, presetLabel),
+      },
+      fl343: {
+        ...next.fl343,
+        includeForm: presetField(next.fl343.includeForm, true, presetLabel),
+        supportType: presetField(next.fl343.supportType, 'spousal', presetLabel),
+        payor: presetField(next.fl343.payor, 'respondent', presetLabel),
+        payee: presetField(next.fl343.payee, 'petitioner', presetLabel),
+      },
+      requests: {
+        ...next.requests,
+        childSupport: presetField(next.requests.childSupport, includeChildSupport, presetLabel),
+        spousalSupport: presetField(next.requests.spousalSupport, true, presetLabel),
+      },
+    };
+  }
+
+  if (presetId === 'dvro') {
+    const dvDefaults = <T extends DraftDvFormSection>(section: T) => ({
+      ...section,
+      protectedPartyName: presetPrintedNameIfBlank(section.protectedPartyName, petitionerName, presetLabel),
+      restrainedPartyName: presetPrintedNameIfBlank(section.restrainedPartyName, respondentName, presetLabel),
+      printedName: presetPrintedNameIfBlank(section.printedName, petitionerName, presetLabel),
+    });
+    next = {
+      ...next,
+      dv100: { ...dvDefaults(next.dv100), includeForm: presetField(next.dv100.includeForm, true, presetLabel), requestSummary: presetStringIfBlank(next.dv100.requestSummary, 'Request domestic violence restraining orders. Add incident facts and requested protected-person / stay-away details before filing.', presetLabel) },
+      dv101: { ...dvDefaults(next.dv101), includeForm: presetField(next.dv101.includeForm, true, presetLabel), requestSummary: presetStringIfBlank(next.dv101.requestSummary, 'Describe recent abuse incidents in date order. Replace this placeholder with specific facts.', presetLabel) },
+      dv105: { ...dvDefaults(next.dv105), includeForm: presetField(next.dv105.includeForm, next.hasMinorChildren.value, presetLabel) },
+      dv109: { ...dvDefaults(next.dv109), includeForm: presetField(next.dv109.includeForm, true, presetLabel) },
+      dv110: { ...dvDefaults(next.dv110), includeForm: presetField(next.dv110.includeForm, true, presetLabel), orderSummary: presetStringIfBlank(next.dv110.orderSummary, 'Temporary personal conduct, stay-away, and no-contact orders requested. Review before filing.', presetLabel) },
+      dv140: { ...dvDefaults(next.dv140), includeForm: presetField(next.dv140.includeForm, next.hasMinorChildren.value, presetLabel) },
+      dv200: { ...dvDefaults(next.dv200), includeForm: presetField(next.dv200.includeForm, true, presetLabel) },
+    };
+  }
+
+  return next;
+}
+
 export function createStarterPacketWorkspace(options: {
   user: User;
   messages?: ChatMessage[];
@@ -3264,6 +4415,7 @@ export function createStarterPacketWorkspace(options: {
     userId: user.id,
     title: `${titleBase} — starter packet`,
     packetType: 'starter_packet_v1',
+    selectedPreset: createField('start_divorce', { sourceType: 'manual', sourceLabel: 'Default Draft Forms preset', confidence: 'low', needsReview: false }),
     status: 'in_review',
     createdAt: now,
     updatedAt: now,
@@ -3273,6 +4425,7 @@ export function createStarterPacketWorkspace(options: {
       userRequest: chatContext || undefined,
       mariaSummary: assistantMessage?.content?.trim() || undefined,
       attachmentNames,
+      extractedFacts: buildIntakeFactsFromMessages(user, messages, chatContext, sourceSessionId ? `Maria chat session ${sourceSessionId}` : 'Maria chat intake'),
     },
     caseNumber: chatPrefill.caseNumber ? createChatField(chatPrefill.caseNumber) : createField('', {
       needsReview: false,
@@ -3357,8 +4510,49 @@ export function createStarterPacketWorkspace(options: {
     }),
     children,
     fl100: createDefaultFl100Section(),
-    fl300: applyChatPrefillToFl300(createDefaultFl300Section(petitionerName), chatPrefill.requestedForms.fl300, chatContext),
-    fl150: applyChatPrefillToFl150(createDefaultFl150Section(petitionerName), chatPrefill.fl150, chatPrefill.requestedForms.fl150),
+    fl110: { includeForm: createField(true, { sourceType: 'manual', sourceLabel: 'Default starter packet form', confidence: 'medium', needsReview: false }) },
+    fl300: createDefaultFl300Section(petitionerName),
+    fl140: createDefaultFl140Section(petitionerName),
+    fl141: createDefaultFl141Section(petitionerName),
+    fl142: createDefaultFl142Section(petitionerName),
+    fl115: createDefaultFl115Section(),
+    fl117: createDefaultFl117Section(petitionerName, chatPrefill.respondentName || ''),
+    fl120: createDefaultFl120Section(chatPrefill.respondentName || ''),
+    fl160: createDefaultFl160Section(petitionerName),
+    fl342: createDefaultFl342Section(),
+    fl343: createDefaultFl343Section(),
+    fl130: createDefaultFl130Section(petitionerName, chatPrefill.respondentName || ''),
+    fl144: createDefaultFl144Section(petitionerName, chatPrefill.respondentName || ''),
+    fl170: createDefaultFl170Section(petitionerName),
+    fl180: createDefaultFl180Section(),
+    fl190: createDefaultFl190Section(),
+    fl345: createDefaultFl345Section(),
+    fl348: createDefaultFl348Section(),
+    fl165: createDefaultRemainingFlFormSection('FL-165', petitionerName),
+    fl182: createDefaultRemainingFlFormSection('FL-182', petitionerName),
+    fl191: createDefaultRemainingFlFormSection('FL-191', petitionerName),
+    fl195: createDefaultRemainingFlFormSection('FL-195', petitionerName),
+    fl272: createDefaultRemainingFlFormSection('FL-272', petitionerName),
+    fl342a: createDefaultRemainingFlFormSection('FL-342(A)', petitionerName),
+    fl346: createDefaultRemainingFlFormSection('FL-346', petitionerName),
+    fl347: createDefaultRemainingFlFormSection('FL-347', petitionerName),
+    fl435: createDefaultRemainingFlFormSection('FL-435', petitionerName),
+    fl460: createDefaultRemainingFlFormSection('FL-460', petitionerName),
+    fl830: createDefaultRemainingFlFormSection('FL-830', petitionerName),
+    fw001: createDefaultRemainingFlFormSection('FW-001', petitionerName),
+    fw003: createDefaultRemainingFlFormSection('FW-003', petitionerName),
+    fw010: createDefaultRemainingFlFormSection('FW-010', petitionerName),
+    dv100: createDefaultDvFormSection('DV-100', petitionerName, chatPrefill.respondentName || ''),
+    dv101: createDefaultDvFormSection('DV-101', petitionerName, chatPrefill.respondentName || ''),
+    dv105: createDefaultDvFormSection('DV-105', petitionerName, chatPrefill.respondentName || ''),
+    dv108: createDefaultDvFormSection('DV-108', petitionerName, chatPrefill.respondentName || ''),
+    dv109: createDefaultDvFormSection('DV-109', petitionerName, chatPrefill.respondentName || ''),
+    dv110: createDefaultDvFormSection('DV-110', petitionerName, chatPrefill.respondentName || ''),
+    dv120: createDefaultDvFormSection('DV-120', petitionerName, chatPrefill.respondentName || ''),
+    dv130: createDefaultDvFormSection('DV-130', petitionerName, chatPrefill.respondentName || ''),
+    dv140: createDefaultDvFormSection('DV-140', petitionerName, chatPrefill.respondentName || ''),
+    dv200: createDefaultDvFormSection('DV-200', petitionerName, chatPrefill.respondentName || ''),
+    fl150: applyChatPrefillToFl150(createDefaultFl150Section(petitionerName), chatPrefill.fl150),
     fl105: createDefaultFl105Section(petitionerName),
     requests: inferRequests(user, chatContext, assistantMessage?.content),
   };
@@ -3384,6 +4578,28 @@ export function hydrateDraftWorkspaceFromChatContext(
       userRequest: workspace.intake.userRequest?.trim() ? workspace.intake.userRequest : conversationContext || userContext || undefined,
       mariaSummary: workspace.intake.mariaSummary?.trim() ? workspace.intake.mariaSummary : assistantMessage?.content?.trim() || undefined,
       attachmentNames: mergedAttachmentNames,
+      extractedFacts: workspace.intake.extractedFacts ?? buildIntakeFactsFromMessages({ id: workspace.userId, email: '', subscription: 'free', chatCount: 0, chatCountResetDate: new Date().toISOString(), emailVerified: true, profile: {} }, messages, conversationContext || userContext, sourceSessionId ? `Maria chat session ${sourceSessionId}` : 'Maria chat intake'),
+    },
+  };
+
+  return applyChatPrefillToBlankWorkspaceFields(nextWorkspace);
+}
+
+export function replaceDraftWorkspaceChatHandoff(
+  workspace: DraftFormsWorkspace,
+  messages: ChatMessage[] = [],
+  sourceSessionId?: string,
+) {
+  const { assistantMessage, userContext, conversationContext, attachmentNames } = getSourceMessages(messages);
+  const nextWorkspace: DraftFormsWorkspace = {
+    ...workspace,
+    sourceSessionId,
+    sourceAssistantMessageId: assistantMessage?.id,
+    intake: {
+      userRequest: conversationContext || userContext || undefined,
+      mariaSummary: assistantMessage?.content?.trim() || undefined,
+      attachmentNames,
+      extractedFacts: buildIntakeFactsFromMessages({ id: workspace.userId, email: '', subscription: 'free', chatCount: 0, chatCountResetDate: new Date().toISOString(), emailVerified: true, profile: {} }, messages, conversationContext || userContext, sourceSessionId ? `Maria chat session ${sourceSessionId}` : 'Maria chat selection'),
     },
   };
 
@@ -3454,6 +4670,81 @@ export function createBlankFl105OtherClaimant() {
   return createBlankOtherClaimant();
 }
 
+
+export function getDraftWorkspaceIncludedFormLabels(workspace: DraftFormsWorkspace): string[] {
+  const shouldIncludeFl341 = (
+    workspace.fl100.childCustodyVisitation.attachments.formFl341a.value
+    || workspace.fl100.childCustodyVisitation.attachments.formFl341b.value
+    || workspace.fl100.childCustodyVisitation.attachments.formFl341c.value
+    || workspace.fl100.childCustodyVisitation.attachments.formFl341d.value
+    || workspace.fl100.childCustodyVisitation.attachments.formFl341e.value
+  ) && (
+    workspace.requests.childCustody.value
+    || workspace.requests.visitation.value
+    || workspace.fl100.childCustodyVisitation.legalCustodyTo.value !== 'none'
+    || workspace.fl100.childCustodyVisitation.physicalCustodyTo.value !== 'none'
+    || workspace.fl100.childCustodyVisitation.visitationTo.value !== 'none'
+  );
+
+  return [
+    ...(workspace.fl100.includeForm.value ? ['FL-100'] : []),
+    ...(workspace.fl110.includeForm.value ? ['FL-110'] : []),
+    ...(workspace.hasMinorChildren.value ? ['FL-105/GC-120'] : []),
+    ...(workspace.fl115.includeForm.value ? ['FL-115'] : []),
+    ...(workspace.fl117.includeForm.value ? ['FL-117'] : []),
+    ...(workspace.fl120.includeForm.value ? ['FL-120'] : []),
+    ...(workspace.fl140.includeForm.value ? ['FL-140'] : []),
+    ...(workspace.fl141.includeForm.value ? ['FL-141'] : []),
+    ...(workspace.fl142.includeForm.value ? ['FL-142'] : []),
+    ...(workspace.fl150.includeForm.value ? ['FL-150'] : []),
+    ...(workspace.fl160.includeForm.value ? ['FL-160'] : []),
+    ...(workspace.fl300.includeForm.value ? ['FL-300'] : []),
+    ...(workspace.fl342.includeForm.value ? ['FL-342'] : []),
+    ...(workspace.fl343.includeForm.value ? ['FL-343'] : []),
+    ...(workspace.fl130.includeForm.value ? ['FL-130'] : []),
+    ...(workspace.fl144.includeForm.value ? ['FL-144'] : []),
+    ...(workspace.fl165.includeForm.value ? ['FL-165'] : []),
+    ...(workspace.fl170.includeForm.value ? ['FL-170'] : []),
+    ...(workspace.fl180.includeForm.value ? ['FL-180'] : []),
+    ...(workspace.fl190.includeForm.value ? ['FL-190'] : []),
+    ...(workspace.fl345.includeForm.value ? ['FL-345'] : []),
+    ...(workspace.fl348.includeForm.value ? ['FL-348'] : []),
+    ...(workspace.fl182.includeForm.value ? ['FL-182'] : []),
+    ...(workspace.fl191.includeForm.value ? ['FL-191'] : []),
+    ...(workspace.fl195.includeForm.value ? ['FL-195'] : []),
+    ...(workspace.fl272.includeForm.value ? ['FL-272'] : []),
+    ...(workspace.fl342a.includeForm.value ? ['FL-342(A)'] : []),
+    ...(workspace.fl346.includeForm.value ? ['FL-346'] : []),
+    ...(workspace.fl347.includeForm.value ? ['FL-347'] : []),
+    ...(workspace.fl435.includeForm.value ? ['FL-435'] : []),
+    ...(workspace.fl460.includeForm.value ? ['FL-460'] : []),
+    ...(workspace.fl830.includeForm.value ? ['FL-830'] : []),
+    ...(workspace.fw001.includeForm.value ? ['FW-001'] : []),
+    ...(workspace.fw003.includeForm.value ? ['FW-003'] : []),
+    ...(workspace.fw010.includeForm.value ? ['FW-010'] : []),
+    ...(workspace.dv100.includeForm.value ? ['DV-100'] : []),
+    ...(workspace.dv101.includeForm.value ? ['DV-101'] : []),
+    ...(workspace.dv105.includeForm.value ? ['DV-105'] : []),
+    ...(workspace.dv108.includeForm.value ? ['DV-108'] : []),
+    ...(workspace.dv109.includeForm.value ? ['DV-109'] : []),
+    ...(workspace.dv110.includeForm.value ? ['DV-110'] : []),
+    ...(workspace.dv120.includeForm.value ? ['DV-120'] : []),
+    ...(workspace.dv130.includeForm.value ? ['DV-130'] : []),
+    ...(workspace.dv140.includeForm.value ? ['DV-140'] : []),
+    ...(workspace.dv200.includeForm.value ? ['DV-200'] : []),
+    ...(shouldIncludeFl341
+      ? [
+        'FL-341',
+        ...(workspace.fl100.childCustodyVisitation.attachments.formFl341a.value ? ['FL-341(A)'] : []),
+        ...(workspace.fl100.childCustodyVisitation.attachments.formFl341b.value ? ['FL-341(B)'] : []),
+        ...(workspace.fl100.childCustodyVisitation.attachments.formFl341c.value ? ['FL-341(C)'] : []),
+        ...(workspace.fl100.childCustodyVisitation.attachments.formFl341d.value ? ['FL-341(D)'] : []),
+        ...(workspace.fl100.childCustodyVisitation.attachments.formFl341e.value ? ['FL-341(E)'] : []),
+      ]
+      : []),
+  ];
+}
+
 export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace): {
   title: string;
   subtitle: string;
@@ -3463,6 +4754,8 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
 } {
   const petitionerName = workspace.petitionerName.value.trim() || 'Petitioner';
   const respondentName = workspace.respondentName.value.trim() || 'Respondent';
+  const selectedPresetLabel = DRAFT_PACKET_PRESET_LABELS[workspace.selectedPreset?.value ?? 'custom'] ?? DRAFT_PACKET_PRESET_LABELS.custom;
+  const includedFormLabels = getDraftWorkspaceIncludedFormLabels(workspace);
   const relationshipLabel = workspace.fl100.relationshipType.value === 'domestic_partnership'
     ? 'Domestic partnership'
     : workspace.fl100.relationshipType.value === 'both'
@@ -3941,6 +5234,8 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
         `Filing county: ${workspace.filingCounty.value || 'Not provided'}`,
         `Petitioner: ${petitionerName}`,
         `Respondent: ${respondentName}`,
+        `Selected packet preset: ${selectedPresetLabel}`,
+        `Selected/generated forms: ${includedFormLabels.join(', ') || 'None selected'}`,
         `Proceeding type: ${proceedingTypeLabel}`,
         `Amended petition: ${workspace.fl100.isAmended.value ? 'Yes' : 'No'}`,
         `Relationship type: ${relationshipLabel}`,
@@ -4084,6 +5379,7 @@ export function buildDraftStarterPacketDocument(workspace: DraftFormsWorkspace):
         `FL-300 support/fee request has FL-150 included: ${fl300SupportOrFeeRequest ? (fl150.includeForm.value ? 'Yes' : 'No — include FL-150 or prepare separate financial declaration') : 'Not applicable'}`,
         `FL-150 v1 generation scope: official FL-150 pages 1-4; explicit Draft Forms income, deductions, assets, expenses, children-support, hardship, and signature fields only`,
         `FL-150 readiness: ${!fl150.includeForm.value ? 'Not requested' : fl150ReadinessIssues.length > 0 ? `Blocked: ${fl150ReadinessIssues.join('; ')}` : 'Ready'}`,
+        `Judgment/property forms v1 generation scope: FL-130/144/170/180/190/345/348 core caption, party/case, selected options, agreement/judgment dates/text, property/debt/support summaries, and names/signature dates only`,
         `FL-150 limitation: v1 does not infer financial entries from FL-300 or profile data; blank/unknown values stay blank. Review the completed declaration before filing.`,
         `Additional child support orders requested: ${workspace.fl100.childSupport.requestAdditionalOrders.value ? 'Yes' : 'No'}`,
         `Additional child support order details: ${workspace.fl100.childSupport.additionalOrdersDetails.value || 'Not provided'}`,

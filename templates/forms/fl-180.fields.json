@@ -1,0 +1,1510 @@
+[
+  {
+    "page": 0,
+    "name": "CaseNumber[0]",
+    "fullName": "CaseNumber[0]",
+    "type": "/Tx",
+    "rect": [
+      400.005,
+      518.601,
+      572.805,
+      532.99
+    ],
+    "tooltip": "CASE NUMBER"
+  },
+  {
+    "page": 0,
+    "name": "TextField1[0]",
+    "fullName": "TextField1[0]",
+    "type": "/Tx",
+    "rect": [
+      37.054,
+      682.435,
+      394.727,
+      736.892
+    ],
+    "tooltip": "ATTORNEY OR PARTY WITHOUT ATTORNEY (Name, State Bar number, and address)"
+  },
+  {
+    "page": 0,
+    "name": "Phone[0]",
+    "fullName": "Phone[0]",
+    "type": "/Tx",
+    "rect": [
+      119.26,
+      670.969,
+      233.674,
+      679.969
+    ],
+    "tooltip": "Phone number"
+  },
+  {
+    "page": 0,
+    "name": "Fax[0]",
+    "fullName": "Fax[0]",
+    "type": "/Tx",
+    "rect": [
+      296.481,
+      670.969,
+      394.727,
+      679.969
+    ],
+    "tooltip": "Fax number"
+  },
+  {
+    "page": 0,
+    "name": "Email[0]",
+    "fullName": "Email[0]",
+    "type": "/Tx",
+    "rect": [
+      119.29,
+      659.398,
+      394.727,
+      668.398
+    ],
+    "tooltip": "E-MAIL ADDRESS (Optional)"
+  },
+  {
+    "page": 0,
+    "name": "Name[0]",
+    "fullName": "Name[0]",
+    "type": "/Tx",
+    "rect": [
+      119.29,
+      647.986,
+      394.727,
+      656.986
+    ],
+    "tooltip": "ATTORNEY FOR (Name)"
+  },
+  {
+    "page": 0,
+    "name": "CrtCounty[0]",
+    "fullName": "CrtCounty[0]",
+    "type": "/Tx",
+    "rect": [
+      227.18,
+      634.802,
+      394.727,
+      643.802
+    ],
+    "tooltip": "SUPERIOR COURT OF CALIFORNIA, COUNTY OF"
+  },
+  {
+    "page": 0,
+    "name": "CrtStreet[0]",
+    "fullName": "CrtStreet[0]",
+    "type": "/Tx",
+    "rect": [
+      96.454,
+      623.863,
+      394.727,
+      632.863
+    ],
+    "tooltip": "STREET ADDRESS"
+  },
+  {
+    "page": 0,
+    "name": "CrtMailingAdd[0]",
+    "fullName": "CrtMailingAdd[0]",
+    "type": "/Tx",
+    "rect": [
+      96.454,
+      612.925,
+      394.727,
+      621.925
+    ],
+    "tooltip": "MAILING ADDRESS"
+  },
+  {
+    "page": 0,
+    "name": "CrtCityZip[0]",
+    "fullName": "CrtCityZip[0]",
+    "type": "/Tx",
+    "rect": [
+      96.456,
+      601.662,
+      394.727,
+      610.662
+    ],
+    "tooltip": "CITY AND ZIP CODE"
+  },
+  {
+    "page": 0,
+    "name": "CrtBranch[0]",
+    "fullName": "CrtBranch[0]",
+    "type": "/Tx",
+    "rect": [
+      96.454,
+      590.31,
+      394.727,
+      599.31
+    ],
+    "tooltip": "BRANCH NAME"
+  },
+  {
+    "page": 0,
+    "name": "Party1[0]",
+    "fullName": "Party1[0]",
+    "type": "/Tx",
+    "rect": [
+      96.456,
+      567.383,
+      394.727,
+      576.383
+    ],
+    "tooltip": "PETITIONER"
+  },
+  {
+    "page": 0,
+    "name": "Party2[0]",
+    "fullName": "Party2[0]",
+    "type": "/Tx",
+    "rect": [
+      96.456,
+      553.83,
+      394.727,
+      563.128
+    ],
+    "tooltip": "RESPONDENT"
+  },
+  {
+    "page": 0,
+    "name": "limited[0]",
+    "fullName": "limited[0]",
+    "type": "/Btn",
+    "rect": [
+      50.686,
+      523.651,
+      59.686,
+      532.651
+    ],
+    "tooltip": "DISSOLUTION"
+  },
+  {
+    "page": 0,
+    "name": "limited1[0]",
+    "fullName": "limited1[0]",
+    "type": "/Btn",
+    "rect": [
+      165.682,
+      524.009,
+      174.682,
+      533.009
+    ],
+    "tooltip": "LEGAL SEPARATION"
+  },
+  {
+    "page": 0,
+    "name": "limited2[0]",
+    "fullName": "limited2[0]",
+    "type": "/Btn",
+    "rect": [
+      298.803,
+      524.21,
+      307.803,
+      533.21
+    ],
+    "tooltip": "NULLITY"
+  },
+  {
+    "page": 0,
+    "name": "No[0]",
+    "fullName": "No[0]",
+    "type": "/Btn",
+    "rect": [
+      73.539,
+      510.1,
+      82.539,
+      519.1
+    ],
+    "tooltip": "Status only"
+  },
+  {
+    "page": 0,
+    "name": "No1[0]",
+    "fullName": "No1[0]",
+    "type": "/Btn",
+    "rect": [
+      73.539,
+      499.416,
+      82.539,
+      508.416
+    ],
+    "tooltip": "Reserving jurisdiction over termination of marital or domestic\rpartnership status"
+  },
+  {
+    "page": 0,
+    "name": "unlimited[0]",
+    "fullName": "unlimited[0]",
+    "type": "/Btn",
+    "rect": [
+      74.271,
+      471.438,
+      83.271,
+      480.438
+    ],
+    "tooltip": "Judgment on reserved issues"
+  },
+  {
+    "page": 0,
+    "name": "FillText1[0]",
+    "fullName": "FillText1[0]",
+    "type": "/Tx",
+    "rect": [
+      258.539,
+      456.876,
+      394.56,
+      467.424
+    ],
+    "tooltip": "Date marital or domestic partnership status ends"
+  },
+  {
+    "page": 0,
+    "name": "limited[0]",
+    "fullName": "limited[0]",
+    "type": "/Btn",
+    "rect": [
+      57.132,
+      443.195,
+      66.132,
+      452.195
+    ],
+    "tooltip": "This judgment"
+  },
+  {
+    "page": 0,
+    "name": "limited[1]",
+    "fullName": "limited[1]",
+    "type": "/Btn",
+    "rect": [
+      155.378,
+      443.195,
+      164.378,
+      452.195
+    ],
+    "tooltip": "contains personal conduct restraining orders"
+  },
+  {
+    "page": 0,
+    "name": "limited[2]",
+    "fullName": "limited[2]",
+    "type": "/Btn",
+    "rect": [
+      375.466,
+      443.195,
+      384.466,
+      452.195
+    ],
+    "tooltip": "modifies existing restraining orders."
+  },
+  {
+    "page": 0,
+    "name": "FillText1[0]",
+    "fullName": "FillText1[0]",
+    "type": "/Tx",
+    "rect": [
+      267.961,
+      430.05,
+      293.562,
+      439.543
+    ],
+    "tooltip": "The restraining orders are contained on page(s) of the attachment"
+  },
+  {
+    "page": 0,
+    "name": "DatePartnersSeparated_dt[0]",
+    "fullName": "DatePartnersSeparated_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      467.347,
+      429.805,
+      572.185,
+      438.831
+    ],
+    "tooltip": "They expire on (date)"
+  },
+  {
+    "page": 0,
+    "name": "limited[0]",
+    "fullName": "limited[0]",
+    "type": "/Btn",
+    "rect": [
+      219.297,
+      415.872,
+      228.297,
+      424.872
+    ],
+    "tooltip": "Default or uncontested"
+  },
+  {
+    "page": 0,
+    "name": "limited[1]",
+    "fullName": "limited[1]",
+    "type": "/Btn",
+    "rect": [
+      355.365,
+      415.872,
+      364.365,
+      424.872
+    ],
+    "tooltip": "By declaration under Family Code section 2336"
+  },
+  {
+    "page": 0,
+    "name": "limited[2]",
+    "fullName": "limited[2]",
+    "type": "/Btn",
+    "rect": [
+      57.132,
+      403.343,
+      66.132,
+      412.343
+    ],
+    "tooltip": "Contested"
+  },
+  {
+    "page": 0,
+    "name": "CBChoice1[0]",
+    "fullName": "CBChoice1[0]",
+    "type": "/Btn",
+    "rect": [
+      136.528,
+      403.39,
+      145.528,
+      412.39
+    ],
+    "tooltip": "Agreement in court"
+  },
+  {
+    "page": 0,
+    "name": "DateofHearing_dt1[0]",
+    "fullName": "DateofHearing_dt1[0]",
+    "type": "/Tx",
+    "rect": [
+      91.086,
+      390.671,
+      203.116,
+      399.94
+    ],
+    "tooltip": "This proceeding was heard on Date"
+  },
+  {
+    "page": 0,
+    "name": "DateofHearing_dt2[0]",
+    "fullName": "DateofHearing_dt2[0]",
+    "type": "/Tx",
+    "rect": [
+      239.933,
+      390.671,
+      329.839,
+      399.94
+    ],
+    "tooltip": "This proceeding was heard in Department"
+  },
+  {
+    "page": 0,
+    "name": "DateofHearing_dt3[0]",
+    "fullName": "DateofHearing_dt3[0]",
+    "type": "/Tx",
+    "rect": [
+      376.541,
+      390.671,
+      456.086,
+      399.94
+    ],
+    "tooltip": "This proceeding was heard in Room"
+  },
+  {
+    "page": 0,
+    "name": "FillText1[0]",
+    "fullName": "FillText1[0]",
+    "type": "/Tx",
+    "rect": [
+      158.577,
+      376.756,
+      338.434,
+      386.249
+    ],
+    "tooltip": "Judicial officer (name)"
+  },
+  {
+    "page": 0,
+    "name": "limited[0]",
+    "fullName": "limited[0]",
+    "type": "/Btn",
+    "rect": [
+      351.425,
+      376.848,
+      360.425,
+      385.848
+    ],
+    "tooltip": "Temporary judge"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      70.2,
+      362.535,
+      79.2,
+      371.535
+    ],
+    "tooltip": "Petitioner present in court"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[1]",
+    "fullName": "CheckBox1[1]",
+    "type": "/Btn",
+    "rect": [
+      233.226,
+      362.807,
+      242.226,
+      371.807
+    ],
+    "tooltip": "Attorney present in court"
+  },
+  {
+    "page": 0,
+    "name": "FillText1[0]",
+    "fullName": "FillText1[0]",
+    "type": "/Tx",
+    "rect": [
+      387.064,
+      362.56,
+      572.674,
+      372.053
+    ],
+    "tooltip": "(name)"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      70.2,
+      348.836,
+      79.2,
+      357.836
+    ],
+    "tooltip": "Respondent present in court"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[1]",
+    "fullName": "CheckBox1[1]",
+    "type": "/Btn",
+    "rect": [
+      233.226,
+      348.506,
+      242.226,
+      357.506
+    ],
+    "tooltip": "Attorney present in court"
+  },
+  {
+    "page": 0,
+    "name": "FillText1[0]",
+    "fullName": "FillText1[0]",
+    "type": "/Tx",
+    "rect": [
+      387.802,
+      348.259,
+      572.675,
+      357.752
+    ],
+    "tooltip": "(name)"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      70.03,
+      335.375,
+      79.03,
+      344.375
+    ],
+    "tooltip": "Claimant present in court"
+  },
+  {
+    "page": 0,
+    "name": "FillText1[0]",
+    "fullName": "FillText1[0]",
+    "type": "/Tx",
+    "rect": [
+      226.315,
+      334.866,
+      396.431,
+      344.359
+    ],
+    "tooltip": "(name)"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[1]",
+    "fullName": "CheckBox1[1]",
+    "type": "/Btn",
+    "rect": [
+      405.343,
+      335.708,
+      414.343,
+      344.708
+    ],
+    "tooltip": "Attorney present in court"
+  },
+  {
+    "page": 0,
+    "name": "FillText2[0]",
+    "fullName": "FillText2[0]",
+    "type": "/Tx",
+    "rect": [
+      425.798,
+      324.613,
+      573.134,
+      334.106
+    ],
+    "tooltip": "name:"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      70.2,
+      321.995,
+      79.2,
+      330.995
+    ],
+    "tooltip": "Other"
+  },
+  {
+    "page": 0,
+    "name": "FillText1[0]",
+    "fullName": "FillText1[0]",
+    "type": "/Tx",
+    "rect": [
+      178.228,
+      321.665,
+      423.598,
+      331.158
+    ],
+    "tooltip": "(specify name):"
+  },
+  {
+    "page": 0,
+    "name": "FillText1[0]",
+    "fullName": "FillText1[0]",
+    "type": "/Tx",
+    "rect": [
+      289.164,
+      306.766,
+      438.701,
+      316.259
+    ],
+    "tooltip": "The court acquired jurisdiction of the respondent on (date)"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox03[0]",
+    "fullName": "CheckBox03[0]",
+    "type": "/Btn",
+    "rect": [
+      70.2,
+      294.278,
+      79.2,
+      303.278
+    ],
+    "tooltip": "The respondent was served with process."
+  },
+  {
+    "page": 0,
+    "name": "CheckBox03[0]",
+    "fullName": "CheckBox03[0]",
+    "type": "/Btn",
+    "rect": [
+      70.2,
+      281.593,
+      79.2,
+      290.593
+    ],
+    "tooltip": "The respondent appeared"
+  },
+  {
+    "page": 0,
+    "name": "limited[0]",
+    "fullName": "limited[0]",
+    "type": "/Btn",
+    "rect": [
+      70.495,
+      253.091,
+      79.495,
+      262.091
+    ],
+    "tooltip": "Judgment of dissolution is entered. Marital or domestic partnership status is terminated and the parties are restored to the\rstatus of single persons"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox03[0]",
+    "fullName": "CheckBox03[0]",
+    "type": "/Btn",
+    "rect": [
+      108.397,
+      229.862,
+      117.397,
+      238.862
+    ],
+    "tooltip": "On"
+  },
+  {
+    "page": 0,
+    "name": "FillText1[0]",
+    "fullName": "FillText1[0]",
+    "type": "/Tx",
+    "rect": [
+      196.843,
+      228.192,
+      358.781,
+      240.355
+    ],
+    "tooltip": "(specify date)"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox03[0]",
+    "fullName": "CheckBox03[0]",
+    "type": "/Btn",
+    "rect": [
+      108.397,
+      217.083,
+      117.397,
+      226.083
+    ],
+    "tooltip": "on a date to be determined on noticed motion of either party or on stipulation."
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      70.495,
+      203.656,
+      79.495,
+      212.656
+    ],
+    "tooltip": "Judgment of legal separation is entered."
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      70.495,
+      190.277,
+      79.495,
+      199.277
+    ],
+    "tooltip": "Judgment of nullity is entered. The parties are declared to be single persons on the ground of (specify)"
+  },
+  {
+    "page": 0,
+    "name": "FillText1[0]",
+    "fullName": "FillText1[0]",
+    "type": "/Tx",
+    "rect": [
+      91.556,
+      178.571,
+      574.395,
+      188.064
+    ],
+    "tooltip": "Judgment of nullity is entered. The parties are declared to be single persons on the ground of (specify)"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox03[0]",
+    "fullName": "CheckBox03[0]",
+    "type": "/Btn",
+    "rect": [
+      70.495,
+      166.731,
+      79.495,
+      175.731
+    ],
+    "tooltip": "This judgment will be entered nunc pro tunc as of"
+  },
+  {
+    "page": 0,
+    "name": "FillText1[0]",
+    "fullName": "FillText1[0]",
+    "type": "/Tx",
+    "rect": [
+      314.715,
+      165.083,
+      475.623,
+      177.224
+    ],
+    "tooltip": "(date)"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox03[0]",
+    "fullName": "CheckBox03[0]",
+    "type": "/Btn",
+    "rect": [
+      70.495,
+      153.317,
+      79.495,
+      162.317
+    ],
+    "tooltip": "Judgment on reserved issues."
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxqd[0]",
+    "fullName": "CheckBoxqd[0]",
+    "type": "/Btn",
+    "rect": [
+      92.29,
+      140.284,
+      101.29,
+      149.284
+    ],
+    "tooltip": "petitioner's"
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxqd[1]",
+    "fullName": "CheckBoxqd[1]",
+    "type": "/Btn",
+    "rect": [
+      176.457,
+      141.056,
+      185.457,
+      150.056
+    ],
+    "tooltip": "respondent's"
+  },
+  {
+    "page": 0,
+    "name": "FillText1[0]",
+    "fullName": "FillText1[0]",
+    "type": "/Tx",
+    "rect": [
+      409.176,
+      141.066,
+      572.386,
+      150.559
+    ],
+    "tooltip": "former name is restored to (specify)"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      70.495,
+      126.8,
+      79.495,
+      135.8
+    ],
+    "tooltip": "Jurisdiction is reserved over all other issues, and all present orders remain in effect except as provided below."
+  },
+  {
+    "page": 0,
+    "name": "limited[0]",
+    "fullName": "limited[0]",
+    "type": "/Btn",
+    "rect": [
+      69.783,
+      113.836,
+      78.783,
+      122.836
+    ],
+    "tooltip": "This judgment contains provisions for child support or family support. Each party must complete and file with the court a\rChild Support Case Registry Form (form FL-191) within 10 days of the date of this judgment. The parents must notify the\rcourt of any change in the information submitted within 10 days of the change, by filing an updated form. The Notice\rof Rights and Responsibilities\u2014Health-Care Costs and Reimbursement Procedures and Information Sheet on Changing a\rChild Support Order (form FL-192) is attached."
+  },
+  {
+    "page": 1,
+    "name": "Warning[0]",
+    "fullName": "Warning[0]",
+    "type": "/Btn",
+    "rect": [
+      36.0,
+      3.97701,
+      247.294,
+      27.156
+    ],
+    "tooltip": "For your protection and privacy, please press the Clear This Form button after you have printed the form."
+  },
+  {
+    "page": 1,
+    "name": "Print[0]",
+    "fullName": "Print[0]",
+    "type": "/Btn",
+    "rect": [
+      258.69,
+      3.97701,
+      339.69,
+      20.985
+    ],
+    "tooltip": "Print this form"
+  },
+  {
+    "page": 1,
+    "name": "Save[0]",
+    "fullName": "Save[0]",
+    "type": "/Btn",
+    "rect": [
+      345.229,
+      3.97701,
+      426.334,
+      20.985
+    ],
+    "tooltip": "Save this form"
+  },
+  {
+    "page": 1,
+    "name": "Reset[0]",
+    "fullName": "Reset[0]",
+    "type": "/Btn",
+    "rect": [
+      494.918,
+      3.97701,
+      575.915,
+      20.985
+    ],
+    "tooltip": "Clear this form"
+  },
+  {
+    "page": 1,
+    "name": "Party1w[0]",
+    "fullName": "Party1w[0]",
+    "type": "/Tx",
+    "rect": [
+      38.701,
+      714.526,
+      393.465,
+      735.967
+    ],
+    "tooltip": "CASE NAME (Last name, first name of each party)"
+  },
+  {
+    "page": 1,
+    "name": "CaseNumber[0]",
+    "fullName": "CaseNumber[0]",
+    "type": "/Tx",
+    "rect": [
+      400.005,
+      718.738,
+      572.805,
+      733.127
+    ],
+    "tooltip": "CASE NUMBER"
+  },
+  {
+    "page": 1,
+    "name": "limited[0]",
+    "fullName": "limited[0]",
+    "type": "/Btn",
+    "rect": [
+      71.127,
+      637.742,
+      80.127,
+      646.742
+    ],
+    "tooltip": "Child custody and visitation (parenting time) are ordered as set forth in the attached"
+  },
+  {
+    "page": 1,
+    "name": "limited[0]",
+    "fullName": "limited[0]",
+    "type": "/Btn",
+    "rect": [
+      114.169,
+      623.506,
+      123.169,
+      632.506
+    ],
+    "tooltip": "Settlement agreement, stipulation for judgment, or other written agreement which contains the information\rrequired by Family Code section 3048(a)."
+  },
+  {
+    "page": 1,
+    "name": "unlimited[0]",
+    "fullName": "unlimited[0]",
+    "type": "/Btn",
+    "rect": [
+      114.169,
+      599.199,
+      123.169,
+      608.199
+    ],
+    "tooltip": "Child Custody and Visitation Order Attachment (form FL-341)."
+  },
+  {
+    "page": 1,
+    "name": "limited[0]",
+    "fullName": "limited[0]",
+    "type": "/Btn",
+    "rect": [
+      114.169,
+      585.956,
+      123.169,
+      594.956
+    ],
+    "tooltip": "Stipulation and Order for Custody and/or Visitation of Children (form FL-355)."
+  },
+  {
+    "page": 1,
+    "name": "unlimited[0]",
+    "fullName": "unlimited[0]",
+    "type": "/Btn",
+    "rect": [
+      114.169,
+      572.713,
+      123.169,
+      581.713
+    ],
+    "tooltip": "Previously established in another case."
+  },
+  {
+    "page": 1,
+    "name": "DateofHearing[0]",
+    "fullName": "DateofHearing[0]",
+    "type": "/Tx",
+    "rect": [
+      351.725,
+      572.193,
+      440.943,
+      581.462
+    ],
+    "tooltip": "Case number"
+  },
+  {
+    "page": 1,
+    "name": "DateofHearing_dt[0]",
+    "fullName": "DateofHearing_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      470.376,
+      572.193,
+      575.011,
+      581.462
+    ],
+    "tooltip": "Court"
+  },
+  {
+    "page": 1,
+    "name": "limited[0]",
+    "fullName": "limited[0]",
+    "type": "/Btn",
+    "rect": [
+      71.127,
+      559.495,
+      80.127,
+      568.495
+    ],
+    "tooltip": "Child support is ordered as set forth in the attached"
+  },
+  {
+    "page": 1,
+    "name": "limited[0]",
+    "fullName": "limited[0]",
+    "type": "/Btn",
+    "rect": [
+      114.169,
+      545.996,
+      123.169,
+      554.996
+    ],
+    "tooltip": "Settlement agreement, stipulation for judgment, or other written agreement which contains the declarations\rrequired by Family Code section 4065(a)."
+  },
+  {
+    "page": 1,
+    "name": "unlimited[0]",
+    "fullName": "unlimited[0]",
+    "type": "/Btn",
+    "rect": [
+      114.169,
+      522.606,
+      123.169,
+      531.606
+    ],
+    "tooltip": "Child Support Information and Order Attachment (form FL-342)."
+  },
+  {
+    "page": 1,
+    "name": "limited[0]",
+    "fullName": "limited[0]",
+    "type": "/Btn",
+    "rect": [
+      114.169,
+      509.183,
+      123.169,
+      518.183
+    ],
+    "tooltip": "Stipulation to Establish or Modify Child Support and Order (form FL-350)."
+  },
+  {
+    "page": 1,
+    "name": "unlimited[0]",
+    "fullName": "unlimited[0]",
+    "type": "/Btn",
+    "rect": [
+      114.169,
+      495.94,
+      123.169,
+      504.94
+    ],
+    "tooltip": "Previously established in another case."
+  },
+  {
+    "page": 1,
+    "name": "DateofHearing[0]",
+    "fullName": "DateofHearing[0]",
+    "type": "/Tx",
+    "rect": [
+      351.725,
+      495.42,
+      440.943,
+      504.689
+    ],
+    "tooltip": "Case number"
+  },
+  {
+    "page": 1,
+    "name": "DateofHearing_dt[0]",
+    "fullName": "DateofHearing_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      470.376,
+      495.42,
+      575.011,
+      504.689
+    ],
+    "tooltip": "Court"
+  },
+  {
+    "page": 1,
+    "name": "limited[0]",
+    "fullName": "limited[0]",
+    "type": "/Btn",
+    "rect": [
+      71.127,
+      481.474,
+      80.127,
+      490.474
+    ],
+    "tooltip": "Spousal, domestic partner, or family support is ordered"
+  },
+  {
+    "page": 1,
+    "name": "limited[0]",
+    "fullName": "limited[0]",
+    "type": "/Btn",
+    "rect": [
+      114.169,
+      467.975,
+      123.169,
+      476.975
+    ],
+    "tooltip": "Reserved for future determination as relates to"
+  },
+  {
+    "page": 1,
+    "name": "RB2Choice1[0]",
+    "fullName": "RB2Choice1[0]",
+    "type": "/Btn",
+    "rect": [
+      332.003,
+      468.153,
+      341.003,
+      477.153
+    ],
+    "tooltip": "petitioner"
+  },
+  {
+    "page": 1,
+    "name": "RB2Choice1[1]",
+    "fullName": "RB2Choice1[1]",
+    "type": "/Btn",
+    "rect": [
+      420.744,
+      468.153,
+      429.744,
+      477.153
+    ],
+    "tooltip": "respondent"
+  },
+  {
+    "page": 1,
+    "name": "unlimited[0]",
+    "fullName": "unlimited[0]",
+    "type": "/Btn",
+    "rect": [
+      114.169,
+      454.166,
+      123.169,
+      463.166
+    ],
+    "tooltip": "Jurisdiction terminated to order spousal or partner support to"
+  },
+  {
+    "page": 1,
+    "name": "RB2Choice22[0]",
+    "fullName": "RB2Choice22[0]",
+    "type": "/Btn",
+    "rect": [
+      388.684,
+      454.878,
+      397.684,
+      463.878
+    ],
+    "tooltip": "petitioner"
+  },
+  {
+    "page": 1,
+    "name": "RB2Choice2[0]",
+    "fullName": "RB2Choice2[0]",
+    "type": "/Btn",
+    "rect": [
+      477.426,
+      454.878,
+      486.426,
+      463.878
+    ],
+    "tooltip": "respondent"
+  },
+  {
+    "page": 1,
+    "name": "limited[0]",
+    "fullName": "limited[0]",
+    "type": "/Btn",
+    "rect": [
+      114.169,
+      440.743,
+      123.169,
+      449.743
+    ],
+    "tooltip": "As set forth in the attached Spousal, Partner, or Family Support Order Attachment (form FL-343)."
+  },
+  {
+    "page": 1,
+    "name": "unlimited[0]",
+    "fullName": "unlimited[0]",
+    "type": "/Btn",
+    "rect": [
+      114.169,
+      427.5,
+      123.169,
+      436.5
+    ],
+    "tooltip": "As set forth in the attached settlement agreement, stipulation for judgment, or other written agreement."
+  },
+  {
+    "page": 1,
+    "name": "RB2Choices[0]",
+    "fullName": "RB2Choices[0]",
+    "type": "/Btn",
+    "rect": [
+      114.308,
+      414.93,
+      123.308,
+      423.93
+    ],
+    "tooltip": "Other"
+  },
+  {
+    "page": 1,
+    "name": "FillText1081[0]",
+    "fullName": "FillText1081[0]",
+    "type": "/Tx",
+    "rect": [
+      196.393,
+      413.501,
+      574.594,
+      424.933
+    ],
+    "tooltip": "specify"
+  },
+  {
+    "page": 1,
+    "name": "limited[0]",
+    "fullName": "limited[0]",
+    "type": "/Btn",
+    "rect": [
+      70.994,
+      400.153,
+      79.994,
+      409.153
+    ],
+    "tooltip": "Property division is ordered as set forth in the attached"
+  },
+  {
+    "page": 1,
+    "name": "limited[0]",
+    "fullName": "limited[0]",
+    "type": "/Btn",
+    "rect": [
+      114.036,
+      386.654,
+      123.036,
+      395.654
+    ],
+    "tooltip": "Settlement agreement, stipulation for judgment, or other written agreement."
+  },
+  {
+    "page": 1,
+    "name": "unlimited[0]",
+    "fullName": "unlimited[0]",
+    "type": "/Btn",
+    "rect": [
+      114.036,
+      372.846,
+      123.036,
+      381.846
+    ],
+    "tooltip": "Property Order Attachment to Judgment (form FL-345)."
+  },
+  {
+    "page": 1,
+    "name": "RB2Choices[0]",
+    "fullName": "RB2Choices[0]",
+    "type": "/Btn",
+    "rect": [
+      113.863,
+      359.419,
+      122.863,
+      368.419
+    ],
+    "tooltip": "Other"
+  },
+  {
+    "page": 1,
+    "name": "FillText1081[0]",
+    "fullName": "FillText1081[0]",
+    "type": "/Tx",
+    "rect": [
+      196.082,
+      357.99,
+      573.515,
+      369.422
+    ],
+    "tooltip": "specify"
+  },
+  {
+    "page": 1,
+    "name": "limited[0]",
+    "fullName": "limited[0]",
+    "type": "/Btn",
+    "rect": [
+      70.886,
+      345.312,
+      79.886,
+      354.312
+    ],
+    "tooltip": "Attorney fees and costs are ordered as set forth in the attached"
+  },
+  {
+    "page": 1,
+    "name": "limited[0]",
+    "fullName": "limited[0]",
+    "type": "/Btn",
+    "rect": [
+      113.928,
+      331.813,
+      122.928,
+      340.813
+    ],
+    "tooltip": "Settlement agreement, stipulation for judgment, or other written agreement."
+  },
+  {
+    "page": 1,
+    "name": "unlimited[0]",
+    "fullName": "unlimited[0]",
+    "type": "/Btn",
+    "rect": [
+      113.928,
+      318.005,
+      122.928,
+      327.005
+    ],
+    "tooltip": "Attorney Fees and Costs Order (form FL-346)."
+  },
+  {
+    "page": 1,
+    "name": "RB2Choices[0]",
+    "fullName": "RB2Choices[0]",
+    "type": "/Btn",
+    "rect": [
+      113.928,
+      304.603,
+      122.928,
+      313.603
+    ],
+    "tooltip": "Other"
+  },
+  {
+    "page": 1,
+    "name": "FillText1[0]",
+    "fullName": "FillText1[0]",
+    "type": "/Tx",
+    "rect": [
+      196.626,
+      303.172,
+      573.58,
+      314.604
+    ],
+    "tooltip": "specify"
+  },
+  {
+    "page": 1,
+    "name": "RB2Choices[0]",
+    "fullName": "RB2Choices[0]",
+    "type": "/Btn",
+    "rect": [
+      69.613,
+      290.013,
+      78.613,
+      299.013
+    ],
+    "tooltip": "Other"
+  },
+  {
+    "page": 1,
+    "name": "FillText10[0]",
+    "fullName": "FillText10[0]",
+    "type": "/Tx",
+    "rect": [
+      152.642,
+      288.584,
+      573.011,
+      300.016
+    ],
+    "tooltip": "specify"
+  },
+  {
+    "page": 1,
+    "name": "FillText11[0]",
+    "fullName": "FillText11[0]",
+    "type": "/Tx",
+    "rect": [
+      88.764,
+      276.353,
+      573.009,
+      287.785
+    ],
+    "tooltip": "specify continued"
+  },
+  {
+    "page": 1,
+    "name": "RB2Choices[0]",
+    "fullName": "RB2Choices[0]",
+    "type": "/Btn",
+    "rect": [
+      70.529,
+      701.036,
+      79.529,
+      710.036
+    ],
+    "tooltip": "The children of this marriage or domestic partnership are"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox03[0]",
+    "fullName": "CheckBox03[0]",
+    "type": "/Btn",
+    "rect": [
+      113.224,
+      688.947,
+      122.224,
+      697.947
+    ],
+    "tooltip": "Name"
+  },
+  {
+    "page": 1,
+    "name": "FillText1[0]",
+    "fullName": "FillText1[0]",
+    "type": "/Tx",
+    "rect": [
+      130.161,
+      663.067,
+      341.611,
+      687.127
+    ],
+    "tooltip": "Insert name attorney present in court"
+  },
+  {
+    "page": 1,
+    "name": "FillText2[0]",
+    "fullName": "FillText2[0]",
+    "type": "/Tx",
+    "rect": [
+      356.485,
+      663.067,
+      567.935,
+      687.627
+    ],
+    "tooltip": "Birthdate"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox03[0]",
+    "fullName": "CheckBox03[0]",
+    "type": "/Btn",
+    "rect": [
+      113.224,
+      651.11,
+      122.224,
+      660.11
+    ],
+    "tooltip": "Parentage is established for children of this relationship born prior to the marriage or domestic partnership"
+  },
+  {
+    "page": 1,
+    "name": "DateofHearing_dt[0]",
+    "fullName": "DateofHearing_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      165.127,
+      213.126,
+      207.64,
+      222.395
+    ],
+    "tooltip": "Number of pages attached"
+  },
+  {
+    "page": 1,
+    "name": "SigDate[0]",
+    "fullName": "SigDate[0]",
+    "type": "/Tx",
+    "rect": [
+      61.2,
+      226.23,
+      169.2,
+      236.231
+    ],
+    "tooltip": "Date"
+  },
+  {
+    "page": 1,
+    "name": "RB2Choice2[0]",
+    "fullName": "RB2Choice2[0]",
+    "type": "/Btn",
+    "rect": [
+      339.951,
+      214.535,
+      348.951,
+      223.535
+    ],
+    "tooltip": "SIGNATURE FOLLOWS LAST ATTACHMENT"
+  }
+]

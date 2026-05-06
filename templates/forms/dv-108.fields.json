@@ -1,0 +1,795 @@
+[
+  {
+    "page": 0,
+    "name": "Button1[0]",
+    "fullName": "Button1[0]",
+    "type": "/Btn",
+    "rect": [
+      115.608,
+      37.919,
+      166.008,
+      47.52
+    ],
+    "tooltip": "COURTS DOT CA DOT GOV"
+  },
+  {
+    "page": 0,
+    "name": "CaseNumber[0]",
+    "fullName": "CaseNumber[0]",
+    "type": "/Tx",
+    "rect": [
+      399.617,
+      725.686,
+      573.857,
+      742.612
+    ],
+    "tooltip": "Case Number"
+  },
+  {
+    "page": 0,
+    "name": "Yourname[0]",
+    "fullName": "Yourname[0]",
+    "type": "/Tx",
+    "rect": [
+      136.819,
+      637.826,
+      575.119,
+      653.343
+    ],
+    "tooltip": "Your name (person requesting child custody and visitation orders)"
+  },
+  {
+    "page": 0,
+    "name": "OtherParentsName[0]",
+    "fullName": "OtherParentsName[0]",
+    "type": "/Tx",
+    "rect": [
+      315.619,
+      603.969,
+      574.192,
+      618.355
+    ],
+    "tooltip": "Name of Person You Want Protection From:"
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxRightCaption[0]",
+    "fullName": "CheckBoxRightCaption[0]",
+    "type": "/Btn",
+    "rect": [
+      74.747,
+      475.806,
+      83.747,
+      484.806
+    ],
+    "tooltip": "Has violated or threatened to violate a custody or visitation order."
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxRightCaption[0]",
+    "fullName": "CheckBoxRightCaption[0]",
+    "type": "/Btn",
+    "rect": [
+      74.747,
+      455.672,
+      83.747,
+      464.672
+    ],
+    "tooltip": "Does not have strong ties to California."
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxRightCaption1[0]",
+    "fullName": "CheckBoxRightCaption1[0]",
+    "type": "/Btn",
+    "rect": [
+      74.747,
+      435.537,
+      83.747,
+      444.537
+    ],
+    "tooltip": "Has done things recently that make it easy to take our children, like (check all that apply):"
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxRightCaption2[0]",
+    "fullName": "CheckBoxRightCaption2[0]",
+    "type": "/Btn",
+    "rect": [
+      90.329,
+      418.79,
+      99.329,
+      427.79
+    ],
+    "tooltip": "Quit a job"
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxRightCaption3[0]",
+    "fullName": "CheckBoxRightCaption3[0]",
+    "type": "/Btn",
+    "rect": [
+      239.29,
+      418.79,
+      248.29,
+      427.79
+    ],
+    "tooltip": "Applied for a passport, birth certificate, or school or medical records"
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxRightCaption4[0]",
+    "fullName": "CheckBoxRightCaption4[0]",
+    "type": "/Btn",
+    "rect": [
+      90.329,
+      405.337,
+      99.329,
+      414.337
+    ],
+    "tooltip": "Closed a bank account"
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxRightCaption5[0]",
+    "fullName": "CheckBoxRightCaption5[0]",
+    "type": "/Btn",
+    "rect": [
+      239.29,
+      405.337,
+      248.29,
+      414.337
+    ],
+    "tooltip": "Hidden or destroyed documents"
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxRightCaption6[0]",
+    "fullName": "CheckBoxRightCaption6[0]",
+    "type": "/Btn",
+    "rect": [
+      90.332,
+      391.291,
+      99.332,
+      400.291
+    ],
+    "tooltip": "Sold or gotten rid of property"
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxRightCaption7[0]",
+    "fullName": "CheckBoxRightCaption7[0]",
+    "type": "/Btn",
+    "rect": [
+      239.29,
+      391.291,
+      248.29,
+      400.291
+    ],
+    "tooltip": "Other (explain):"
+  },
+  {
+    "page": 0,
+    "name": "TextField[0]",
+    "fullName": "TextField[0]",
+    "type": "/Tx",
+    "rect": [
+      329.641,
+      389.29,
+      571.36,
+      402.23
+    ],
+    "tooltip": "explain"
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxRightCaption8[0]",
+    "fullName": "CheckBoxRightCaption8[0]",
+    "type": "/Btn",
+    "rect": [
+      90.332,
+      377.245,
+      99.332,
+      386.245
+    ],
+    "tooltip": "Sold a home or ended a lease"
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxRightCaption[0]",
+    "fullName": "CheckBoxRightCaption[0]",
+    "type": "/Btn",
+    "rect": [
+      74.747,
+      356.122,
+      83.747,
+      365.122
+    ],
+    "tooltip": "Has a history of:"
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxRightCaption1[0]",
+    "fullName": "CheckBoxRightCaption1[0]",
+    "type": "/Btn",
+    "rect": [
+      89.728,
+      342.076,
+      98.728,
+      351.076
+    ],
+    "tooltip": "Abusing me "
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxRightCaption2[0]",
+    "fullName": "CheckBoxRightCaption2[0]",
+    "type": "/Btn",
+    "rect": [
+      238.689,
+      342.076,
+      247.689,
+      351.076
+    ],
+    "tooltip": "Taking away or hiding our children from me"
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxRightCaption3[0]",
+    "fullName": "CheckBoxRightCaption3[0]",
+    "type": "/Btn",
+    "rect": [
+      89.728,
+      328.24,
+      98.728,
+      337.24
+    ],
+    "tooltip": "Child abuse"
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxRightCaption4[0]",
+    "fullName": "CheckBoxRightCaption4[0]",
+    "type": "/Btn",
+    "rect": [
+      238.689,
+      328.24,
+      247.689,
+      337.24
+    ],
+    "tooltip": "Threatening to take away or hide our children from me"
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxRightCaption5[0]",
+    "fullName": "CheckBoxRightCaption5[0]",
+    "type": "/Btn",
+    "rect": [
+      89.728,
+      314.405,
+      98.728,
+      323.405
+    ],
+    "tooltip": "Abusing other partners"
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxRightCaption6[0]",
+    "fullName": "CheckBoxRightCaption6[0]",
+    "type": "/Btn",
+    "rect": [
+      238.689,
+      314.405,
+      247.689,
+      323.405
+    ],
+    "tooltip": "Not cooperating with me in parenting"
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxRightCaption[0]",
+    "fullName": "CheckBoxRightCaption[0]",
+    "type": "/Btn",
+    "rect": [
+      74.747,
+      294.508,
+      83.747,
+      303.508
+    ],
+    "tooltip": "Has a criminal record"
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxRightCaption[0]",
+    "fullName": "CheckBoxRightCaption[0]",
+    "type": "/Btn",
+    "rect": [
+      74.747,
+      274.855,
+      83.747,
+      283.855
+    ],
+    "tooltip": "Has strong ties in:"
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxRightCaption1[0]",
+    "fullName": "CheckBoxRightCaption1[0]",
+    "type": "/Btn",
+    "rect": [
+      89.351,
+      260.809,
+      98.351,
+      269.809
+    ],
+    "tooltip": "Another county in California (list county):"
+  },
+  {
+    "page": 0,
+    "name": "TextField[0]",
+    "fullName": "TextField[0]",
+    "type": "/Tx",
+    "rect": [
+      291.51,
+      259.049,
+      571.635,
+      271.989
+    ],
+    "tooltip": "list county"
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxRightCaption2[0]",
+    "fullName": "CheckBoxRightCaption2[0]",
+    "type": "/Btn",
+    "rect": [
+      89.368,
+      246.764,
+      98.368,
+      255.764
+    ],
+    "tooltip": "Another state (list state):"
+  },
+  {
+    "page": 0,
+    "name": "TextField1[0]",
+    "fullName": "TextField1[0]",
+    "type": "/Tx",
+    "rect": [
+      216.743,
+      244.763,
+      571.635,
+      257.703
+    ],
+    "tooltip": "list state"
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxRightCaption3[0]",
+    "fullName": "CheckBoxRightCaption3[0]",
+    "type": "/Btn",
+    "rect": [
+      89.368,
+      231.423,
+      98.368,
+      240.423
+    ],
+    "tooltip": "Another country (list country):"
+  },
+  {
+    "page": 0,
+    "name": "TextField2[0]",
+    "fullName": "TextField2[0]",
+    "type": "/Tx",
+    "rect": [
+      240.495,
+      229.421,
+      572.041,
+      242.361
+    ],
+    "tooltip": "list country"
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxRightCaption[0]",
+    "fullName": "CheckBoxRightCaption[0]",
+    "type": "/Btn",
+    "rect": [
+      74.047,
+      206.155,
+      83.047,
+      215.155
+    ],
+    "tooltip": "Is a citizen of another country (list country or countries):"
+  },
+  {
+    "page": 0,
+    "name": "TextField[0]",
+    "fullName": "TextField[0]",
+    "type": "/Tx",
+    "rect": [
+      342.896,
+      204.154,
+      571.159,
+      217.335
+    ],
+    "tooltip": "list country or countries"
+  },
+  {
+    "page": 0,
+    "name": "ChoiceItem3g[0]",
+    "fullName": "ChoiceItem3g[0]",
+    "type": "/Btn",
+    "rect": [
+      468.329,
+      188.697,
+      477.329,
+      197.697
+    ],
+    "tooltip": "Yes"
+  },
+  {
+    "page": 0,
+    "name": "ChoiceItem3g[1]",
+    "fullName": "ChoiceItem3g[1]",
+    "type": "/Btn",
+    "rect": [
+      514.641,
+      188.697,
+      523.641,
+      197.697
+    ],
+    "tooltip": "No"
+  },
+  {
+    "page": 0,
+    "name": "item26d_tf[0]",
+    "fullName": "item26d_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      62.277,
+      110.894,
+      575.997,
+      167.023
+    ],
+    "tooltip": "Give examples or reasons for your answers above:"
+  },
+  {
+    "page": 1,
+    "name": "Warning[0]",
+    "fullName": "Warning[0]",
+    "type": "/Btn",
+    "rect": [
+      35.793,
+      16.891,
+      247.087,
+      40.07
+    ],
+    "tooltip": "For your protection and privacy, please press the Clear This Form button after you have printed the form."
+  },
+  {
+    "page": 1,
+    "name": "Print[0]",
+    "fullName": "Print[0]",
+    "type": "/Btn",
+    "rect": [
+      258.483,
+      16.891,
+      339.483,
+      33.899
+    ],
+    "tooltip": "Print this form"
+  },
+  {
+    "page": 1,
+    "name": "Save[0]",
+    "fullName": "Save[0]",
+    "type": "/Btn",
+    "rect": [
+      345.022,
+      16.892,
+      426.127,
+      33.899
+    ],
+    "tooltip": "Save this form"
+  },
+  {
+    "page": 1,
+    "name": "Reset[0]",
+    "fullName": "Reset[0]",
+    "type": "/Btn",
+    "rect": [
+      494.711,
+      16.891,
+      575.708,
+      33.899
+    ],
+    "tooltip": "Clear this form"
+  },
+  {
+    "page": 1,
+    "name": "CaseNumber[0]",
+    "fullName": "CaseNumber[0]",
+    "type": "/Tx",
+    "rect": [
+      399.333,
+      727.084,
+      572.133,
+      742.25
+    ],
+    "tooltip": "Case Number:"
+  },
+  {
+    "page": 1,
+    "name": "CheckBoxRightCaption[0]",
+    "fullName": "CheckBoxRightCaption[0]",
+    "type": "/Btn",
+    "rect": [
+      62.853,
+      626.989,
+      71.853,
+      635.989
+    ],
+    "tooltip": "Do Not Move With Children Without Permission"
+  },
+  {
+    "page": 1,
+    "name": "CheckBoxRightCaption[0]",
+    "fullName": "CheckBoxRightCaption[0]",
+    "type": "/Btn",
+    "rect": [
+      62.853,
+      563.888,
+      71.853,
+      572.888
+    ],
+    "tooltip": "Turn In and Do Not Apply for Passports or Other Important Documents"
+  },
+  {
+    "page": 1,
+    "name": "TextField[0]",
+    "fullName": "TextField[0]",
+    "type": "/Tx",
+    "rect": [
+      378.686,
+      531.284,
+      576.51,
+      546.285
+    ],
+    "tooltip": "list documents"
+  },
+  {
+    "page": 1,
+    "name": "tf1[0]",
+    "fullName": "tf1[0]",
+    "type": "/Tx",
+    "rect": [
+      114.073,
+      511.963,
+      219.824,
+      526.964
+    ],
+    "tooltip": "by (date):"
+  },
+  {
+    "page": 1,
+    "name": "TextField1[0]",
+    "fullName": "TextField1[0]",
+    "type": "/Tx",
+    "rect": [
+      408.452,
+      511.963,
+      574.796,
+      526.964
+    ],
+    "tooltip": "to (name of person to give documents to):"
+  },
+  {
+    "page": 1,
+    "name": "CheckBoxRightCaption[0]",
+    "fullName": "CheckBoxRightCaption[0]",
+    "type": "/Btn",
+    "rect": [
+      62.853,
+      482.913,
+      71.853,
+      491.913
+    ],
+    "tooltip": "Provide Travel Plan and Documents"
+  },
+  {
+    "page": 1,
+    "name": "CheckBoxRightCaption1[0]",
+    "fullName": "CheckBoxRightCaption1[0]",
+    "type": "/Btn",
+    "rect": [
+      64.565,
+      436.464,
+      73.565,
+      445.464
+    ],
+    "tooltip": "Children's travel schedule  "
+  },
+  {
+    "page": 1,
+    "name": "CheckBoxRightCaption2[0]",
+    "fullName": "CheckBoxRightCaption2[0]",
+    "type": "/Btn",
+    "rect": [
+      64.565,
+      422.419,
+      73.565,
+      431.419
+    ],
+    "tooltip": "Copies of round-trip airline tickets"
+  },
+  {
+    "page": 1,
+    "name": "CheckBoxRightCaption3[0]",
+    "fullName": "CheckBoxRightCaption3[0]",
+    "type": "/Btn",
+    "rect": [
+      64.565,
+      408.373,
+      73.565,
+      417.373
+    ],
+    "tooltip": "Addresses and telephone numbers where the children can be reached"
+  },
+  {
+    "page": 1,
+    "name": "CheckBoxRightCaption4[0]",
+    "fullName": "CheckBoxRightCaption4[0]",
+    "type": "/Btn",
+    "rect": [
+      64.565,
+      394.327,
+      73.565,
+      403.327
+    ],
+    "tooltip": "An open airline ticket for me in case the children are not returned."
+  },
+  {
+    "page": 1,
+    "name": "CheckBoxRightCaption5[0]",
+    "fullName": "CheckBoxRightCaption5[0]",
+    "type": "/Btn",
+    "rect": [
+      64.565,
+      382.303,
+      73.565,
+      391.303
+    ],
+    "tooltip": "Other"
+  },
+  {
+    "page": 1,
+    "name": "TextField2[0]",
+    "fullName": "TextField2[0]",
+    "type": "/Tx",
+    "rect": [
+      159.883,
+      379.278,
+      574.678,
+      392.326
+    ],
+    "tooltip": "(describe):"
+  },
+  {
+    "page": 1,
+    "name": "CheckBoxRightCaption[0]",
+    "fullName": "CheckBoxRightCaption[0]",
+    "type": "/Btn",
+    "rect": [
+      62.042,
+      350.093,
+      71.042,
+      359.093
+    ],
+    "tooltip": "Notify Other State of Travel Restrictions"
+  },
+  {
+    "page": 1,
+    "name": "TextField[0]",
+    "fullName": "TextField[0]",
+    "type": "/Tx",
+    "rect": [
+      163.092,
+      315.088,
+      341.589,
+      330.089
+    ],
+    "tooltip": "list county and state"
+  },
+  {
+    "page": 1,
+    "name": "CheckBoxRightCaption[0]",
+    "fullName": "CheckBoxRightCaption[0]",
+    "type": "/Btn",
+    "rect": [
+      63.774,
+      287.785,
+      72.774,
+      296.785
+    ],
+    "tooltip": "Notify Foreign Embassy or Consulate of Passport Restrictions"
+  },
+  {
+    "page": 1,
+    "name": "DateField1[0]",
+    "fullName": "DateField1[0]",
+    "type": "/Tx",
+    "rect": [
+      431.992,
+      266.049,
+      573.6,
+      281.776
+    ],
+    "tooltip": "(name of embassy or consulate"
+  },
+  {
+    "page": 1,
+    "name": "TextField2[0]",
+    "fullName": "TextField2[0]",
+    "type": "/Tx",
+    "rect": [
+      386.938,
+      250.541,
+      573.599,
+      265.542
+    ],
+    "tooltip": "date"
+  },
+  {
+    "page": 1,
+    "name": "CheckBoxRightCaption[0]",
+    "fullName": "CheckBoxRightCaption[0]",
+    "type": "/Btn",
+    "rect": [
+      63.363,
+      222.747,
+      72.363,
+      231.747
+    ],
+    "tooltip": "Foreign Custody and Visitation Order"
+  },
+  {
+    "page": 1,
+    "name": "TextField[0]",
+    "fullName": "TextField[0]",
+    "type": "/Tx",
+    "rect": [
+      256.773,
+      189.19,
+      511.783,
+      204.191
+    ],
+    "tooltip": "list country"
+  },
+  {
+    "page": 1,
+    "name": "CheckBoxRightCaption[0]",
+    "fullName": "CheckBoxRightCaption[0]",
+    "type": "/Btn",
+    "rect": [
+      63.363,
+      146.129,
+      72.363,
+      155.129
+    ],
+    "tooltip": "Post a Bond"
+  },
+  {
+    "page": 1,
+    "name": "TextField[0]",
+    "fullName": "TextField[0]",
+    "type": "/Tx",
+    "rect": [
+      333.83,
+      125.493,
+      546.59,
+      140.494
+    ],
+    "tooltip": "dollar amount"
+  }
+]

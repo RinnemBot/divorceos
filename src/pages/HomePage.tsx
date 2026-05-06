@@ -163,9 +163,9 @@ export function HomePage() {
       <div className="border-b border-emerald-100/70 bg-white/55 backdrop-blur-xl dark:border-emerald-400/15 dark:bg-slate-950/45">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col gap-2 md:flex-row md:items-center md:justify-between text-sm">
           <div className="flex items-center gap-3 text-slate-700 dark:text-slate-200">
-            <Badge className="border-0 bg-emerald-100 text-emerald-900 dark:bg-emerald-400/20 dark:text-emerald-200">40+ counties</Badge>
+            <Badge className="border-0 bg-emerald-100 text-emerald-900 dark:bg-emerald-400/20 dark:text-emerald-200">County + local courts</Badge>
             <p className="font-medium">
-              Ask Maria, pull official forms, and get filing help in one place across 40+ California counties.
+              Ask Maria, pull official forms, and get filing help across 40+ California counties and local court workflows.
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-2">
@@ -214,15 +214,15 @@ export function HomePage() {
                   Explore Forms
                 </Link>
                 <Link
-                  to="/california-divorce-chat-agent"
+                  to="/concierge"
                   className="inline-flex items-center justify-center rounded-full border border-transparent px-6 py-3 font-semibold text-slate-600 transition-colors hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
                 >
-                  California Divorce Chat Agent
+                  County filing help
                 </Link>
               </div>
 
               <div className="mt-8 flex flex-wrap items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
-                {['3 free chats', '50+ court forms', 'Draft form workspaces', '40+ county guides'].map((item) => (
+                {['Create an account for three free chats', '50+ court forms', 'Draft form workspaces', '40+ county/local court guides'].map((item) => (
                   <div key={item} className="inline-flex items-center gap-2 rounded-full border border-white/70 bg-white/70 px-3 py-2 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/5">
                     <CheckCircle className="h-4 w-4 text-emerald-500" />
                     <span>{item}</span>
@@ -281,10 +281,10 @@ export function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-12 text-center">
             <h2 className="text-3xl font-semibold tracking-tight text-slate-950 dark:text-white md:text-4xl">
-              Start with Maria, then move into forms and filing help when you need them.
+              Three clear paths: ask Maria, find your forms, or get county filing help.
             </h2>
             <p className="mx-auto mt-4 max-w-3xl text-lg leading-8 text-slate-600 dark:text-slate-300">
-              Get clear on your options first, then use forms, concierge filing support, and support tools to keep moving.
+              Pick the path that matches where you are today. You can start with a free account, browse official forms, or jump into local filing steps.
             </p>
           </div>
 
@@ -342,13 +342,13 @@ export function HomePage() {
             <div className="grid gap-10 lg:grid-cols-[1.2fr,0.8fr] items-center">
             <div>
               <p className="text-sm uppercase tracking-[0.2em] text-emerald-600 font-semibold mb-3">
-                County concierge + filings
+                County + local court filing help
               </p>
               <h2 className="mb-4 text-3xl font-semibold text-slate-950 dark:text-white">
-                Filing help across 40+ California counties
+                Filing help across California counties and local court workflows
               </h2>
               <p className="mb-6 text-lg text-slate-600 dark:text-slate-300">
-                Get county-specific filing guidance, packet support, and document workflow help tailored to where you are filing.
+                Get county-specific and local court filing guidance, packet support, and document workflow help tailored to where you are filing.
               </p>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-6">
                 {FEATURED_REGION_LOGOS.map((region) => (
@@ -364,7 +364,7 @@ export function HomePage() {
               <ul className="mb-8 space-y-3 text-slate-700 dark:text-slate-200">
                 <li className="flex items-start gap-3">
                   <CheckCircle className="h-5 w-5 text-emerald-600 mt-0.5" />
-                  <span>40+ counties live on the concierge map with filing method, local cover sheets, and service rules baked in.</span>
+                  <span>40+ county and local court guides live on the concierge map with filing method, local cover sheets, and service rules baked in.</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle className="h-5 w-5 text-emerald-600 mt-0.5" />
@@ -394,8 +394,8 @@ export function HomePage() {
             <div className="grid gap-4">
               {[ 
                 {
-                  title: 'Statewide coverage',
-                  body: 'Fresno to Lake County (and every county in between) lives inside the concierge picker with clerk-ready checklists.',
+                  title: 'County + local court coverage',
+                  body: 'Fresno to Lake County, plus selected local court workflows, live inside the concierge picker with clerk-ready checklists.',
                 },
                 {
                   title: 'Filing support included',
@@ -479,17 +479,15 @@ export function HomePage() {
                 Open the dedicated workspace for saved chat history, case folders, document uploads, voice, and longer California divorce conversations.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
-                <Link to="/chats">
-                  <Button className="rounded-full bg-emerald-700 px-6 text-white hover:bg-emerald-800">
+                <Button asChild className="rounded-full bg-emerald-700 px-6 text-white hover:bg-emerald-800">
+                  <Link to="/chats">
                     Open Chats
                     <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </Link>
-                <Link to="/dashboard">
-                  <Button variant="outline" className="rounded-full">
-                    View Saved Files
-                  </Button>
-                </Link>
+                  </Link>
+                </Button>
+                <Button asChild variant="outline" className="rounded-full">
+                  <Link to="/dashboard">View Saved Files</Link>
+                </Button>
               </div>
             </div>
 
@@ -533,11 +531,9 @@ export function HomePage() {
                   <p className="mb-4 text-sm leading-6 text-slate-600 dark:text-slate-300">
                     Go beyond free chats with more Maria access, filing support, and deeper planning tools.
                   </p>
-                  <Link to="/pricing">
-                    <Button className="w-full rounded-full bg-emerald-700 text-white hover:bg-emerald-800">
-                      View Pricing
-                    </Button>
-                  </Link>
+                  <Button asChild className="w-full rounded-full bg-emerald-700 text-white hover:bg-emerald-800">
+                    <Link to="/pricing">View Pricing</Link>
+                  </Button>
                 </CardContent>
               </Card>
             </div>
@@ -598,15 +594,14 @@ export function HomePage() {
                   Create Free Account
                 </Button>
               )}
-              <Link to="/forms">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="rounded-full border-slate-300 bg-white text-slate-950 hover:bg-slate-50 hover:text-slate-950 dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
-                >
-                  Browse Forms
-                </Button>
-              </Link>
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="rounded-full border-slate-300 bg-white text-slate-950 hover:bg-slate-50 hover:text-slate-950 dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
+              >
+                <Link to="/forms">Browse Forms</Link>
+              </Button>
             </div>
           </div>
         </div>

@@ -1,0 +1,548 @@
+[
+  {
+    "page": 0,
+    "name": "Button1[0]",
+    "fullName": "Button1[0]",
+    "type": "/Btn",
+    "rect": [
+      525.353,
+      56.422,
+      575.703,
+      62.422
+    ],
+    "tooltip": "www.courts.ca.gov"
+  },
+  {
+    "page": 0,
+    "name": "Print[0]",
+    "fullName": "Print[0]",
+    "type": "/Btn",
+    "rect": [
+      259.727,
+      12.997,
+      340.727,
+      30.005
+    ],
+    "tooltip": "Print this form"
+  },
+  {
+    "page": 0,
+    "name": "Save[0]",
+    "fullName": "Save[0]",
+    "type": "/Btn",
+    "rect": [
+      346.266,
+      12.997,
+      427.371,
+      30.005
+    ],
+    "tooltip": "Save this form"
+  },
+  {
+    "page": 0,
+    "name": "Reset[0]",
+    "fullName": "Reset[0]",
+    "type": "/Btn",
+    "rect": [
+      495.955,
+      12.997,
+      576.952,
+      30.005
+    ],
+    "tooltip": "Clear this form"
+  },
+  {
+    "page": 0,
+    "name": "Warning[0]",
+    "fullName": "Warning[0]",
+    "type": "/Btn",
+    "rect": [
+      37.037,
+      12.997,
+      248.331,
+      36.176
+    ],
+    "tooltip": "For your protection and privacy, please press the Clear This Form button after you have printed the form."
+  },
+  {
+    "page": 0,
+    "name": "CaseNumber[0]",
+    "fullName": "CaseNumber[0]",
+    "type": "/Tx",
+    "rect": [
+      400.005,
+      537.253,
+      572.805,
+      551.642
+    ],
+    "tooltip": "Case Number"
+  },
+  {
+    "page": 0,
+    "name": "StateBarNo[0]",
+    "fullName": "StateBarNo[0]",
+    "type": "/Tx",
+    "rect": [
+      237.792,
+      735.989,
+      394.8,
+      745.134
+    ],
+    "tooltip": "State Bar Number"
+  },
+  {
+    "page": 0,
+    "name": "Name[0]",
+    "fullName": "Name[0]",
+    "type": "/Tx",
+    "rect": [
+      58.318,
+      725.485,
+      394.8,
+      734.485
+    ],
+    "tooltip": "Name"
+  },
+  {
+    "page": 0,
+    "name": "AttyFirm[0]",
+    "fullName": "AttyFirm[0]",
+    "type": "/Tx",
+    "rect": [
+      74.436,
+      713.914,
+      394.8,
+      722.914
+    ],
+    "tooltip": "Firm Name"
+  },
+  {
+    "page": 0,
+    "name": "Street[0]",
+    "fullName": "Street[0]",
+    "type": "/Tx",
+    "rect": [
+      95.952,
+      701.702,
+      394.803,
+      710.702
+    ],
+    "tooltip": "Street Address"
+  },
+  {
+    "page": 0,
+    "name": "City[0]",
+    "fullName": "City[0]",
+    "type": "/Tx",
+    "rect": [
+      55.103,
+      690.777,
+      238.81,
+      699.777
+    ],
+    "tooltip": "City"
+  },
+  {
+    "page": 0,
+    "name": "State[0]",
+    "fullName": "State[0]",
+    "type": "/Tx",
+    "rect": [
+      262.697,
+      690.777,
+      292.85,
+      699.777
+    ],
+    "tooltip": "State"
+  },
+  {
+    "page": 0,
+    "name": "Zip[0]",
+    "fullName": "Zip[0]",
+    "type": "/Tx",
+    "rect": [
+      326.54,
+      690.777,
+      394.798,
+      699.777
+    ],
+    "tooltip": "Zip Code"
+  },
+  {
+    "page": 0,
+    "name": "Phone[0]",
+    "fullName": "Phone[0]",
+    "type": "/Tx",
+    "rect": [
+      90.53,
+      679.209,
+      217.595,
+      688.209
+    ],
+    "tooltip": "Phone number"
+  },
+  {
+    "page": 0,
+    "name": "Fax[0]",
+    "fullName": "Fax[0]",
+    "type": "/Tx",
+    "rect": [
+      265.291,
+      679.209,
+      394.678,
+      688.209
+    ],
+    "tooltip": "Fax number"
+  },
+  {
+    "page": 0,
+    "name": "Email[0]",
+    "fullName": "Email[0]",
+    "type": "/Tx",
+    "rect": [
+      91.821,
+      667.638,
+      394.795,
+      676.638
+    ],
+    "tooltip": "E-Mail Address"
+  },
+  {
+    "page": 0,
+    "name": "AttyFor[0]",
+    "fullName": "AttyFor[0]",
+    "type": "/Tx",
+    "rect": [
+      108.572,
+      656.07,
+      394.795,
+      665.07
+    ],
+    "tooltip": "Attorney For , Name"
+  },
+  {
+    "page": 0,
+    "name": "CrtCounty[0]",
+    "fullName": "CrtCounty[0]",
+    "type": "/Tx",
+    "rect": [
+      230.516,
+      637.795,
+      394.206,
+      646.795
+    ],
+    "tooltip": "Superior Court of California, County of"
+  },
+  {
+    "page": 0,
+    "name": "CrtStreet[0]",
+    "fullName": "CrtStreet[0]",
+    "type": "/Tx",
+    "rect": [
+      97.752,
+      627.862,
+      394.758,
+      636.862
+    ],
+    "tooltip": "Street Address"
+  },
+  {
+    "page": 0,
+    "name": "CrtMailingAdd[0]",
+    "fullName": "CrtMailingAdd[0]",
+    "type": "/Tx",
+    "rect": [
+      97.752,
+      616.924,
+      394.758,
+      625.924
+    ],
+    "tooltip": "Mailing Address"
+  },
+  {
+    "page": 0,
+    "name": "CrtCityZip[0]",
+    "fullName": "CrtCityZip[0]",
+    "type": "/Tx",
+    "rect": [
+      99.636,
+      605.523,
+      394.752,
+      614.934
+    ],
+    "tooltip": "City and Zip Code"
+  },
+  {
+    "page": 0,
+    "name": "CrtBranch[0]",
+    "fullName": "CrtBranch[0]",
+    "type": "/Tx",
+    "rect": [
+      86.377,
+      594.309,
+      394.758,
+      603.309
+    ],
+    "tooltip": "Branch name"
+  },
+  {
+    "page": 0,
+    "name": "Party1[0]",
+    "fullName": "Party1[0]",
+    "type": "/Tx",
+    "rect": [
+      97.568,
+      579.438,
+      395.107,
+      588.438
+    ],
+    "tooltip": "Petitioner"
+  },
+  {
+    "page": 0,
+    "name": "Party2[0]",
+    "fullName": "Party2[0]",
+    "type": "/Tx",
+    "rect": [
+      97.568,
+      565.885,
+      395.107,
+      575.183
+    ],
+    "tooltip": "Respondent"
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxappear[0]",
+    "fullName": "CheckBoxappear[0]",
+    "type": "/Btn",
+    "rect": [
+      70.322,
+      506.148,
+      79.322,
+      515.148
+    ],
+    "tooltip": "By filing this form, I make a general appearance."
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxappear[0]",
+    "fullName": "CheckBoxappear[0]",
+    "type": "/Btn",
+    "rect": [
+      70.321,
+      492.45,
+      79.321,
+      501.45
+    ],
+    "tooltip": "I have previously made a general appearance."
+  },
+  {
+    "page": 0,
+    "name": "CheckBoxappear[0]",
+    "fullName": "CheckBoxappear[0]",
+    "type": "/Btn",
+    "rect": [
+      70.322,
+      478.417,
+      79.322,
+      487.417
+    ],
+    "tooltip": "I am a member of the military services of the United States of America. I have completed and attached to this form\rDeclaration and Conditional Waiver of Rights Under the Servicemembers Civil Relief Act of 2003 (form FL-130(A))."
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      70.64,
+      437.541,
+      79.64,
+      446.541
+    ],
+    "tooltip": "The parties agree that this cause may be decided as an uncontested matter."
+  },
+  {
+    "page": 0,
+    "name": "CheckBox2[0]",
+    "fullName": "CheckBox2[0]",
+    "type": "/Btn",
+    "rect": [
+      70.639,
+      423.106,
+      79.639,
+      432.106
+    ],
+    "tooltip": "The parties waive their rights to notice of trial, a statement of decision, a motion for new trial, and the right to appeal."
+  },
+  {
+    "page": 0,
+    "name": "CheckBox3[0]",
+    "fullName": "CheckBox3[0]",
+    "type": "/Btn",
+    "rect": [
+      70.639,
+      407.877,
+      79.639,
+      416.877
+    ],
+    "tooltip": "This matter may be decided by a commissioner sitting as a temporary judge."
+  },
+  {
+    "page": 0,
+    "name": "CheckBox4[0]",
+    "fullName": "CheckBox4[0]",
+    "type": "/Btn",
+    "rect": [
+      70.64,
+      393.596,
+      79.64,
+      402.596
+    ],
+    "tooltip": "The parties have a written agreement that will be submitted to the court, or a stipulation for judgment will be submitted to the court and attached to Judgment (Family Law) (form FL-180)."
+  },
+  {
+    "page": 0,
+    "name": "CheckBox5[0]",
+    "fullName": "CheckBox5[0]",
+    "type": "/Btn",
+    "rect": [
+      70.639,
+      366.961,
+      79.639,
+      375.961
+    ],
+    "tooltip": "None of these agreements or waivers will apply unless the court approves the stipulation for judgment or incorporates\rthe written settlement agreement into the judgment."
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      70.639,
+      340.392,
+      79.639,
+      349.392
+    ],
+    "tooltip": "This is a parentage case, and both parties have signed an Advisement and Waiver of Rights Re: Determination of Parental Relationship (form FL-235) or its equivalent."
+  },
+  {
+    "page": 0,
+    "name": "Text3[0]",
+    "fullName": "Text3[0]",
+    "type": "/Tx",
+    "rect": [
+      51.225,
+      277.875,
+      574.396,
+      310.695
+    ],
+    "tooltip": "Specify Other"
+  },
+  {
+    "page": 0,
+    "name": "SigDate[0]",
+    "fullName": "SigDate[0]",
+    "type": "/Tx",
+    "rect": [
+      61.2,
+      263.826,
+      178.744,
+      273.827
+    ],
+    "tooltip": "Date"
+  },
+  {
+    "page": 0,
+    "name": "SigName[0]",
+    "fullName": "SigName[0]",
+    "type": "/Tx",
+    "rect": [
+      36.0,
+      242.124,
+      275.876,
+      256.235
+    ],
+    "tooltip": "Type or Print Name"
+  },
+  {
+    "page": 0,
+    "name": "SigDate1[0]",
+    "fullName": "SigDate1[0]",
+    "type": "/Tx",
+    "rect": [
+      61.2,
+      218.038,
+      178.744,
+      228.039
+    ],
+    "tooltip": "Date"
+  },
+  {
+    "page": 0,
+    "name": "SigName1[0]",
+    "fullName": "SigName1[0]",
+    "type": "/Tx",
+    "rect": [
+      36.0,
+      196.336,
+      275.876,
+      210.447
+    ],
+    "tooltip": "Type or Print Name"
+  },
+  {
+    "page": 0,
+    "name": "SigDate2[0]",
+    "fullName": "SigDate2[0]",
+    "type": "/Tx",
+    "rect": [
+      61.2,
+      171.714,
+      178.744,
+      181.715
+    ],
+    "tooltip": "Date"
+  },
+  {
+    "page": 0,
+    "name": "SigName2[0]",
+    "fullName": "SigName2[0]",
+    "type": "/Tx",
+    "rect": [
+      36.0,
+      150.012,
+      275.876,
+      164.123
+    ],
+    "tooltip": "Type or Print Name"
+  },
+  {
+    "page": 0,
+    "name": "SigDate3[0]",
+    "fullName": "SigDate3[0]",
+    "type": "/Tx",
+    "rect": [
+      61.2,
+      125.073,
+      178.744,
+      135.074
+    ],
+    "tooltip": "Date"
+  },
+  {
+    "page": 0,
+    "name": "SigName3[0]",
+    "fullName": "SigName3[0]",
+    "type": "/Tx",
+    "rect": [
+      36.0,
+      103.371,
+      275.876,
+      117.482
+    ],
+    "tooltip": "Type or Print Name"
+  }
+]

@@ -47,8 +47,8 @@ const seoRoutes: SeoConfig[] = [
   },
   {
     path: '/concierge',
-    title: 'California County Divorce Filing Concierge | Divorce Agent',
-    description: 'Find county-specific California divorce filing steps, courthouse guidance, local form requirements, fee waiver details, and next actions.',
+    title: 'California County & Local Court Divorce Filing Concierge | Divorce Agent',
+    description: 'Find county-specific and local court California divorce filing steps, courthouse guidance, local form requirements, fee waiver details, and next actions.',
   },
   {
     path: '/draft-forms',

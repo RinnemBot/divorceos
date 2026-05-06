@@ -207,6 +207,9 @@ export function Navigation({ currentUser, onAuthClick, onLogout }: NavigationPro
 
           <div className="flex items-center md:hidden">
             <button
+              type="button"
+              aria-label={isMobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+              aria-expanded={isMobileMenuOpen}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="p-2 rounded-md text-gray-600 hover:bg-gray-100 dark:text-slate-200 dark:hover:bg-slate-900/70"
             >

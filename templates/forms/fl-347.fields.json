@@ -1,0 +1,821 @@
+[
+  {
+    "page": 0,
+    "name": "Party1_ft[0]",
+    "fullName": "Party1_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      112.08,
+      731.582,
+      394.342,
+      743.102
+    ],
+    "tooltip": "PETITIONER:"
+  },
+  {
+    "page": 0,
+    "name": "Party2_ft[0]",
+    "fullName": "Party2_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      112.08,
+      718.03,
+      394.342,
+      729.55
+    ],
+    "tooltip": "RESPONDENT:"
+  },
+  {
+    "page": 0,
+    "name": "CaseNumber_ft[0]",
+    "fullName": "CaseNumber_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      400.005,
+      721.36,
+      572.805,
+      735.749
+    ],
+    "tooltip": "CASE NUMBER:"
+  },
+  {
+    "page": 0,
+    "name": "SepTrial_cb[0]",
+    "fullName": "SepTrial_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      176.655,
+      676.609,
+      185.655,
+      685.609
+    ],
+    "tooltip": "JUDGMENT (FL-180)"
+  },
+  {
+    "page": 0,
+    "name": "ResSepTrial_cb[0]",
+    "fullName": "ResSepTrial_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      311.743,
+      677.149,
+      320.743,
+      686.149
+    ],
+    "tooltip": "FINDINGS AND ORDER AFTER HEARING (FL-340)"
+  },
+  {
+    "page": 0,
+    "name": "petitioner_cb[0]",
+    "fullName": "petitioner_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      176.391,
+      654.721,
+      185.391,
+      663.721
+    ],
+    "tooltip": "petitioner"
+  },
+  {
+    "page": 0,
+    "name": "respondent_cb[0]",
+    "fullName": "respondent_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      256.955,
+      654.721,
+      265.955,
+      663.721
+    ],
+    "tooltip": "respondent"
+  },
+  {
+    "page": 0,
+    "name": "on_date_ff[0]",
+    "fullName": "on_date_ff[0]",
+    "type": "/Tx",
+    "rect": [
+      293.884,
+      624.291,
+      426.413,
+      635.247
+    ],
+    "tooltip": "Date marital or domestic partnership status ends (specify): "
+  },
+  {
+    "page": 0,
+    "name": "Checkbox[0]",
+    "fullName": "Checkbox[0]",
+    "type": "/Btn",
+    "rect": [
+      488.487,
+      321.61,
+      497.487,
+      330.61
+    ],
+    "tooltip": "Checkbox"
+  },
+  {
+    "page": 0,
+    "name": "Checkbox[1]",
+    "fullName": "Checkbox[1]",
+    "type": "/Btn",
+    "rect": [
+      488.487,
+      307.341,
+      497.487,
+      316.341
+    ],
+    "tooltip": "Checkbox"
+  },
+  {
+    "page": 0,
+    "name": "Checkbox[2]",
+    "fullName": "Checkbox[2]",
+    "type": "/Btn",
+    "rect": [
+      488.487,
+      292.598,
+      497.487,
+      301.598
+    ],
+    "tooltip": "Checkbox"
+  },
+  {
+    "page": 0,
+    "name": "Checkbox[3]",
+    "fullName": "Checkbox[3]",
+    "type": "/Btn",
+    "rect": [
+      523.104,
+      321.61,
+      532.104,
+      330.61
+    ],
+    "tooltip": "Checkbox"
+  },
+  {
+    "page": 0,
+    "name": "Checkbox[4]",
+    "fullName": "Checkbox[4]",
+    "type": "/Btn",
+    "rect": [
+      523.104,
+      307.341,
+      532.104,
+      316.341
+    ],
+    "tooltip": "Checkbox"
+  },
+  {
+    "page": 0,
+    "name": "Checkbox[5]",
+    "fullName": "Checkbox[5]",
+    "type": "/Btn",
+    "rect": [
+      523.104,
+      292.598,
+      532.104,
+      301.598
+    ],
+    "tooltip": "Checkbox"
+  },
+  {
+    "page": 0,
+    "name": "Checkbox[6]",
+    "fullName": "Checkbox[6]",
+    "type": "/Btn",
+    "rect": [
+      558.48,
+      321.61,
+      567.48,
+      330.61
+    ],
+    "tooltip": "Checkbox"
+  },
+  {
+    "page": 0,
+    "name": "Checkbox[7]",
+    "fullName": "Checkbox[7]",
+    "type": "/Btn",
+    "rect": [
+      558.48,
+      307.341,
+      567.48,
+      316.341
+    ],
+    "tooltip": "Checkbox"
+  },
+  {
+    "page": 0,
+    "name": "Checkbox[8]",
+    "fullName": "Checkbox[8]",
+    "type": "/Btn",
+    "rect": [
+      558.48,
+      292.598,
+      567.48,
+      301.598
+    ],
+    "tooltip": "Checkbox"
+  },
+  {
+    "page": 0,
+    "name": "TextField6[0]",
+    "fullName": "TextField6[0]",
+    "type": "/Tx",
+    "rect": [
+      65.39,
+      320.811,
+      460.491,
+      331.413
+    ],
+    "tooltip": "TextField6"
+  },
+  {
+    "page": 0,
+    "name": "TextField6[1]",
+    "fullName": "TextField6[1]",
+    "type": "/Tx",
+    "rect": [
+      65.39,
+      306.541,
+      460.491,
+      317.143
+    ],
+    "tooltip": "TextField6"
+  },
+  {
+    "page": 0,
+    "name": "TextField6[2]",
+    "fullName": "TextField6[2]",
+    "type": "/Tx",
+    "rect": [
+      64.919,
+      291.798,
+      460.02,
+      302.4
+    ],
+    "tooltip": "TextField6"
+  },
+  {
+    "page": 0,
+    "name": "Checkbox[9]",
+    "fullName": "Checkbox[9]",
+    "type": "/Btn",
+    "rect": [
+      70.217,
+      274.609,
+      79.217,
+      283.609
+    ],
+    "tooltip": "See attachment 3b for additional plans."
+  },
+  {
+    "page": 0,
+    "name": "Checkbox[10]",
+    "fullName": "Checkbox[10]",
+    "type": "/Btn",
+    "rect": [
+      70.217,
+      147.694,
+      79.217,
+      156.694
+    ],
+    "tooltip": "Division of property"
+  },
+  {
+    "page": 0,
+    "name": "interest_cb[0]",
+    "fullName": "interest_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      173.554,
+      123.763,
+      182.554,
+      132.763
+    ],
+    "tooltip": "interest,"
+  },
+  {
+    "page": 0,
+    "name": "penalties_cb[0]",
+    "fullName": "penalties_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      258.54,
+      123.763,
+      267.54,
+      132.763
+    ],
+    "tooltip": "penalties"
+  },
+  {
+    "page": 0,
+    "name": "petitioner_cb[1]",
+    "fullName": "petitioner_cb[1]",
+    "type": "/Btn",
+    "rect": [
+      95.794,
+      135.091,
+      104.794,
+      144.091
+    ],
+    "tooltip": "petitioner"
+  },
+  {
+    "page": 0,
+    "name": "respondent_cb[1]",
+    "fullName": "respondent_cb[1]",
+    "type": "/Btn",
+    "rect": [
+      176.357,
+      135.091,
+      185.357,
+      144.091
+    ],
+    "tooltip": "respondent"
+  },
+  {
+    "page": 0,
+    "name": "taxes_cb[0]",
+    "fullName": "taxes_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      507.563,
+      134.626,
+      516.563,
+      143.626
+    ],
+    "tooltip": "taxes,"
+  },
+  {
+    "page": 0,
+    "name": "reassessments_cb[0]",
+    "fullName": "reassessments_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      70.92,
+      124.676,
+      79.92,
+      133.676
+    ],
+    "tooltip": "reassessments,"
+  },
+  {
+    "page": 1,
+    "name": "Party1_ft[0]",
+    "fullName": "Party1_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      104.7,
+      731.582,
+      394.342,
+      743.102
+    ],
+    "tooltip": "PETITIONER:"
+  },
+  {
+    "page": 1,
+    "name": "Party2_ft[0]",
+    "fullName": "Party2_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      104.247,
+      718.03,
+      394.342,
+      729.55
+    ],
+    "tooltip": "RESPONDENT:"
+  },
+  {
+    "page": 1,
+    "name": "CaseNumber_ft[0]",
+    "fullName": "CaseNumber_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      400.005,
+      721.36,
+      572.805,
+      735.749
+    ],
+    "tooltip": "CASE NUMBER:"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox19[0]",
+    "fullName": "CheckBox19[0]",
+    "type": "/Btn",
+    "rect": [
+      70.217,
+      694.128,
+      79.217,
+      703.128
+    ],
+    "tooltip": "Health insurance"
+  },
+  {
+    "page": 1,
+    "name": "petitioner_cb[0]",
+    "fullName": "petitioner_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      406.179,
+      679.856,
+      415.179,
+      688.856
+    ],
+    "tooltip": "petitioner"
+  },
+  {
+    "page": 1,
+    "name": "respondent_cb[0]",
+    "fullName": "respondent_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      486.743,
+      679.856,
+      495.743,
+      688.856
+    ],
+    "tooltip": "respondent"
+  },
+  {
+    "page": 1,
+    "name": "petitioner_cb[1]",
+    "fullName": "petitioner_cb[1]",
+    "type": "/Btn",
+    "rect": [
+      70.73,
+      647.977,
+      79.73,
+      656.977
+    ],
+    "tooltip": "petitioner"
+  },
+  {
+    "page": 1,
+    "name": "respondent_cb[1]",
+    "fullName": "respondent_cb[1]",
+    "type": "/Btn",
+    "rect": [
+      151.294,
+      647.977,
+      160.294,
+      656.977
+    ],
+    "tooltip": "respondent"
+  },
+  {
+    "page": 1,
+    "name": "petitioner_cb[2]",
+    "fullName": "petitioner_cb[2]",
+    "type": "/Btn",
+    "rect": [
+      221.786,
+      609.029,
+      230.786,
+      618.029
+    ],
+    "tooltip": "petitioner"
+  },
+  {
+    "page": 1,
+    "name": "respondent_cb[2]",
+    "fullName": "respondent_cb[2]",
+    "type": "/Btn",
+    "rect": [
+      302.349,
+      609.029,
+      311.349,
+      618.029
+    ],
+    "tooltip": "respondent"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox19[1]",
+    "fullName": "CheckBox19[1]",
+    "type": "/Btn",
+    "rect": [
+      69.99,
+      541.145,
+      78.99,
+      550.145
+    ],
+    "tooltip": "Probate homestead"
+  },
+  {
+    "page": 1,
+    "name": "petitioner_cb[3]",
+    "fullName": "petitioner_cb[3]",
+    "type": "/Btn",
+    "rect": [
+      410.783,
+      526.788,
+      419.783,
+      535.788
+    ],
+    "tooltip": "petitioner"
+  },
+  {
+    "page": 1,
+    "name": "respondent_cb[3]",
+    "fullName": "respondent_cb[3]",
+    "type": "/Btn",
+    "rect": [
+      491.346,
+      526.788,
+      500.346,
+      535.788
+    ],
+    "tooltip": "respondent"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox19[2]",
+    "fullName": "CheckBox19[2]",
+    "type": "/Btn",
+    "rect": [
+      69.99,
+      473.825,
+      78.99,
+      482.825
+    ],
+    "tooltip": "Probate family allowance"
+  },
+  {
+    "page": 1,
+    "name": "petitioner_cb[4]",
+    "fullName": "petitioner_cb[4]",
+    "type": "/Btn",
+    "rect": [
+      406.355,
+      459.539,
+      415.355,
+      468.539
+    ],
+    "tooltip": "petitioner"
+  },
+  {
+    "page": 1,
+    "name": "respondent_cb[4]",
+    "fullName": "respondent_cb[4]",
+    "type": "/Btn",
+    "rect": [
+      486.918,
+      459.539,
+      495.918,
+      468.539
+    ],
+    "tooltip": "respondent"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox19[3]",
+    "fullName": "CheckBox19[3]",
+    "type": "/Btn",
+    "rect": [
+      69.99,
+      414.609,
+      78.99,
+      423.609
+    ],
+    "tooltip": "Retirement benefits"
+  },
+  {
+    "page": 1,
+    "name": "petitioner_cb[5]",
+    "fullName": "petitioner_cb[5]",
+    "type": "/Btn",
+    "rect": [
+      388.392,
+      390.385,
+      397.392,
+      399.385
+    ],
+    "tooltip": "petitioner"
+  },
+  {
+    "page": 1,
+    "name": "respondent_cb[5]",
+    "fullName": "respondent_cb[5]",
+    "type": "/Btn",
+    "rect": [
+      468.955,
+      390.385,
+      477.955,
+      399.385
+    ],
+    "tooltip": "respondent"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox19[4]",
+    "fullName": "CheckBox19[4]",
+    "type": "/Btn",
+    "rect": [
+      69.99,
+      316.057,
+      78.99,
+      325.057
+    ],
+    "tooltip": "Social security benefits"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox19[5]",
+    "fullName": "CheckBox19[5]",
+    "type": "/Btn",
+    "rect": [
+      69.99,
+      256.643,
+      78.99,
+      265.643
+    ],
+    "tooltip": "Beneficiary designation\u2014nonprobate transfer"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox19[6]",
+    "fullName": "CheckBox19[6]",
+    "type": "/Btn",
+    "rect": [
+      69.99,
+      209.676,
+      78.99,
+      218.676
+    ],
+    "tooltip": "Individual Retirement Accounts"
+  },
+  {
+    "page": 1,
+    "name": "petitioner_cb[6]",
+    "fullName": "petitioner_cb[6]",
+    "type": "/Btn",
+    "rect": [
+      132.001,
+      182.594,
+      141.001,
+      191.594
+    ],
+    "tooltip": "petitioner"
+  },
+  {
+    "page": 1,
+    "name": "respondent_cb[6]",
+    "fullName": "respondent_cb[6]",
+    "type": "/Btn",
+    "rect": [
+      212.564,
+      182.594,
+      221.564,
+      191.594
+    ],
+    "tooltip": "respondent"
+  },
+  {
+    "page": 2,
+    "name": "Party1_ft[0]",
+    "fullName": "Party1_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      104.7,
+      731.089,
+      394.342,
+      742.609
+    ],
+    "tooltip": "PETITIONER:"
+  },
+  {
+    "page": 2,
+    "name": "Party2_ft[0]",
+    "fullName": "Party2_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      104.247,
+      717.537,
+      394.342,
+      729.057
+    ],
+    "tooltip": "RESPONDENT:"
+  },
+  {
+    "page": 2,
+    "name": "CaseNumber_ft[0]",
+    "fullName": "CaseNumber_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      400.005,
+      720.867,
+      572.805,
+      735.256
+    ],
+    "tooltip": "CASE NUMBER:"
+  },
+  {
+    "page": 2,
+    "name": "CheckBox19[0]",
+    "fullName": "CheckBox19[0]",
+    "type": "/Btn",
+    "rect": [
+      70.217,
+      691.364,
+      79.217,
+      700.364
+    ],
+    "tooltip": "Enforcement of community property rights"
+  },
+  {
+    "page": 2,
+    "name": "CheckBox19[1]",
+    "fullName": "CheckBox19[1]",
+    "type": "/Btn",
+    "rect": [
+      70.217,
+      657.927,
+      79.217,
+      666.927
+    ],
+    "tooltip": "Other conditions that are just and equitable"
+  },
+  {
+    "page": 2,
+    "name": "Other_tf[0]",
+    "fullName": "Other_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      65.827,
+      465.639,
+      574.248,
+      642.702
+    ],
+    "tooltip": "Other_tf"
+  },
+  {
+    "page": 2,
+    "name": "T21[0]",
+    "fullName": "T21[0]",
+    "type": "/Tx",
+    "rect": [
+      178.311,
+      448.101,
+      232.451,
+      457.101
+    ],
+    "tooltip": "Number of pages attachments:"
+  },
+  {
+    "page": 2,
+    "name": "Print_bt[0]",
+    "fullName": "Print_bt[0]",
+    "type": "/Btn",
+    "rect": [
+      258.775,
+      0.737,
+      339.775,
+      17.745
+    ],
+    "tooltip": "Print this form"
+  },
+  {
+    "page": 2,
+    "name": "Save_bt[0]",
+    "fullName": "Save_bt[0]",
+    "type": "/Btn",
+    "rect": [
+      345.314,
+      0.737,
+      426.419,
+      17.745
+    ],
+    "tooltip": "Save this form"
+  },
+  {
+    "page": 2,
+    "name": "Reset_bt[0]",
+    "fullName": "Reset_bt[0]",
+    "type": "/Btn",
+    "rect": [
+      495.003,
+      0.737,
+      576.0,
+      17.745
+    ],
+    "tooltip": "Clear this form"
+  },
+  {
+    "page": 2,
+    "name": "T23[0]",
+    "fullName": "T23[0]",
+    "type": "/Btn",
+    "rect": [
+      36.085,
+      0.737,
+      247.379,
+      23.916
+    ],
+    "tooltip": "For your protection and privacy, please press the Clear This Form button after you have printed the form."
+  }
+]

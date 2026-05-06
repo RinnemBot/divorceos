@@ -1,0 +1,535 @@
+[
+  {
+    "page": 0,
+    "name": "CourtsLink[0]",
+    "fullName": "CourtsLink[0]",
+    "type": "/Btn",
+    "rect": [
+      525.104,
+      72.316,
+      575.454,
+      78.316
+    ],
+    "tooltip": "www.courts.ca.gov"
+  },
+  {
+    "page": 0,
+    "name": "Warning[0]",
+    "fullName": "Warning[0]",
+    "type": "/Btn",
+    "rect": [
+      35.998,
+      36.0,
+      247.292,
+      59.179
+    ],
+    "tooltip": "For your protection and privacy, please press the Clear This Form button after you have printed the form."
+  },
+  {
+    "page": 0,
+    "name": "Print[0]",
+    "fullName": "Print[0]",
+    "type": "/Btn",
+    "rect": [
+      258.966,
+      36.0,
+      339.966,
+      53.008
+    ],
+    "tooltip": "Print this form"
+  },
+  {
+    "page": 0,
+    "name": "Save[0]",
+    "fullName": "Save[0]",
+    "type": "/Btn",
+    "rect": [
+      345.504,
+      36.0,
+      426.609,
+      53.008
+    ],
+    "tooltip": "Save this form"
+  },
+  {
+    "page": 0,
+    "name": "Reset[0]",
+    "fullName": "Reset[0]",
+    "type": "/Btn",
+    "rect": [
+      495.194,
+      36.001,
+      576.191,
+      53.008
+    ],
+    "tooltip": "Clear this form"
+  },
+  {
+    "page": 0,
+    "name": "PetitionerTextField[0]",
+    "fullName": "PetitionerTextField[0]",
+    "type": "/Tx",
+    "rect": [
+      131.838,
+      731.9,
+      393.735,
+      740.9
+    ],
+    "tooltip": "PETITIONER:"
+  },
+  {
+    "page": 0,
+    "name": "RespondentTextField[0]",
+    "fullName": "RespondentTextField[0]",
+    "type": "/Tx",
+    "rect": [
+      131.838,
+      718.372,
+      393.735,
+      727.67
+    ],
+    "tooltip": "RESPONDENT:"
+  },
+  {
+    "page": 0,
+    "name": "OtherPartyTextField[0]",
+    "fullName": "OtherPartyTextField[0]",
+    "type": "/Tx",
+    "rect": [
+      131.672,
+      704.843,
+      393.789,
+      714.141
+    ],
+    "tooltip": "OTHER PARENT/PARTY:"
+  },
+  {
+    "page": 0,
+    "name": "CaseNumberTextField[0]",
+    "fullName": "CaseNumberTextField[0]",
+    "type": "/Tx",
+    "rect": [
+      399.56,
+      719.62,
+      572.36,
+      731.1
+    ],
+    "tooltip": "CASE NUMBER:"
+  },
+  {
+    "page": 0,
+    "name": "AttachmentToCheckbox1[0]",
+    "fullName": "AttachmentToCheckbox1[0]",
+    "type": "/Btn",
+    "rect": [
+      197.824,
+      659.189,
+      206.824,
+      668.189
+    ],
+    "tooltip": "Child Support Information and Order Attachment (form FL-342)"
+  },
+  {
+    "page": 0,
+    "name": "AttachmentToCheckbox2[0]",
+    "fullName": "AttachmentToCheckbox2[0]",
+    "type": "/Btn",
+    "rect": [
+      197.824,
+      645.667,
+      206.824,
+      654.667
+    ],
+    "tooltip": "Other (specify):"
+  },
+  {
+    "page": 0,
+    "name": "AttachmentToTextField[0]",
+    "fullName": "AttachmentToTextField[0]",
+    "type": "/Tx",
+    "rect": [
+      283.994,
+      645.126,
+      489.537,
+      654.126
+    ],
+    "tooltip": "Other (specify)"
+  },
+  {
+    "page": 0,
+    "name": "Item1Checkbox1[0]",
+    "fullName": "Item1Checkbox1[0]",
+    "type": "/Btn",
+    "rect": [
+      55.256,
+      588.81,
+      64.256,
+      597.81
+    ],
+    "tooltip": "The child support agreed to by the parties is"
+  },
+  {
+    "page": 0,
+    "name": "Item1Checkbox2[0]",
+    "fullName": "Item1Checkbox2[0]",
+    "type": "/Btn",
+    "rect": [
+      268.498,
+      588.81,
+      277.498,
+      597.81
+    ],
+    "tooltip": "below"
+  },
+  {
+    "page": 0,
+    "name": "Item1Checkbox2[1]",
+    "fullName": "Item1Checkbox2[1]",
+    "type": "/Btn",
+    "rect": [
+      343.502,
+      588.81,
+      352.502,
+      597.81
+    ],
+    "tooltip": "above "
+  },
+  {
+    "page": 0,
+    "name": "Item1CurrencyField[0]",
+    "fullName": "Item1CurrencyField[0]",
+    "type": "/Tx",
+    "rect": [
+      420.171,
+      577.29,
+      491.978,
+      586.29
+    ],
+    "tooltip": "dollar amount"
+  },
+  {
+    "page": 0,
+    "name": "Item2Checkbox[0]",
+    "fullName": "Item2Checkbox[0]",
+    "type": "/Btn",
+    "rect": [
+      55.253,
+      483.65,
+      64.253,
+      492.65
+    ],
+    "tooltip": "Support calculation   "
+  },
+  {
+    "page": 0,
+    "name": "Item2aCurrencyField[0]",
+    "fullName": "Item2aCurrencyField[0]",
+    "type": "/Tx",
+    "rect": [
+      277.832,
+      466.305,
+      350.92,
+      475.305
+    ],
+    "tooltip": "The guideline amount of child support calculated is dollar amount"
+  },
+  {
+    "page": 0,
+    "name": "Item2aCheckbox[0]",
+    "fullName": "Item2aCheckbox[0]",
+    "type": "/Btn",
+    "rect": [
+      172.182,
+      454.752,
+      181.182,
+      463.752
+    ],
+    "tooltip": "petitioner"
+  },
+  {
+    "page": 0,
+    "name": "Item2aCheckbox[1]",
+    "fullName": "Item2aCheckbox[1]",
+    "type": "/Btn",
+    "rect": [
+      249.65,
+      454.751,
+      258.65,
+      463.751
+    ],
+    "tooltip": "respondent"
+  },
+  {
+    "page": 0,
+    "name": "Item2aCheckbox[2]",
+    "fullName": "Item2aCheckbox[2]",
+    "type": "/Btn",
+    "rect": [
+      333.499,
+      454.751,
+      342.499,
+      463.751
+    ],
+    "tooltip": "other parent/party"
+  },
+  {
+    "page": 0,
+    "name": "Item2bCheckbox[0]",
+    "fullName": "Item2bCheckbox[0]",
+    "type": "/Btn",
+    "rect": [
+      70.506,
+      426.138,
+      79.506,
+      435.138
+    ],
+    "tooltip": "increase"
+  },
+  {
+    "page": 0,
+    "name": "Item2bCheckbox[1]",
+    "fullName": "Item2bCheckbox[1]",
+    "type": "/Btn",
+    "rect": [
+      144.453,
+      426.138,
+      153.453,
+      435.138
+    ],
+    "tooltip": "decrease"
+  },
+  {
+    "page": 0,
+    "name": "Item2bCurrencyField[0]",
+    "fullName": "Item2bCurrencyField[0]",
+    "type": "/Tx",
+    "rect": [
+      426.047,
+      426.138,
+      498.418,
+      435.138
+    ],
+    "tooltip": "in child support. The revised amount of support is dollar amount"
+  },
+  {
+    "page": 0,
+    "name": "Item2cCheckboxArea1[0]",
+    "fullName": "Item2cCheckboxArea1[0]",
+    "type": "/Btn",
+    "rect": [
+      208.5,
+      384.959,
+      217.5,
+      393.959
+    ],
+    "tooltip": "until"
+  },
+  {
+    "page": 0,
+    "name": "Item2cDateField[0]",
+    "fullName": "Item2cDateField[0]",
+    "type": "/Tx",
+    "rect": [
+      273.662,
+      384.959,
+      358.257,
+      393.959
+    ],
+    "tooltip": "(date):"
+  },
+  {
+    "page": 0,
+    "name": "Item2cCheckboxArea1[1]",
+    "fullName": "Item2cCheckboxArea1[1]",
+    "type": "/Btn",
+    "rect": [
+      374.494,
+      384.809,
+      383.494,
+      393.809
+    ],
+    "tooltip": "until further order"
+  },
+  {
+    "page": 0,
+    "name": "Item2d1Checkbox[0]",
+    "fullName": "Item2d1Checkbox[0]",
+    "type": "/Btn",
+    "rect": [
+      88.892,
+      354.602,
+      97.892,
+      363.602
+    ],
+    "tooltip": "The sale of the family residence is deferred under Family Code section 3800, and the rental value of the family residence in which the children reside exceeds the mortgage payments, homeowners insurance, and property taxes"
+  },
+  {
+    "page": 0,
+    "name": "Item2d1CurrencyField[0]",
+    "fullName": "Item2d1CurrencyField[0]",
+    "type": "/Tx",
+    "rect": [
+      188.34,
+      333.144,
+      262.826,
+      342.144
+    ],
+    "tooltip": "property taxes by dollar amount"
+  },
+  {
+    "page": 0,
+    "name": "Item2d2Checkbox[0]",
+    "fullName": "Item2d2Checkbox[0]",
+    "type": "/Btn",
+    "rect": [
+      88.892,
+      319.906,
+      97.892,
+      328.906
+    ],
+    "tooltip": "The parent ordered to pay support has extraordinarily high income, and the amount determined under the guideline would exceed the needs of the children. "
+  },
+  {
+    "page": 0,
+    "name": "Item2d3Checkbox1[0]",
+    "fullName": "Item2d3Checkbox1[0]",
+    "type": "/Btn",
+    "rect": [
+      88.307,
+      294.99,
+      97.307,
+      303.99
+    ],
+    "tooltip": "Not contributing to the needs of the children"
+  },
+  {
+    "page": 0,
+    "name": "Item2d3Checkbox2[0]",
+    "fullName": "Item2d3Checkbox2[0]",
+    "type": "/Btn",
+    "rect": [
+      143.383,
+      294.583,
+      152.383,
+      303.583
+    ],
+    "tooltip": "parent ordered to pay support"
+  },
+  {
+    "page": 0,
+    "name": "Item2d3Checkbox2[1]",
+    "fullName": "Item2d3Checkbox2[1]",
+    "type": "/Btn",
+    "rect": [
+      301.922,
+      294.582,
+      310.922,
+      303.582
+    ],
+    "tooltip": "person ordered to receive support"
+  },
+  {
+    "page": 0,
+    "name": "Item2d4Checkbox[0]",
+    "fullName": "Item2d4Checkbox[0]",
+    "type": "/Btn",
+    "rect": [
+      88.892,
+      270.852,
+      97.892,
+      279.852
+    ],
+    "tooltip": "After application of the low-income adjustment, guideline child support would be greater than 50 percent of the net disposable income of the parent ordered to pay support."
+  },
+  {
+    "page": 0,
+    "name": "Item2d5Checkbox[0]",
+    "fullName": "Item2d5Checkbox[0]",
+    "type": "/Btn",
+    "rect": [
+      87.863,
+      245.632,
+      96.863,
+      254.632
+    ],
+    "tooltip": "Special circumstances exist in this case. The special circumstances are:"
+  },
+  {
+    "page": 0,
+    "name": "Item2d5aCheckbox[0]",
+    "fullName": "Item2d5aCheckbox[0]",
+    "type": "/Btn",
+    "rect": [
+      106.501,
+      232.189,
+      115.501,
+      241.189
+    ],
+    "tooltip": "The parents have different time-sharing arrangements for different children. "
+  },
+  {
+    "page": 0,
+    "name": "Item2d5bCheckbox[0]",
+    "fullName": "Item2d5bCheckbox[0]",
+    "type": "/Btn",
+    "rect": [
+      106.501,
+      217.636,
+      115.501,
+      226.636
+    ],
+    "tooltip": "The parents have substantially equal custody of the children and one parent has a much lower or  higher percentage of income used for housing than the other parent. "
+  },
+  {
+    "page": 0,
+    "name": "Item2d5cCheckbox[0]",
+    "fullName": "Item2d5cCheckbox[0]",
+    "type": "/Btn",
+    "rect": [
+      106.498,
+      192.422,
+      115.498,
+      201.422
+    ],
+    "tooltip": "A child has special medical or other needs that require support greater than the formula amount. These needs are (specify):"
+  },
+  {
+    "page": 0,
+    "name": "Item2d5cTextField[0]",
+    "fullName": "Item2d5cTextField[0]",
+    "type": "/Tx",
+    "rect": [
+      127.437,
+      148.06,
+      575.997,
+      178.66
+    ],
+    "tooltip": "A child has special medical or other needs that require support greater than the formula amount. These needs are (specify)"
+  },
+  {
+    "page": 0,
+    "name": "Item2d5dCheckbox[0]",
+    "fullName": "Item2d5dCheckbox[0]",
+    "type": "/Btn",
+    "rect": [
+      106.498,
+      133.513,
+      115.498,
+      142.513
+    ],
+    "tooltip": "Other (specify):"
+  },
+  {
+    "page": 0,
+    "name": "Item2d5dTextField[0]",
+    "fullName": "Item2d5dTextField[0]",
+    "type": "/Tx",
+    "rect": [
+      127.437,
+      101.032,
+      575.997,
+      131.632
+    ],
+    "tooltip": "Other (specify)"
+  }
+]

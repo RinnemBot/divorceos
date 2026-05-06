@@ -1,0 +1,522 @@
+[
+  {
+    "page": 0,
+    "name": "FillText41",
+    "fullName": "FillText41",
+    "type": "/Tx",
+    "rect": [
+      42.97522,
+      720.099121,
+      337.500458,
+      738.280945
+    ],
+    "tooltip": null
+  },
+  {
+    "page": 0,
+    "name": "FillText42",
+    "fullName": "FillText42",
+    "type": "/Tx",
+    "rect": [
+      336.229248,
+      720.099121,
+      403.305908,
+      738.280945
+    ],
+    "tooltip": null
+  },
+  {
+    "page": 0,
+    "name": "FillText43",
+    "fullName": "FillText43",
+    "type": "/Tx",
+    "rect": [
+      42.97522,
+      711.00824,
+      402.479462,
+      730.016479
+    ],
+    "tooltip": null
+  },
+  {
+    "page": 0,
+    "name": "FillText43a",
+    "fullName": "FillText43a",
+    "type": "/Tx",
+    "rect": [
+      42.97522,
+      701.090881,
+      402.479462,
+      720.099121
+    ],
+    "tooltip": null
+  },
+  {
+    "page": 0,
+    "name": "FillText43b",
+    "fullName": "FillText43b",
+    "type": "/Tx",
+    "rect": [
+      42.97522,
+      690.347046,
+      402.479462,
+      710.181763
+    ],
+    "tooltip": null
+  },
+  {
+    "page": 0,
+    "name": "FillText46",
+    "fullName": "FillText46",
+    "type": "/Tx",
+    "rect": [
+      123.419266,
+      679.340332,
+      245.572678,
+      697.695007
+    ],
+    "tooltip": null
+  },
+  {
+    "page": 0,
+    "name": "FillText20",
+    "fullName": "FillText20",
+    "type": "/Tx",
+    "rect": [
+      305.700012,
+      679.340332,
+      403.169586,
+      697.695007
+    ],
+    "tooltip": null
+  },
+  {
+    "page": 0,
+    "name": "FillText247",
+    "fullName": "FillText247",
+    "type": "/Tx",
+    "rect": [
+      123.419266,
+      667.31488,
+      402.536682,
+      685.669556
+    ],
+    "tooltip": null
+  },
+  {
+    "page": 0,
+    "name": "FillText249",
+    "fullName": "FillText249",
+    "type": "/Tx",
+    "rect": [
+      123.419266,
+      657.188171,
+      402.536682,
+      674.909912
+    ],
+    "tooltip": null
+  },
+  {
+    "page": 0,
+    "name": "FillText49",
+    "fullName": "FillText49",
+    "type": "/Tx",
+    "rect": [
+      234.180145,
+      643.263916,
+      403.169586,
+      660.985657
+    ],
+    "tooltip": null
+  },
+  {
+    "page": 0,
+    "name": "FillText47",
+    "fullName": "FillText47",
+    "type": "/Tx",
+    "rect": [
+      122.786346,
+      628.073914,
+      402.536682,
+      646.428528
+    ],
+    "tooltip": null
+  },
+  {
+    "page": 0,
+    "name": "FillText48",
+    "fullName": "FillText48",
+    "type": "/Tx",
+    "rect": [
+      122.786346,
+      617.31427,
+      402.536682,
+      635.036011
+    ],
+    "tooltip": null
+  },
+  {
+    "page": 0,
+    "name": "FillText250",
+    "fullName": "FillText250",
+    "type": "/Tx",
+    "rect": [
+      122.786346,
+      604.655884,
+      402.536682,
+      622.377625
+    ],
+    "tooltip": null
+  },
+  {
+    "page": 0,
+    "name": "FillText251",
+    "fullName": "FillText251",
+    "type": "/Tx",
+    "rect": [
+      122.786346,
+      592.630432,
+      402.536682,
+      610.352173
+    ],
+    "tooltip": null
+  },
+  {
+    "page": 0,
+    "name": "FillText123",
+    "fullName": "FillText123",
+    "type": "/Tx",
+    "rect": [
+      148.736038,
+      573.642822,
+      402.536682,
+      591.997498
+    ],
+    "tooltip": null
+  },
+  {
+    "page": 0,
+    "name": "FillText252",
+    "fullName": "FillText252",
+    "type": "/Tx",
+    "rect": [
+      148.103119,
+      555.288147,
+      402.536682,
+      573.642822
+    ],
+    "tooltip": null
+  },
+  {
+    "page": 0,
+    "name": "FillText253",
+    "fullName": "FillText253",
+    "type": "/Tx",
+    "rect": [
+      148.103119,
+      538.199341,
+      402.536682,
+      556.554016
+    ],
+    "tooltip": null
+  },
+  {
+    "page": 0,
+    "name": "CheckBox7",
+    "fullName": "CheckBox7",
+    "type": "/Btn",
+    "rect": [
+      180.0,
+      506.0,
+      201.0,
+      517.0
+    ],
+    "tooltip": null
+  },
+  {
+    "page": 0,
+    "name": "FillText254",
+    "fullName": "FillText254",
+    "type": "/Tx",
+    "rect": [
+      403.169586,
+      507.18631,
+      575.956543,
+      524.90802
+    ],
+    "tooltip": null
+  },
+  {
+    "page": 0,
+    "name": "FillText23",
+    "fullName": "FillText23",
+    "type": "/Tx",
+    "rect": [
+      36.70932,
+      467.945313,
+      575.956543,
+      485.667023
+    ],
+    "tooltip": null
+  },
+  {
+    "page": 0,
+    "name": "CheckBox6",
+    "fullName": "CheckBox6",
+    "type": "/Btn",
+    "rect": [
+      64.55777,
+      410.34964,
+      85.444107,
+      421.742188
+    ],
+    "tooltip": null
+  },
+  {
+    "page": 0,
+    "name": "FillText24",
+    "fullName": "FillText24",
+    "type": "/Tx",
+    "rect": [
+      96.203735,
+      407.817963,
+      161.394409,
+      425.539703
+    ],
+    "tooltip": null
+  },
+  {
+    "page": 0,
+    "name": "CheckBox5",
+    "fullName": "CheckBox5",
+    "type": "/Btn",
+    "rect": [
+      64.55777,
+      395.792511,
+      85.444107,
+      406.552124
+    ],
+    "tooltip": null
+  },
+  {
+    "page": 0,
+    "name": "FillText25",
+    "fullName": "FillText25",
+    "type": "/Tx",
+    "rect": [
+      95.570816,
+      391.362061,
+      160.761505,
+      409.083801
+    ],
+    "tooltip": null
+  },
+  {
+    "page": 0,
+    "name": "FillText14",
+    "fullName": "FillText14",
+    "type": "/Tx",
+    "rect": [
+      212.027969,
+      375.539093,
+      344.978516,
+      393.893738
+    ],
+    "tooltip": null
+  },
+  {
+    "page": 0,
+    "name": "CheckBox4",
+    "fullName": "CheckBox4",
+    "type": "/Btn",
+    "rect": [
+      48.734787,
+      356.551514,
+      69.621117,
+      367.311127
+    ],
+    "tooltip": null
+  },
+  {
+    "page": 0,
+    "name": "FillText26",
+    "fullName": "FillText26",
+    "type": "/Tx",
+    "rect": [
+      72.152802,
+      321.108032,
+      575.956543,
+      356.551514
+    ],
+    "tooltip": null
+  },
+  {
+    "page": 0,
+    "name": "CheckBox3",
+    "fullName": "CheckBox3",
+    "type": "/Btn",
+    "rect": [
+      48.734787,
+      310.981323,
+      69.621117,
+      322.373871
+    ],
+    "tooltip": null
+  },
+  {
+    "page": 0,
+    "name": "FillText27",
+    "fullName": "FillText27",
+    "type": "/Tx",
+    "rect": [
+      71.519875,
+      274.272003,
+      575.956543,
+      310.981323
+    ],
+    "tooltip": null
+  },
+  {
+    "page": 0,
+    "name": "CheckBox2",
+    "fullName": "CheckBox2",
+    "type": "/Btn",
+    "rect": [
+      48.101868,
+      244.524796,
+      68.988197,
+      255.917328
+    ],
+    "tooltip": null
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1",
+    "fullName": "CheckBox1",
+    "type": "/Btn",
+    "rect": [
+      48.101868,
+      162.878189,
+      68.988197,
+      173.637833
+    ],
+    "tooltip": null
+  },
+  {
+    "page": 0,
+    "name": "FillText28",
+    "fullName": "FillText28",
+    "type": "/Tx",
+    "rect": [
+      71.519875,
+      126.168877,
+      575.956543,
+      164.144043
+    ],
+    "tooltip": null
+  },
+  {
+    "page": 0,
+    "name": "FillText29",
+    "fullName": "FillText29",
+    "type": "/Tx",
+    "rect": [
+      375.954071,
+      108.447136,
+      450.63855,
+      126.801796
+    ],
+    "tooltip": null
+  },
+  {
+    "page": 0,
+    "name": "FillText30",
+    "fullName": "FillText30",
+    "type": "/Tx",
+    "rect": [
+      498.740417,
+      109.712975,
+      597.47583,
+      128.067642
+    ],
+    "tooltip": null
+  },
+  {
+    "page": 0,
+    "name": "WhiteOut",
+    "fullName": "WhiteOut",
+    "type": "/Tx",
+    "rect": [
+      431.018036,
+      700.226685,
+      539.880127,
+      743.898132
+    ],
+    "tooltip": null
+  },
+  {
+    "page": 0,
+    "name": "NoticeHeader1",
+    "fullName": "NoticeHeader1",
+    "type": "/Tx",
+    "rect": [
+      409.498779,
+      659.086914,
+      570.260315,
+      738.834778
+    ],
+    "tooltip": null
+  },
+  {
+    "page": 1,
+    "name": "NoticeFooter1",
+    "fullName": "NoticeFooter1",
+    "type": "/Tx",
+    "rect": [
+      32.4744,
+      0.346268,
+      275.515,
+      25.0301
+    ],
+    "tooltip": null
+  },
+  {
+    "page": 1,
+    "name": "Save",
+    "fullName": "Save",
+    "type": "/Btn",
+    "rect": [
+      304.671,
+      0.346268,
+      390.088,
+      17.4351
+    ],
+    "tooltip": null
+  },
+  {
+    "page": 1,
+    "name": "Print",
+    "fullName": "Print",
+    "type": "/Btn",
+    "rect": [
+      398.864,
+      0.346268,
+      484.281,
+      17.4351
+    ],
+    "tooltip": null
+  },
+  {
+    "page": 1,
+    "name": "ResetForm",
+    "fullName": "ResetForm",
+    "type": "/Btn",
+    "rect": [
+      490.75,
+      0.346268,
+      576.167,
+      17.4351
+    ],
+    "tooltip": null
+  }
+]

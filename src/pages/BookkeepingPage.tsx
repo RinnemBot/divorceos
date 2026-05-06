@@ -13,7 +13,6 @@ import {
 
 const currency = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
 const dateFormatter = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-const monthFormatter = new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric' });
 
 function money(value: number) {
   return currency.format(value || 0);
@@ -34,34 +33,6 @@ function typeBadge(type: LedgerType) {
     adjustment: 'bg-slate-100 text-slate-800 dark:bg-white/10 dark:text-slate-200',
   };
   return classes[type];
-}
-
-function monthKey(date = new Date()) {
-  return date.toISOString().slice(0, 7);
-}
-
-function yearKey(date = new Date()) {
-  return date.getFullYear().toString();
-}
-
-function labelMonth(key: string) {
-  const [year, month] = key.split('-').map(Number);
-  if (!year || !month) return key;
-  return monthFormatter.format(new Date(year, month - 1, 1));
-}
-
-function summarizeEntries(entries: BookkeepingEntry[]) {
-  return entries.reduce(
-    (totals, entry) => {
-      if (entry.type === 'income') totals.grossIncome += Math.max(entry.amount, 0);
-      if (entry.type === 'refund') totals.refunds += Math.abs(entry.amount);
-      if (entry.type === 'expense') totals.expenses += Math.abs(entry.amount);
-      totals.stripeFees += Math.abs(entry.fee || 0);
-      totals.net += entry.net || 0;
-      return totals;
-    },
-    { grossIncome: 0, refunds: 0, expenses: 0, stripeFees: 0, net: 0 },
-  );
 }
 
 function SummaryCard({ label, value, icon: Icon, tone }: { label: string; value: string; icon: typeof Banknote; tone: string }) {
@@ -107,9 +78,6 @@ export function BookkeepingPage() {
   const [saving, setSaving] = useState(false);
   const [editingEntryId, setEditingEntryId] = useState<string | null>(null);
   const [deletingEntryId, setDeletingEntryId] = useState<string | null>(null);
-  const [summaryMode, setSummaryMode] = useState<'month' | 'year'>('month');
-  const [selectedMonth, setSelectedMonth] = useState(() => monthKey());
-  const [selectedYear, setSelectedYear] = useState(() => yearKey());
   const [form, setForm] = useState({ type: 'expense' as LedgerType, description: '', amount: '', occurredAt: new Date().toISOString().slice(0, 10), counterparty: '', category: '' });
 
   const load = async () => {
@@ -130,22 +98,6 @@ export function BookkeepingPage() {
 
   const entries = data?.entries ?? [];
   const recentStripe = useMemo(() => entries.filter((entry) => entry.source === 'stripe').slice(0, 5), [entries]);
-  const monthOptions = useMemo(() => {
-    const keys = new Set([monthKey()]);
-    entries.forEach((entry) => keys.add(entry.occurredAt.slice(0, 7)));
-    return Array.from(keys).sort((a, b) => b.localeCompare(a));
-  }, [entries]);
-  const yearOptions = useMemo(() => {
-    const keys = new Set([yearKey()]);
-    entries.forEach((entry) => keys.add(entry.occurredAt.slice(0, 4)));
-    return Array.from(keys).sort((a, b) => b.localeCompare(a));
-  }, [entries]);
-  const periodEntries = useMemo(
-    () => entries.filter((entry) => summaryMode === 'month' ? entry.occurredAt.startsWith(selectedMonth) : entry.occurredAt.startsWith(selectedYear)),
-    [entries, selectedMonth, selectedYear, summaryMode],
-  );
-  const periodSummary = useMemo(() => summarizeEntries(periodEntries), [periodEntries]);
-  const periodLabel = summaryMode === 'month' ? labelMonth(selectedMonth) : selectedYear;
 
   const resetForm = () => {
     setEditingEntryId(null);
@@ -263,58 +215,11 @@ export function BookkeepingPage() {
           </div>
         )}
 
-        <div className="rounded-3xl border border-white/70 bg-white/65 p-4 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/5">
-          <div className="mb-4 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">Summary period</p>
-              <h2 className="mt-1 text-xl font-semibold text-slate-950 dark:text-white">{periodLabel}</h2>
-            </div>
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-              <div className="grid grid-cols-2 rounded-full border border-slate-200 bg-white p-1 text-sm dark:border-white/10 dark:bg-slate-950/70">
-                <button
-                  type="button"
-                  onClick={() => setSummaryMode('month')}
-                  className={`rounded-full px-4 py-2 font-medium transition ${summaryMode === 'month' ? 'bg-emerald-700 text-white shadow-sm' : 'text-slate-600 hover:text-slate-950 dark:text-slate-300 dark:hover:text-white'}`}
-                >
-                  Monthly
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setSummaryMode('year')}
-                  className={`rounded-full px-4 py-2 font-medium transition ${summaryMode === 'year' ? 'bg-emerald-700 text-white shadow-sm' : 'text-slate-600 hover:text-slate-950 dark:text-slate-300 dark:hover:text-white'}`}
-                >
-                  Yearly
-                </button>
-              </div>
-              {summaryMode === 'month' ? (
-                <select
-                  value={selectedMonth}
-                  onChange={(event) => setSelectedMonth(event.target.value)}
-                  className="h-11 rounded-full border border-slate-200 bg-white px-4 text-sm font-medium text-slate-700 outline-none transition focus:border-emerald-400 focus:ring-4 focus:ring-emerald-100 dark:border-white/10 dark:bg-slate-950 dark:text-white dark:focus:ring-emerald-400/10"
-                >
-                  {monthOptions.map((option) => (
-                    <option key={option} value={option}>{labelMonth(option)}</option>
-                  ))}
-                </select>
-              ) : (
-                <select
-                  value={selectedYear}
-                  onChange={(event) => setSelectedYear(event.target.value)}
-                  className="h-11 rounded-full border border-slate-200 bg-white px-4 text-sm font-medium text-slate-700 outline-none transition focus:border-emerald-400 focus:ring-4 focus:ring-emerald-100 dark:border-white/10 dark:bg-slate-950 dark:text-white dark:focus:ring-emerald-400/10"
-                >
-                  {yearOptions.map((option) => (
-                    <option key={option} value={option}>{option}</option>
-                  ))}
-                </select>
-              )}
-            </div>
-          </div>
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            <SummaryCard label={`${summaryMode === 'month' ? 'Month' : 'Year'} gross`} value={money(periodSummary.grossIncome)} icon={ArrowUpCircle} tone="bg-emerald-100 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-200" />
-            <SummaryCard label={`${summaryMode === 'month' ? 'Month' : 'Year'} Stripe fees`} value={money(periodSummary.stripeFees)} icon={WalletCards} tone="bg-amber-100 text-amber-700 dark:bg-amber-400/15 dark:text-amber-200" />
-            <SummaryCard label={`${summaryMode === 'month' ? 'Month' : 'Year'} expenses`} value={money(periodSummary.expenses)} icon={ArrowDownCircle} tone="bg-rose-100 text-rose-700 dark:bg-rose-400/15 dark:text-rose-200" />
-            <SummaryCard label={`${summaryMode === 'month' ? 'Month' : 'Year'} net`} value={money(periodSummary.net)} icon={Banknote} tone="bg-slate-100 text-slate-700 dark:bg-white/10 dark:text-slate-200" />
-          </div>
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          <SummaryCard label="Month gross" value={money(data?.summary.monthGrossIncome ?? 0)} icon={ArrowUpCircle} tone="bg-emerald-100 text-emerald-700 dark:bg-emerald-400/15 dark:text-emerald-200" />
+          <SummaryCard label="Month Stripe fees" value={money(data?.summary.monthStripeFees ?? 0)} icon={WalletCards} tone="bg-amber-100 text-amber-700 dark:bg-amber-400/15 dark:text-amber-200" />
+          <SummaryCard label="Month expenses" value={money(data?.summary.monthExpenses ?? 0)} icon={ArrowDownCircle} tone="bg-rose-100 text-rose-700 dark:bg-rose-400/15 dark:text-rose-200" />
+          <SummaryCard label="Month net" value={money(data?.summary.monthNet ?? 0)} icon={Banknote} tone="bg-slate-100 text-slate-700 dark:bg-white/10 dark:text-slate-200" />
         </div>
 
         <div className="grid gap-6 xl:grid-cols-[1fr_380px]">

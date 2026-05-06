@@ -1,0 +1,2277 @@
+[
+  {
+    "page": 0,
+    "name": "CourtsLink[0]",
+    "fullName": "CourtsLink[0]",
+    "type": "/Btn",
+    "rect": [
+      525.651,
+      41.517,
+      576.001,
+      47.517
+    ],
+    "tooltip": "www.courts.ca.gov"
+  },
+  {
+    "page": 0,
+    "name": "PetitionerTextField[0]",
+    "fullName": "PetitionerTextField[0]",
+    "type": "/Tx",
+    "rect": [
+      131.836,
+      731.798,
+      393.735,
+      740.798
+    ],
+    "tooltip": "PETITIONER:"
+  },
+  {
+    "page": 0,
+    "name": "RespondentTextField[0]",
+    "fullName": "RespondentTextField[0]",
+    "type": "/Tx",
+    "rect": [
+      131.836,
+      718.27,
+      393.735,
+      727.568
+    ],
+    "tooltip": "RESPONDENT:"
+  },
+  {
+    "page": 0,
+    "name": "OtherPartyTextField[0]",
+    "fullName": "OtherPartyTextField[0]",
+    "type": "/Tx",
+    "rect": [
+      131.839,
+      704.741,
+      393.738,
+      714.039
+    ],
+    "tooltip": "OTHER PARENT/PARTY:"
+  },
+  {
+    "page": 0,
+    "name": "CaseNumberTextField[0]",
+    "fullName": "CaseNumberTextField[0]",
+    "type": "/Tx",
+    "rect": [
+      399.266,
+      719.198,
+      572.066,
+      731.554
+    ],
+    "tooltip": "CASE NUMBER:"
+  },
+  {
+    "page": 0,
+    "name": "AttachmentToCheckbox1[0]",
+    "fullName": "AttachmentToCheckbox1[0]",
+    "type": "/Btn",
+    "rect": [
+      112.64,
+      659.804,
+      121.64,
+      668.804
+    ],
+    "tooltip": "Findings and Order After Hearing (form FL-340)"
+  },
+  {
+    "page": 0,
+    "name": "AttachmentToCheckbox2[0]",
+    "fullName": "AttachmentToCheckbox2[0]",
+    "type": "/Btn",
+    "rect": [
+      356.941,
+      659.586,
+      365.941,
+      668.586
+    ],
+    "tooltip": "Judgment (form FL-180)"
+  },
+  {
+    "page": 0,
+    "name": "AttachmentToCheckbox3[0]",
+    "fullName": "AttachmentToCheckbox3[0]",
+    "type": "/Btn",
+    "rect": [
+      112.878,
+      645.551,
+      121.878,
+      654.551
+    ],
+    "tooltip": "Judgment (form FL-250)"
+  },
+  {
+    "page": 0,
+    "name": "AttachmentToCheckbox4[0]",
+    "fullName": "AttachmentToCheckbox4[0]",
+    "type": "/Btn",
+    "rect": [
+      277.741,
+      645.563,
+      286.741,
+      654.563
+    ],
+    "tooltip": "Restraining Order After Hearing (form DV-130)"
+  },
+  {
+    "page": 0,
+    "name": "AttachmentToCheckbox5[0]",
+    "fullName": "AttachmentToCheckbox5[0]",
+    "type": "/Btn",
+    "rect": [
+      112.64,
+      631.335,
+      121.64,
+      640.335
+    ],
+    "tooltip": "Other"
+  },
+  {
+    "page": 0,
+    "name": "AttachmentToTextField[0]",
+    "fullName": "AttachmentToTextField[0]",
+    "type": "/Tx",
+    "rect": [
+      201.888,
+      631.102,
+      500.422,
+      640.567
+    ],
+    "tooltip": "Other (specify)"
+  },
+  {
+    "page": 0,
+    "name": "Item1Checkbox[0]",
+    "fullName": "Item1Checkbox[0]",
+    "type": "/Btn",
+    "rect": [
+      55.323,
+      592.809,
+      64.323,
+      601.809
+    ],
+    "tooltip": "A printout of a computer calculation and findings is attached and incorporated in this order for all required items not filled out  \u2029below."
+  },
+  {
+    "page": 0,
+    "name": "Item2Checkbox[0]",
+    "fullName": "Item2Checkbox[0]",
+    "type": "/Btn",
+    "rect": [
+      55.134,
+      560.76,
+      64.134,
+      569.76
+    ],
+    "tooltip": "Income"
+  },
+  {
+    "page": 0,
+    "name": "GrossIncomeCurrencyField1[0]",
+    "fullName": "GrossIncomeCurrencyField1[0]",
+    "type": "/Tx",
+    "rect": [
+      272.963,
+      529.178,
+      346.337,
+      538.538
+    ],
+    "tooltip": "Petitioner's gross monthly income"
+  },
+  {
+    "page": 0,
+    "name": "NetIncomeCurrencyField1[0]",
+    "fullName": "NetIncomeCurrencyField1[0]",
+    "type": "/Tx",
+    "rect": [
+      358.914,
+      529.178,
+      435.498,
+      538.538
+    ],
+    "tooltip": "Petitioner's net monthly income"
+  },
+  {
+    "page": 0,
+    "name": "ReceivingAssistanceCheckbox1[0]",
+    "fullName": "ReceivingAssistanceCheckbox1[0]",
+    "type": "/Btn",
+    "rect": [
+      455.209,
+      529.357,
+      464.209,
+      538.357
+    ],
+    "tooltip": "Petitioner is receiving TANF/CalWORKs"
+  },
+  {
+    "page": 0,
+    "name": "GrossIncomeCurrencyField2[0]",
+    "fullName": "GrossIncomeCurrencyField2[0]",
+    "type": "/Tx",
+    "rect": [
+      272.806,
+      515.988,
+      346.274,
+      525.348
+    ],
+    "tooltip": "Respondent's gross monthly income"
+  },
+  {
+    "page": 0,
+    "name": "NetIncomeCurrencyField2[0]",
+    "fullName": "NetIncomeCurrencyField2[0]",
+    "type": "/Tx",
+    "rect": [
+      358.849,
+      515.988,
+      435.433,
+      525.348
+    ],
+    "tooltip": "Respondent's net monthly income"
+  },
+  {
+    "page": 0,
+    "name": "ReceivingAssistanceCheckbox2[0]",
+    "fullName": "ReceivingAssistanceCheckbox2[0]",
+    "type": "/Btn",
+    "rect": [
+      455.205,
+      516.169,
+      464.205,
+      525.169
+    ],
+    "tooltip": "Respondent is receiving TANF/CalWORKs"
+  },
+  {
+    "page": 0,
+    "name": "GrossIncomeCurrencyField3[0]",
+    "fullName": "GrossIncomeCurrencyField3[0]",
+    "type": "/Tx",
+    "rect": [
+      272.781,
+      502.316,
+      346.337,
+      511.676
+    ],
+    "tooltip": "Other parent's/party\u2019s gross monthly income"
+  },
+  {
+    "page": 0,
+    "name": "NetIncomeCurrencyField3[0]",
+    "fullName": "NetIncomeCurrencyField3[0]",
+    "type": "/Tx",
+    "rect": [
+      358.911,
+      502.316,
+      435.231,
+      511.676
+    ],
+    "tooltip": "Other parent's/party\u2019s net monthly income"
+  },
+  {
+    "page": 0,
+    "name": "ReceivingAssistanceCheckbox3[0]",
+    "fullName": "ReceivingAssistanceCheckbox3[0]",
+    "type": "/Btn",
+    "rect": [
+      455.208,
+      502.495,
+      464.208,
+      511.495
+    ],
+    "tooltip": "Other parent/party is receiving TANF/CalWORKs"
+  },
+  {
+    "page": 0,
+    "name": "Item2b1Checkbox[0]",
+    "fullName": "Item2b1Checkbox[0]",
+    "type": "/Btn",
+    "rect": [
+      88.412,
+      470.867,
+      97.412,
+      479.867
+    ],
+    "tooltip": "petitioner has the ability to earn "
+  },
+  {
+    "page": 0,
+    "name": "Item2b1CurrencyField[0]",
+    "fullName": "Item2b1CurrencyField[0]",
+    "type": "/Tx",
+    "rect": [
+      244.014,
+      470.801,
+      330.066,
+      479.801
+    ],
+    "tooltip": "dollar amount"
+  },
+  {
+    "page": 0,
+    "name": "Item2b2Checkbox[0]",
+    "fullName": "Item2b2Checkbox[0]",
+    "type": "/Btn",
+    "rect": [
+      88.415,
+      456.154,
+      97.415,
+      465.154
+    ],
+    "tooltip": "respondent has the ability to earn "
+  },
+  {
+    "page": 0,
+    "name": "Item2b2CurrencyField[0]",
+    "fullName": "Item2b2CurrencyField[0]",
+    "type": "/Tx",
+    "rect": [
+      250.987,
+      456.179,
+      337.039,
+      465.179
+    ],
+    "tooltip": "dollar amount"
+  },
+  {
+    "page": 0,
+    "name": "Item2b3Checkbox[0]",
+    "fullName": "Item2b3Checkbox[0]",
+    "type": "/Btn",
+    "rect": [
+      88.415,
+      440.23,
+      97.415,
+      449.23
+    ],
+    "tooltip": "other parent/party has the ability to earn "
+  },
+  {
+    "page": 0,
+    "name": "Item2b3CurrencyField[0]",
+    "fullName": "Item2b3CurrencyField[0]",
+    "type": "/Tx",
+    "rect": [
+      277.267,
+      440.487,
+      363.319,
+      449.487
+    ],
+    "tooltip": "dollar amount"
+  },
+  {
+    "page": 0,
+    "name": "Item2b4aCheckbox[0]",
+    "fullName": "Item2b4aCheckbox[0]",
+    "type": "/Btn",
+    "rect": [
+      106.323,
+      409.943,
+      115.323,
+      418.943
+    ],
+    "tooltip": "in Earning Capacity Factors Attachment (form FL-302)"
+  },
+  {
+    "page": 0,
+    "name": "FormFL-302Link[0]",
+    "fullName": "FormFL-302Link[0]",
+    "type": "/Btn",
+    "rect": [
+      312.783,
+      409.733,
+      341.3,
+      418.733
+    ],
+    "tooltip": "FL-302"
+  },
+  {
+    "page": 0,
+    "name": "Item2b4bCheckbox[0]",
+    "fullName": "Item2b4bCheckbox[0]",
+    "type": "/Btn",
+    "rect": [
+      106.222,
+      394.028,
+      115.222,
+      403.028
+    ],
+    "tooltip": "as follows (specify):"
+  },
+  {
+    "page": 0,
+    "name": "Item2b4bTextField[0]",
+    "fullName": "Item2b4bTextField[0]",
+    "type": "/Tx",
+    "rect": [
+      127.443,
+      370.513,
+      576.0,
+      392.113
+    ],
+    "tooltip": "as follows (specify)"
+  },
+  {
+    "page": 0,
+    "name": "Item3Checkbox[0]",
+    "fullName": "Item3Checkbox[0]",
+    "type": "/Btn",
+    "rect": [
+      55.505,
+      349.394,
+      64.505,
+      358.394
+    ],
+    "tooltip": "Children of this relationship"
+  },
+  {
+    "page": 0,
+    "name": "Item3aTextField[0]",
+    "fullName": "Item3aTextField[0]",
+    "type": "/Tx",
+    "rect": [
+      349.39,
+      331.591,
+      576.0,
+      340.951
+    ],
+    "tooltip": "Number of children who are the subjects of the support order (specify): "
+  },
+  {
+    "page": 0,
+    "name": "Item3bPercentField1[0]",
+    "fullName": "Item3bPercentField1[0]",
+    "type": "/Tx",
+    "rect": [
+      278.025,
+      314.733,
+      310.371,
+      324.093
+    ],
+    "tooltip": "Approximate percentage of time spent with petitioner: "
+  },
+  {
+    "page": 0,
+    "name": "Item3bPercentField2[0]",
+    "fullName": "Item3bPercentField2[0]",
+    "type": "/Tx",
+    "rect": [
+      277.995,
+      302.099,
+      310.371,
+      311.459
+    ],
+    "tooltip": "Approximate percentage of time spent with respondent"
+  },
+  {
+    "page": 0,
+    "name": "Item3bPercentField3[0]",
+    "fullName": "Item3bPercentField3[0]",
+    "type": "/Tx",
+    "rect": [
+      277.996,
+      289.624,
+      310.371,
+      298.984
+    ],
+    "tooltip": "Approximate percentage of time spent with other parent/party"
+  },
+  {
+    "page": 0,
+    "name": "Item4Checkbox[0]",
+    "fullName": "Item4Checkbox[0]",
+    "type": "/Btn",
+    "rect": [
+      54.98,
+      268.666,
+      63.98,
+      277.666
+    ],
+    "tooltip": "Hardships"
+  },
+  {
+    "page": 0,
+    "name": "Item4aCheckbox[0]",
+    "fullName": "Item4aCheckbox[0]",
+    "type": "/Btn",
+    "rect": [
+      69.899,
+      216.534,
+      78.899,
+      225.534
+    ],
+    "tooltip": "Other minor children:"
+  },
+  {
+    "page": 0,
+    "name": "Item4aPetitionerCurrencyField[0]",
+    "fullName": "Item4aPetitionerCurrencyField[0]",
+    "type": "/Tx",
+    "rect": [
+      237.508,
+      216.099,
+      304.108,
+      225.459
+    ],
+    "tooltip": "Monthly dollar amount of hardship allowed for petitioner's other minor children"
+  },
+  {
+    "page": 0,
+    "name": "Item4aRespondentCurrencyField[0]",
+    "fullName": "Item4aRespondentCurrencyField[0]",
+    "type": "/Tx",
+    "rect": [
+      318.182,
+      216.099,
+      384.782,
+      225.459
+    ],
+    "tooltip": "Monthly dollar amount of hardship allowed for respondent's other minor children"
+  },
+  {
+    "page": 0,
+    "name": "Item4aOtherPartyCurrencyField[0]",
+    "fullName": "Item4aOtherPartyCurrencyField[0]",
+    "type": "/Tx",
+    "rect": [
+      398.411,
+      216.099,
+      465.011,
+      225.459
+    ],
+    "tooltip": "Monthly dollar amount of hardship allowed for other parent's/party\u2019s other minor children"
+  },
+  {
+    "page": 0,
+    "name": "Item4aEndDateField[0]",
+    "fullName": "Item4aEndDateField[0]",
+    "type": "/Tx",
+    "rect": [
+      475.539,
+      216.099,
+      561.939,
+      225.459
+    ],
+    "tooltip": "Approximate end date for the hardship for other minor children"
+  },
+  {
+    "page": 0,
+    "name": "Item4bCheckbox[0]",
+    "fullName": "Item4bCheckbox[0]",
+    "type": "/Btn",
+    "rect": [
+      70.094,
+      202.12,
+      79.094,
+      211.12
+    ],
+    "tooltip": "Extraordinary medical expenses:"
+  },
+  {
+    "page": 0,
+    "name": "Item4bPetitionerCurrencyField[0]",
+    "fullName": "Item4bPetitionerCurrencyField[0]",
+    "type": "/Tx",
+    "rect": [
+      237.508,
+      202.232,
+      304.108,
+      211.592
+    ],
+    "tooltip": "Monthly dollar amount of hardship allowed for petitioner's extraordinary medical expenses"
+  },
+  {
+    "page": 0,
+    "name": "Item4bRespondentCurrencyField[0]",
+    "fullName": "Item4bRespondentCurrencyField[0]",
+    "type": "/Tx",
+    "rect": [
+      318.182,
+      202.232,
+      384.782,
+      211.592
+    ],
+    "tooltip": "Monthly dollar amount of hardship allowed for respondent's extraordinary medical expenses"
+  },
+  {
+    "page": 0,
+    "name": "Item4bOtherPartyCurrencyField[0]",
+    "fullName": "Item4bOtherPartyCurrencyField[0]",
+    "type": "/Tx",
+    "rect": [
+      398.318,
+      202.232,
+      464.918,
+      211.592
+    ],
+    "tooltip": "Monthly dollar amount of hardship allowed for other parent's/party\u2019s extraordinary medical expenses"
+  },
+  {
+    "page": 0,
+    "name": "Item4bEndDateField[0]",
+    "fullName": "Item4bEndDateField[0]",
+    "type": "/Tx",
+    "rect": [
+      475.539,
+      202.232,
+      561.939,
+      211.592
+    ],
+    "tooltip": "Approximate end date for the hardship for extraordinary medical expenses"
+  },
+  {
+    "page": 0,
+    "name": "Item4cCheckbox[0]",
+    "fullName": "Item4cCheckbox[0]",
+    "type": "/Btn",
+    "rect": [
+      69.734,
+      188.21,
+      78.734,
+      197.21
+    ],
+    "tooltip": "Catastrophic losses:"
+  },
+  {
+    "page": 0,
+    "name": "Item4cPetitionerCurrencyField[0]",
+    "fullName": "Item4cPetitionerCurrencyField[0]",
+    "type": "/Tx",
+    "rect": [
+      237.508,
+      188.362,
+      304.108,
+      197.722
+    ],
+    "tooltip": "Monthly dollar amount of hardship allowed for petitioner's catastrophic losses"
+  },
+  {
+    "page": 0,
+    "name": "Item4cRespondentCurrencyField[0]",
+    "fullName": "Item4cRespondentCurrencyField[0]",
+    "type": "/Tx",
+    "rect": [
+      318.182,
+      188.362,
+      384.782,
+      197.722
+    ],
+    "tooltip": "Monthly dollar amount of hardship allowed for respondent's catastrophic losses"
+  },
+  {
+    "page": 0,
+    "name": "Item4cOtherPartyCurrencyField[0]",
+    "fullName": "Item4cOtherPartyCurrencyField[0]",
+    "type": "/Tx",
+    "rect": [
+      398.298,
+      188.362,
+      464.898,
+      197.722
+    ],
+    "tooltip": "Monthly dollar amount of hardship allowed for other parent's/party\u2019s catastrophic losses"
+  },
+  {
+    "page": 0,
+    "name": "Item4cEndDateField[0]",
+    "fullName": "Item4cEndDateField[0]",
+    "type": "/Tx",
+    "rect": [
+      475.539,
+      188.362,
+      561.939,
+      197.722
+    ],
+    "tooltip": "Approximate end date for the hardship for catastrophic losses"
+  },
+  {
+    "page": 0,
+    "name": "Item5Checkbox[0]",
+    "fullName": "Item5Checkbox[0]",
+    "type": "/Btn",
+    "rect": [
+      54.981,
+      141.03,
+      63.981,
+      150.03
+    ],
+    "tooltip": "Low-income adjustment"
+  },
+  {
+    "page": 0,
+    "name": "Item5aCheckbox[0]",
+    "fullName": "Item5aCheckbox[0]",
+    "type": "/Btn",
+    "rect": [
+      69.877,
+      127.028,
+      78.877,
+      136.028
+    ],
+    "tooltip": "The low-income adjustment applies at the lowest amount of the range."
+  },
+  {
+    "page": 0,
+    "name": "Item5bCheckbox[0]",
+    "fullName": "Item5bCheckbox[0]",
+    "type": "/Btn",
+    "rect": [
+      69.88,
+      113.009,
+      78.88,
+      122.009
+    ],
+    "tooltip": "The lowest amount of the low-income adjustment has been rebutted and does not apply because (specify reasons):"
+  },
+  {
+    "page": 0,
+    "name": "Item5bTextField[0]",
+    "fullName": "Item5bTextField[0]",
+    "type": "/Tx",
+    "rect": [
+      90.632,
+      89.413,
+      576.0,
+      111.013
+    ],
+    "tooltip": "The lowest amount of the low-income adjustment has been rebutted and does not apply because (specify reasons)"
+  },
+  {
+    "page": 1,
+    "name": "PetitionerTextField[0]",
+    "fullName": "PetitionerTextField[0]",
+    "type": "/Tx",
+    "rect": [
+      132.327,
+      731.064,
+      393.735,
+      740.064
+    ],
+    "tooltip": "PETITIONER:"
+  },
+  {
+    "page": 1,
+    "name": "RespondentTextField[0]",
+    "fullName": "RespondentTextField[0]",
+    "type": "/Tx",
+    "rect": [
+      132.327,
+      717.536,
+      393.735,
+      726.834
+    ],
+    "tooltip": "RESPONDENT:"
+  },
+  {
+    "page": 1,
+    "name": "OtherPartyTextField[0]",
+    "fullName": "OtherPartyTextField[0]",
+    "type": "/Tx",
+    "rect": [
+      132.061,
+      704.007,
+      393.789,
+      713.305
+    ],
+    "tooltip": "OTHER PARENT/PARTY:"
+  },
+  {
+    "page": 1,
+    "name": "CaseNumberTextField[0]",
+    "fullName": "CaseNumberTextField[0]",
+    "type": "/Tx",
+    "rect": [
+      399.266,
+      718.464,
+      572.066,
+      730.295
+    ],
+    "tooltip": "CASE NUMBER:"
+  },
+  {
+    "page": 1,
+    "name": "Item6Checkbox[0]",
+    "fullName": "Item6Checkbox[0]",
+    "type": "/Btn",
+    "rect": [
+      55.505,
+      676.026,
+      64.505,
+      685.026
+    ],
+    "tooltip": "Child support"
+  },
+  {
+    "page": 1,
+    "name": "Item6aCheckbox1[0]",
+    "fullName": "Item6aCheckbox1[0]",
+    "type": "/Btn",
+    "rect": [
+      69.874,
+      645.512,
+      78.874,
+      654.512
+    ],
+    "tooltip": "Petitioner"
+  },
+  {
+    "page": 1,
+    "name": "Item6aCheckbox1[1]",
+    "fullName": "Item6aCheckbox1[1]",
+    "type": "/Btn",
+    "rect": [
+      147.342,
+      645.511,
+      156.342,
+      654.511
+    ],
+    "tooltip": "Respondent"
+  },
+  {
+    "page": 1,
+    "name": "Item6aCheckbox1[2]",
+    "fullName": "Item6aCheckbox1[2]",
+    "type": "/Btn",
+    "rect": [
+      235.613,
+      645.511,
+      244.613,
+      654.511
+    ],
+    "tooltip": "Other parent/party"
+  },
+  {
+    "page": 1,
+    "name": "Item6aDateField[0]",
+    "fullName": "Item6aDateField[0]",
+    "type": "/Tx",
+    "rect": [
+      93.384,
+      630.955,
+      176.772,
+      642.044
+    ],
+    "tooltip": "(date):"
+  },
+  {
+    "page": 1,
+    "name": "ChildNameTextField1[0]",
+    "fullName": "ChildNameTextField1[0]",
+    "type": "/Tx",
+    "rect": [
+      65.501,
+      589.631,
+      206.046,
+      600.431
+    ],
+    "tooltip": "Child\u2019s name"
+  },
+  {
+    "page": 1,
+    "name": "DateOfBirthDateField1[0]",
+    "fullName": "DateOfBirthDateField1[0]",
+    "type": "/Tx",
+    "rect": [
+      216.664,
+      589.631,
+      308.01,
+      600.431
+    ],
+    "tooltip": "Child's date of birth"
+  },
+  {
+    "page": 1,
+    "name": "MonthlyAmountCurrencyField1[0]",
+    "fullName": "MonthlyAmountCurrencyField1[0]",
+    "type": "/Tx",
+    "rect": [
+      324.914,
+      589.631,
+      401.112,
+      600.431
+    ],
+    "tooltip": "Monthly amount of support allocated to this child"
+  },
+  {
+    "page": 1,
+    "name": "PayableToTextField1[0]",
+    "fullName": "PayableToTextField1[0]",
+    "type": "/Tx",
+    "rect": [
+      412.932,
+      589.631,
+      548.853,
+      600.431
+    ],
+    "tooltip": "Support for this child is payable to (name)"
+  },
+  {
+    "page": 1,
+    "name": "ChildNameTextField2[0]",
+    "fullName": "ChildNameTextField2[0]",
+    "type": "/Tx",
+    "rect": [
+      65.498,
+      576.229,
+      206.043,
+      587.029
+    ],
+    "tooltip": "Child\u2019s name"
+  },
+  {
+    "page": 1,
+    "name": "DateOfBirthDateField2[0]",
+    "fullName": "DateOfBirthDateField2[0]",
+    "type": "/Tx",
+    "rect": [
+      216.661,
+      576.229,
+      308.007,
+      587.029
+    ],
+    "tooltip": "Child's date of birth"
+  },
+  {
+    "page": 1,
+    "name": "MonthlyAmountCurrencyField2[0]",
+    "fullName": "MonthlyAmountCurrencyField2[0]",
+    "type": "/Tx",
+    "rect": [
+      324.911,
+      576.229,
+      401.109,
+      587.029
+    ],
+    "tooltip": "Monthly amount of support allocated to this child"
+  },
+  {
+    "page": 1,
+    "name": "PayableToTextField2[0]",
+    "fullName": "PayableToTextField2[0]",
+    "type": "/Tx",
+    "rect": [
+      412.929,
+      576.229,
+      548.85,
+      587.029
+    ],
+    "tooltip": "Support for this child is payable to (name)"
+  },
+  {
+    "page": 1,
+    "name": "ChildNameTextField3[0]",
+    "fullName": "ChildNameTextField3[0]",
+    "type": "/Tx",
+    "rect": [
+      65.498,
+      562.827,
+      206.043,
+      573.627
+    ],
+    "tooltip": "Child\u2019s name"
+  },
+  {
+    "page": 1,
+    "name": "DateOfBirthDateField3[0]",
+    "fullName": "DateOfBirthDateField3[0]",
+    "type": "/Tx",
+    "rect": [
+      216.661,
+      562.827,
+      308.007,
+      573.627
+    ],
+    "tooltip": "Child's date of birth"
+  },
+  {
+    "page": 1,
+    "name": "MonthlyAmountCurrencyField3[0]",
+    "fullName": "MonthlyAmountCurrencyField3[0]",
+    "type": "/Tx",
+    "rect": [
+      324.911,
+      562.827,
+      401.109,
+      573.627
+    ],
+    "tooltip": "Monthly amount of support allocated to this child"
+  },
+  {
+    "page": 1,
+    "name": "PayableToTextField3[0]",
+    "fullName": "PayableToTextField3[0]",
+    "type": "/Tx",
+    "rect": [
+      412.929,
+      562.827,
+      548.85,
+      573.627
+    ],
+    "tooltip": "Support for this child is payable to (name)"
+  },
+  {
+    "page": 1,
+    "name": "ChildNameTextField4[0]",
+    "fullName": "ChildNameTextField4[0]",
+    "type": "/Tx",
+    "rect": [
+      65.498,
+      549.425,
+      206.043,
+      560.225
+    ],
+    "tooltip": "Child\u2019s name"
+  },
+  {
+    "page": 1,
+    "name": "DateOfBirthDateField4[0]",
+    "fullName": "DateOfBirthDateField4[0]",
+    "type": "/Tx",
+    "rect": [
+      216.661,
+      549.425,
+      308.007,
+      560.225
+    ],
+    "tooltip": "Child's date of birth"
+  },
+  {
+    "page": 1,
+    "name": "MonthlyAmountCurrencyField4[0]",
+    "fullName": "MonthlyAmountCurrencyField4[0]",
+    "type": "/Tx",
+    "rect": [
+      324.911,
+      549.425,
+      401.109,
+      560.225
+    ],
+    "tooltip": "Monthly amount of support allocated to this child"
+  },
+  {
+    "page": 1,
+    "name": "PayableToTextField4[0]",
+    "fullName": "PayableToTextField4[0]",
+    "type": "/Tx",
+    "rect": [
+      412.929,
+      549.425,
+      548.85,
+      560.225
+    ],
+    "tooltip": "Support for this child is payable to (name)"
+  },
+  {
+    "page": 1,
+    "name": "Item6aCheckbox2[0]",
+    "fullName": "Item6aCheckbox2[0]",
+    "type": "/Btn",
+    "rect": [
+      112.964,
+      535.622,
+      121.964,
+      544.622
+    ],
+    "tooltip": "on the 1st of the month"
+  },
+  {
+    "page": 1,
+    "name": "Item6aCheckbox3[0]",
+    "fullName": "Item6aCheckbox3[0]",
+    "type": "/Btn",
+    "rect": [
+      244.301,
+      535.479,
+      253.301,
+      544.479
+    ],
+    "tooltip": " other"
+  },
+  {
+    "page": 1,
+    "name": "Item6aTextField[0]",
+    "fullName": "Item6aTextField[0]",
+    "type": "/Tx",
+    "rect": [
+      326.94,
+      535.442,
+      575.997,
+      544.802
+    ],
+    "tooltip": "other (specify)"
+  },
+  {
+    "page": 1,
+    "name": "Item6bCheckbox[0]",
+    "fullName": "Item6bCheckbox[0]",
+    "type": "/Btn",
+    "rect": [
+      70.214,
+      519.309,
+      79.214,
+      528.309
+    ],
+    "tooltip": "Mandatory additional child support"
+  },
+  {
+    "page": 1,
+    "name": "Item6b1aCheckbox1[0]",
+    "fullName": "Item6b1aCheckbox1[0]",
+    "type": "/Btn",
+    "rect": [
+      106.729,
+      491.209,
+      115.729,
+      500.209
+    ],
+    "tooltip": "Petitioner must pay:"
+  },
+  {
+    "page": 1,
+    "name": "Item6b1aPercentField[0]",
+    "fullName": "Item6b1aPercentField[0]",
+    "type": "/Tx",
+    "rect": [
+      246.114,
+      490.21,
+      272.334,
+      500.196
+    ],
+    "tooltip": "% of total"
+  },
+  {
+    "page": 1,
+    "name": "Item6b1aCheckbox2[0]",
+    "fullName": "Item6b1aCheckbox2[0]",
+    "type": "/Btn",
+    "rect": [
+      345.557,
+      490.55,
+      354.557,
+      499.55
+    ],
+    "tooltip": "dollar amount per month"
+  },
+  {
+    "page": 1,
+    "name": "Item6b1aCurrencyField[0]",
+    "fullName": "Item6b1aCurrencyField[0]",
+    "type": "/Tx",
+    "rect": [
+      372.117,
+      489.997,
+      437.504,
+      500.797
+    ],
+    "tooltip": "dollar amount"
+  },
+  {
+    "page": 1,
+    "name": "Item6b1bCheckbox1[0]",
+    "fullName": "Item6b1bCheckbox1[0]",
+    "type": "/Btn",
+    "rect": [
+      106.726,
+      478.577,
+      115.726,
+      487.577
+    ],
+    "tooltip": "Respondent must pay:"
+  },
+  {
+    "page": 1,
+    "name": "Item6b1bPercentField[0]",
+    "fullName": "Item6b1bPercentField[0]",
+    "type": "/Tx",
+    "rect": [
+      246.114,
+      478.078,
+      272.337,
+      488.064
+    ],
+    "tooltip": "% of total"
+  },
+  {
+    "page": 1,
+    "name": "Item6b1bCheckbox2[0]",
+    "fullName": "Item6b1bCheckbox2[0]",
+    "type": "/Btn",
+    "rect": [
+      345.56,
+      478.213,
+      354.56,
+      487.213
+    ],
+    "tooltip": "dollar amount per month"
+  },
+  {
+    "page": 1,
+    "name": "Item6b1bCurrencyField[0]",
+    "fullName": "Item6b1bCurrencyField[0]",
+    "type": "/Tx",
+    "rect": [
+      372.114,
+      477.55,
+      437.504,
+      488.35
+    ],
+    "tooltip": "dollar amount"
+  },
+  {
+    "page": 1,
+    "name": "Item6b1cCheckbox1[0]",
+    "fullName": "Item6b1cCheckbox1[0]",
+    "type": "/Btn",
+    "rect": [
+      106.729,
+      466.547,
+      115.729,
+      475.547
+    ],
+    "tooltip": "Other parent/party must pay:"
+  },
+  {
+    "page": 1,
+    "name": "Item6b1cPercentField[0]",
+    "fullName": "Item6b1cPercentField[0]",
+    "type": "/Tx",
+    "rect": [
+      246.114,
+      465.702,
+      272.337,
+      475.688
+    ],
+    "tooltip": "% of total"
+  },
+  {
+    "page": 1,
+    "name": "Item6b1cCheckbox2[0]",
+    "fullName": "Item6b1cCheckbox2[0]",
+    "type": "/Btn",
+    "rect": [
+      345.56,
+      466.093,
+      354.56,
+      475.093
+    ],
+    "tooltip": "dollar amount per month"
+  },
+  {
+    "page": 1,
+    "name": "Item6b1cCurrencyField[0]",
+    "fullName": "Item6b1cCurrencyField[0]",
+    "type": "/Tx",
+    "rect": [
+      372.114,
+      465.095,
+      437.504,
+      475.895
+    ],
+    "tooltip": "dollar amount"
+  },
+  {
+    "page": 1,
+    "name": "Item6b1dCheckbox[0]",
+    "fullName": "Item6b1dCheckbox[0]",
+    "type": "/Btn",
+    "rect": [
+      106.725,
+      453.587,
+      115.725,
+      462.587
+    ],
+    "tooltip": "Costs to be paid as follows (specify):"
+  },
+  {
+    "page": 1,
+    "name": "Item6b1dTextField[0]",
+    "fullName": "Item6b1dTextField[0]",
+    "type": "/Tx",
+    "rect": [
+      126.176,
+      431.621,
+      575.997,
+      452.141
+    ],
+    "tooltip": "Costs to be paid as follows (specify)"
+  },
+  {
+    "page": 1,
+    "name": "Item6b2aCheckbox1[0]",
+    "fullName": "Item6b2aCheckbox1[0]",
+    "type": "/Btn",
+    "rect": [
+      106.73,
+      403.42,
+      115.73,
+      412.42
+    ],
+    "tooltip": "Petitioner must pay:"
+  },
+  {
+    "page": 1,
+    "name": "Item6b2aPercentField[0]",
+    "fullName": "Item6b2aPercentField[0]",
+    "type": "/Tx",
+    "rect": [
+      246.116,
+      402.616,
+      272.339,
+      412.602
+    ],
+    "tooltip": "% of total"
+  },
+  {
+    "page": 1,
+    "name": "Item6b2aCheckbox2[0]",
+    "fullName": "Item6b2aCheckbox2[0]",
+    "type": "/Btn",
+    "rect": [
+      345.556,
+      403.486,
+      354.556,
+      412.486
+    ],
+    "tooltip": "dollar amount per month"
+  },
+  {
+    "page": 1,
+    "name": "Item6b2aCurrencyField[0]",
+    "fullName": "Item6b2aCurrencyField[0]",
+    "type": "/Tx",
+    "rect": [
+      372.11,
+      403.01,
+      437.5,
+      413.81
+    ],
+    "tooltip": "dollar amount"
+  },
+  {
+    "page": 1,
+    "name": "Item6b2bCheckbox1[0]",
+    "fullName": "Item6b2bCheckbox1[0]",
+    "type": "/Btn",
+    "rect": [
+      106.73,
+      391.143,
+      115.73,
+      400.143
+    ],
+    "tooltip": "Respondent must pay:"
+  },
+  {
+    "page": 1,
+    "name": "Item6b2bPercentField[0]",
+    "fullName": "Item6b2bPercentField[0]",
+    "type": "/Tx",
+    "rect": [
+      246.116,
+      390.485,
+      272.339,
+      400.471
+    ],
+    "tooltip": "% of total"
+  },
+  {
+    "page": 1,
+    "name": "Item6b2bCheckbox2[0]",
+    "fullName": "Item6b2bCheckbox2[0]",
+    "type": "/Btn",
+    "rect": [
+      345.556,
+      390.901,
+      354.556,
+      399.901
+    ],
+    "tooltip": "dollar amount per month"
+  },
+  {
+    "page": 1,
+    "name": "Item6b2bCurrencyField[0]",
+    "fullName": "Item6b2bCurrencyField[0]",
+    "type": "/Tx",
+    "rect": [
+      372.11,
+      390.564,
+      437.5,
+      401.364
+    ],
+    "tooltip": "dollar amount"
+  },
+  {
+    "page": 1,
+    "name": "Item6b2cCheckbox1[0]",
+    "fullName": "Item6b2cCheckbox1[0]",
+    "type": "/Btn",
+    "rect": [
+      106.73,
+      379.494,
+      115.73,
+      388.494
+    ],
+    "tooltip": "Other parent/party must pay:"
+  },
+  {
+    "page": 1,
+    "name": "Item6b2cPercentField[0]",
+    "fullName": "Item6b2cPercentField[0]",
+    "type": "/Tx",
+    "rect": [
+      246.116,
+      378.108,
+      272.339,
+      388.094
+    ],
+    "tooltip": "% of total"
+  },
+  {
+    "page": 1,
+    "name": "Item6b2cCheckbox2[0]",
+    "fullName": "Item6b2cCheckbox2[0]",
+    "type": "/Btn",
+    "rect": [
+      345.556,
+      378.881,
+      354.556,
+      387.881
+    ],
+    "tooltip": "dollar amount per month"
+  },
+  {
+    "page": 1,
+    "name": "Item6b2cCurrencyField[0]",
+    "fullName": "Item6b2cCurrencyField[0]",
+    "type": "/Tx",
+    "rect": [
+      372.11,
+      378.107,
+      437.5,
+      388.907
+    ],
+    "tooltip": "dollar amount"
+  },
+  {
+    "page": 1,
+    "name": "Item6b2dCheckbox[0]",
+    "fullName": "Item6b2dCheckbox[0]",
+    "type": "/Btn",
+    "rect": [
+      106.725,
+      366.535,
+      115.725,
+      375.535
+    ],
+    "tooltip": "Costs to be paid as follows (specify):"
+  },
+  {
+    "page": 1,
+    "name": "Item6b2dTextField[0]",
+    "fullName": "Item6b2dTextField[0]",
+    "type": "/Tx",
+    "rect": [
+      126.173,
+      344.47,
+      575.997,
+      364.99
+    ],
+    "tooltip": "Costs to be paid as follows (specify)"
+  },
+  {
+    "page": 1,
+    "name": "Item6cCheckbox[0]",
+    "fullName": "Item6cCheckbox[0]",
+    "type": "/Btn",
+    "rect": [
+      70.047,
+      329.739,
+      79.047,
+      338.739
+    ],
+    "tooltip": "Additional child support"
+  },
+  {
+    "page": 1,
+    "name": "Item6c1Checkbox[0]",
+    "fullName": "Item6c1Checkbox[0]",
+    "type": "/Btn",
+    "rect": [
+      88.427,
+      313.788,
+      97.427,
+      322.788
+    ],
+    "tooltip": "Costs related to the educational or other special needs of the children"
+  },
+  {
+    "page": 1,
+    "name": "Item6c1aCheckbox1[0]",
+    "fullName": "Item6c1aCheckbox1[0]",
+    "type": "/Btn",
+    "rect": [
+      106.733,
+      299.561,
+      115.733,
+      308.561
+    ],
+    "tooltip": "Petitioner must pay:"
+  },
+  {
+    "page": 1,
+    "name": "Item6c1aPercentField[0]",
+    "fullName": "Item6c1aPercentField[0]",
+    "type": "/Tx",
+    "rect": [
+      246.119,
+      299.234,
+      272.342,
+      309.22
+    ],
+    "tooltip": "% of total"
+  },
+  {
+    "page": 1,
+    "name": "Item6c1aCheckbox2[0]",
+    "fullName": "Item6c1aCheckbox2[0]",
+    "type": "/Btn",
+    "rect": [
+      345.557,
+      299.284,
+      354.557,
+      308.284
+    ],
+    "tooltip": "dollar amount per month"
+  },
+  {
+    "page": 1,
+    "name": "Item6c1aCurrencyField[0]",
+    "fullName": "Item6c1aCurrencyField[0]",
+    "type": "/Tx",
+    "rect": [
+      372.11,
+      298.808,
+      437.5,
+      309.608
+    ],
+    "tooltip": "dollar amount"
+  },
+  {
+    "page": 1,
+    "name": "Item6c1bCheckbox1[0]",
+    "fullName": "Item6c1bCheckbox1[0]",
+    "type": "/Btn",
+    "rect": [
+      106.733,
+      287.512,
+      115.733,
+      296.512
+    ],
+    "tooltip": "Respondent must pay:"
+  },
+  {
+    "page": 1,
+    "name": "Item6c1bPercentField[0]",
+    "fullName": "Item6c1bPercentField[0]",
+    "type": "/Tx",
+    "rect": [
+      246.119,
+      287.101,
+      272.342,
+      297.087
+    ],
+    "tooltip": "% of total"
+  },
+  {
+    "page": 1,
+    "name": "Item6c1bCheckbox2[0]",
+    "fullName": "Item6c1bCheckbox2[0]",
+    "type": "/Btn",
+    "rect": [
+      345.557,
+      286.676,
+      354.557,
+      295.676
+    ],
+    "tooltip": "dollar amount per month"
+  },
+  {
+    "page": 1,
+    "name": "Item6c1bCurrencyField[0]",
+    "fullName": "Item6c1bCurrencyField[0]",
+    "type": "/Tx",
+    "rect": [
+      372.11,
+      286.361,
+      437.5,
+      297.161
+    ],
+    "tooltip": "dollar amount"
+  },
+  {
+    "page": 1,
+    "name": "Item6c1cCheckbox1[0]",
+    "fullName": "Item6c1cCheckbox1[0]",
+    "type": "/Btn",
+    "rect": [
+      106.733,
+      275.635,
+      115.733,
+      284.635
+    ],
+    "tooltip": "Other parent/party must pay:"
+  },
+  {
+    "page": 1,
+    "name": "Item6c1cPercentField[0]",
+    "fullName": "Item6c1cPercentField[0]",
+    "type": "/Tx",
+    "rect": [
+      246.119,
+      274.725,
+      272.342,
+      284.711
+    ],
+    "tooltip": "% of total"
+  },
+  {
+    "page": 1,
+    "name": "Item6c1cCheckbox2[0]",
+    "fullName": "Item6c1cCheckbox2[0]",
+    "type": "/Btn",
+    "rect": [
+      345.557,
+      274.214,
+      354.557,
+      283.214
+    ],
+    "tooltip": "dollar amount per month"
+  },
+  {
+    "page": 1,
+    "name": "Item6c1cCurrencyField[0]",
+    "fullName": "Item6c1cCurrencyField[0]",
+    "type": "/Tx",
+    "rect": [
+      372.11,
+      273.905,
+      437.5,
+      284.705
+    ],
+    "tooltip": "dollar amount"
+  },
+  {
+    "page": 1,
+    "name": "Item6c1dCheckbox[0]",
+    "fullName": "Item6c1dCheckbox[0]",
+    "type": "/Btn",
+    "rect": [
+      106.73,
+      262.676,
+      115.73,
+      271.676
+    ],
+    "tooltip": "Costs to be paid as follows (specify):"
+  },
+  {
+    "page": 1,
+    "name": "Item6c1dTextField[0]",
+    "fullName": "Item6c1dTextField[0]",
+    "type": "/Tx",
+    "rect": [
+      126.176,
+      240.511,
+      575.997,
+      261.031
+    ],
+    "tooltip": "Costs to be paid as follows (specify)"
+  },
+  {
+    "page": 1,
+    "name": "Item6c2Checkbox[0]",
+    "fullName": "Item6c2Checkbox[0]",
+    "type": "/Btn",
+    "rect": [
+      88.427,
+      227.025,
+      97.427,
+      236.025
+    ],
+    "tooltip": "Travel expenses for visitation"
+  },
+  {
+    "page": 1,
+    "name": "Item6c2aCheckbox1[0]",
+    "fullName": "Item6c2aCheckbox1[0]",
+    "type": "/Btn",
+    "rect": [
+      106.733,
+      212.411,
+      115.733,
+      221.411
+    ],
+    "tooltip": "Petitioner must pay:"
+  },
+  {
+    "page": 1,
+    "name": "Item6c2aPercentField[0]",
+    "fullName": "Item6c2aPercentField[0]",
+    "type": "/Tx",
+    "rect": [
+      246.113,
+      212.255,
+      272.336,
+      222.241
+    ],
+    "tooltip": "% of total"
+  },
+  {
+    "page": 1,
+    "name": "Item6c2aCheckbox2[0]",
+    "fullName": "Item6c2aCheckbox2[0]",
+    "type": "/Btn",
+    "rect": [
+      345.551,
+      212.51,
+      354.551,
+      221.51
+    ],
+    "tooltip": "dollar amount per month"
+  },
+  {
+    "page": 1,
+    "name": "Item6c2aCurrencyField[0]",
+    "fullName": "Item6c2aCurrencyField[0]",
+    "type": "/Tx",
+    "rect": [
+      372.104,
+      212.09,
+      437.494,
+      222.89
+    ],
+    "tooltip": "dollar amount"
+  },
+  {
+    "page": 1,
+    "name": "Item6c2bCheckbox1[0]",
+    "fullName": "Item6c2bCheckbox1[0]",
+    "type": "/Btn",
+    "rect": [
+      106.733,
+      199.925,
+      115.733,
+      208.925
+    ],
+    "tooltip": "Respondent must pay:"
+  },
+  {
+    "page": 1,
+    "name": "Item6c2bPercentField[0]",
+    "fullName": "Item6c2bPercentField[0]",
+    "type": "/Tx",
+    "rect": [
+      246.113,
+      199.387,
+      272.336,
+      209.373
+    ],
+    "tooltip": "% of total"
+  },
+  {
+    "page": 1,
+    "name": "Item6c2bCheckbox2[0]",
+    "fullName": "Item6c2bCheckbox2[0]",
+    "type": "/Btn",
+    "rect": [
+      345.551,
+      199.777,
+      354.551,
+      208.777
+    ],
+    "tooltip": "dollar amount per month"
+  },
+  {
+    "page": 1,
+    "name": "Item6c2bCurrencyField[0]",
+    "fullName": "Item6c2bCurrencyField[0]",
+    "type": "/Tx",
+    "rect": [
+      372.104,
+      199.644,
+      437.494,
+      210.444
+    ],
+    "tooltip": "dollar amount"
+  },
+  {
+    "page": 1,
+    "name": "Item6c2cCheckbox1[0]",
+    "fullName": "Item6c2cCheckbox1[0]",
+    "type": "/Btn",
+    "rect": [
+      106.733,
+      187.747,
+      115.733,
+      196.747
+    ],
+    "tooltip": "Other parent/party must pay:"
+  },
+  {
+    "page": 1,
+    "name": "Item6c2cPercentField[0]",
+    "fullName": "Item6c2cPercentField[0]",
+    "type": "/Tx",
+    "rect": [
+      246.113,
+      187.01,
+      272.336,
+      196.996
+    ],
+    "tooltip": "% of total"
+  },
+  {
+    "page": 1,
+    "name": "Item6c2cCheckbox2[0]",
+    "fullName": "Item6c2cCheckbox2[0]",
+    "type": "/Btn",
+    "rect": [
+      345.551,
+      187.633,
+      354.551,
+      196.633
+    ],
+    "tooltip": "dollar amount per month"
+  },
+  {
+    "page": 1,
+    "name": "Item6c2cCurrencyField[0]",
+    "fullName": "Item6c2cCurrencyField[0]",
+    "type": "/Tx",
+    "rect": [
+      372.104,
+      187.188,
+      437.494,
+      197.988
+    ],
+    "tooltip": "dollar amount"
+  },
+  {
+    "page": 1,
+    "name": "Item6c2dCheckbox[0]",
+    "fullName": "Item6c2dCheckbox[0]",
+    "type": "/Btn",
+    "rect": [
+      106.73,
+      175.524,
+      115.73,
+      184.524
+    ],
+    "tooltip": "Costs to be paid as follows (specify):"
+  },
+  {
+    "page": 1,
+    "name": "Item6c2dTextField[0]",
+    "fullName": "Item6c2dTextField[0]",
+    "type": "/Tx",
+    "rect": [
+      126.179,
+      153.354,
+      576.0,
+      173.874
+    ],
+    "tooltip": "Costs to be paid as follows (specify)"
+  },
+  {
+    "page": 1,
+    "name": "Item6dCheckbox1[0]",
+    "fullName": "Item6dCheckbox1[0]",
+    "type": "/Btn",
+    "rect": [
+      69.877,
+      139.225,
+      78.877,
+      148.225
+    ],
+    "tooltip": "Non-Guideline Order"
+  },
+  {
+    "page": 1,
+    "name": "Item6dCheckbox2[0]",
+    "fullName": "Item6dCheckbox2[0]",
+    "type": "/Btn",
+    "rect": [
+      118.791,
+      125.415,
+      127.791,
+      134.415
+    ],
+    "tooltip": "below"
+  },
+  {
+    "page": 1,
+    "name": "Item6dCheckbox2[1]",
+    "fullName": "Item6dCheckbox2[1]",
+    "type": "/Btn",
+    "rect": [
+      184.156,
+      125.415,
+      193.156,
+      134.415
+    ],
+    "tooltip": "above"
+  },
+  {
+    "page": 1,
+    "name": "FormFL-342ALink[0]",
+    "fullName": "FormFL-342ALink[0]",
+    "type": "/Btn",
+    "rect": [
+      258.007,
+      112.099,
+      298.521,
+      121.099
+    ],
+    "tooltip": "FL-342(A)"
+  },
+  {
+    "page": 1,
+    "name": "TotalChildSupportCalcCurrencyField[0]",
+    "fullName": "TotalChildSupportCalcCurrencyField[0]",
+    "type": "/Tx",
+    "rect": [
+      479.563,
+      83.239,
+      565.622,
+      94.195
+    ],
+    "tooltip": "Total child support per month: $"
+  },
+  {
+    "page": 2,
+    "name": "Warning[0]",
+    "fullName": "Warning[0]",
+    "type": "/Btn",
+    "rect": [
+      36.201,
+      36.737,
+      247.495,
+      59.916
+    ],
+    "tooltip": "For your protection and privacy, please press the Clear This Form button after you have printed the form."
+  },
+  {
+    "page": 2,
+    "name": "Print[0]",
+    "fullName": "Print[0]",
+    "type": "/Btn",
+    "rect": [
+      258.891,
+      36.737,
+      339.891,
+      53.745
+    ],
+    "tooltip": "Print this form"
+  },
+  {
+    "page": 2,
+    "name": "Save[0]",
+    "fullName": "Save[0]",
+    "type": "/Btn",
+    "rect": [
+      345.43,
+      36.737,
+      426.535,
+      53.745
+    ],
+    "tooltip": "Save this form"
+  },
+  {
+    "page": 2,
+    "name": "Reset[0]",
+    "fullName": "Reset[0]",
+    "type": "/Btn",
+    "rect": [
+      495.119,
+      36.737,
+      576.116,
+      53.745
+    ],
+    "tooltip": "Clear this form"
+  },
+  {
+    "page": 2,
+    "name": "PetitionerTextField[0]",
+    "fullName": "PetitionerTextField[0]",
+    "type": "/Tx",
+    "rect": [
+      133.82,
+      730.752,
+      393.735,
+      739.752
+    ],
+    "tooltip": "PETITIONER:"
+  },
+  {
+    "page": 2,
+    "name": "RespondentTextField[0]",
+    "fullName": "RespondentTextField[0]",
+    "type": "/Tx",
+    "rect": [
+      133.82,
+      717.224,
+      393.735,
+      726.522
+    ],
+    "tooltip": "RESPONDENT:"
+  },
+  {
+    "page": 2,
+    "name": "OtherPartyTextField[0]",
+    "fullName": "OtherPartyTextField[0]",
+    "type": "/Tx",
+    "rect": [
+      133.623,
+      703.695,
+      393.789,
+      712.993
+    ],
+    "tooltip": "OTHER PARENT/PARTY:"
+  },
+  {
+    "page": 2,
+    "name": "CaseNumberTextField[0]",
+    "fullName": "CaseNumberTextField[0]",
+    "type": "/Tx",
+    "rect": [
+      399.266,
+      718.152,
+      572.066,
+      729.632
+    ],
+    "tooltip": "CASE NUMBER:"
+  },
+  {
+    "page": 2,
+    "name": "Item7aCheckbox1[0]",
+    "fullName": "Item7aCheckbox1[0]",
+    "type": "/Btn",
+    "rect": [
+      69.681,
+      641.546,
+      78.681,
+      650.546
+    ],
+    "tooltip": "petitioner"
+  },
+  {
+    "page": 2,
+    "name": "Item7aCheckbox2[0]",
+    "fullName": "Item7aCheckbox2[0]",
+    "type": "/Btn",
+    "rect": [
+      146.962,
+      641.546,
+      155.962,
+      650.546
+    ],
+    "tooltip": "respondent"
+  },
+  {
+    "page": 2,
+    "name": "Item7aCheckbox3[0]",
+    "fullName": "Item7aCheckbox3[0]",
+    "type": "/Btn",
+    "rect": [
+      235.344,
+      641.699,
+      244.344,
+      650.699
+    ],
+    "tooltip": "other parent/party"
+  },
+  {
+    "page": 2,
+    "name": "Item7bCheckbox1[0]",
+    "fullName": "Item7bCheckbox1[0]",
+    "type": "/Btn",
+    "rect": [
+      70.143,
+      567.577,
+      79.143,
+      576.577
+    ],
+    "tooltip": "Health insurance is not available to the"
+  },
+  {
+    "page": 2,
+    "name": "Item7bCheckbox2[0]",
+    "fullName": "Item7bCheckbox2[0]",
+    "type": "/Btn",
+    "rect": [
+      265.572,
+      567.577,
+      274.572,
+      576.577
+    ],
+    "tooltip": "petitioner"
+  },
+  {
+    "page": 2,
+    "name": "Item7bCheckbox3[0]",
+    "fullName": "Item7bCheckbox3[0]",
+    "type": "/Btn",
+    "rect": [
+      342.303,
+      567.576,
+      351.303,
+      576.576
+    ],
+    "tooltip": "respondent"
+  },
+  {
+    "page": 2,
+    "name": "Item7bCheckbox4[0]",
+    "fullName": "Item7bCheckbox4[0]",
+    "type": "/Btn",
+    "rect": [
+      427.626,
+      567.576,
+      436.626,
+      576.576
+    ],
+    "tooltip": "other parent/party"
+  },
+  {
+    "page": 2,
+    "name": "Item7cCheckbox[0]",
+    "fullName": "Item7cCheckbox[0]",
+    "type": "/Btn",
+    "rect": [
+      69.885,
+      536.141,
+      78.885,
+      545.141
+    ],
+    "tooltip": "The party providing coverage must assign the right of reimbursement to the other party. "
+  },
+  {
+    "page": 2,
+    "name": "Item10Checkbox1[0]",
+    "fullName": "Item10Checkbox1[0]",
+    "type": "/Btn",
+    "rect": [
+      55.505,
+      400.355,
+      64.505,
+      409.355
+    ],
+    "tooltip": "Employment search order (Family Code section 4505)"
+  },
+  {
+    "page": 2,
+    "name": "Item10Checkbox2[0]",
+    "fullName": "Item10Checkbox2[0]",
+    "type": "/Btn",
+    "rect": [
+      79.659,
+      387.495,
+      88.659,
+      396.495
+    ],
+    "tooltip": "Petitioner"
+  },
+  {
+    "page": 2,
+    "name": "Item10Checkbox3[0]",
+    "fullName": "Item10Checkbox3[0]",
+    "type": "/Btn",
+    "rect": [
+      156.39,
+      387.494,
+      165.39,
+      396.494
+    ],
+    "tooltip": "Respondent"
+  },
+  {
+    "page": 2,
+    "name": "Item10Checkbox4[0]",
+    "fullName": "Item10Checkbox4[0]",
+    "type": "/Btn",
+    "rect": [
+      244.332,
+      387.593,
+      253.332,
+      396.593
+    ],
+    "tooltip": "Other parent/party"
+  },
+  {
+    "page": 2,
+    "name": "Item10TextField[0]",
+    "fullName": "Item10TextField[0]",
+    "type": "/Tx",
+    "rect": [
+      137.972,
+      371.733,
+      575.997,
+      383.44
+    ],
+    "tooltip": "Terms and conditions"
+  },
+  {
+    "page": 2,
+    "name": "Item11TextField[0]",
+    "fullName": "Item11TextField[0]",
+    "type": "/Tx",
+    "rect": [
+      51.355,
+      309.965,
+      576.0,
+      350.413
+    ],
+    "tooltip": "Other orders (specify)"
+  },
+  {
+    "page": 2,
+    "name": "FormFL-192Link[0]",
+    "fullName": "FormFL-192Link[0]",
+    "type": "/Btn",
+    "rect": [
+      338.638,
+      271.774,
+      367.155,
+      280.774
+    ],
+    "tooltip": "FL-192"
+  },
+  {
+    "page": 2,
+    "name": "FormDV-130Link[0]",
+    "fullName": "FormDV-130Link[0]",
+    "type": "/Btn",
+    "rect": [
+      319.796,
+      241.316,
+      350.312,
+      250.316
+    ],
+    "tooltip": "DV-130"
+  },
+  {
+    "page": 2,
+    "name": "FormFL-191Link[0]",
+    "fullName": "FormFL-191Link[0]",
+    "type": "/Btn",
+    "rect": [
+      421.373,
+      198.113,
+      449.89,
+      207.113
+    ],
+    "tooltip": "FL-191"
+  }
+]

@@ -1,0 +1,275 @@
+[
+  {
+    "page": 0,
+    "name": "FL-117.caption.attorneyOrParty",
+    "fullName": "FL-117.caption.attorneyOrParty",
+    "rect": [
+      239.508,
+      728.229,
+      393.945,
+      739.029
+    ],
+    "type": "/Tx",
+    "tooltip": "State Bar Number"
+  },
+  {
+    "page": 0,
+    "name": "FL-117.caption.name",
+    "fullName": "FL-117.caption.name",
+    "rect": [
+      59.739,
+      717.027,
+      393.945,
+      727.827
+    ],
+    "type": "/Tx",
+    "tooltip": "Name"
+  },
+  {
+    "page": 0,
+    "name": "FL-117.caption.street",
+    "fullName": "FL-117.caption.street",
+    "rect": [
+      76.615,
+      706.088,
+      393.945,
+      716.888
+    ],
+    "type": "/Tx",
+    "tooltip": "Firm Name"
+  },
+  {
+    "page": 0,
+    "name": "FL-117.caption.cityStateZip",
+    "fullName": "FL-117.caption.cityStateZip",
+    "rect": [
+      96.066,
+      694.95,
+      393.945,
+      705.75
+    ],
+    "type": "/Tx",
+    "tooltip": "Street Address"
+  },
+  {
+    "page": 0,
+    "name": "FL-117.caption.phone",
+    "fullName": "FL-117.caption.phone",
+    "rect": [
+      90.109,
+      671.5,
+      218.129,
+      681.917
+    ],
+    "type": "/Tx",
+    "tooltip": "Phone Number"
+  },
+  {
+    "page": 0,
+    "name": "FL-117.caption.fax",
+    "fullName": "FL-117.caption.fax",
+    "rect": [
+      270.568,
+      671.5,
+      390.991,
+      681.917
+    ],
+    "type": "/Tx",
+    "tooltip": "Fax Number"
+  },
+  {
+    "page": 0,
+    "name": "FL-117.caption.email",
+    "fullName": "FL-117.caption.email",
+    "rect": [
+      91.941,
+      660.861,
+      390.992,
+      669.861
+    ],
+    "type": "/Tx",
+    "tooltip": "E-Mail Address"
+  },
+  {
+    "page": 0,
+    "name": "FL-117.caption.attorneyFor",
+    "fullName": "FL-117.caption.attorneyFor",
+    "rect": [
+      109.104,
+      651.326,
+      391.23,
+      660.326
+    ],
+    "type": "/Tx",
+    "tooltip": "Attorney For, name"
+  },
+  {
+    "page": 0,
+    "name": "FL-117.caption.county",
+    "fullName": "FL-117.caption.county",
+    "rect": [
+      230.395,
+      635.632,
+      391.502,
+      645.633
+    ],
+    "type": "/Tx",
+    "tooltip": "Superior Court of California, County of"
+  },
+  {
+    "page": 0,
+    "name": "FL-117.caption.streetAddress",
+    "fullName": "FL-117.caption.streetAddress",
+    "rect": [
+      110.783,
+      625.43,
+      391.502,
+      635.431
+    ],
+    "type": "/Tx",
+    "tooltip": "Street Address"
+  },
+  {
+    "page": 0,
+    "name": "FL-117.caption.mailingAddress",
+    "fullName": "FL-117.caption.mailingAddress",
+    "rect": [
+      110.696,
+      615.231,
+      391.502,
+      625.232
+    ],
+    "type": "/Tx",
+    "tooltip": "Mailing Address"
+  },
+  {
+    "page": 0,
+    "name": "FL-117.caption.cityZip",
+    "fullName": "FL-117.caption.cityZip",
+    "rect": [
+      111.555,
+      605.029,
+      391.502,
+      615.03
+    ],
+    "type": "/Tx",
+    "tooltip": "City and Zip Code"
+  },
+  {
+    "page": 0,
+    "name": "FL-117.caption.branch",
+    "fullName": "FL-117.caption.branch",
+    "rect": [
+      111.467,
+      594.824,
+      391.502,
+      604.825
+    ],
+    "type": "/Tx",
+    "tooltip": "Branch Name"
+  },
+  {
+    "page": 0,
+    "name": "FL-117.caption.petitioner",
+    "fullName": "FL-117.caption.petitioner",
+    "rect": [
+      104.415,
+      576.414,
+      387.986,
+      586.576
+    ],
+    "type": "/Tx",
+    "tooltip": "Petitioner"
+  },
+  {
+    "page": 0,
+    "name": "FL-117.caption.respondent",
+    "fullName": "FL-117.caption.respondent",
+    "rect": [
+      104.882,
+      562.274,
+      393.644,
+      572.436
+    ],
+    "type": "/Tx",
+    "tooltip": "Respondent"
+  },
+  {
+    "page": 0,
+    "name": "FL-117.caption.caseNumber",
+    "fullName": "FL-117.caption.caseNumber",
+    "rect": [
+      401.689,
+      534.189,
+      552.591,
+      545.789
+    ],
+    "type": "/Tx",
+    "tooltip": "Case Number"
+  },
+  {
+    "page": 0,
+    "name": "FL-117.personServed",
+    "fullName": "FL-117.personServed",
+    "rect": [
+      203.81,
+      496.984,
+      521.064,
+      507.146
+    ],
+    "type": "/Tx",
+    "tooltip": "To, name of individual being served"
+  },
+  {
+    "page": 0,
+    "name": "FL-117.dateMailed",
+    "fullName": "FL-117.dateMailed",
+    "rect": [
+      153.282,
+      380.452,
+      290.072,
+      390.614
+    ],
+    "type": "/Tx",
+    "tooltip": "Date of mailing"
+  },
+  {
+    "page": 0,
+    "name": "FL-117.petitionerPrintedName",
+    "fullName": "FL-117.petitionerPrintedName",
+    "rect": [
+      52.101,
+      364.51,
+      289.554,
+      377.068
+    ],
+    "type": "/Tx",
+    "tooltip": "Type or print sender's name"
+  },
+  {
+    "page": 0,
+    "name": "FL-117.acknowledgment.dateSigned",
+    "fullName": "FL-117.acknowledgment.dateSigned",
+    "rect": [
+      278.175,
+      100.882,
+      390.824,
+      111.044
+    ],
+    "type": "/Tx",
+    "tooltip": "Recipient signed this acknowledgment on ,specify date"
+  },
+  {
+    "page": 0,
+    "name": "FL-117.acknowledgment.printName",
+    "fullName": "FL-117.acknowledgment.printName",
+    "rect": [
+      53.501,
+      81.554,
+      312.216,
+      95.712
+    ],
+    "type": "/Tx",
+    "tooltip": "Type or Print name of Person Acknowledging Receipt"
+  }
+]

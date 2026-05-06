@@ -1,0 +1,1380 @@
+[
+  {
+    "page": 0,
+    "name": "Button1[0]",
+    "fullName": "Button1[0]",
+    "type": "/Btn",
+    "rect": [
+      539.028,
+      29.291,
+      574.712,
+      35.291
+    ],
+    "tooltip": "Courts Dot CA Dot Gov"
+  },
+  {
+    "page": 0,
+    "name": "Party1[0]",
+    "fullName": "Party1[0]",
+    "type": "/Tx",
+    "rect": [
+      135.13,
+      730.369,
+      394.342,
+      741.889
+    ],
+    "tooltip": "Petitioner"
+  },
+  {
+    "page": 0,
+    "name": "Party2[0]",
+    "fullName": "Party2[0]",
+    "type": "/Tx",
+    "rect": [
+      134.541,
+      716.817,
+      394.342,
+      728.337
+    ],
+    "tooltip": "Respondent"
+  },
+  {
+    "page": 0,
+    "name": "CaseNumber[0]",
+    "fullName": "CaseNumber[0]",
+    "type": "/Tx",
+    "rect": [
+      400.005,
+      717.593,
+      572.805,
+      731.982
+    ],
+    "tooltip": "Case Number"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      72.167,
+      666.774,
+      81.167,
+      675.774
+    ],
+    "tooltip": "Findings and Order After Hearing (form FL hyphen 340) "
+  },
+  {
+    "page": 0,
+    "name": "CheckBox2[0]",
+    "fullName": "CheckBox2[0]",
+    "type": "/Btn",
+    "rect": [
+      410.839,
+      666.91,
+      419.839,
+      675.91
+    ],
+    "tooltip": "Judgment (form FL hyphen 180)"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox3[0]",
+    "fullName": "CheckBox3[0]",
+    "type": "/Btn",
+    "rect": [
+      72.476,
+      652.422,
+      81.476,
+      661.422
+    ],
+    "tooltip": "Restraining Order After Hearing (CLETS hyphen OAH) (form DV hyphen 130)"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox4[0]",
+    "fullName": "CheckBox4[0]",
+    "type": "/Btn",
+    "rect": [
+      411.148,
+      654.769,
+      420.148,
+      663.769
+    ],
+    "tooltip": "Other"
+  },
+  {
+    "page": 0,
+    "name": "FillText1[0]",
+    "fullName": "FillText1[0]",
+    "type": "/Tx",
+    "rect": [
+      405.598,
+      637.492,
+      575.963,
+      654.052
+    ],
+    "tooltip": "Specify Other"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox5[0]",
+    "fullName": "CheckBox5[0]",
+    "type": "/Btn",
+    "rect": [
+      71.685,
+      639.077,
+      80.685,
+      648.077
+    ],
+    "tooltip": "Parties' Stipulation (Written Agreement) dated"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox6[0]",
+    "fullName": "CheckBox6[0]",
+    "type": "/Btn",
+    "rect": [
+      40.521,
+      614.999,
+      49.521,
+      623.999
+    ],
+    "tooltip": "The Court Finds"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox7[0]",
+    "fullName": "CheckBox7[0]",
+    "type": "/Btn",
+    "rect": [
+      187.656,
+      614.792,
+      196.656,
+      623.792
+    ],
+    "tooltip": "The Parties Stipulate (Agree)"
+  },
+  {
+    "page": 0,
+    "name": "on_date_ft[0]",
+    "fullName": "on_date_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      330.01,
+      638.405,
+      396.794,
+      649.361
+    ],
+    "tooltip": "Specify "
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      56.322,
+      576.484,
+      65.322,
+      585.484
+    ],
+    "tooltip": "This attachment relates to temporary spousal or domestic partner support"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      69.804,
+      562.351,
+      78.804,
+      571.351
+    ],
+    "tooltip": "This order attachment modifies an order or agreement for temporary support entered on"
+  },
+  {
+    "page": 0,
+    "name": "HearingDate[0]",
+    "fullName": "HearingDate[0]",
+    "type": "/Tx",
+    "rect": [
+      468.159,
+      562.351,
+      551.634,
+      571.351
+    ],
+    "tooltip": "Hearing date"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      141.892,
+      479.262,
+      150.892,
+      488.262
+    ],
+    "tooltip": "receiving TANF slash CaI WORKS "
+  },
+  {
+    "page": 0,
+    "name": "TextField1[0]",
+    "fullName": "TextField1[0]",
+    "type": "/Tx",
+    "rect": [
+      287.151,
+      478.582,
+      349.87,
+      489.518
+    ],
+    "tooltip": "Total gross monthly income in dollars"
+  },
+  {
+    "page": 0,
+    "name": "TextField2[0]",
+    "fullName": "TextField2[0]",
+    "type": "/Tx",
+    "rect": [
+      363.202,
+      479.163,
+      425.921,
+      490.099
+    ],
+    "tooltip": "Total monthly deductions in dollars"
+  },
+  {
+    "page": 0,
+    "name": "TextField3[0]",
+    "fullName": "TextField3[0]",
+    "type": "/Tx",
+    "rect": [
+      438.493,
+      479.242,
+      501.212,
+      490.178
+    ],
+    "tooltip": "Total hardship deductions in dollars"
+  },
+  {
+    "page": 0,
+    "name": "NumericField1[0]",
+    "fullName": "NumericField1[0]",
+    "type": "/Tx",
+    "rect": [
+      513.279,
+      479.242,
+      575.998,
+      490.178
+    ],
+    "tooltip": "Net monthly disposable income in dollars"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      142.258,
+      494.206,
+      151.258,
+      503.206
+    ],
+    "tooltip": "receiving TANF slash CaI WORKS"
+  },
+  {
+    "page": 0,
+    "name": "NumericField5[0]",
+    "fullName": "NumericField5[0]",
+    "type": "/Tx",
+    "rect": [
+      287.148,
+      492.846,
+      349.867,
+      503.802
+    ],
+    "tooltip": "Total gross monthly income in dollars"
+  },
+  {
+    "page": 0,
+    "name": "NumericField4[0]",
+    "fullName": "NumericField4[0]",
+    "type": "/Tx",
+    "rect": [
+      363.199,
+      493.427,
+      425.918,
+      504.383
+    ],
+    "tooltip": "Total monthly deductions in dollars"
+  },
+  {
+    "page": 0,
+    "name": "NumericField3[0]",
+    "fullName": "NumericField3[0]",
+    "type": "/Tx",
+    "rect": [
+      438.289,
+      493.506,
+      501.209,
+      504.462
+    ],
+    "tooltip": "Total hardship deductions in dollars"
+  },
+  {
+    "page": 0,
+    "name": "NumericField2[0]",
+    "fullName": "NumericField2[0]",
+    "type": "/Tx",
+    "rect": [
+      513.279,
+      494.013,
+      575.998,
+      504.969
+    ],
+    "tooltip": "Net monthly disposable income in dollars"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      69.8,
+      462.5,
+      78.8,
+      471.5
+    ],
+    "tooltip": "A printout of a computer calculation of the parties' financial circumstances is attached for all required items not filled out above (for temporary support only)"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      56.336,
+      431.807,
+      65.336,
+      440.807
+    ],
+    "tooltip": "This attachment relates to a judgment for permanent spousal or domestic partner support"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      70.336,
+      418.249,
+      79.336,
+      427.249
+    ],
+    "tooltip": "This order attachment modifies a judgment entered on"
+  },
+  {
+    "page": 0,
+    "name": "HearingDate[0]",
+    "fullName": "HearingDate[0]",
+    "type": "/Tx",
+    "rect": [
+      337.244,
+      418.379,
+      420.237,
+      427.379
+    ],
+    "tooltip": "Hearing date"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      70.203,
+      404.85,
+      79.203,
+      413.85
+    ],
+    "tooltip": "The parties were married for (specify)"
+  },
+  {
+    "page": 0,
+    "name": "on_date1[0]",
+    "fullName": "on_date1[0]",
+    "type": "/Tx",
+    "rect": [
+      252.859,
+      403.631,
+      280.975,
+      414.587
+    ],
+    "tooltip": "Months"
+  },
+  {
+    "page": 0,
+    "name": "on_date2[0]",
+    "fullName": "on_date2[0]",
+    "type": "/Tx",
+    "rect": [
+      355.156,
+      403.577,
+      392.013,
+      414.533
+    ],
+    "tooltip": "Years"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      70.35,
+      390.586,
+      79.35,
+      399.586
+    ],
+    "tooltip": "The parties were registered as domestic partners or the equivalent for (specify)"
+  },
+  {
+    "page": 0,
+    "name": "on_date[0]",
+    "fullName": "on_date[0]",
+    "type": "/Tx",
+    "rect": [
+      415.724,
+      389.061,
+      435.67,
+      400.017
+    ],
+    "tooltip": "Months"
+  },
+  {
+    "page": 0,
+    "name": "on_date1[0]",
+    "fullName": "on_date1[0]",
+    "type": "/Tx",
+    "rect": [
+      508.382,
+      389.007,
+      537.336,
+      399.963
+    ],
+    "tooltip": "Years"
+  },
+  {
+    "page": 0,
+    "name": "Check1[0]",
+    "fullName": "Check1[0]",
+    "type": "/Btn",
+    "rect": [
+      89.825,
+      363.266,
+      98.825,
+      372.266
+    ],
+    "tooltip": "The parties agreed to some or all of the factors as stated in Spousal or Domestic Partner Support Declaration Attachment (form FL hyphen 157) or in a similar written declaration filed with the court"
+  },
+  {
+    "page": 0,
+    "name": "Check1[0]",
+    "fullName": "Check1[0]",
+    "type": "/Btn",
+    "rect": [
+      89.383,
+      336.771,
+      98.383,
+      345.771
+    ],
+    "tooltip": "The court considered the parties' declarations and supporting documents regarding each Family Code section 4320 factor as stated in testimony, in Spousal or Domestic Partner Support Declaration Attachment (form FL hyphen 157), or in a similar written declaration filed with the court. "
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      107.136,
+      269.536,
+      116.136,
+      278.536
+    ],
+    "tooltip": "included in Spousal or Domestic Partner Support Factors Under Family Code Section 4320 hyphen Attachment form LF hyphen 349"
+  },
+  {
+    "page": 0,
+    "name": "Button1[0]",
+    "fullName": "Button1[0]",
+    "type": "/Btn",
+    "rect": [
+      148.485,
+      258.668,
+      177.002,
+      267.668
+    ],
+    "tooltip": "FL hyphen 349"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      106.853,
+      243.539,
+      115.853,
+      252.539
+    ],
+    "tooltip": "Other specified below"
+  },
+  {
+    "page": 0,
+    "name": "FillText1[0]",
+    "fullName": "FillText1[0]",
+    "type": "/Tx",
+    "rect": [
+      116.405,
+      75.606,
+      574.413,
+      242.014
+    ],
+    "tooltip": "Specify"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      107.136,
+      284.653,
+      116.136,
+      293.653
+    ],
+    "tooltip": "included in Attachment 2d(3)(A)"
+  },
+  {
+    "page": 1,
+    "name": "Party1[0]",
+    "fullName": "Party1[0]",
+    "type": "/Tx",
+    "rect": [
+      135.674,
+      732.036,
+      394.886,
+      743.556
+    ],
+    "tooltip": "PETITIONER:"
+  },
+  {
+    "page": 1,
+    "name": "Party2[0]",
+    "fullName": "Party2[0]",
+    "type": "/Tx",
+    "rect": [
+      135.085,
+      718.484,
+      394.886,
+      730.004
+    ],
+    "tooltip": "RESPONDENT:"
+  },
+  {
+    "page": 1,
+    "name": "CaseNumber[0]",
+    "fullName": "CaseNumber[0]",
+    "type": "/Tx",
+    "rect": [
+      400.005,
+      719.26,
+      572.805,
+      733.649
+    ],
+    "tooltip": "CASE NUMBER:"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      70.32,
+      678.197,
+      79.32,
+      687.197
+    ],
+    "tooltip": "The standard of living established during the marriage or domestic partnership was"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox2[0]",
+    "fullName": "CheckBox2[0]",
+    "type": "/Btn",
+    "rect": [
+      477.202,
+      677.551,
+      486.202,
+      686.551
+    ],
+    "tooltip": "See Attachment 2f."
+  },
+  {
+    "page": 1,
+    "name": "FillText1[0]",
+    "fullName": "FillText1[0]",
+    "type": "/Tx",
+    "rect": [
+      88.308,
+      607.994,
+      575.073,
+      677.174
+    ],
+    "tooltip": "Describe"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      70.133,
+      594.079,
+      79.133,
+      603.079
+    ],
+    "tooltip": "The Court finds that the parties have knowingly, intelligently, and voluntarily entered into a stipulation"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      70.305,
+      692.314,
+      79.305,
+      701.314
+    ],
+    "tooltip": "The parties are both self hyphen supporting"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      69.942,
+      561.274,
+      78.942,
+      570.274
+    ],
+    "tooltip": "The issue of support for the"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox2[0]",
+    "fullName": "CheckBox2[0]",
+    "type": "/Btn",
+    "rect": [
+      217.335,
+      561.274,
+      226.335,
+      570.274
+    ],
+    "tooltip": "petitioner"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox3[0]",
+    "fullName": "CheckBox3[0]",
+    "type": "/Btn",
+    "rect": [
+      292.193,
+      561.274,
+      301.193,
+      570.274
+    ],
+    "tooltip": "respondent"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      69.942,
+      546.211,
+      78.942,
+      555.211
+    ],
+    "tooltip": "The court terminates jurisdiction over the issue of support for the"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox2[0]",
+    "fullName": "CheckBox2[0]",
+    "type": "/Btn",
+    "rect": [
+      364.468,
+      546.211,
+      373.468,
+      555.211
+    ],
+    "tooltip": "petitioner"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox3[0]",
+    "fullName": "CheckBox3[0]",
+    "type": "/Btn",
+    "rect": [
+      434.872,
+      546.211,
+      443.872,
+      555.211
+    ],
+    "tooltip": "respondent"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      70.353,
+      531.057,
+      79.353,
+      540.057
+    ],
+    "tooltip": "The court's jurisdiction over the issue of support will end on "
+  },
+  {
+    "page": 1,
+    "name": "DateField1[0]",
+    "fullName": "DateField1[0]",
+    "type": "/Tx",
+    "rect": [
+      387.486,
+      530.019,
+      489.997,
+      540.975
+    ],
+    "tooltip": "Specify Date"
+  },
+  {
+    "page": 1,
+    "name": "Check1[0]",
+    "fullName": "Check1[0]",
+    "type": "/Btn",
+    "rect": [
+      91.873,
+      495.786,
+      100.873,
+      504.786
+    ],
+    "tooltip": "petitioner"
+  },
+  {
+    "page": 1,
+    "name": "Check1[1]",
+    "fullName": "Check1[1]",
+    "type": "/Btn",
+    "rect": [
+      161.804,
+      495.786,
+      170.804,
+      504.786
+    ],
+    "tooltip": "respondent"
+  },
+  {
+    "page": 1,
+    "name": "Check2[0]",
+    "fullName": "Check2[0]",
+    "type": "/Btn",
+    "rect": [
+      315.011,
+      495.653,
+      324.011,
+      504.653
+    ],
+    "tooltip": "petitioner"
+  },
+  {
+    "page": 1,
+    "name": "Check2[1]",
+    "fullName": "Check2[1]",
+    "type": "/Btn",
+    "rect": [
+      384.38,
+      495.653,
+      393.38,
+      504.653
+    ],
+    "tooltip": "respondent"
+  },
+  {
+    "page": 1,
+    "name": "Check3[0]",
+    "fullName": "Check3[0]",
+    "type": "/Btn",
+    "rect": [
+      92.032,
+      482.129,
+      101.032,
+      491.129
+    ],
+    "tooltip": "temporary"
+  },
+  {
+    "page": 1,
+    "name": "Check3[1]",
+    "fullName": "Check3[1]",
+    "type": "/Btn",
+    "rect": [
+      161.804,
+      481.99,
+      170.804,
+      490.99
+    ],
+    "tooltip": "permanent"
+  },
+  {
+    "page": 1,
+    "name": "Check4[0]",
+    "fullName": "Check4[0]",
+    "type": "/Btn",
+    "rect": [
+      242.801,
+      482.129,
+      251.801,
+      491.129
+    ],
+    "tooltip": "spousal support"
+  },
+  {
+    "page": 1,
+    "name": "Check4[1]",
+    "fullName": "Check4[1]",
+    "type": "/Btn",
+    "rect": [
+      339.599,
+      481.392,
+      348.599,
+      490.392
+    ],
+    "tooltip": "family support"
+  },
+  {
+    "page": 1,
+    "name": "Check4[2]",
+    "fullName": "Check4[2]",
+    "type": "/Btn",
+    "rect": [
+      429.154,
+      482.129,
+      438.154,
+      491.129
+    ],
+    "tooltip": "domestic partner support"
+  },
+  {
+    "page": 1,
+    "name": "NumericField6[0]",
+    "fullName": "NumericField6[0]",
+    "type": "/Tx",
+    "rect": [
+      210.713,
+      466.308,
+      288.508,
+      477.264
+    ],
+    "tooltip": "the following amount each month in dollars"
+  },
+  {
+    "page": 1,
+    "name": "on_date_ft[0]",
+    "fullName": "on_date_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      210.171,
+      450.706,
+      373.198,
+      461.662
+    ],
+    "tooltip": "Support payments will begin (date)"
+  },
+  {
+    "page": 1,
+    "name": "CheckBoxCaption[0]",
+    "fullName": "CheckBoxCaption[0]",
+    "type": "/Btn",
+    "rect": [
+      89.01,
+      423.595,
+      98.01,
+      432.595
+    ],
+    "tooltip": "payable through"
+  },
+  {
+    "page": 1,
+    "name": "on_date_ft[0]",
+    "fullName": "on_date_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      256.558,
+      423.165,
+      415.882,
+      434.121
+    ],
+    "tooltip": "Specify End Date"
+  },
+  {
+    "page": 1,
+    "name": "CheckBoxCaption[0]",
+    "fullName": "CheckBoxCaption[0]",
+    "type": "/Btn",
+    "rect": [
+      88.67,
+      409.252,
+      97.67,
+      418.252
+    ],
+    "tooltip": "Payable"
+  },
+  {
+    "page": 1,
+    "name": "on_date_ft[0]",
+    "fullName": "on_date_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      176.394,
+      408.304,
+      217.592,
+      419.302
+    ],
+    "tooltip": "On the Date"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      88.843,
+      395.122,
+      97.843,
+      404.122
+    ],
+    "tooltip": "Other"
+  },
+  {
+    "page": 1,
+    "name": "FillText1[0]",
+    "fullName": "FillText1[0]",
+    "type": "/Tx",
+    "rect": [
+      111.263,
+      370.911,
+      574.798,
+      394.827
+    ],
+    "tooltip": "Specify Other"
+  },
+  {
+    "page": 1,
+    "name": "CheckBoxCaption1[0]",
+    "fullName": "CheckBoxCaption1[0]",
+    "type": "/Btn",
+    "rect": [
+      69.5,
+      357.972,
+      78.5,
+      366.972
+    ],
+    "tooltip": "Support must be paid by "
+  },
+  {
+    "page": 1,
+    "name": "CheckBoxCaption2[0]",
+    "fullName": "CheckBoxCaption2[0]",
+    "type": "/Btn",
+    "rect": [
+      202.606,
+      357.445,
+      211.606,
+      366.445
+    ],
+    "tooltip": "check, money order, or cash"
+  },
+  {
+    "page": 1,
+    "name": "CheckBoxCaption3[0]",
+    "fullName": "CheckBoxCaption3[0]",
+    "type": "/Btn",
+    "rect": [
+      352.264,
+      357.377,
+      361.264,
+      366.377
+    ],
+    "tooltip": "Other Method"
+  },
+  {
+    "page": 1,
+    "name": "on_date_ft[0]",
+    "fullName": "on_date_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      469.641,
+      356.258,
+      575.249,
+      367.214
+    ],
+    "tooltip": "Specify"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      69.454,
+      325.57,
+      78.454,
+      334.57
+    ],
+    "tooltip": "An earnings assignment for the support will issue as requested by "
+  },
+  {
+    "page": 1,
+    "name": "CheckB1[0]",
+    "fullName": "CheckB1[0]",
+    "type": "/Btn",
+    "rect": [
+      366.587,
+      325.34,
+      375.587,
+      334.34
+    ],
+    "tooltip": "petitioner"
+  },
+  {
+    "page": 1,
+    "name": "CheckB1[1]",
+    "fullName": "CheckB1[1]",
+    "type": "/Btn",
+    "rect": [
+      437.023,
+      325.34,
+      446.023,
+      334.34
+    ],
+    "tooltip": "respondent"
+  },
+  {
+    "page": 1,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      69.758,
+      283.815,
+      78.758,
+      292.815
+    ],
+    "tooltip": "Service of the earnings assignment is stayed provided the payor is not more than (specify number)"
+  },
+  {
+    "page": 1,
+    "name": "on_date[0]",
+    "fullName": "on_date[0]",
+    "type": "/Tx",
+    "rect": [
+      484.883,
+      282.792,
+      529.368,
+      293.748
+    ],
+    "tooltip": "days late in paying spousal, family, or domestic partner support"
+  },
+  {
+    "page": 1,
+    "name": "FillText1[0]",
+    "fullName": "FillText1[0]",
+    "type": "/Tx",
+    "rect": [
+      88.509,
+      75.098,
+      572.556,
+      173.687
+    ],
+    "tooltip": "The parties agree that the support payor's obligation to pay support will not end as described in 6a. Instead, the support payor's obligation to pay support will continue until (specify below the terms of your agreement about when the support payee's obligation to pay support will end)"
+  },
+  {
+    "page": 1,
+    "name": "CheckBoxCaption[0]",
+    "fullName": "CheckBoxCaption[0]",
+    "type": "/Btn",
+    "rect": [
+      70.885,
+      207.307,
+      79.885,
+      216.307
+    ],
+    "tooltip": "Parties' agreement"
+  },
+  {
+    "page": 2,
+    "name": "Print[0]",
+    "fullName": "Print[0]",
+    "type": "/Btn",
+    "rect": [
+      258.775,
+      11.395,
+      339.775,
+      28.403
+    ],
+    "tooltip": "Print this form"
+  },
+  {
+    "page": 2,
+    "name": "Save[0]",
+    "fullName": "Save[0]",
+    "type": "/Btn",
+    "rect": [
+      345.314,
+      11.395,
+      426.419,
+      28.403
+    ],
+    "tooltip": "Save this form"
+  },
+  {
+    "page": 2,
+    "name": "Reset[0]",
+    "fullName": "Reset[0]",
+    "type": "/Btn",
+    "rect": [
+      495.003,
+      11.395,
+      576.0,
+      28.403
+    ],
+    "tooltip": "Clear this form"
+  },
+  {
+    "page": 2,
+    "name": "Warning[0]",
+    "fullName": "Warning[0]",
+    "type": "/Btn",
+    "rect": [
+      36.085,
+      11.395,
+      247.379,
+      34.574
+    ],
+    "tooltip": "For your protection and privacy, please press the Clear This Form button after you have printed the form."
+  },
+  {
+    "page": 2,
+    "name": "Party1[0]",
+    "fullName": "Party1[0]",
+    "type": "/Tx",
+    "rect": [
+      135.674,
+      724.02,
+      394.886,
+      735.54
+    ],
+    "tooltip": "Petitioner"
+  },
+  {
+    "page": 2,
+    "name": "Party2[0]",
+    "fullName": "Party2[0]",
+    "type": "/Tx",
+    "rect": [
+      135.085,
+      710.468,
+      394.886,
+      721.988
+    ],
+    "tooltip": "Respondent"
+  },
+  {
+    "page": 2,
+    "name": "CaseNumber[0]",
+    "fullName": "CaseNumber[0]",
+    "type": "/Tx",
+    "rect": [
+      400.005,
+      711.244,
+      572.805,
+      725.633
+    ],
+    "tooltip": "Case Number"
+  },
+  {
+    "page": 2,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      55.296,
+      684.286,
+      64.296,
+      693.286
+    ],
+    "tooltip": "Family support orders. This order is for family support. "
+  },
+  {
+    "page": 2,
+    "name": "Button1[0]",
+    "fullName": "Button1[0]",
+    "type": "/Btn",
+    "rect": [
+      454.408,
+      668.792,
+      482.925,
+      677.792
+    ],
+    "tooltip": "FL hyphen 191"
+  },
+  {
+    "page": 2,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      56.226,
+      586.786,
+      65.226,
+      595.786
+    ],
+    "tooltip": "Notice of change of employment "
+  },
+  {
+    "page": 2,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      56.002,
+      539.696,
+      65.002,
+      548.696
+    ],
+    "tooltip": "Duty to become self hyphen supporting"
+  },
+  {
+    "page": 2,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      88.217,
+      484.931,
+      97.217,
+      493.931
+    ],
+    "tooltip": "The"
+  },
+  {
+    "page": 2,
+    "name": "CheckBo[0]",
+    "fullName": "CheckBo[0]",
+    "type": "/Btn",
+    "rect": [
+      134.459,
+      484.931,
+      143.459,
+      493.931
+    ],
+    "tooltip": "petitioner"
+  },
+  {
+    "page": 2,
+    "name": "CheckBo[1]",
+    "fullName": "CheckBo[1]",
+    "type": "/Btn",
+    "rect": [
+      204.894,
+      484.931,
+      213.894,
+      493.931
+    ],
+    "tooltip": "respondent"
+  },
+  {
+    "page": 2,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      88.217,
+      468.89,
+      97.217,
+      477.89
+    ],
+    "tooltip": "Other"
+  },
+  {
+    "page": 2,
+    "name": "FillText1[0]",
+    "fullName": "FillText1[0]",
+    "type": "/Tx",
+    "rect": [
+      108.411,
+      419.734,
+      574.812,
+      467.45
+    ],
+    "tooltip": "Other Specify"
+  },
+  {
+    "page": 2,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      55.956,
+      399.608,
+      64.956,
+      408.608
+    ],
+    "tooltip": "Attachment to Restraining Order After Hearing (form DV hyphen130)"
+  },
+  {
+    "page": 2,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      55.956,
+      346.419,
+      64.956,
+      355.419
+    ],
+    "tooltip": "Other orders or agreements"
+  },
+  {
+    "page": 2,
+    "name": "FillText1[0]",
+    "fullName": "FillText1[0]",
+    "type": "/Tx",
+    "rect": [
+      73.596,
+      116.363,
+      574.526,
+      345.181
+    ],
+    "tooltip": "Specify"
+  }
+]

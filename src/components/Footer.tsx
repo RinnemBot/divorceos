@@ -6,7 +6,7 @@ export function Footer() {
 
   const footerLinks = {
     product: [
-      { label: 'Ask Maria', href: '/#chat' },
+      { label: 'Ask Maria', href: '/' },
       { label: 'Forms Library', href: '/forms' },
       { label: 'Pricing', href: '/pricing' },
     ],

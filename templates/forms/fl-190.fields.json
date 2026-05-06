@@ -1,0 +1,418 @@
+[
+  {
+    "page": 0,
+    "name": "Button1[0]",
+    "fullName": "Button1[0]",
+    "type": "/Btn",
+    "rect": [
+      525.421,
+      69.877,
+      575.821,
+      79.478
+    ],
+    "tooltip": "COURTS DOT CA DOT GOV"
+  },
+  {
+    "page": 0,
+    "name": "Warning[0]",
+    "fullName": "Warning[0]",
+    "type": "/Btn",
+    "rect": [
+      36.085,
+      36.0,
+      247.379,
+      59.179
+    ],
+    "tooltip": "For your protection and privacy, please press the Clear This Form button after you have printed the form."
+  },
+  {
+    "page": 0,
+    "name": "Print[0]",
+    "fullName": "Print[0]",
+    "type": "/Btn",
+    "rect": [
+      258.775,
+      36.0,
+      339.775,
+      53.008
+    ],
+    "tooltip": "Print this form"
+  },
+  {
+    "page": 0,
+    "name": "Save[0]",
+    "fullName": "Save[0]",
+    "type": "/Btn",
+    "rect": [
+      345.314,
+      36.0,
+      426.419,
+      53.008
+    ],
+    "tooltip": "Save this form"
+  },
+  {
+    "page": 0,
+    "name": "Reset[0]",
+    "fullName": "Reset[0]",
+    "type": "/Btn",
+    "rect": [
+      495.003,
+      36.0,
+      576.0,
+      53.008
+    ],
+    "tooltip": "Clear this form"
+  },
+  {
+    "page": 0,
+    "name": "CaseNumber[0]",
+    "fullName": "CaseNumber[0]",
+    "type": "/Tx",
+    "rect": [
+      400.005,
+      537.253,
+      572.805,
+      551.642
+    ],
+    "tooltip": "CASE NUMBER"
+  },
+  {
+    "page": 0,
+    "name": "TextField1[0]",
+    "fullName": "TextField1[0]",
+    "type": "/Tx",
+    "rect": [
+      37.054,
+      686.446,
+      393.36,
+      737.983
+    ],
+    "tooltip": "ATTORNEY OR PARTY WITHOUT ATTORNEY (Name, State Bar number, and address)"
+  },
+  {
+    "page": 0,
+    "name": "Phone[0]",
+    "fullName": "Phone[0]",
+    "type": "/Tx",
+    "rect": [
+      119.26,
+      675.008,
+      233.674,
+      684.008
+    ],
+    "tooltip": "Phone number"
+  },
+  {
+    "page": 0,
+    "name": "Fax[0]",
+    "fullName": "Fax[0]",
+    "type": "/Tx",
+    "rect": [
+      295.214,
+      675.008,
+      393.46,
+      684.008
+    ],
+    "tooltip": "Fax number"
+  },
+  {
+    "page": 0,
+    "name": "Email[0]",
+    "fullName": "Email[0]",
+    "type": "/Tx",
+    "rect": [
+      119.29,
+      663.437,
+      393.46,
+      672.437
+    ],
+    "tooltip": "E-MAIL ADDRESS (Optional)"
+  },
+  {
+    "page": 0,
+    "name": "Email1[0]",
+    "fullName": "Email1[0]",
+    "type": "/Tx",
+    "rect": [
+      119.29,
+      652.025,
+      393.46,
+      661.025
+    ],
+    "tooltip": "ATTORNEY FOR (Name)"
+  },
+  {
+    "page": 0,
+    "name": "CrtCounty[0]",
+    "fullName": "CrtCounty[0]",
+    "type": "/Tx",
+    "rect": [
+      227.713,
+      638.75,
+      393.993,
+      647.75
+    ],
+    "tooltip": "SUPERIOR COURT OF CALIFORNIA, COUNTY OF"
+  },
+  {
+    "page": 0,
+    "name": "CrtStreet[0]",
+    "fullName": "CrtStreet[0]",
+    "type": "/Tx",
+    "rect": [
+      96.987,
+      627.811,
+      393.993,
+      636.811
+    ],
+    "tooltip": "STREET ADDRESS"
+  },
+  {
+    "page": 0,
+    "name": "CrtMailingAdd[0]",
+    "fullName": "CrtMailingAdd[0]",
+    "type": "/Tx",
+    "rect": [
+      96.987,
+      616.873,
+      393.993,
+      625.873
+    ],
+    "tooltip": "MAILING ADDRESS"
+  },
+  {
+    "page": 0,
+    "name": "CrtCityZip[0]",
+    "fullName": "CrtCityZip[0]",
+    "type": "/Tx",
+    "rect": [
+      97.012,
+      605.503,
+      394.004,
+      614.503
+    ],
+    "tooltip": "CITY AND ZIP CODE"
+  },
+  {
+    "page": 0,
+    "name": "CrtBranch[0]",
+    "fullName": "CrtBranch[0]",
+    "type": "/Tx",
+    "rect": [
+      96.987,
+      594.258,
+      393.993,
+      603.258
+    ],
+    "tooltip": "BRANCH NAME"
+  },
+  {
+    "page": 0,
+    "name": "Party1[0]",
+    "fullName": "Party1[0]",
+    "type": "/Tx",
+    "rect": [
+      96.803,
+      579.438,
+      394.342,
+      588.438
+    ],
+    "tooltip": "PETITIONER"
+  },
+  {
+    "page": 0,
+    "name": "Party2[0]",
+    "fullName": "Party2[0]",
+    "type": "/Tx",
+    "rect": [
+      96.803,
+      565.885,
+      394.342,
+      575.183
+    ],
+    "tooltip": "RESPONDENT"
+  },
+  {
+    "page": 0,
+    "name": "Text3[0]",
+    "fullName": "Text3[0]",
+    "type": "/Tx",
+    "rect": [
+      304.135,
+      519.557,
+      574.951,
+      528.874
+    ],
+    "tooltip": "You are notified that the following judgment was entered on (date)"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      56.565,
+      503.751,
+      65.565,
+      512.751
+    ],
+    "tooltip": "Dissolution"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      56.565,
+      490.052,
+      65.565,
+      499.052
+    ],
+    "tooltip": "Dissolution\u2014status only"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      56.566,
+      475.91,
+      65.566,
+      484.91
+    ],
+    "tooltip": "Dissolution\u2014reserving jurisdiction over termination of marital status or domestic partnership"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      56.565,
+      461.319,
+      65.565,
+      470.319
+    ],
+    "tooltip": "Legal separation"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      56.565,
+      447.62,
+      65.565,
+      456.62
+    ],
+    "tooltip": "Nullity"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      56.566,
+      433.478,
+      65.566,
+      442.478
+    ],
+    "tooltip": "Parent-child relationship"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      56.566,
+      418.466,
+      65.566,
+      427.466
+    ],
+    "tooltip": "Judgment on reserved issues"
+  },
+  {
+    "page": 0,
+    "name": "FillText1[0]",
+    "fullName": "FillText1[0]",
+    "type": "/Tx",
+    "rect": [
+      75.401,
+      374.428,
+      574.231,
+      402.554
+    ],
+    "tooltip": "Specify"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox1[0]",
+    "fullName": "CheckBox1[0]",
+    "type": "/Btn",
+    "rect": [
+      56.565,
+      403.587,
+      65.565,
+      412.587
+    ],
+    "tooltip": "Other"
+  },
+  {
+    "page": 0,
+    "name": "SigDate[0]",
+    "fullName": "SigDate[0]",
+    "type": "/Tx",
+    "rect": [
+      61.642,
+      362.882,
+      169.642,
+      372.883
+    ],
+    "tooltip": "Date"
+  },
+  {
+    "page": 0,
+    "name": "SigDate1[0]",
+    "fullName": "SigDate1[0]",
+    "type": "/Tx",
+    "rect": [
+      362.387,
+      273.508,
+      542.798,
+      283.509
+    ],
+    "tooltip": "Effective date of termination of marital or domestic partnership status Specify"
+  },
+  {
+    "page": 0,
+    "name": "FillText1[0]",
+    "fullName": "FillText1[0]",
+    "type": "/Tx",
+    "rect": [
+      37.199,
+      100.635,
+      277.71,
+      146.678
+    ],
+    "tooltip": "Name and address of petitioner or petitioner's attorney"
+  },
+  {
+    "page": 0,
+    "name": "FillText2[0]",
+    "fullName": "FillText2[0]",
+    "type": "/Tx",
+    "rect": [
+      326.067,
+      101.015,
+      566.578,
+      147.058
+    ],
+    "tooltip": "Name and address of respondent or respondent's attorney"
+  }
+]

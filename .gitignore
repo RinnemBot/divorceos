@@ -38,9 +38,11 @@ lerna-debug.log*
 # Testing
 coverage
 *.lcov
+.playwright-cli/
 
 # Temporary files
 *.tmp
 *.temp
 .cache
+tmp/
 .vercel

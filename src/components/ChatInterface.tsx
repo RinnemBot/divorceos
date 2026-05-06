@@ -1086,6 +1086,20 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed, a
     const draftInput = overrideInput ?? input;
     if ((draftInput.trim().length === 0 && attachments.length === 0) || isLoading) return;
     const selectedAttachments = attachments;
+
+    if (!currentUser) {
+      const signInMessage: ChatMessage = {
+        id: uuidv4(),
+        role: 'assistant',
+        content: 'Sign in first and I can answer with Maria, save your chat history, and keep your case context together.',
+        timestamp: new Date().toISOString(),
+        suggestedActions: [{ label: 'View pricing', href: '/pricing' }],
+      };
+      shouldAutoScrollRef.current = true;
+      setMessages((current) => [...current, signInMessage]);
+      window.dispatchEvent(new CustomEvent('divorceos:auth-required'));
+      return;
+    }
     
     if (currentUser) {
       const canChat = authService.canUserChat(currentUser);
@@ -1493,7 +1507,7 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed, a
           <div className="flex items-center gap-2">
             {!currentUser && (
               <Badge variant="secondary" className="bg-white/20 text-white border-0">
-                Guest Mode
+                Sign-in required
               </Badge>
             )}
             {currentUser && (
@@ -1828,6 +1842,8 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed, a
                 type="button"
                 variant="ghost"
                 size="icon"
+                aria-label="Attach a document"
+                title="Attach a document"
                 className="text-slate-600 hover:text-emerald-700"
                 onClick={() => triggerAttachmentPicker('document')}
               >
@@ -1837,6 +1853,8 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed, a
                 type="button"
                 variant="ghost"
                 size="icon"
+                aria-label="Attach an image"
+                title="Attach an image"
                 className="text-slate-600 hover:text-emerald-700"
                 onClick={() => triggerAttachmentPicker('image')}
               >
@@ -1865,6 +1883,8 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed, a
             onClick={() => void toggleVoiceInput()}
             disabled={isLoading || !speechRecognitionSupported}
             variant="outline"
+            aria-label={isListening ? 'Stop voice input' : 'Start voice input'}
+            title={isListening ? 'Stop voice input' : 'Start voice input'}
             className={`rounded-2xl h-12 px-4 border-slate-200 ${isListening ? 'bg-rose-50 border-rose-300 text-rose-700 hover:bg-rose-100' : 'text-slate-600 hover:text-emerald-700'}`}
           >
             {isListening ? <Square className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
@@ -1872,6 +1892,8 @@ export function ChatInterface({ currentUser, prefillPrompt, onPrefillConsumed, a
           <Button
             onClick={() => void handleSend()}
             disabled={((!input.trim() && attachments.length === 0) || isLoading)}
+            aria-label={isLoading ? 'Maria is responding' : 'Send message to Maria'}
+            title={isLoading ? 'Maria is responding' : 'Send message to Maria'}
             className="bg-emerald-700 hover:bg-emerald-800 rounded-2xl h-12 px-4 shadow-sm"
           >
             {isLoading ? (

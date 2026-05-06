@@ -72,19 +72,19 @@ function FormCard({ form, currentPlan }: { form: CourtForm; currentPlan: Subscri
             <h3 className="mb-1 text-lg font-semibold text-slate-900 dark:text-white">{form.title}</h3>
             <p className="mb-4 text-sm leading-6 text-slate-600 dark:text-slate-300">{form.description}</p>
             <div className="flex flex-wrap gap-2">
-              <a href={form.pdfUrl} target="_blank" rel="noopener noreferrer">
-                <Button size="sm" className="rounded-full bg-emerald-700 text-white hover:bg-emerald-800 dark:bg-emerald-700 dark:text-white dark:hover:bg-emerald-600">
+              <Button asChild size="sm" className="rounded-full bg-emerald-700 text-white hover:bg-emerald-800 dark:bg-emerald-700 dark:text-white dark:hover:bg-emerald-600">
+                <a href={form.pdfUrl} target="_blank" rel="noopener noreferrer" aria-label={`Download ${form.formNumber} PDF`}>
                   <Download className="mr-1 h-4 w-4" />
                   Download PDF
-                </Button>
-              </a>
+                </a>
+              </Button>
               {form.instructionsUrl && (
-                <a href={form.instructionsUrl} target="_blank" rel="noopener noreferrer">
-                  <Button size="sm" variant="outline" className="rounded-full">
+                <Button asChild size="sm" variant="outline" className="rounded-full">
+                  <a href={form.instructionsUrl} target="_blank" rel="noopener noreferrer" aria-label={`Open ${form.formNumber} instructions`}>
                     <BookOpen className="mr-1 h-4 w-4" />
                     Instructions
-                  </Button>
-                </a>
+                  </a>
+                </Button>
               )}
             </div>
 
@@ -102,15 +102,13 @@ function FormCard({ form, currentPlan }: { form: CourtForm; currentPlan: Subscri
                     <p className="text-sm leading-6 text-slate-600 dark:text-slate-300">
                       Unlock Maria’s form guidance for this filing. Basic adds checklist help, and Essential+ adds deeper step-by-step support.
                     </p>
-                    <Link to="/pricing">
-                      <Button size="sm" className="rounded-full bg-emerald-700 text-white hover:bg-emerald-800 dark:bg-emerald-700 dark:text-white dark:hover:bg-emerald-600">
-                        See plans
-                      </Button>
-                    </Link>
+                    <Button asChild size="sm" className="rounded-full bg-emerald-700 text-white hover:bg-emerald-800 dark:bg-emerald-700 dark:text-white dark:hover:bg-emerald-600">
+                      <Link to="/pricing">See plans</Link>
+                    </Button>
                   </div>
                 ) : (
                   <p className="text-sm leading-6 text-slate-600 dark:text-slate-300">
-                    Guidance for this plan level is coming soon.
+Maria guidance is available on higher plans when you need deeper step-by-step help.
                   </p>
                 )}
               </div>
@@ -171,13 +169,13 @@ export function FormsPage() {
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Button asChild className="rounded-full bg-emerald-700 px-6 text-white hover:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-600">
-              <Link to="/what-do-i-need">
+              <Link to="/draft-forms">
                 <Sparkles className="mr-2 h-4 w-4" />
-                Help me choose a packet
+                Start Draft Forms with Maria
               </Link>
             </Button>
             <Button asChild variant="outline" className="rounded-full border-white/80 bg-white/70 dark:border-white/10 dark:bg-white/5">
-              <Link to="/draft-forms">Start Draft Forms with Maria</Link>
+              <Link to="/" state={{ focusChat: true, fromAppNavigation: true }}>Go to Maria chat</Link>
             </Button>
           </div>
         </div>
@@ -189,6 +187,31 @@ export function FormsPage() {
               <strong>Important:</strong> these are official California Judicial Council forms from courts.ca.gov. Always make sure you are using the latest version.
             </p>
           </div>
+        </div>
+
+        <div className="mb-8 grid gap-3 md:grid-cols-5">
+          {[
+            { label: 'Start a divorce', query: 'FL-100 FL-110 FL-105' },
+            { label: 'I was served', query: 'FL-120 response' },
+            { label: 'Children / custody', query: 'custody child support FL-105 FL-300' },
+            { label: 'Fee waiver', query: 'FW-001 fee waiver' },
+            { label: 'Final judgment', query: 'judgment default FL-180' },
+          ].map((path) => (
+            <button
+              key={path.label}
+              type="button"
+              onClick={() => {
+                setSearchQuery(path.query);
+                const results = searchForms(path.query);
+                setSearchResults(results);
+                setActiveCategory('search');
+              }}
+              className="rounded-3xl border border-white/80 bg-white/72 p-4 text-left text-sm font-semibold text-slate-800 shadow-sm backdrop-blur transition hover:-translate-y-0.5 hover:border-emerald-300 hover:bg-white/90 dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-emerald-400/10"
+            >
+              {path.label}
+              <span className="mt-1 block text-xs font-normal leading-5 text-slate-500 dark:text-slate-300">Show likely forms</span>
+            </button>
+          ))}
         </div>
 
         <div className="mx-auto mb-8 max-w-3xl rounded-[1.75rem] border border-white/80 bg-white/72 p-3 shadow-sm backdrop-blur-xl dark:border-white/10 dark:bg-white/5">
@@ -266,12 +289,12 @@ export function FormsPage() {
               <p className="mb-4 text-sm leading-6 text-slate-600 dark:text-slate-300">
                 Go straight to the official California Courts self-help center for broader court resources.
               </p>
-              <a href="https://www.courts.ca.gov/selfhelp.htm" target="_blank" rel="noopener noreferrer">
-                <Button variant="outline" size="sm" className="w-full rounded-full">
+              <Button asChild variant="outline" size="sm" className="w-full rounded-full">
+                <a href="https://www.courts.ca.gov/selfhelp.htm" target="_blank" rel="noopener noreferrer">
                   Visit Self-Help Center
                   <ExternalLink className="ml-1 h-4 w-4" />
-                </Button>
-              </a>
+                </a>
+              </Button>
             </CardContent>
           </Card>
 
@@ -286,12 +309,12 @@ export function FormsPage() {
               <p className="mb-4 text-sm leading-6 text-slate-600 dark:text-slate-300">
                 If court fees are a problem, start with the fee waiver paperwork.
               </p>
-              <a href="/forms/fw-001.pdf" target="_blank" rel="noopener noreferrer">
-                <Button variant="outline" size="sm" className="w-full rounded-full">
+              <Button asChild variant="outline" size="sm" className="w-full rounded-full">
+                <a href="/forms/fw-001.pdf" target="_blank" rel="noopener noreferrer">
                   Download FW-001 Fee Waiver
                   <Download className="ml-1 h-4 w-4" />
-                </Button>
-              </a>
+                </a>
+              </Button>
             </CardContent>
           </Card>
 

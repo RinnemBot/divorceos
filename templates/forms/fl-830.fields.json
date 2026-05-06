@@ -1,0 +1,379 @@
+[
+  {
+    "page": 0,
+    "name": "Petitioner2[0]",
+    "fullName": "Petitioner2[0]",
+    "type": "/Tx",
+    "rect": [
+      320.995,
+      280.332,
+      564.327,
+      363.997
+    ],
+    "tooltip": "Name.Address.Petitioner2"
+  },
+  {
+    "page": 0,
+    "name": "10[0]",
+    "fullName": "10[0]",
+    "type": "/Tx",
+    "rect": [
+      201.886,
+      492.985,
+      349.22,
+      501.985
+    ],
+    "tooltip": "(date):"
+  },
+  {
+    "page": 0,
+    "name": "11[0]",
+    "fullName": "11[0]",
+    "type": "/Tx",
+    "rect": [
+      60.746,
+      453.821,
+      205.375,
+      462.821
+    ],
+    "tooltip": "Date:"
+  },
+  {
+    "page": 0,
+    "name": "12[0]",
+    "fullName": "12[0]",
+    "type": "/Tx",
+    "rect": [
+      36.0,
+      436.966,
+      267.73,
+      447.942
+    ],
+    "tooltip": "(TYPE OR PRINT NAME)"
+  },
+  {
+    "page": 0,
+    "name": "mailing_place[0]",
+    "fullName": "mailing_place[0]",
+    "type": "/Tx",
+    "rect": [
+      69.761,
+      199.936,
+      290.602,
+      208.936
+    ],
+    "tooltip": "(place): "
+  },
+  {
+    "page": 0,
+    "name": "mailing_date[0]",
+    "fullName": "mailing_date[0]",
+    "type": "/Tx",
+    "rect": [
+      63.014,
+      185.59,
+      205.741,
+      194.59
+    ],
+    "tooltip": "Date:"
+  },
+  {
+    "page": 0,
+    "name": "CrtCounty_ft[0]",
+    "fullName": "CrtCounty_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      227.713,
+      637.687,
+      393.993,
+      649.207
+    ],
+    "tooltip": "SUPERIOR COURT OF CALIFORNIA, COUNTY OF"
+  },
+  {
+    "page": 0,
+    "name": "Street_ft[0]",
+    "fullName": "Street_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      115.281,
+      627.179,
+      394.554,
+      637.18
+    ],
+    "tooltip": "STREET ADDRESS:"
+  },
+  {
+    "page": 0,
+    "name": "MailingAdd_ft[0]",
+    "fullName": "MailingAdd_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      115.272,
+      616.668,
+      394.554,
+      626.669
+    ],
+    "tooltip": "MAILING ADDRESS:"
+  },
+  {
+    "page": 0,
+    "name": "CityZip_ft[0]",
+    "fullName": "CityZip_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      116.053,
+      606.16,
+      396.0,
+      616.161
+    ],
+    "tooltip": "CITY AND ZIP CODE:"
+  },
+  {
+    "page": 0,
+    "name": "Branch_ft[0]",
+    "fullName": "Branch_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      115.965,
+      595.649,
+      393.97,
+      605.65
+    ],
+    "tooltip": "BRANCH NAME:"
+  },
+  {
+    "page": 0,
+    "name": "Party1_ft[0]",
+    "fullName": "Party1_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      85.19,
+      566.617,
+      394.342,
+      578.137
+    ],
+    "tooltip": "Petitioner 1"
+  },
+  {
+    "page": 0,
+    "name": "Party2_ft[0]",
+    "fullName": "Party2_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      85.19,
+      553.064,
+      394.342,
+      564.584
+    ],
+    "tooltip": "Petitioner 2"
+  },
+  {
+    "page": 0,
+    "name": "CaseNumber_ft[0]",
+    "fullName": "CaseNumber_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      400.005,
+      525.478,
+      572.805,
+      539.867
+    ],
+    "tooltip": "CASE NUMBER:"
+  },
+  {
+    "page": 0,
+    "name": "AttyState_ft[0]",
+    "fullName": "AttyState_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      266.258,
+      686.973,
+      293.672,
+      698.493
+    ],
+    "tooltip": "STATE:"
+  },
+  {
+    "page": 0,
+    "name": "AttyZip_ft[0]",
+    "fullName": "AttyZip_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      329.091,
+      686.973,
+      393.993,
+      698.493
+    ],
+    "tooltip": "ZIP CODE:"
+  },
+  {
+    "page": 0,
+    "name": "AttyCity_ft[0]",
+    "fullName": "AttyCity_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      56.338,
+      686.973,
+      240.409,
+      698.493
+    ],
+    "tooltip": "CITY:"
+  },
+  {
+    "page": 0,
+    "name": "AttyStreet_ft[0]",
+    "fullName": "AttyStreet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      97.214,
+      698.405,
+      393.993,
+      709.925
+    ],
+    "tooltip": "STREET ADDRESS:"
+  },
+  {
+    "page": 0,
+    "name": "AttyFirm_ft[0]",
+    "fullName": "AttyFirm_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      75.458,
+      709.837,
+      393.993,
+      721.108
+    ],
+    "tooltip": "FIRM NAME:"
+  },
+  {
+    "page": 0,
+    "name": "AttyName_ft[0]",
+    "fullName": "AttyName_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      60.463,
+      721.27,
+      393.67,
+      732.79
+    ],
+    "tooltip": "NAME:"
+  },
+  {
+    "page": 0,
+    "name": "AttyBarNo_dc[0]",
+    "fullName": "AttyBarNo_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      275.201,
+      733.711,
+      393.67,
+      744.854
+    ],
+    "tooltip": "STATE BAR NO:"
+  },
+  {
+    "page": 0,
+    "name": "Phone_ft[0]",
+    "fullName": "Phone_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      93.581,
+      675.541,
+      216.83,
+      687.061
+    ],
+    "tooltip": "TELEPHONE NO.:"
+  },
+  {
+    "page": 0,
+    "name": "Fax_ft[0]",
+    "fullName": "Fax_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      270.267,
+      675.541,
+      393.993,
+      687.061
+    ],
+    "tooltip": "FAX NO. :"
+  },
+  {
+    "page": 0,
+    "name": "Email_ft[0]",
+    "fullName": "Email_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      95.711,
+      663.389,
+      393.993,
+      674.909
+    ],
+    "tooltip": "E-MAIL ADDRESS:"
+  },
+  {
+    "page": 0,
+    "name": "AttyFor_ft[0]",
+    "fullName": "AttyFor_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      115.214,
+      651.237,
+      393.993,
+      662.757
+    ],
+    "tooltip": "ATTORNEY FOR (Name):"
+  },
+  {
+    "page": 0,
+    "name": "Petitioner2[1]",
+    "fullName": "Petitioner2[1]",
+    "type": "/Tx",
+    "rect": [
+      46.015,
+      280.332,
+      289.347,
+      363.997
+    ],
+    "tooltip": "Name.Address.Petitioner2"
+  },
+  {
+    "page": 0,
+    "name": "Print_bt[0]",
+    "fullName": "Print_bt[0]",
+    "type": "/Btn",
+    "rect": [
+      258.775,
+      4.459,
+      339.775,
+      21.467
+    ],
+    "tooltip": "Print this form"
+  },
+  {
+    "page": 0,
+    "name": "Save_bt[0]",
+    "fullName": "Save_bt[0]",
+    "type": "/Btn",
+    "rect": [
+      345.314,
+      4.459,
+      426.419,
+      21.467
+    ],
+    "tooltip": "Save this form"
+  },
+  {
+    "page": 0,
+    "name": "Reset_bt[0]",
+    "fullName": "Reset_bt[0]",
+    "type": "/Btn",
+    "rect": [
+      495.003,
+      4.459,
+      576.0,
+      21.467
+    ],
+    "tooltip": "Clear this form"
+  }
+]

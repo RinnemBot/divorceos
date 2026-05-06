@@ -130,6 +130,7 @@ const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const USERS_TABLE = 'site_users';
 const SESSIONS_TABLE = 'site_sessions';
 const CHAT_SESSIONS_TABLE = 'site_chat_sessions';
+export const FORM_DRAFTS_TABLE = 'site_form_drafts';
 const USER_MEMORY_TABLE = 'site_user_memory';
 const CASE_REMINDERS_TABLE = 'site_case_reminders';
 const SESSION_COOKIE = 'divorceos_session';

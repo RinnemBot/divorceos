@@ -1,0 +1,2108 @@
+[
+  {
+    "page": 0,
+    "name": "PartiesSignedVoluntaryPaternityDec_cb[0]",
+    "fullName": "PartiesSignedVoluntaryPaternityDec_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      72.037,
+      83.667,
+      81.037,
+      92.667
+    ],
+    "tooltip": "Petitioner and Respondent signed a voluntary declaration of parentage or paternity. (Attach a copy if available.)"
+  },
+  {
+    "page": 0,
+    "name": "Amended_cb[0]",
+    "fullName": "Amended_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      321.729,
+      550.994,
+      331.729,
+      560.994
+    ],
+    "tooltip": "AMENDED"
+  },
+  {
+    "page": 0,
+    "name": "DissolutionOf_cb[0]",
+    "fullName": "DissolutionOf_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      47.398,
+      536.438,
+      57.398,
+      546.438
+    ],
+    "tooltip": "Dissolution (Divorce) of:"
+  },
+  {
+    "page": 0,
+    "name": "Marriage_cb[0]",
+    "fullName": "Marriage_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      202.708,
+      537.124,
+      212.708,
+      547.124
+    ],
+    "tooltip": "Marriage"
+  },
+  {
+    "page": 0,
+    "name": "DomesticPartnership_cb[0]",
+    "fullName": "DomesticPartnership_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      282.013,
+      536.826,
+      292.013,
+      546.826
+    ],
+    "tooltip": "Domestic Partnership"
+  },
+  {
+    "page": 0,
+    "name": "NullityOf_cb[0]",
+    "fullName": "NullityOf_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      47.044,
+      512.025,
+      57.044,
+      522.025
+    ],
+    "tooltip": "Nullity of:"
+  },
+  {
+    "page": 0,
+    "name": "Marriage_cb[1]",
+    "fullName": "Marriage_cb[1]",
+    "type": "/Btn",
+    "rect": [
+      202.708,
+      512.026,
+      212.708,
+      522.026
+    ],
+    "tooltip": "Marriage"
+  },
+  {
+    "page": 0,
+    "name": "DomesticPartnership_cb[1]",
+    "fullName": "DomesticPartnership_cb[1]",
+    "type": "/Btn",
+    "rect": [
+      282.013,
+      512.026,
+      292.013,
+      522.026
+    ],
+    "tooltip": "Domestic Partnership"
+  },
+  {
+    "page": 0,
+    "name": "LegalSeparationOf_cb[0]",
+    "fullName": "LegalSeparationOf_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      47.398,
+      524.796,
+      57.398,
+      534.796
+    ],
+    "tooltip": "Legal Separation of:"
+  },
+  {
+    "page": 0,
+    "name": "Marriage_cb[2]",
+    "fullName": "Marriage_cb[2]",
+    "type": "/Btn",
+    "rect": [
+      202.708,
+      524.793,
+      212.708,
+      534.793
+    ],
+    "tooltip": "Marriage"
+  },
+  {
+    "page": 0,
+    "name": "DomesticPartnership_cb[2]",
+    "fullName": "DomesticPartnership_cb[2]",
+    "type": "/Btn",
+    "rect": [
+      282.013,
+      524.796,
+      292.013,
+      534.796
+    ],
+    "tooltip": "Domestic Partnership"
+  },
+  {
+    "page": 0,
+    "name": "AndRequestFor_cb[0]",
+    "fullName": "AndRequestFor_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      151.679,
+      550.773,
+      161.679,
+      560.773
+    ],
+    "tooltip": "AND REQUEST FOR"
+  },
+  {
+    "page": 0,
+    "name": "AttyFor_ft[0]",
+    "fullName": "AttyFor_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      107.686,
+      654.437,
+      394.095,
+      663.437
+    ],
+    "tooltip": "ATTORNEY FOR (name):"
+  },
+  {
+    "page": 0,
+    "name": "Email_ft[0]",
+    "fullName": "Email_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      90.697,
+      666.589,
+      394.095,
+      675.589
+    ],
+    "tooltip": "E-MAIL ADDRESS:"
+  },
+  {
+    "page": 0,
+    "name": "Fax_ft[0]",
+    "fullName": "Fax_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      265.336,
+      678.741,
+      393.772,
+      687.741
+    ],
+    "tooltip": "FAX NO.:"
+  },
+  {
+    "page": 0,
+    "name": "Phone_ft[0]",
+    "fullName": "Phone_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      88.694,
+      678.741,
+      216.932,
+      687.741
+    ],
+    "tooltip": "TELEPHONE NO.:"
+  },
+  {
+    "page": 0,
+    "name": "AttyZip_ft[0]",
+    "fullName": "AttyZip_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      326.252,
+      690.173,
+      393.772,
+      699.173
+    ],
+    "tooltip": "ZIP CODE:"
+  },
+  {
+    "page": 0,
+    "name": "AttyState_ft[0]",
+    "fullName": "AttyState_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      262.888,
+      690.173,
+      292.3,
+      699.173
+    ],
+    "tooltip": "STATE:"
+  },
+  {
+    "page": 0,
+    "name": "AttyCity_ft[0]",
+    "fullName": "AttyCity_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      53.695,
+      690.173,
+      240.511,
+      699.173
+    ],
+    "tooltip": "CITY:"
+  },
+  {
+    "page": 0,
+    "name": "AttyStreet_ft[0]",
+    "fullName": "AttyStreet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      93.683,
+      701.605,
+      394.095,
+      710.605
+    ],
+    "tooltip": "STREET ADDRESS:"
+  },
+  {
+    "page": 0,
+    "name": "AttyFirm_ft[0]",
+    "fullName": "AttyFirm_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      72.687,
+      712.788,
+      394.095,
+      721.788
+    ],
+    "tooltip": "FIRM NAME:"
+  },
+  {
+    "page": 0,
+    "name": "AttyName_ft[0]",
+    "fullName": "AttyName_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      57.683,
+      724.47,
+      393.772,
+      733.47
+    ],
+    "tooltip": "NAME:"
+  },
+  {
+    "page": 0,
+    "name": "BarNo_ft[0]",
+    "fullName": "BarNo_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      308.623,
+      735.389,
+      393.789,
+      744.389
+    ],
+    "tooltip": "STATE BAR NUMBER:"
+  },
+  {
+    "page": 0,
+    "name": "CrtCounty_ft[0]",
+    "fullName": "CrtCounty_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      230.395,
+      638.024,
+      391.502,
+      648.025
+    ],
+    "tooltip": "SUPERIOR COURT OF CALIFORNIA, COUNTY OF"
+  },
+  {
+    "page": 0,
+    "name": "Branch_ft[0]",
+    "fullName": "Branch_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      111.467,
+      597.217,
+      391.502,
+      607.218
+    ],
+    "tooltip": "BRANCH NAME:"
+  },
+  {
+    "page": 0,
+    "name": "CityZip_ft[0]",
+    "fullName": "CityZip_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      111.555,
+      607.421,
+      391.502,
+      617.422
+    ],
+    "tooltip": "CITY AND ZIP CODE:"
+  },
+  {
+    "page": 0,
+    "name": "Street_ft[0]",
+    "fullName": "Street_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      110.783,
+      627.822,
+      391.502,
+      637.823
+    ],
+    "tooltip": "STREET ADDRESS:"
+  },
+  {
+    "page": 0,
+    "name": "MailingAdd_ft[0]",
+    "fullName": "MailingAdd_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      110.696,
+      617.623,
+      391.502,
+      627.624
+    ],
+    "tooltip": "MAILING ADDRESS:"
+  },
+  {
+    "page": 0,
+    "name": "Party2_ft[0]",
+    "fullName": "Party2_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      99.863,
+      569.579,
+      393.619,
+      578.579
+    ],
+    "tooltip": "RESPONDENT:"
+  },
+  {
+    "page": 0,
+    "name": "Party1_ft[0]",
+    "fullName": "Party1_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      99.863,
+      579.56,
+      393.619,
+      588.56
+    ],
+    "tooltip": "PETITIONER:"
+  },
+  {
+    "page": 0,
+    "name": "CaseNumber_ft[0]",
+    "fullName": "CaseNumber_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      400.64,
+      540.567,
+      551.542,
+      552.167
+    ],
+    "tooltip": "CASE NUMBER:"
+  },
+  {
+    "page": 0,
+    "name": "WeAreMarried_cb[0]",
+    "fullName": "WeAreMarried_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      71.858,
+      477.002,
+      81.858,
+      487.002
+    ],
+    "tooltip": "We are married."
+  },
+  {
+    "page": 0,
+    "name": "DPEstablishedInCalifornia[0]",
+    "fullName": "DPEstablishedInCalifornia[0]",
+    "type": "/Btn",
+    "rect": [
+      71.858,
+      462.681,
+      81.858,
+      472.681
+    ],
+    "tooltip": "We are domestic partners and our domestic partnership was established in California."
+  },
+  {
+    "page": 0,
+    "name": "DPNOTEstablishedinCA_cb[0]",
+    "fullName": "DPNOTEstablishedinCA_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      71.858,
+      449.415,
+      81.858,
+      459.415
+    ],
+    "tooltip": "We are domestic partners and our domestic partnership was NOT established in California."
+  },
+  {
+    "page": 0,
+    "name": "ThereAreNoMinorChildren_cb[0]",
+    "fullName": "ThereAreNoMinorChildren_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      71.858,
+      237.256,
+      81.858,
+      247.256
+    ],
+    "tooltip": "There are no minor children. "
+  },
+  {
+    "page": 0,
+    "name": "MinorChildrenList_cb[0]",
+    "fullName": "MinorChildrenList_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      71.858,
+      222.762,
+      81.858,
+      232.762
+    ],
+    "tooltip": "The minor children are:"
+  },
+  {
+    "page": 0,
+    "name": "Child1Name_tf[0]",
+    "fullName": "Child1Name_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      97.662,
+      196.858,
+      313.787,
+      208.936
+    ],
+    "tooltip": "Child's name"
+  },
+  {
+    "page": 0,
+    "name": "Child4Name_tf[0]",
+    "fullName": "Child4Name_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      97.662,
+      155.373,
+      313.787,
+      167.451
+    ],
+    "tooltip": "Child's name"
+  },
+  {
+    "page": 0,
+    "name": "Child3Name_tf[0]",
+    "fullName": "Child3Name_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      97.662,
+      169.401,
+      313.787,
+      181.479
+    ],
+    "tooltip": "Child's name"
+  },
+  {
+    "page": 0,
+    "name": "Child2Name_tf[0]",
+    "fullName": "Child2Name_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      97.662,
+      183.427,
+      313.787,
+      195.505
+    ],
+    "tooltip": "Child's name"
+  },
+  {
+    "page": 0,
+    "name": "Child1Age_tf[0]",
+    "fullName": "Child1Age_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      415.165,
+      196.858,
+      465.565,
+      208.936
+    ],
+    "tooltip": "Age"
+  },
+  {
+    "page": 0,
+    "name": "Child4Age_tf[0]",
+    "fullName": "Child4Age_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      415.165,
+      155.373,
+      465.565,
+      167.451
+    ],
+    "tooltip": "Age"
+  },
+  {
+    "page": 0,
+    "name": "Child3Age_tf[0]",
+    "fullName": "Child3Age_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      415.165,
+      169.401,
+      465.565,
+      181.479
+    ],
+    "tooltip": "Age"
+  },
+  {
+    "page": 0,
+    "name": "Child2Age_tf[0]",
+    "fullName": "Child2Age_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      415.165,
+      183.427,
+      465.565,
+      195.505
+    ],
+    "tooltip": "Age"
+  },
+  {
+    "page": 0,
+    "name": "Child1Birthdate_dt[0]",
+    "fullName": "Child1Birthdate_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      324.411,
+      196.858,
+      408.135,
+      208.936
+    ],
+    "tooltip": "Birth date"
+  },
+  {
+    "page": 0,
+    "name": "Child4Birthdate_dt[0]",
+    "fullName": "Child4Birthdate_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      324.839,
+      155.373,
+      407.358,
+      167.451
+    ],
+    "tooltip": "Birth date"
+  },
+  {
+    "page": 0,
+    "name": "Child3Date_dt[0]",
+    "fullName": "Child3Date_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      324.839,
+      169.401,
+      407.358,
+      181.479
+    ],
+    "tooltip": "Birth date"
+  },
+  {
+    "page": 0,
+    "name": "Child2Birthdate_dt[0]",
+    "fullName": "Child2Birthdate_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      324.839,
+      183.427,
+      407.358,
+      195.505
+    ],
+    "tooltip": "Birth date"
+  },
+  {
+    "page": 0,
+    "name": "Attachment4b[0]",
+    "fullName": "Attachment4b[0]",
+    "type": "/Btn",
+    "rect": [
+      117.865,
+      142.41,
+      127.865,
+      152.41
+    ],
+    "tooltip": "continued on Attachment 4b."
+  },
+  {
+    "page": 0,
+    "name": "UnbornChild_cb[0]",
+    "fullName": "UnbornChild_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      294.939,
+      142.408,
+      304.939,
+      152.408
+    ],
+    "tooltip": "a child who is not yet born."
+  },
+  {
+    "page": 0,
+    "name": "RespondentMeetsResidencyReqs_cb[0]",
+    "fullName": "RespondentMeetsResidencyReqs_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      144.952,
+      420.853,
+      154.952,
+      430.853
+    ],
+    "tooltip": "Respondent    "
+  },
+  {
+    "page": 0,
+    "name": "PetitionerMeetsResidencyReqs_cb[0]",
+    "fullName": "PetitionerMeetsResidencyReqs_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      71.858,
+      420.853,
+      81.858,
+      430.853
+    ],
+    "tooltip": "Petitioner"
+  },
+  {
+    "page": 0,
+    "name": "DPNOTEstablishedinCA_cb[1]",
+    "fullName": "DPNOTEstablishedinCA_cb[1]",
+    "type": "/Btn",
+    "rect": [
+      71.858,
+      386.488,
+      81.858,
+      396.488
+    ],
+    "tooltip": "Our domestic partnership was established in California. Neither of us has to be a resident or have a domicile in California to dissolve our partnership here."
+  },
+  {
+    "page": 0,
+    "name": "DateOfMarriage_dt[0]",
+    "fullName": "DateOfMarriage_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      214.488,
+      314.115,
+      308.137,
+      323.141
+    ],
+    "tooltip": "Date of marriage (specify):"
+  },
+  {
+    "page": 0,
+    "name": "DateOfSeparation_dt[0]",
+    "fullName": "DateOfSeparation_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      447.361,
+      314.115,
+      575.767,
+      323.141
+    ],
+    "tooltip": "Date of separation (specify):"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox61[0]",
+    "fullName": "CheckBox61[0]",
+    "type": "/Btn",
+    "rect": [
+      71.858,
+      313.627,
+      81.858,
+      323.627
+    ],
+    "tooltip": "(1) Date of marriage"
+  },
+  {
+    "page": 0,
+    "name": "CheckBox61[1]",
+    "fullName": "CheckBox61[1]",
+    "type": "/Btn",
+    "rect": [
+      71.858,
+      289.841,
+      81.858,
+      299.841
+    ],
+    "tooltip": "(1) Registration date of domestic partnership"
+  },
+  {
+    "page": 0,
+    "name": "DatePartnersSeparated_dt[0]",
+    "fullName": "DatePartnersSeparated_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      445.907,
+      279.311,
+      574.999,
+      288.337
+    ],
+    "tooltip": "Date of separation (specify):"
+  },
+  {
+    "page": 0,
+    "name": "DateTimeField1[0]",
+    "fullName": "DateTimeField1[0]",
+    "type": "/Tx",
+    "rect": [
+      106.537,
+      279.337,
+      309.648,
+      288.337
+    ],
+    "tooltip": "Registration date of domestic partnership with the California Secretary of State or other state equivalent (specify):"
+  },
+  {
+    "page": 0,
+    "name": "SameSexMarriedInCA_cb[0]",
+    "fullName": "SameSexMarriedInCA_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      71.858,
+      363.839,
+      81.858,
+      373.839
+    ],
+    "tooltip": "We are the same sex, were married in California, but currently live in a jurisdiction that does not recognize, and will not dissolve, our marriage. This Petition is filed in the county where we married."
+  },
+  {
+    "page": 0,
+    "name": "PetitionersResidence_tf[0]",
+    "fullName": "PetitionersResidence_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      202.285,
+      342.025,
+      328.881,
+      351.051
+    ],
+    "tooltip": "Petitioner lives in (specify): "
+  },
+  {
+    "page": 0,
+    "name": "RespondentsResidence_tf[0]",
+    "fullName": "RespondentsResidence_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      451.977,
+      342.025,
+      576.145,
+      351.051
+    ],
+    "tooltip": "Respondent lives in (specify):"
+  },
+  {
+    "page": 0,
+    "name": "MonthsSeparated_tf[0]",
+    "fullName": "MonthsSeparated_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      341.493,
+      302.496,
+      376.224,
+      311.496
+    ],
+    "tooltip": "Years"
+  },
+  {
+    "page": 0,
+    "name": "MonthsSeparated_tf[1]",
+    "fullName": "MonthsSeparated_tf[1]",
+    "type": "/Tx",
+    "rect": [
+      412.038,
+      302.496,
+      440.678,
+      311.496
+    ],
+    "tooltip": "Months"
+  },
+  {
+    "page": 0,
+    "name": "MonthsSeparated_tf[2]",
+    "fullName": "MonthsSeparated_tf[2]",
+    "type": "/Tx",
+    "rect": [
+      506.744,
+      268.574,
+      535.384,
+      277.574
+    ],
+    "tooltip": "Months"
+  },
+  {
+    "page": 0,
+    "name": "MonthsSeparated_tf[3]",
+    "fullName": "MonthsSeparated_tf[3]",
+    "type": "/Tx",
+    "rect": [
+      447.99,
+      268.574,
+      476.799,
+      277.574
+    ],
+    "tooltip": "Years"
+  },
+  {
+    "page": 0,
+    "name": "Button1[0]",
+    "fullName": "Button1[0]",
+    "type": "/Btn",
+    "rect": [
+      221.105,
+      97.379,
+      250.152,
+      106.478
+    ],
+    "tooltip": "FL-105"
+  },
+  {
+    "page": 1,
+    "name": "Button1[0]",
+    "fullName": "Button1[0]",
+    "type": "/Btn",
+    "rect": [
+      444.331,
+      155.356,
+      472.848,
+      164.356
+    ],
+    "tooltip": "FL-160"
+  },
+  {
+    "page": 1,
+    "name": "Button1[1]",
+    "fullName": "Button1[1]",
+    "type": "/Btn",
+    "rect": [
+      509.236,
+      156.676,
+      571.91,
+      165.801
+    ],
+    "tooltip": "Attachment 9b."
+  },
+  {
+    "page": 1,
+    "name": "EndJurixReRespondent_cb[0]",
+    "fullName": "EndJurixReRespondent_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      414.584,
+      255.577,
+      423.584,
+      264.577
+    ],
+    "tooltip": "Respondent "
+  },
+  {
+    "page": 1,
+    "name": "EndJurixRePetitioner_cb[0]",
+    "fullName": "EndJurixRePetitioner_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      329.477,
+      255.577,
+      338.477,
+      264.577
+    ],
+    "tooltip": "Petitioner"
+  },
+  {
+    "page": 1,
+    "name": "EndJurixReSupport[0]",
+    "fullName": "EndJurixReSupport[0]",
+    "type": "/Btn",
+    "rect": [
+      71.858,
+      255.577,
+      80.858,
+      264.577
+    ],
+    "tooltip": "Terminate (end) the court's ability to award support to"
+  },
+  {
+    "page": 1,
+    "name": "PaySupporttoPetitioner_cb[0]",
+    "fullName": "PaySupporttoPetitioner_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      305.629,
+      270.746,
+      314.629,
+      279.746
+    ],
+    "tooltip": "Petitioner"
+  },
+  {
+    "page": 1,
+    "name": "PaySupportoRespondent_cb[0]",
+    "fullName": "PaySupportoRespondent_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      389.999,
+      270.746,
+      398.999,
+      279.746
+    ],
+    "tooltip": "Respondent "
+  },
+  {
+    "page": 1,
+    "name": "PaySupport_cb[0]",
+    "fullName": "PaySupport_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      71.858,
+      270.746,
+      80.858,
+      279.746
+    ],
+    "tooltip": "Spousal or domestic partner support payable to"
+  },
+  {
+    "page": 1,
+    "name": "PartiesSignedVoluntaryPaternityDec_cb[0]",
+    "fullName": "PartiesSignedVoluntaryPaternityDec_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      71.858,
+      240.29,
+      80.858,
+      249.29
+    ],
+    "tooltip": "Reserve for future determination the issue of support payable to "
+  },
+  {
+    "page": 1,
+    "name": "ReserveJurixSupportResp_cb[0]",
+    "fullName": "ReserveJurixSupportResp_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      454.603,
+      239.998,
+      463.603,
+      248.998
+    ],
+    "tooltip": "Respondent "
+  },
+  {
+    "page": 1,
+    "name": "ReserveJurixSupportPet_cb[0]",
+    "fullName": "ReserveJurixSupportPet_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      371.707,
+      239.998,
+      380.707,
+      248.998
+    ],
+    "tooltip": "Petitioner"
+  },
+  {
+    "page": 1,
+    "name": "OtherSupport_ft[0]",
+    "fullName": "OtherSupport_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      90.244,
+      201.254,
+      570.841,
+      233.025
+    ],
+    "tooltip": "Other (specify)"
+  },
+  {
+    "page": 1,
+    "name": "Other_cb[0]",
+    "fullName": "Other_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      71.858,
+      224.025,
+      80.858,
+      233.025
+    ],
+    "tooltip": "Other (specify):"
+  },
+  {
+    "page": 1,
+    "name": "CaseNumber_ft[0]",
+    "fullName": "CaseNumber_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      399.005,
+      718.163,
+      571.805,
+      729.763
+    ],
+    "tooltip": "CASE NUMBER:"
+  },
+  {
+    "page": 1,
+    "name": "Party2_ft[0]",
+    "fullName": "Party2_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      100.459,
+      715.218,
+      394.215,
+      724.218
+    ],
+    "tooltip": "RESPONDENT:"
+  },
+  {
+    "page": 1,
+    "name": "Party1_ft[0]",
+    "fullName": "Party1_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      100.459,
+      725.199,
+      394.215,
+      734.199
+    ],
+    "tooltip": "PETITIONER:"
+  },
+  {
+    "page": 1,
+    "name": "PartiesNeverMarriedOrEstablishedDP_cb[0]",
+    "fullName": "PartiesNeverMarriedOrEstablishedDP_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      71.887,
+      666.098,
+      81.887,
+      676.098
+    ],
+    "tooltip": "Respondent contends that the parties never legally married or registered a domestic partnership."
+  },
+  {
+    "page": 1,
+    "name": "RespondentDeniesGroundsInPetition_cb[0]",
+    "fullName": "RespondentDeniesGroundsInPetition_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      71.887,
+      651.641,
+      81.887,
+      661.641
+    ],
+    "tooltip": "Respondent denies the grounds set forth in item 5 of the petition."
+  },
+  {
+    "page": 1,
+    "name": "CheckBox61[0]",
+    "fullName": "CheckBox61[0]",
+    "type": "/Btn",
+    "rect": [
+      71.858,
+      638.715,
+      81.858,
+      648.715
+    ],
+    "tooltip": "Respondent requests"
+  },
+  {
+    "page": 1,
+    "name": "Nullity_cb[0]",
+    "fullName": "Nullity_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      111.906,
+      597.161,
+      120.906,
+      606.161
+    ],
+    "tooltip": "Nullity of void marriage or domestic partnership based on  "
+  },
+  {
+    "page": 1,
+    "name": "BasedOnIncest_cb[0]",
+    "fullName": "BasedOnIncest_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      156.679,
+      583.2,
+      165.679,
+      592.2
+    ],
+    "tooltip": "incest."
+  },
+  {
+    "page": 1,
+    "name": "BasedOnBigamy_cb[0]",
+    "fullName": "BasedOnBigamy_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      253.083,
+      583.2,
+      262.083,
+      592.2
+    ],
+    "tooltip": "bigamy."
+  },
+  {
+    "page": 1,
+    "name": "NullityofVoidableMarriageOrDP_cb[0]",
+    "fullName": "NullityofVoidableMarriageOrDP_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      111.906,
+      566.524,
+      120.906,
+      575.524
+    ],
+    "tooltip": "Nullity of voidable marriage or domestic partnership based on         "
+  },
+  {
+    "page": 1,
+    "name": "BasedonAge_cb[0]",
+    "fullName": "BasedonAge_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      156.679,
+      553.272,
+      165.679,
+      562.272
+    ],
+    "tooltip": "respondent\u2019s age at time of registration of domestic partnership or marriage."
+  },
+  {
+    "page": 1,
+    "name": "PriorExistingMarriageOrDP_cb[0]",
+    "fullName": "PriorExistingMarriageOrDP_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      156.679,
+      529.21,
+      165.679,
+      538.21
+    ],
+    "tooltip": "prior existing marriage or domestic partnership. "
+  },
+  {
+    "page": 1,
+    "name": "BasedOnUnsoundMind_cb[0]",
+    "fullName": "BasedOnUnsoundMind_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      156.679,
+      515.58,
+      165.679,
+      524.58
+    ],
+    "tooltip": "unsound mind."
+  },
+  {
+    "page": 1,
+    "name": "BasedonFraud_cb[0]",
+    "fullName": "BasedonFraud_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      424.621,
+      553.272,
+      433.621,
+      562.272
+    ],
+    "tooltip": "fraud."
+  },
+  {
+    "page": 1,
+    "name": "BasedOnForce_cb[0]",
+    "fullName": "BasedOnForce_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      424.709,
+      534.424,
+      433.709,
+      543.424
+    ],
+    "tooltip": "force."
+  },
+  {
+    "page": 1,
+    "name": "BasedonPhysicalIncapacity_cb[0]",
+    "fullName": "BasedonPhysicalIncapacity_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      424.621,
+      515.58,
+      433.621,
+      524.58
+    ],
+    "tooltip": "physical incapacity."
+  },
+  {
+    "page": 1,
+    "name": "SepTypeDef_cb[0]",
+    "fullName": "SepTypeDef_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      197.921,
+      625.204,
+      206.921,
+      634.204
+    ],
+    "tooltip": "Legal separation      of the marriage or domestic partnership based on"
+  },
+  {
+    "page": 1,
+    "name": "SepTypeDef_cb[1]",
+    "fullName": "SepTypeDef_cb[1]",
+    "type": "/Btn",
+    "rect": [
+      111.906,
+      625.204,
+      120.906,
+      634.204
+    ],
+    "tooltip": "Divorce                           "
+  },
+  {
+    "page": 1,
+    "name": "SepBasis_cb[0]",
+    "fullName": "SepBasis_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      156.679,
+      612.3,
+      165.679,
+      621.3
+    ],
+    "tooltip": "irreconcilable differences."
+  },
+  {
+    "page": 1,
+    "name": "SepBasis_cb[1]",
+    "fullName": "SepBasis_cb[1]",
+    "type": "/Btn",
+    "rect": [
+      328.995,
+      612.3,
+      337.995,
+      621.3
+    ],
+    "tooltip": "permanent legal incapacity to make decisions."
+  },
+  {
+    "page": 1,
+    "name": "ConfirmSeparateProperty_cb[0]",
+    "fullName": "ConfirmSeparateProperty_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      71.858,
+      157.66,
+      80.858,
+      166.66
+    ],
+    "tooltip": "Confirm as separate property the assets and debts in"
+  },
+  {
+    "page": 1,
+    "name": "WhereSPListed_cb[0]",
+    "fullName": "WhereSPListed_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      97.591,
+      144.623,
+      106.591,
+      153.623
+    ],
+    "tooltip": "the following list."
+  },
+  {
+    "page": 1,
+    "name": "WhereSPListed_cb5[0]",
+    "fullName": "WhereSPListed_cb5[0]",
+    "type": "/Btn",
+    "rect": [
+      490.87,
+      157.45,
+      499.87,
+      166.45
+    ],
+    "tooltip": "Attachment 9b."
+  },
+  {
+    "page": 1,
+    "name": "WhereSPListed_cb[1]",
+    "fullName": "WhereSPListed_cb[1]",
+    "type": "/Btn",
+    "rect": [
+      316.326,
+      157.449,
+      325.326,
+      166.449
+    ],
+    "tooltip": "Property Declaration (form FL-160)."
+  },
+  {
+    "page": 1,
+    "name": "SeparatePropertyList1_tf[0]",
+    "fullName": "SeparatePropertyList1_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      93.09,
+      129.951,
+      491.644,
+      142.004
+    ],
+    "tooltip": "Item"
+  },
+  {
+    "page": 1,
+    "name": "SeparatePropertyList3_tf[0]",
+    "fullName": "SeparatePropertyList3_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      93.09,
+      101.956,
+      491.644,
+      114.009
+    ],
+    "tooltip": "Item"
+  },
+  {
+    "page": 1,
+    "name": "SeparatePropertyList2_tf[0]",
+    "fullName": "SeparatePropertyList2_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      93.09,
+      115.954,
+      491.644,
+      128.007
+    ],
+    "tooltip": "Item"
+  },
+  {
+    "page": 1,
+    "name": "ConfirmPropertyList1To_tf[0]",
+    "fullName": "ConfirmPropertyList1To_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      498.991,
+      129.951,
+      576.0,
+      142.004
+    ],
+    "tooltip": "Confirm to"
+  },
+  {
+    "page": 1,
+    "name": "ConfirmPropertyList3To_tf[0]",
+    "fullName": "ConfirmPropertyList3To_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      498.991,
+      101.956,
+      576.0,
+      114.009
+    ],
+    "tooltip": "Confirm to"
+  },
+  {
+    "page": 1,
+    "name": "SeparatePropertyList4_tf[0]",
+    "fullName": "SeparatePropertyList4_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      93.09,
+      87.84,
+      491.644,
+      99.893
+    ],
+    "tooltip": "Item"
+  },
+  {
+    "page": 1,
+    "name": "ConfirmPropertyList4To_tf[0]",
+    "fullName": "ConfirmPropertyList4To_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      498.991,
+      87.84,
+      576.0,
+      99.893
+    ],
+    "tooltip": "Confirm to"
+  },
+  {
+    "page": 1,
+    "name": "SeparatePropertyList4_tf[1]",
+    "fullName": "SeparatePropertyList4_tf[1]",
+    "type": "/Tx",
+    "rect": [
+      93.09,
+      73.893,
+      491.644,
+      85.946
+    ],
+    "tooltip": "Item"
+  },
+  {
+    "page": 1,
+    "name": "ConfirmPropertyList4To_tf[1]",
+    "fullName": "ConfirmPropertyList4To_tf[1]",
+    "type": "/Tx",
+    "rect": [
+      498.991,
+      73.893,
+      576.0,
+      85.946
+    ],
+    "tooltip": "Confirm to"
+  },
+  {
+    "page": 1,
+    "name": "ConfirmPropertyList2To_tf[0]",
+    "fullName": "ConfirmPropertyList2To_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      498.991,
+      115.954,
+      576.0,
+      128.007
+    ],
+    "tooltip": "Confirm to"
+  },
+  {
+    "page": 1,
+    "name": "NoSeparateProperty_cb[0]",
+    "fullName": "NoSeparateProperty_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      71.858,
+      174.12,
+      80.858,
+      183.12
+    ],
+    "tooltip": "There are no such assets or debts that I know of to be confirmed by the court."
+  },
+  {
+    "page": 1,
+    "name": "ToPetitioner_cb[0]",
+    "fullName": "ToPetitioner_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      341.748,
+      479.007,
+      350.748,
+      488.007
+    ],
+    "tooltip": "Petitioner"
+  },
+  {
+    "page": 1,
+    "name": "ToRespondent_cb[0]",
+    "fullName": "ToRespondent_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      405.334,
+      479.007,
+      414.334,
+      488.007
+    ],
+    "tooltip": "Respondent"
+  },
+  {
+    "page": 1,
+    "name": "ToBothJointly_cb[0]",
+    "fullName": "ToBothJointly_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      458.915,
+      479.007,
+      467.915,
+      488.007
+    ],
+    "tooltip": "Joint"
+  },
+  {
+    "page": 1,
+    "name": "ToOther_cb[0]",
+    "fullName": "ToOther_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      498.498,
+      479.007,
+      507.498,
+      488.007
+    ],
+    "tooltip": "Other"
+  },
+  {
+    "page": 1,
+    "name": "ToPetitioner_cb[1]",
+    "fullName": "ToPetitioner_cb[1]",
+    "type": "/Btn",
+    "rect": [
+      341.748,
+      462.022,
+      350.748,
+      471.022
+    ],
+    "tooltip": "Petitioner"
+  },
+  {
+    "page": 1,
+    "name": "ToRespondent_cb[1]",
+    "fullName": "ToRespondent_cb[1]",
+    "type": "/Btn",
+    "rect": [
+      405.334,
+      462.022,
+      414.334,
+      471.022
+    ],
+    "tooltip": "Respondent"
+  },
+  {
+    "page": 1,
+    "name": "ToBothJointly_cb[1]",
+    "fullName": "ToBothJointly_cb[1]",
+    "type": "/Btn",
+    "rect": [
+      458.915,
+      462.022,
+      467.915,
+      471.022
+    ],
+    "tooltip": "Joint"
+  },
+  {
+    "page": 1,
+    "name": "ToOther_cb[1]",
+    "fullName": "ToOther_cb[1]",
+    "type": "/Btn",
+    "rect": [
+      498.498,
+      462.022,
+      507.498,
+      471.022
+    ],
+    "tooltip": "Other"
+  },
+  {
+    "page": 1,
+    "name": "ForPetitioner_cb[0]",
+    "fullName": "ForPetitioner_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      341.748,
+      447.14,
+      350.748,
+      456.14
+    ],
+    "tooltip": "Petitioner"
+  },
+  {
+    "page": 1,
+    "name": "ForOther_cb[0]",
+    "fullName": "ForOther_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      498.498,
+      447.14,
+      507.498,
+      456.14
+    ],
+    "tooltip": "Other"
+  },
+  {
+    "page": 1,
+    "name": "ForRespondent_cb[0]",
+    "fullName": "ForRespondent_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      405.334,
+      447.14,
+      414.334,
+      456.14
+    ],
+    "tooltip": "Respondent"
+  },
+  {
+    "page": 1,
+    "name": "ChildSupport_ft[0]",
+    "fullName": "ChildSupport_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      89.008,
+      302.411,
+      570.025,
+      333.02
+    ],
+    "tooltip": "Other (specify)"
+  },
+  {
+    "page": 1,
+    "name": "OtherChildSupport_cb[0]",
+    "fullName": "OtherChildSupport_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      71.858,
+      324.02,
+      80.858,
+      333.02
+    ],
+    "tooltip": "Other (specify):"
+  },
+  {
+    "page": 1,
+    "name": "FormFL-311_cb[0]",
+    "fullName": "FormFL-311_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      147.589,
+      428.706,
+      156.589,
+      437.706
+    ],
+    "tooltip": "form FL-311 "
+  },
+  {
+    "page": 1,
+    "name": "FormFL-312_cb[0]",
+    "fullName": "FormFL-312_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      252.595,
+      428.706,
+      261.595,
+      437.706
+    ],
+    "tooltip": "form FL-312 "
+  },
+  {
+    "page": 1,
+    "name": "FormFL-341C_cb[0]",
+    "fullName": "FormFL-341C_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      367.637,
+      428.706,
+      376.637,
+      437.706
+    ],
+    "tooltip": "form FL-341(C)"
+  },
+  {
+    "page": 1,
+    "name": "FormFL-341D_cb[0]",
+    "fullName": "FormFL-341D_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      147.589,
+      412.809,
+      156.589,
+      421.809
+    ],
+    "tooltip": "form FL-341(D)"
+  },
+  {
+    "page": 1,
+    "name": "FormFL-341E[0]",
+    "fullName": "FormFL-341E[0]",
+    "type": "/Btn",
+    "rect": [
+      252.595,
+      412.809,
+      261.595,
+      421.809
+    ],
+    "tooltip": "form FL-341(E) "
+  },
+  {
+    "page": 1,
+    "name": "Attachment6e1[0]",
+    "fullName": "Attachment6e1[0]",
+    "type": "/Btn",
+    "rect": [
+      367.642,
+      412.809,
+      376.642,
+      421.809
+    ],
+    "tooltip": "Attachment 6c(1)"
+  },
+  {
+    "page": 2,
+    "name": "CaseNumber_ft[0]",
+    "fullName": "CaseNumber_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      399.005,
+      720.711,
+      571.805,
+      732.311
+    ],
+    "tooltip": "CASE NUMBER:"
+  },
+  {
+    "page": 2,
+    "name": "Party2_ft[0]",
+    "fullName": "Party2_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      99.863,
+      719.266,
+      393.619,
+      728.266
+    ],
+    "tooltip": "RESPONDENT:"
+  },
+  {
+    "page": 2,
+    "name": "Party1_ft[0]",
+    "fullName": "Party1_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      99.863,
+      729.246,
+      393.619,
+      738.246
+    ],
+    "tooltip": "PETITIONER:"
+  },
+  {
+    "page": 2,
+    "name": "SigDate[0]",
+    "fullName": "SigDate[0]",
+    "type": "/Tx",
+    "rect": [
+      63.914,
+      328.022,
+      222.395,
+      338.255
+    ],
+    "tooltip": "Date:"
+  },
+  {
+    "page": 2,
+    "name": "PrintRespondentName_tf[0]",
+    "fullName": "PrintRespondentName_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      63.845,
+      313.966,
+      258.548,
+      328.467
+    ],
+    "tooltip": "(TYPE OR PRINT NAME)"
+  },
+  {
+    "page": 2,
+    "name": "SigDate[1]",
+    "fullName": "SigDate[1]",
+    "type": "/Tx",
+    "rect": [
+      64.488,
+      286.061,
+      222.395,
+      296.294
+    ],
+    "tooltip": "Date:"
+  },
+  {
+    "page": 2,
+    "name": "PrintRespondentAttorneyName_tf[0]",
+    "fullName": "PrintRespondentAttorneyName_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      64.44,
+      273.426,
+      259.143,
+      286.506
+    ],
+    "tooltip": "(TYPE OR PRINT NAME)"
+  },
+  {
+    "page": 2,
+    "name": "NoCommOrQuasiCommProperty_cb[0]",
+    "fullName": "NoCommOrQuasiCommProperty_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      71.858,
+      679.127,
+      80.858,
+      688.127
+    ],
+    "tooltip": "There are no such assets or debts that I know of to be divided by the court."
+  },
+  {
+    "page": 2,
+    "name": "ListProperty_ft[0]",
+    "fullName": "ListProperty_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      116.957,
+      507.49,
+      569.366,
+      645.741
+    ],
+    "tooltip": "as follows (specify)"
+  },
+  {
+    "page": 2,
+    "name": "WhereCPListed_cb[0]",
+    "fullName": "WhereCPListed_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      97.466,
+      636.381,
+      106.466,
+      645.381
+    ],
+    "tooltip": "as follows (specify):"
+  },
+  {
+    "page": 2,
+    "name": "PropertyListed_cb[0]",
+    "fullName": "PropertyListed_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      71.858,
+      664.679,
+      80.858,
+      673.679
+    ],
+    "tooltip": "Determine rights to community and quasi-community assets and debts. All such assets and debts are listed "
+  },
+  {
+    "page": 2,
+    "name": "WhereSPListed_cb[0]",
+    "fullName": "WhereSPListed_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      270.561,
+      651.631,
+      279.561,
+      660.631
+    ],
+    "tooltip": "Attachment 10b."
+  },
+  {
+    "page": 2,
+    "name": "WhereSPListed_cb[1]",
+    "fullName": "WhereSPListed_cb[1]",
+    "type": "/Btn",
+    "rect": [
+      96.018,
+      651.63,
+      105.018,
+      660.63
+    ],
+    "tooltip": "Property Declaration (form FL-160)."
+  },
+  {
+    "page": 2,
+    "name": "Button1[0]",
+    "fullName": "Button1[0]",
+    "type": "/Btn",
+    "rect": [
+      288.927,
+      651.577,
+      359.561,
+      660.577
+    ],
+    "tooltip": "Attachment 10b."
+  },
+  {
+    "page": 2,
+    "name": "Button1[1]",
+    "fullName": "Button1[1]",
+    "type": "/Btn",
+    "rect": [
+      224.617,
+      650.727,
+      253.134,
+      659.727
+    ],
+    "tooltip": "FL-160"
+  },
+  {
+    "page": 2,
+    "name": "FeesAndCost_cb[0]",
+    "fullName": "FeesAndCost_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      71.858,
+      466.203,
+      80.858,
+      475.203
+    ],
+    "tooltip": "Attorney's fees and costs payable by "
+  },
+  {
+    "page": 2,
+    "name": "RestoreFormerName_cb[0]",
+    "fullName": "RestoreFormerName_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      71.858,
+      451.037,
+      80.858,
+      460.037
+    ],
+    "tooltip": "Respondent's former name be restored to "
+  },
+  {
+    "page": 2,
+    "name": "SpecifyFormerName_tf[0]",
+    "fullName": "SpecifyFormerName_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      300.007,
+      451.037,
+      572.414,
+      460.037
+    ],
+    "tooltip": "(specify):"
+  },
+  {
+    "page": 2,
+    "name": "SpecifyOtherRequests_tf[0]",
+    "fullName": "SpecifyOtherRequests_tf[0]",
+    "type": "/Tx",
+    "rect": [
+      92.197,
+      376.319,
+      572.315,
+      444.453
+    ],
+    "tooltip": "Other (specify)"
+  },
+  {
+    "page": 2,
+    "name": "ContinuedOnAttachment_cb[0]",
+    "fullName": "ContinuedOnAttachment_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      97.835,
+      363.76,
+      107.835,
+      373.76
+    ],
+    "tooltip": "Continued on Attachment 11c.."
+  },
+  {
+    "page": 2,
+    "name": "OtherRequests_cb[0]",
+    "fullName": "OtherRequests_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      71.858,
+      435.695,
+      80.858,
+      444.695
+    ],
+    "tooltip": "Other (specify):"
+  },
+  {
+    "page": 2,
+    "name": "AttyFeePay_cb[0]",
+    "fullName": "AttyFeePay_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      332.946,
+      466.203,
+      341.946,
+      475.203
+    ],
+    "tooltip": "Respondent "
+  },
+  {
+    "page": 2,
+    "name": "AttyFeePay_cb[1]",
+    "fullName": "AttyFeePay_cb[1]",
+    "type": "/Btn",
+    "rect": [
+      255.946,
+      466.203,
+      264.946,
+      475.203
+    ],
+    "tooltip": "Petitioner"
+  },
+  {
+    "page": 2,
+    "name": "Print[0]",
+    "fullName": "Print[0]",
+    "type": "/Btn",
+    "rect": [
+      258.735,
+      5.992,
+      339.735,
+      23.0
+    ],
+    "tooltip": "Print this form"
+  },
+  {
+    "page": 2,
+    "name": "Save[0]",
+    "fullName": "Save[0]",
+    "type": "/Btn",
+    "rect": [
+      345.274,
+      5.992,
+      426.379,
+      23.0
+    ],
+    "tooltip": "Save this form"
+  },
+  {
+    "page": 2,
+    "name": "Reset[0]",
+    "fullName": "Reset[0]",
+    "type": "/Btn",
+    "rect": [
+      494.963,
+      5.992,
+      575.96,
+      23.0
+    ],
+    "tooltip": "Clear this form"
+  },
+  {
+    "page": 2,
+    "name": "Warning[0]",
+    "fullName": "Warning[0]",
+    "type": "/Btn",
+    "rect": [
+      36.045,
+      5.992,
+      247.339,
+      29.171
+    ],
+    "tooltip": "For your protection and privacy, please press the Clear This Form button after you have printed the form."
+  },
+  {
+    "page": 2,
+    "name": "Button1[0]",
+    "fullName": "Button1[0]",
+    "type": "/Btn",
+    "rect": [
+      373.649,
+      238.626,
+      453.98,
+      248.885
+    ],
+    "tooltip": "form FL-107-INFO"
+  }
+]

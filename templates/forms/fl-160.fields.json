@@ -1,0 +1,6866 @@
+[
+  {
+    "page": 0,
+    "name": "AttyFor_ft[0]",
+    "fullName": "AttyFor_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      108.109,
+      657.113,
+      394.518,
+      666.113
+    ],
+    "tooltip": "ATTORNEY FOR (name):"
+  },
+  {
+    "page": 0,
+    "name": "Email_ft[0]",
+    "fullName": "Email_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      91.12,
+      668.528,
+      394.518,
+      677.528
+    ],
+    "tooltip": "E-MAIL ADDRESS:"
+  },
+  {
+    "page": 0,
+    "name": "Fax_ft[0]",
+    "fullName": "Fax_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      266.081,
+      679.206,
+      394.517,
+      688.206
+    ],
+    "tooltip": "FAX NO.:"
+  },
+  {
+    "page": 0,
+    "name": "Phone_ft[0]",
+    "fullName": "Phone_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      89.117,
+      679.206,
+      217.355,
+      688.206
+    ],
+    "tooltip": "TELEPHONE NO.:"
+  },
+  {
+    "page": 0,
+    "name": "AttyState_ft[0]",
+    "fullName": "AttyState_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      264.784,
+      690.638,
+      294.196,
+      699.638
+    ],
+    "tooltip": "STATE:"
+  },
+  {
+    "page": 0,
+    "name": "AttyZip_ft[0]",
+    "fullName": "AttyZip_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      326.998,
+      690.638,
+      394.518,
+      699.638
+    ],
+    "tooltip": "ZIP CODE:"
+  },
+  {
+    "page": 0,
+    "name": "AttyCity_ft[0]",
+    "fullName": "AttyCity_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      54.118,
+      690.638,
+      240.934,
+      699.638
+    ],
+    "tooltip": "CITY:"
+  },
+  {
+    "page": 0,
+    "name": "AttyStreet_ft[0]",
+    "fullName": "AttyStreet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      94.106,
+      702.07,
+      394.518,
+      711.07
+    ],
+    "tooltip": "STREET ADDRESS:"
+  },
+  {
+    "page": 0,
+    "name": "AttyFirm_ft[0]",
+    "fullName": "AttyFirm_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      73.11,
+      713.253,
+      394.518,
+      722.253
+    ],
+    "tooltip": "FIRM NAME:"
+  },
+  {
+    "page": 0,
+    "name": "AttyName_ft[0]",
+    "fullName": "AttyName_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      58.106,
+      724.935,
+      394.195,
+      733.935
+    ],
+    "tooltip": "NAME:"
+  },
+  {
+    "page": 0,
+    "name": "BarNo_ft[0]",
+    "fullName": "BarNo_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      309.36,
+      734.757,
+      394.526,
+      743.757
+    ],
+    "tooltip": "STATE BAR NUMBER:"
+  },
+  {
+    "page": 0,
+    "name": "CrtCounty_ft[0]",
+    "fullName": "CrtCounty_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      230.395,
+      641.775,
+      391.502,
+      650.775
+    ],
+    "tooltip": "SUPERIOR COURT OF CALIFORNIA, COUNTY OF"
+  },
+  {
+    "page": 0,
+    "name": "Branch_ft[0]",
+    "fullName": "Branch_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      102.328,
+      600.968,
+      391.502,
+      609.968
+    ],
+    "tooltip": "BRANCH NAME:"
+  },
+  {
+    "page": 0,
+    "name": "CityZip_ft[0]",
+    "fullName": "CityZip_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      102.255,
+      611.172,
+      391.502,
+      620.172
+    ],
+    "tooltip": "CITY AND ZIP CODE:"
+  },
+  {
+    "page": 0,
+    "name": "Street_ft[0]",
+    "fullName": "Street_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      102.198,
+      631.573,
+      391.502,
+      640.573
+    ],
+    "tooltip": "STREET ADDRESS: "
+  },
+  {
+    "page": 0,
+    "name": "MailingAdd_ft[0]",
+    "fullName": "MailingAdd_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      102.212,
+      621.374,
+      391.502,
+      630.374
+    ],
+    "tooltip": "MAILING ADDRESS:"
+  },
+  {
+    "page": 0,
+    "name": "Party1_ft[0]",
+    "fullName": "Party1_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      150.536,
+      585.09,
+      390.991,
+      595.091
+    ],
+    "tooltip": "PETITIONER:"
+  },
+  {
+    "page": 0,
+    "name": "Party2_ft[0]",
+    "fullName": "Party2_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      150.421,
+      573.615,
+      390.991,
+      583.616
+    ],
+    "tooltip": "RESPONDENT:"
+  },
+  {
+    "page": 0,
+    "name": "Party3_ft[0]",
+    "fullName": "Party3_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      149.868,
+      562.878,
+      390.991,
+      572.879
+    ],
+    "tooltip": "OTHER PARENT/PARTY:"
+  },
+  {
+    "page": 0,
+    "name": "CaseNumber_ft[0]",
+    "fullName": "CaseNumber_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      400.005,
+      535.81,
+      572.805,
+      547.41
+    ],
+    "tooltip": "CASE NUMBER:"
+  },
+  {
+    "page": 0,
+    "name": "IDParty_cb[0]",
+    "fullName": "IDParty_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      47.755,
+      548.127,
+      56.755,
+      557.127
+    ],
+    "tooltip": "PETITIONER'S"
+  },
+  {
+    "page": 0,
+    "name": "IDParty_cb[1]",
+    "fullName": "IDParty_cb[1]",
+    "type": "/Btn",
+    "rect": [
+      146.446,
+      547.818,
+      155.446,
+      556.818
+    ],
+    "tooltip": "RESPONDENT'S"
+  },
+  {
+    "page": 0,
+    "name": "PropertyType_cb[0]",
+    "fullName": "PropertyType_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      69.965,
+      533.52,
+      78.965,
+      542.52
+    ],
+    "tooltip": "COMMUNITY AND QUASI-COMMUNITY PROPERTY DECLARATION"
+  },
+  {
+    "page": 0,
+    "name": "PropertyType_cb[1]",
+    "fullName": "PropertyType_cb[1]",
+    "type": "/Btn",
+    "rect": [
+      69.78,
+      519.018,
+      78.78,
+      528.018
+    ],
+    "tooltip": "SEPARATE PROPERTY DECLARATION"
+  },
+  {
+    "page": 0,
+    "name": "RealEstate1_Des_ft[0]",
+    "fullName": "RealEstate1_Des_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.417,
+      399.509,
+      192.983,
+      409.434
+    ],
+    "tooltip": "RealEstate1_Des_ft"
+  },
+  {
+    "page": 0,
+    "name": "RE1DateAcq_dt[0]",
+    "fullName": "RE1DateAcq_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.817,
+      399.509,
+      250.583,
+      409.434
+    ],
+    "tooltip": "RE1DateAcq_dt"
+  },
+  {
+    "page": 0,
+    "name": "RE1GrossFMV_dc[0]",
+    "fullName": "RE1GrossFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.8,
+      398.092,
+      316.8,
+      410.851
+    ],
+    "tooltip": "RE1GrossFMV_dc"
+  },
+  {
+    "page": 0,
+    "name": "RE1Debt_dc[0]",
+    "fullName": "RE1Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.6,
+      398.092,
+      381.6,
+      410.851
+    ],
+    "tooltip": "RE1Debt_dc"
+  },
+  {
+    "page": 0,
+    "name": "RE1NetFMV_dc[0]",
+    "fullName": "RE1NetFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.4,
+      398.092,
+      446.4,
+      410.851
+    ],
+    "tooltip": "RE1NetFMV_dc"
+  },
+  {
+    "page": 0,
+    "name": "RE1DivPet_ft[0]",
+    "fullName": "RE1DivPet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.817,
+      399.509,
+      507.989,
+      409.434
+    ],
+    "tooltip": "RE1DivPet_ft"
+  },
+  {
+    "page": 0,
+    "name": "RE1DivRes_ft[0]",
+    "fullName": "RE1DivRes_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      510.823,
+      399.509,
+      575.984,
+      409.434
+    ],
+    "tooltip": "RE1DivRes_ft"
+  },
+  {
+    "page": 0,
+    "name": "RealEstate_Des_ft[0]",
+    "fullName": "RealEstate_Des_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.417,
+      386.75,
+      192.983,
+      396.675
+    ],
+    "tooltip": "RealEstate_Des_ft"
+  },
+  {
+    "page": 0,
+    "name": "RE2DateAcq_dt[0]",
+    "fullName": "RE2DateAcq_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.817,
+      386.75,
+      250.583,
+      396.675
+    ],
+    "tooltip": "RE2DateAcq_dt"
+  },
+  {
+    "page": 0,
+    "name": "RE2GrossFMV_dc[0]",
+    "fullName": "RE2GrossFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.8,
+      385.333,
+      316.8,
+      398.092
+    ],
+    "tooltip": "RE2GrossFMV_dc"
+  },
+  {
+    "page": 0,
+    "name": "RE2Debt_dc[0]",
+    "fullName": "RE2Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.6,
+      385.333,
+      381.6,
+      398.092
+    ],
+    "tooltip": "RE2Debt_dc"
+  },
+  {
+    "page": 0,
+    "name": "RE2NetFMV_dc[0]",
+    "fullName": "RE2NetFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.4,
+      385.333,
+      446.4,
+      398.092
+    ],
+    "tooltip": "RE2NetFMV_dc"
+  },
+  {
+    "page": 0,
+    "name": "RE2DivPet_ft[0]",
+    "fullName": "RE2DivPet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.817,
+      386.75,
+      507.989,
+      396.675
+    ],
+    "tooltip": "RE2DivPet_ft"
+  },
+  {
+    "page": 0,
+    "name": "RE2DivRes_ft[0]",
+    "fullName": "RE2DivRes_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      510.823,
+      386.75,
+      575.984,
+      396.675
+    ],
+    "tooltip": "RE2DivRes_ft"
+  },
+  {
+    "page": 0,
+    "name": "HFFA1Desc_ft[0]",
+    "fullName": "HFFA1Desc_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.417,
+      348.473,
+      192.983,
+      358.398
+    ],
+    "tooltip": "HFFA1Desc_ft"
+  },
+  {
+    "page": 0,
+    "name": "HFFA1DateAcq_dt[0]",
+    "fullName": "HFFA1DateAcq_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.817,
+      348.473,
+      250.583,
+      358.398
+    ],
+    "tooltip": "HFFA1DateAcq_dt"
+  },
+  {
+    "page": 0,
+    "name": "HFFA1GrossFMV_dc[0]",
+    "fullName": "HFFA1GrossFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.8,
+      347.056,
+      316.8,
+      359.815
+    ],
+    "tooltip": "HFFA1GrossFMV_dc"
+  },
+  {
+    "page": 0,
+    "name": "HFFA1Debt_dc[0]",
+    "fullName": "HFFA1Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.6,
+      347.056,
+      381.6,
+      359.815
+    ],
+    "tooltip": "HFFA1Debt_dc"
+  },
+  {
+    "page": 0,
+    "name": "HFFA1NetFMV_dc[0]",
+    "fullName": "HFFA1NetFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.4,
+      347.056,
+      446.4,
+      359.815
+    ],
+    "tooltip": "HFFA1NetFMV_dc"
+  },
+  {
+    "page": 0,
+    "name": "HFFA1DivPet_ft[0]",
+    "fullName": "HFFA1DivPet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.817,
+      348.473,
+      507.989,
+      358.398
+    ],
+    "tooltip": "HFFA1DivPet_ft"
+  },
+  {
+    "page": 0,
+    "name": "HFFA1DivRes_ft[0]",
+    "fullName": "HFFA1DivRes_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      510.823,
+      348.473,
+      575.984,
+      358.398
+    ],
+    "tooltip": "HFFA1DivRes_ft"
+  },
+  {
+    "page": 0,
+    "name": "HFFA2Desc_ft[0]",
+    "fullName": "HFFA2Desc_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.417,
+      335.714,
+      192.983,
+      345.639
+    ],
+    "tooltip": "HFFA2Desc_ft"
+  },
+  {
+    "page": 0,
+    "name": "HFFA2DateAcq_dt[0]",
+    "fullName": "HFFA2DateAcq_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.817,
+      335.714,
+      250.583,
+      345.639
+    ],
+    "tooltip": "HFFA2DateAcq_dt"
+  },
+  {
+    "page": 0,
+    "name": "HFFA2GrossFMV_dc[0]",
+    "fullName": "HFFA2GrossFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.8,
+      334.297,
+      316.8,
+      347.056
+    ],
+    "tooltip": "HFFA2GrossFMV_dc"
+  },
+  {
+    "page": 0,
+    "name": "HFFA2Debt_dc[0]",
+    "fullName": "HFFA2Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.6,
+      334.297,
+      381.6,
+      347.056
+    ],
+    "tooltip": "HFFA2Debt_dc"
+  },
+  {
+    "page": 0,
+    "name": "HFFA2NetFMV_dc[0]",
+    "fullName": "HFFA2NetFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.4,
+      334.297,
+      446.4,
+      347.056
+    ],
+    "tooltip": "HFFA2NetFMV_dc"
+  },
+  {
+    "page": 0,
+    "name": "HFFA2DivPet_ft[0]",
+    "fullName": "HFFA2DivPet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.817,
+      335.714,
+      507.989,
+      345.639
+    ],
+    "tooltip": "HFFA2DivPet_ft"
+  },
+  {
+    "page": 0,
+    "name": "HFFA2DivRes_ft[0]",
+    "fullName": "HFFA2DivRes_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      510.823,
+      335.714,
+      575.984,
+      345.639
+    ],
+    "tooltip": "HFFA2DivRes_ft"
+  },
+  {
+    "page": 0,
+    "name": "HFFA3Desc_ft[0]",
+    "fullName": "HFFA3Desc_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.417,
+      322.955,
+      192.983,
+      332.88
+    ],
+    "tooltip": "HFFA3Desc_ft"
+  },
+  {
+    "page": 0,
+    "name": "HFFA3DateAcq_dt[0]",
+    "fullName": "HFFA3DateAcq_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.817,
+      322.955,
+      250.583,
+      332.88
+    ],
+    "tooltip": "HFFA3DateAcq_dt"
+  },
+  {
+    "page": 0,
+    "name": "HFFA3GrossFMV_dc[0]",
+    "fullName": "HFFA3GrossFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.8,
+      321.538,
+      316.8,
+      334.297
+    ],
+    "tooltip": "HFFA3GrossFMV_dc"
+  },
+  {
+    "page": 0,
+    "name": "HFFA3Debt_dc[0]",
+    "fullName": "HFFA3Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.6,
+      321.538,
+      381.6,
+      334.297
+    ],
+    "tooltip": "HFFA3Debt_dc"
+  },
+  {
+    "page": 0,
+    "name": "HFFA3NetFMV_dc[0]",
+    "fullName": "HFFA3NetFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.4,
+      321.538,
+      446.4,
+      334.297
+    ],
+    "tooltip": "HFFA3NetFMV_dc"
+  },
+  {
+    "page": 0,
+    "name": "HFFA3DivPet_ft[0]",
+    "fullName": "HFFA3DivPet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.817,
+      322.955,
+      507.989,
+      332.88
+    ],
+    "tooltip": "HFFA3DivPet_ft"
+  },
+  {
+    "page": 0,
+    "name": "HFFA3DivRes_ft[0]",
+    "fullName": "HFFA3DivRes_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      510.823,
+      322.955,
+      575.984,
+      332.88
+    ],
+    "tooltip": "HFFA3DivRes_ft"
+  },
+  {
+    "page": 0,
+    "name": "HFFA4Desc_ft[0]",
+    "fullName": "HFFA4Desc_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.417,
+      310.196,
+      192.983,
+      320.121
+    ],
+    "tooltip": "HFFA4Desc_ft"
+  },
+  {
+    "page": 0,
+    "name": "HFFA4DateAcq_dt[0]",
+    "fullName": "HFFA4DateAcq_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.817,
+      310.196,
+      250.583,
+      320.121
+    ],
+    "tooltip": "HFFA4DateAcq_dt"
+  },
+  {
+    "page": 0,
+    "name": "HFFA4GrossFMV_dc[0]",
+    "fullName": "HFFA4GrossFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.8,
+      308.779,
+      316.8,
+      321.538
+    ],
+    "tooltip": "HFFA4GrossFMV_dc"
+  },
+  {
+    "page": 0,
+    "name": "HFFA4Debt_dc[0]",
+    "fullName": "HFFA4Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.6,
+      308.779,
+      381.6,
+      321.538
+    ],
+    "tooltip": "HFFA4Debt_dc"
+  },
+  {
+    "page": 0,
+    "name": "HFFA4NetFMV_dc[0]",
+    "fullName": "HFFA4NetFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.4,
+      308.779,
+      446.4,
+      321.538
+    ],
+    "tooltip": "HFFA4NetFMV_dc"
+  },
+  {
+    "page": 0,
+    "name": "HFFA4DivPet_ft[0]",
+    "fullName": "HFFA4DivPet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.817,
+      310.196,
+      507.989,
+      320.121
+    ],
+    "tooltip": "HFFA4DivPet_ft"
+  },
+  {
+    "page": 0,
+    "name": "HFFA4DivRes_ft[0]",
+    "fullName": "HFFA4DivRes_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      510.823,
+      310.196,
+      575.984,
+      320.121
+    ],
+    "tooltip": "HFFA4DivRes_ft"
+  },
+  {
+    "page": 0,
+    "name": "HFFA5Desc_ft[0]",
+    "fullName": "HFFA5Desc_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.417,
+      297.437,
+      192.983,
+      307.362
+    ],
+    "tooltip": "HFFA5Desc_ft"
+  },
+  {
+    "page": 0,
+    "name": "HFFA5DateAcq_dt[0]",
+    "fullName": "HFFA5DateAcq_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.817,
+      297.437,
+      250.583,
+      307.362
+    ],
+    "tooltip": "HFFA5DateAcq_dt"
+  },
+  {
+    "page": 0,
+    "name": "HFFA5GrossFMV_dc[0]",
+    "fullName": "HFFA5GrossFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.8,
+      296.02,
+      316.8,
+      308.779
+    ],
+    "tooltip": "HFFA5GrossFMV_dc"
+  },
+  {
+    "page": 0,
+    "name": "HFFA5Debt_dc[0]",
+    "fullName": "HFFA5Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.6,
+      296.02,
+      381.6,
+      308.779
+    ],
+    "tooltip": "HFFA5Debt_dc"
+  },
+  {
+    "page": 0,
+    "name": "HFFA5NetFMV_dc[0]",
+    "fullName": "HFFA5NetFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.4,
+      296.02,
+      446.4,
+      308.779
+    ],
+    "tooltip": "HFFA5NetFMV_dc"
+  },
+  {
+    "page": 0,
+    "name": "HFFA5DivPet_ft[0]",
+    "fullName": "HFFA5DivPet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.817,
+      297.437,
+      507.989,
+      307.362
+    ],
+    "tooltip": "HFFA5DivPet_ft"
+  },
+  {
+    "page": 0,
+    "name": "HFFA5DivRes_ft[0]",
+    "fullName": "HFFA5DivRes_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      510.823,
+      297.437,
+      575.984,
+      307.362
+    ],
+    "tooltip": "HFFA5DivRes_ft"
+  },
+  {
+    "page": 0,
+    "name": "JAAC1Desc_ft[0]",
+    "fullName": "JAAC1Desc_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.417,
+      259.163,
+      192.983,
+      269.088
+    ],
+    "tooltip": "JAAC1Desc_ft"
+  },
+  {
+    "page": 0,
+    "name": "JAAC1DateAcq_dt[0]",
+    "fullName": "JAAC1DateAcq_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.817,
+      259.163,
+      250.583,
+      269.088
+    ],
+    "tooltip": "JAAC1DateAcq_dt"
+  },
+  {
+    "page": 0,
+    "name": "JAAC1GrossFMV_dc[0]",
+    "fullName": "JAAC1GrossFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.8,
+      257.746,
+      316.8,
+      270.505
+    ],
+    "tooltip": "JAAC1GrossFMV_dc"
+  },
+  {
+    "page": 0,
+    "name": "JAAC1Debt_dc[0]",
+    "fullName": "JAAC1Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.6,
+      257.746,
+      381.6,
+      270.505
+    ],
+    "tooltip": "JAAC1Debt_dc"
+  },
+  {
+    "page": 0,
+    "name": "JAAC1NetFMV_dc[0]",
+    "fullName": "JAAC1NetFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.4,
+      257.746,
+      446.4,
+      270.505
+    ],
+    "tooltip": "JAAC1NetFMV_dc"
+  },
+  {
+    "page": 0,
+    "name": "JAAC1DivPet_ft[0]",
+    "fullName": "JAAC1DivPet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.817,
+      259.163,
+      507.989,
+      269.088
+    ],
+    "tooltip": "JAAC1DivPet_ft"
+  },
+  {
+    "page": 0,
+    "name": "JAAC1DivRes_ft[0]",
+    "fullName": "JAAC1DivRes_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      510.823,
+      259.163,
+      575.984,
+      269.088
+    ],
+    "tooltip": "JAAC1DivRes_ft"
+  },
+  {
+    "page": 0,
+    "name": "JAAC2Desc_ft[0]",
+    "fullName": "JAAC2Desc_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.417,
+      246.404,
+      192.983,
+      256.329
+    ],
+    "tooltip": "JAAC2Desc_ft"
+  },
+  {
+    "page": 0,
+    "name": "JAAC2DateAcq_dt[0]",
+    "fullName": "JAAC2DateAcq_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.817,
+      246.404,
+      250.583,
+      256.329
+    ],
+    "tooltip": "JAAC2DateAcq_dt"
+  },
+  {
+    "page": 0,
+    "name": "JAAC2GrossFMV_dc[0]",
+    "fullName": "JAAC2GrossFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.8,
+      244.987,
+      316.8,
+      257.746
+    ],
+    "tooltip": "JAAC2GrossFMV_dc"
+  },
+  {
+    "page": 0,
+    "name": "JAAC2Debt_dc[0]",
+    "fullName": "JAAC2Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.6,
+      244.987,
+      381.6,
+      257.746
+    ],
+    "tooltip": "JAAC2Debt_dc"
+  },
+  {
+    "page": 0,
+    "name": "JAAC2NetFMV_dc[0]",
+    "fullName": "JAAC2NetFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.4,
+      244.987,
+      446.4,
+      257.746
+    ],
+    "tooltip": "JAAC2NetFMV_dc"
+  },
+  {
+    "page": 0,
+    "name": "JAAC2DivPet_ft[0]",
+    "fullName": "JAAC2DivPet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.817,
+      246.404,
+      507.989,
+      256.329
+    ],
+    "tooltip": "JAAC2DivPet_ft"
+  },
+  {
+    "page": 0,
+    "name": "JAAC2DivRes_ft[0]",
+    "fullName": "JAAC2DivRes_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      510.823,
+      246.404,
+      575.984,
+      256.329
+    ],
+    "tooltip": "JAAC2DivRes_ft"
+  },
+  {
+    "page": 0,
+    "name": "JAAC3Desc_ft[0]",
+    "fullName": "JAAC3Desc_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.417,
+      233.645,
+      192.983,
+      243.57
+    ],
+    "tooltip": "JAAC3Desc_ft"
+  },
+  {
+    "page": 0,
+    "name": "JAAC3DateAcq_dt[0]",
+    "fullName": "JAAC3DateAcq_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.817,
+      233.645,
+      250.583,
+      243.57
+    ],
+    "tooltip": "JAAC3DateAcq_dt"
+  },
+  {
+    "page": 0,
+    "name": "JAAC3GrossFMV_dc[0]",
+    "fullName": "JAAC3GrossFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.8,
+      232.228,
+      316.8,
+      244.987
+    ],
+    "tooltip": "JAAC3GrossFMV_dc"
+  },
+  {
+    "page": 0,
+    "name": "JAAC3Debt_dc[0]",
+    "fullName": "JAAC3Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.6,
+      232.228,
+      381.6,
+      244.987
+    ],
+    "tooltip": "JAAC3Debt_dc"
+  },
+  {
+    "page": 0,
+    "name": "JAAC3NetFMV_dc[0]",
+    "fullName": "JAAC3NetFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.4,
+      232.228,
+      446.4,
+      244.987
+    ],
+    "tooltip": "JAAC3NetFMV_dc"
+  },
+  {
+    "page": 0,
+    "name": "JAAC3DivPet_ft[0]",
+    "fullName": "JAAC3DivPet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.817,
+      233.645,
+      507.989,
+      243.57
+    ],
+    "tooltip": "JAAC3DivPet_ft"
+  },
+  {
+    "page": 0,
+    "name": "JAAC3DivRes_ft[0]",
+    "fullName": "JAAC3DivRes_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      510.823,
+      233.645,
+      575.984,
+      243.57
+    ],
+    "tooltip": "JAAC3DivRes_ft"
+  },
+  {
+    "page": 0,
+    "name": "Vehicles1Desc_ft[0]",
+    "fullName": "Vehicles1Desc_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.417,
+      208.127,
+      192.983,
+      218.052
+    ],
+    "tooltip": "Vehicles1Desc_ft"
+  },
+  {
+    "page": 0,
+    "name": "Vehicles1DateAcq_dt[0]",
+    "fullName": "Vehicles1DateAcq_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.817,
+      208.127,
+      250.583,
+      218.052
+    ],
+    "tooltip": "Vehicles1DateAcq_dt"
+  },
+  {
+    "page": 0,
+    "name": "Vehicles1GrossFMV_dc[0]",
+    "fullName": "Vehicles1GrossFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.8,
+      206.71,
+      316.8,
+      219.469
+    ],
+    "tooltip": "Vehicles1GrossFMV_dc"
+  },
+  {
+    "page": 0,
+    "name": "Vehicles1Debt_dc[0]",
+    "fullName": "Vehicles1Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.6,
+      206.71,
+      381.6,
+      219.469
+    ],
+    "tooltip": "Vehicles1Debt_dc"
+  },
+  {
+    "page": 0,
+    "name": "Vehicles1NetFMV_dc[0]",
+    "fullName": "Vehicles1NetFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.4,
+      206.71,
+      446.4,
+      219.469
+    ],
+    "tooltip": "Vehicles1NetFMV_dc"
+  },
+  {
+    "page": 0,
+    "name": "Vehicles1DivPet_ft[0]",
+    "fullName": "Vehicles1DivPet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.817,
+      208.127,
+      507.989,
+      218.052
+    ],
+    "tooltip": "Vehicles1DivPet_ft"
+  },
+  {
+    "page": 0,
+    "name": "Vehicles1DivRes_ft[0]",
+    "fullName": "Vehicles1DivRes_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      510.823,
+      208.127,
+      575.984,
+      218.052
+    ],
+    "tooltip": "Vehicles1DivRes_ft"
+  },
+  {
+    "page": 0,
+    "name": "Vehicles2Desc_ft[0]",
+    "fullName": "Vehicles2Desc_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.417,
+      195.368,
+      192.983,
+      205.293
+    ],
+    "tooltip": "Vehicles2Desc_ft"
+  },
+  {
+    "page": 0,
+    "name": "Vehicles2DateAcq_dt[0]",
+    "fullName": "Vehicles2DateAcq_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.817,
+      195.368,
+      250.583,
+      205.293
+    ],
+    "tooltip": "Vehicles2DateAcq_dt"
+  },
+  {
+    "page": 0,
+    "name": "Vehicles2GrossFMV_dc[0]",
+    "fullName": "Vehicles2GrossFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.8,
+      193.951,
+      316.8,
+      206.71
+    ],
+    "tooltip": "Vehicles2GrossFMV_dc"
+  },
+  {
+    "page": 0,
+    "name": "Vehicles2Debt_dc[0]",
+    "fullName": "Vehicles2Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.6,
+      193.951,
+      381.6,
+      206.71
+    ],
+    "tooltip": "Vehicles2Debt_dc"
+  },
+  {
+    "page": 0,
+    "name": "Vehicles2NetFM_dc[0]",
+    "fullName": "Vehicles2NetFM_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.4,
+      193.951,
+      446.4,
+      206.71
+    ],
+    "tooltip": "Vehicles2NetFM_dc"
+  },
+  {
+    "page": 0,
+    "name": "Vehicles2DivPet_ft[0]",
+    "fullName": "Vehicles2DivPet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.817,
+      195.368,
+      507.989,
+      205.293
+    ],
+    "tooltip": "Vehicles2DivPet_ft"
+  },
+  {
+    "page": 0,
+    "name": "Vehicles2DivRes_ft[0]",
+    "fullName": "Vehicles2DivRes_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      510.823,
+      195.368,
+      575.984,
+      205.293
+    ],
+    "tooltip": "Vehicles2DivRes_ft"
+  },
+  {
+    "page": 0,
+    "name": "Vehicles3Desc_ft[0]",
+    "fullName": "Vehicles3Desc_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.417,
+      182.609,
+      192.983,
+      192.534
+    ],
+    "tooltip": "Vehicles3Desc_ft"
+  },
+  {
+    "page": 0,
+    "name": "Vehicles3DateAcq_dt[0]",
+    "fullName": "Vehicles3DateAcq_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.817,
+      182.609,
+      250.583,
+      192.534
+    ],
+    "tooltip": "Vehicles3DateAcq_dt"
+  },
+  {
+    "page": 0,
+    "name": "Vehicles3GrossFMV_dc[0]",
+    "fullName": "Vehicles3GrossFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.8,
+      181.192,
+      316.8,
+      193.951
+    ],
+    "tooltip": "Vehicles3GrossFMV_dc"
+  },
+  {
+    "page": 0,
+    "name": "Vehicles3Debt_dc[0]",
+    "fullName": "Vehicles3Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.6,
+      181.192,
+      381.6,
+      193.951
+    ],
+    "tooltip": "Vehicles3Debt_dc"
+  },
+  {
+    "page": 0,
+    "name": "Vehicles3NetFMV_dc[0]",
+    "fullName": "Vehicles3NetFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.4,
+      181.192,
+      446.4,
+      193.951
+    ],
+    "tooltip": "Vehicles3NetFMV_dc"
+  },
+  {
+    "page": 0,
+    "name": "Vehicles3DivPet_ft[0]",
+    "fullName": "Vehicles3DivPet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.817,
+      182.609,
+      507.989,
+      192.534
+    ],
+    "tooltip": "Vehicles3DivPet_ft"
+  },
+  {
+    "page": 0,
+    "name": "Vehicles3DivRes_ft[0]",
+    "fullName": "Vehicles3DivRes_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      510.823,
+      182.609,
+      575.984,
+      192.534
+    ],
+    "tooltip": "Vehicles3DivRes_ft"
+  },
+  {
+    "page": 0,
+    "name": "Savings1Desc_ft[0]",
+    "fullName": "Savings1Desc_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.417,
+      157.091,
+      192.983,
+      167.016
+    ],
+    "tooltip": "Savings1Desc_ft"
+  },
+  {
+    "page": 0,
+    "name": "Savings1DateAcq_dt[0]",
+    "fullName": "Savings1DateAcq_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.817,
+      157.091,
+      250.583,
+      167.016
+    ],
+    "tooltip": "Savings1DateAcq_dt"
+  },
+  {
+    "page": 0,
+    "name": "Savings1GrossFMV_dc[0]",
+    "fullName": "Savings1GrossFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.8,
+      155.674,
+      316.8,
+      168.433
+    ],
+    "tooltip": "Savings1GrossFMV_dc"
+  },
+  {
+    "page": 0,
+    "name": "Savings1Debt_dc[0]",
+    "fullName": "Savings1Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.6,
+      155.674,
+      381.6,
+      168.433
+    ],
+    "tooltip": "Savings1Debt_dc"
+  },
+  {
+    "page": 0,
+    "name": "Savings1NetFMV_dc[0]",
+    "fullName": "Savings1NetFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.4,
+      155.674,
+      446.4,
+      168.433
+    ],
+    "tooltip": "Savings1NetFMV_dc"
+  },
+  {
+    "page": 0,
+    "name": "Savings1DivPe_ft[0]",
+    "fullName": "Savings1DivPe_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.817,
+      157.091,
+      507.989,
+      167.016
+    ],
+    "tooltip": "Savings1DivPe_ft"
+  },
+  {
+    "page": 0,
+    "name": "Savings1DivRes_ft[0]",
+    "fullName": "Savings1DivRes_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      510.823,
+      157.091,
+      575.984,
+      167.016
+    ],
+    "tooltip": "Savings1DivRes_ft"
+  },
+  {
+    "page": 0,
+    "name": "Savings2Desc_ft[0]",
+    "fullName": "Savings2Desc_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.417,
+      144.332,
+      192.983,
+      154.257
+    ],
+    "tooltip": "Savings2Desc_ft"
+  },
+  {
+    "page": 0,
+    "name": "Savings2DateAcq_dt[0]",
+    "fullName": "Savings2DateAcq_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.817,
+      144.332,
+      250.583,
+      154.257
+    ],
+    "tooltip": "Savings2DateAcq_dt"
+  },
+  {
+    "page": 0,
+    "name": "Savings2GrossFMV_dc[0]",
+    "fullName": "Savings2GrossFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.8,
+      142.915,
+      316.8,
+      155.674
+    ],
+    "tooltip": "Savings2GrossFMV_dc"
+  },
+  {
+    "page": 0,
+    "name": "Savings2Debt_dc[0]",
+    "fullName": "Savings2Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.6,
+      142.915,
+      381.6,
+      155.674
+    ],
+    "tooltip": "Savings2Debt_dc"
+  },
+  {
+    "page": 0,
+    "name": "Savings2NetFMV_dc[0]",
+    "fullName": "Savings2NetFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.4,
+      142.915,
+      446.4,
+      155.674
+    ],
+    "tooltip": "Savings2NetFMV_dc"
+  },
+  {
+    "page": 0,
+    "name": "Savings2DivPet_ft[0]",
+    "fullName": "Savings2DivPet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.817,
+      144.332,
+      507.989,
+      154.257
+    ],
+    "tooltip": "Savings2DivPet_ft"
+  },
+  {
+    "page": 0,
+    "name": "Savings2DivRes_ft[0]",
+    "fullName": "Savings2DivRes_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      510.823,
+      144.332,
+      575.984,
+      154.257
+    ],
+    "tooltip": "Savings2DivRes_ft"
+  },
+  {
+    "page": 0,
+    "name": "Savings3Desc_ft[0]",
+    "fullName": "Savings3Desc_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.417,
+      131.573,
+      192.983,
+      141.498
+    ],
+    "tooltip": "Savings3Desc_ft"
+  },
+  {
+    "page": 0,
+    "name": "Savings3DateAcq_dt[0]",
+    "fullName": "Savings3DateAcq_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.817,
+      131.573,
+      250.583,
+      141.498
+    ],
+    "tooltip": "Savings3DateAcq_dt"
+  },
+  {
+    "page": 0,
+    "name": "Savings3GrossFMV_dc[0]",
+    "fullName": "Savings3GrossFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.8,
+      130.156,
+      316.8,
+      142.915
+    ],
+    "tooltip": "Savings3GrossFMV_dc"
+  },
+  {
+    "page": 0,
+    "name": "Savings3Debt_dc[0]",
+    "fullName": "Savings3Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.6,
+      130.156,
+      381.6,
+      142.915
+    ],
+    "tooltip": "Savings3Debt_dc"
+  },
+  {
+    "page": 0,
+    "name": "Savings3NetFMV_dc[0]",
+    "fullName": "Savings3NetFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.4,
+      130.156,
+      446.4,
+      142.915
+    ],
+    "tooltip": "Savings3NetFMV_dc"
+  },
+  {
+    "page": 0,
+    "name": "Savings3DivPet_ft[0]",
+    "fullName": "Savings3DivPet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.817,
+      131.573,
+      507.989,
+      141.498
+    ],
+    "tooltip": "Savings3DivPet_ft"
+  },
+  {
+    "page": 0,
+    "name": "Savings3DivRes_ft[0]",
+    "fullName": "Savings3DivRes_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      510.823,
+      131.573,
+      575.984,
+      141.498
+    ],
+    "tooltip": "Savings3DivRes_ft"
+  },
+  {
+    "page": 0,
+    "name": "Checking1Desc_ft[0]",
+    "fullName": "Checking1Desc_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.417,
+      106.055,
+      192.983,
+      115.98
+    ],
+    "tooltip": "Checking1Desc_ft"
+  },
+  {
+    "page": 0,
+    "name": "Checking1DateAcq_dt[0]",
+    "fullName": "Checking1DateAcq_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.817,
+      106.055,
+      250.583,
+      115.98
+    ],
+    "tooltip": "Checking1DateAcq_dt"
+  },
+  {
+    "page": 0,
+    "name": "Checking1GrossFMV_dc[0]",
+    "fullName": "Checking1GrossFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.8,
+      104.638,
+      316.8,
+      117.397
+    ],
+    "tooltip": "Checking1GrossFMV_dc"
+  },
+  {
+    "page": 0,
+    "name": "Checking1Debt_dc[0]",
+    "fullName": "Checking1Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.6,
+      104.638,
+      381.6,
+      117.397
+    ],
+    "tooltip": "Checking1Debt_dc"
+  },
+  {
+    "page": 0,
+    "name": "Checking1NetFMV_dc[0]",
+    "fullName": "Checking1NetFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.4,
+      104.638,
+      446.4,
+      117.397
+    ],
+    "tooltip": "Checking1NetFMV_dc"
+  },
+  {
+    "page": 0,
+    "name": "Checking1DivPet_ft[0]",
+    "fullName": "Checking1DivPet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.817,
+      106.055,
+      507.989,
+      115.98
+    ],
+    "tooltip": "Checking1DivPet_ft"
+  },
+  {
+    "page": 0,
+    "name": "Checking1DivRes_ft[0]",
+    "fullName": "Checking1DivRes_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      510.823,
+      106.055,
+      575.984,
+      115.98
+    ],
+    "tooltip": "Checking1DivRes_ft"
+  },
+  {
+    "page": 0,
+    "name": "Checking2Desc_ft[0]",
+    "fullName": "Checking2Desc_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.417,
+      93.296,
+      192.983,
+      103.221
+    ],
+    "tooltip": "Checking2Desc_ft"
+  },
+  {
+    "page": 0,
+    "name": "Checking2DateAcq_dt[0]",
+    "fullName": "Checking2DateAcq_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.817,
+      93.296,
+      250.583,
+      103.221
+    ],
+    "tooltip": "Checking2DateAcq_dt"
+  },
+  {
+    "page": 0,
+    "name": "Checking2GrossFMV_dc[0]",
+    "fullName": "Checking2GrossFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.8,
+      91.879,
+      316.8,
+      104.638
+    ],
+    "tooltip": "Checking2GrossFMV_dc"
+  },
+  {
+    "page": 0,
+    "name": "Checking2Debt_dc[0]",
+    "fullName": "Checking2Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.6,
+      91.879,
+      381.6,
+      104.638
+    ],
+    "tooltip": "Checking2Debt_dc"
+  },
+  {
+    "page": 0,
+    "name": "Checking2NetFMV_dc[0]",
+    "fullName": "Checking2NetFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.4,
+      91.879,
+      446.4,
+      104.638
+    ],
+    "tooltip": "Checking2NetFMV_dc"
+  },
+  {
+    "page": 0,
+    "name": "Checking2DivPet_ft[0]",
+    "fullName": "Checking2DivPet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.817,
+      93.296,
+      507.989,
+      103.221
+    ],
+    "tooltip": "Checking2DivPet_ft"
+  },
+  {
+    "page": 0,
+    "name": "Checking2DivRes_ft[0]",
+    "fullName": "Checking2DivRes_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      510.823,
+      93.296,
+      575.984,
+      103.221
+    ],
+    "tooltip": "Checking2DivRes_ft"
+  },
+  {
+    "page": 0,
+    "name": "Checking3Desc_ft[0]",
+    "fullName": "Checking3Desc_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.417,
+      80.537,
+      192.983,
+      90.462
+    ],
+    "tooltip": "Checking3Desc_ft"
+  },
+  {
+    "page": 0,
+    "name": "Checking3DateAcq_dt[0]",
+    "fullName": "Checking3DateAcq_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.817,
+      80.537,
+      250.583,
+      90.462
+    ],
+    "tooltip": "Checking3DateAcq_dt"
+  },
+  {
+    "page": 0,
+    "name": "Checking3GrossFMV_dc[0]",
+    "fullName": "Checking3GrossFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.8,
+      79.12,
+      316.8,
+      91.879
+    ],
+    "tooltip": "Checking3GrossFMV_dc"
+  },
+  {
+    "page": 0,
+    "name": "Checking3Debt_dc[0]",
+    "fullName": "Checking3Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.6,
+      79.12,
+      381.6,
+      91.879
+    ],
+    "tooltip": "Checking3Debt_dc"
+  },
+  {
+    "page": 0,
+    "name": "Checking3NetFMV_dc[0]",
+    "fullName": "Checking3NetFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.4,
+      79.12,
+      446.4,
+      91.879
+    ],
+    "tooltip": "Checking3NetFMV_dc"
+  },
+  {
+    "page": 0,
+    "name": "Checking3DivPet_ft[0]",
+    "fullName": "Checking3DivPet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.817,
+      80.537,
+      507.989,
+      90.462
+    ],
+    "tooltip": "Checking3DivPet_ft"
+  },
+  {
+    "page": 0,
+    "name": "Checking3DivRes_ft[0]",
+    "fullName": "Checking3DivRes_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      510.823,
+      80.537,
+      575.984,
+      90.462
+    ],
+    "tooltip": "Checking3DivRes_ft"
+  },
+  {
+    "page": 1,
+    "name": "CreditUnion1Desc_ft[0]",
+    "fullName": "CreditUnion1Desc_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.431,
+      647.654,
+      192.997,
+      657.579
+    ],
+    "tooltip": "CreditUnion1Desc_ft"
+  },
+  {
+    "page": 1,
+    "name": "CreditUnion1DateAcq_dt[0]",
+    "fullName": "CreditUnion1DateAcq_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.831,
+      647.654,
+      250.597,
+      657.579
+    ],
+    "tooltip": "CreditUnion1DateAcq_dt"
+  },
+  {
+    "page": 1,
+    "name": "CreditUnion1GrossFMV_dc[0]",
+    "fullName": "CreditUnion1GrossFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.814,
+      646.237,
+      316.814,
+      658.996
+    ],
+    "tooltip": "CreditUnion1GrossFMV_dc"
+  },
+  {
+    "page": 1,
+    "name": "CreditUnion1Debt_dc[0]",
+    "fullName": "CreditUnion1Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      324.014,
+      646.237,
+      381.614,
+      658.996
+    ],
+    "tooltip": "CreditUnion1Debt_dc"
+  },
+  {
+    "page": 1,
+    "name": "CreditUnion1NetFMV_dc[0]",
+    "fullName": "CreditUnion1NetFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.414,
+      646.237,
+      446.414,
+      658.996
+    ],
+    "tooltip": "CreditUnion1NetFMV_dc"
+  },
+  {
+    "page": 1,
+    "name": "CreditUnion1DivPet_ft[0]",
+    "fullName": "CreditUnion1DivPet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.831,
+      647.654,
+      509.797,
+      657.579
+    ],
+    "tooltip": "CreditUnion1DivPet_ft"
+  },
+  {
+    "page": 1,
+    "name": "CreditUnionDivRes_ft[0]",
+    "fullName": "CreditUnionDivRes_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      512.631,
+      647.654,
+      574.583,
+      657.579
+    ],
+    "tooltip": "CreditUnionDivRes_ft"
+  },
+  {
+    "page": 1,
+    "name": "CreditUnion2Desc_ft[0]",
+    "fullName": "CreditUnion2Desc_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.431,
+      634.895,
+      192.997,
+      644.82
+    ],
+    "tooltip": "CreditUnion2Desc_ft"
+  },
+  {
+    "page": 1,
+    "name": "CreditUnion2DateAcq_dt[0]",
+    "fullName": "CreditUnion2DateAcq_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.831,
+      634.895,
+      250.597,
+      644.82
+    ],
+    "tooltip": "CreditUnion2DateAcq_dt"
+  },
+  {
+    "page": 1,
+    "name": "CreditUnion2GrossFMV_dc[0]",
+    "fullName": "CreditUnion2GrossFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.814,
+      633.478,
+      316.814,
+      646.237
+    ],
+    "tooltip": "CreditUnion2GrossFMV_dc"
+  },
+  {
+    "page": 1,
+    "name": "CreditUnion2Debt_dc[0]",
+    "fullName": "CreditUnion2Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.614,
+      633.478,
+      381.614,
+      646.237
+    ],
+    "tooltip": "CreditUnion2Debt_dc"
+  },
+  {
+    "page": 1,
+    "name": "CreditUnion2NetFMV_dc[0]",
+    "fullName": "CreditUnion2NetFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.414,
+      633.478,
+      446.414,
+      646.237
+    ],
+    "tooltip": "CreditUnion2NetFMV_dc"
+  },
+  {
+    "page": 1,
+    "name": "CreditUnion2DivPet_ft[0]",
+    "fullName": "CreditUnion2DivPet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.831,
+      634.895,
+      509.797,
+      644.82
+    ],
+    "tooltip": "CreditUnion2DivPet_ft"
+  },
+  {
+    "page": 1,
+    "name": "CreditUnion2DivRes_ft[0]",
+    "fullName": "CreditUnion2DivRes_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      512.631,
+      634.895,
+      574.583,
+      644.82
+    ],
+    "tooltip": "CreditUnion2DivRes_ft"
+  },
+  {
+    "page": 1,
+    "name": "CreditUnion3Desc_ft[0]",
+    "fullName": "CreditUnion3Desc_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.431,
+      622.136,
+      192.997,
+      632.061
+    ],
+    "tooltip": "CreditUnion3Desc_ft"
+  },
+  {
+    "page": 1,
+    "name": "CreditUnion3DateAcq_dt[0]",
+    "fullName": "CreditUnion3DateAcq_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.831,
+      622.136,
+      250.597,
+      632.061
+    ],
+    "tooltip": "CreditUnion3DateAcq_dt"
+  },
+  {
+    "page": 1,
+    "name": "CreditUnion3GrossFMV_dc[0]",
+    "fullName": "CreditUnion3GrossFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.814,
+      620.719,
+      316.814,
+      633.478
+    ],
+    "tooltip": "CreditUnion3GrossFMV_dc"
+  },
+  {
+    "page": 1,
+    "name": "CreditUnion3Debt_dc[0]",
+    "fullName": "CreditUnion3Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.614,
+      620.719,
+      381.614,
+      633.478
+    ],
+    "tooltip": "CreditUnion3Debt_dc"
+  },
+  {
+    "page": 1,
+    "name": "CreditUnion3NetFMV_dc[0]",
+    "fullName": "CreditUnion3NetFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.414,
+      620.719,
+      446.414,
+      633.478
+    ],
+    "tooltip": "CreditUnion3NetFMV_dc"
+  },
+  {
+    "page": 1,
+    "name": "CreditUnion3DivPet_ft[0]",
+    "fullName": "CreditUnion3DivPet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.831,
+      622.136,
+      509.797,
+      632.061
+    ],
+    "tooltip": "CreditUnion3DivPet_ft"
+  },
+  {
+    "page": 1,
+    "name": "CreditUnion3DivRes_ft[0]",
+    "fullName": "CreditUnion3DivRes_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      512.631,
+      622.136,
+      574.583,
+      632.061
+    ],
+    "tooltip": "CreditUnion3DivRes_ft"
+  },
+  {
+    "page": 1,
+    "name": "Cash1Desc_ft[0]",
+    "fullName": "Cash1Desc_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.431,
+      596.618,
+      192.997,
+      606.543
+    ],
+    "tooltip": "Cash1Desc_ft"
+  },
+  {
+    "page": 1,
+    "name": "Cash1DateAcq_dt[0]",
+    "fullName": "Cash1DateAcq_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.831,
+      596.618,
+      250.597,
+      606.543
+    ],
+    "tooltip": "Cash1DateAcq_dt"
+  },
+  {
+    "page": 1,
+    "name": "Cash1GrossFMV_dc[0]",
+    "fullName": "Cash1GrossFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.814,
+      595.201,
+      316.814,
+      607.96
+    ],
+    "tooltip": "Cash1GrossFMV_dc"
+  },
+  {
+    "page": 1,
+    "name": "Cash1Debt_dc[0]",
+    "fullName": "Cash1Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.614,
+      595.201,
+      381.614,
+      607.96
+    ],
+    "tooltip": "Cash1Debt_dc"
+  },
+  {
+    "page": 1,
+    "name": "Cash1NetFMV_dc[0]",
+    "fullName": "Cash1NetFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.414,
+      595.201,
+      446.414,
+      607.96
+    ],
+    "tooltip": "Cash1NetFMV_dc"
+  },
+  {
+    "page": 1,
+    "name": "Cash1DivPet_ft[0]",
+    "fullName": "Cash1DivPet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.831,
+      596.618,
+      509.797,
+      606.543
+    ],
+    "tooltip": "Cash1DivPet_ft"
+  },
+  {
+    "page": 1,
+    "name": "Cash1DivRes_ft[0]",
+    "fullName": "Cash1DivRes_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      512.631,
+      596.618,
+      574.583,
+      606.543
+    ],
+    "tooltip": "Cash1DivRes_ft"
+  },
+  {
+    "page": 1,
+    "name": "Cash2Desc_ft[0]",
+    "fullName": "Cash2Desc_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.431,
+      583.859,
+      192.997,
+      593.784
+    ],
+    "tooltip": "Cash2Desc_ft"
+  },
+  {
+    "page": 1,
+    "name": "Cash2DateAcq_dt[0]",
+    "fullName": "Cash2DateAcq_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.831,
+      583.859,
+      250.597,
+      593.784
+    ],
+    "tooltip": "Cash2DateAcq_dt"
+  },
+  {
+    "page": 1,
+    "name": "Cash2GrossFMV_dc[0]",
+    "fullName": "Cash2GrossFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.814,
+      582.442,
+      316.814,
+      595.201
+    ],
+    "tooltip": "Cash2GrossFMV_dc"
+  },
+  {
+    "page": 1,
+    "name": "Cash2Debt_dc[0]",
+    "fullName": "Cash2Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.614,
+      582.442,
+      381.614,
+      595.201
+    ],
+    "tooltip": "Cash2Debt_dc"
+  },
+  {
+    "page": 1,
+    "name": "Cash21NetFMV_dc[0]",
+    "fullName": "Cash21NetFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.414,
+      582.442,
+      446.414,
+      595.201
+    ],
+    "tooltip": "Cash21NetFMV_dc"
+  },
+  {
+    "page": 1,
+    "name": "Cash2DivPet_ft[0]",
+    "fullName": "Cash2DivPet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.831,
+      583.859,
+      509.797,
+      593.784
+    ],
+    "tooltip": "Cash2DivPet_ft"
+  },
+  {
+    "page": 1,
+    "name": "Cash2DivRes_ft[0]",
+    "fullName": "Cash2DivRes_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      512.631,
+      583.859,
+      574.583,
+      593.784
+    ],
+    "tooltip": "Cash2DivRes_ft"
+  },
+  {
+    "page": 1,
+    "name": "TaxRefund1Desc_ft[0]",
+    "fullName": "TaxRefund1Desc_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.431,
+      558.344,
+      192.997,
+      568.269
+    ],
+    "tooltip": "TaxRefund1Desc_ft"
+  },
+  {
+    "page": 1,
+    "name": "TaxRefund1DateAcq_dt[0]",
+    "fullName": "TaxRefund1DateAcq_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.831,
+      558.344,
+      250.597,
+      568.269
+    ],
+    "tooltip": "TaxRefund1DateAcq_dt"
+  },
+  {
+    "page": 1,
+    "name": "TaxRefund1GrossFMV_dc[0]",
+    "fullName": "TaxRefund1GrossFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.814,
+      556.927,
+      316.814,
+      569.686
+    ],
+    "tooltip": "TaxRefund1GrossFMV_dc"
+  },
+  {
+    "page": 1,
+    "name": "TaxRefund1Debt_dc[0]",
+    "fullName": "TaxRefund1Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.614,
+      556.927,
+      381.614,
+      569.686
+    ],
+    "tooltip": "TaxRefund1Debt_dc"
+  },
+  {
+    "page": 1,
+    "name": "TaxRefund1NetFMV_dc[0]",
+    "fullName": "TaxRefund1NetFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.414,
+      556.927,
+      446.414,
+      569.686
+    ],
+    "tooltip": "TaxRefund1NetFMV_dc"
+  },
+  {
+    "page": 1,
+    "name": "TaxRefund1DivPet_ft[0]",
+    "fullName": "TaxRefund1DivPet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.831,
+      558.344,
+      509.797,
+      568.269
+    ],
+    "tooltip": "TaxRefund1DivPet_ft"
+  },
+  {
+    "page": 1,
+    "name": "TaxRefund1DivRes_ft[0]",
+    "fullName": "TaxRefund1DivRes_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      512.631,
+      558.344,
+      574.583,
+      568.269
+    ],
+    "tooltip": "TaxRefund1DivRes_ft"
+  },
+  {
+    "page": 1,
+    "name": "TaxRefund2Desc_ft[0]",
+    "fullName": "TaxRefund2Desc_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.431,
+      545.585,
+      192.997,
+      555.51
+    ],
+    "tooltip": "TaxRefund2Desc_ft"
+  },
+  {
+    "page": 1,
+    "name": "TaxRefund2DateAcq_dt[0]",
+    "fullName": "TaxRefund2DateAcq_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.831,
+      545.585,
+      250.597,
+      555.51
+    ],
+    "tooltip": "TaxRefund2DateAcq_dt"
+  },
+  {
+    "page": 1,
+    "name": "TaxRefund2GrossFMV_dc[0]",
+    "fullName": "TaxRefund2GrossFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.814,
+      544.168,
+      316.814,
+      556.927
+    ],
+    "tooltip": "TaxRefund2GrossFMV_dc"
+  },
+  {
+    "page": 1,
+    "name": "TaxRefund2Debt_dc[0]",
+    "fullName": "TaxRefund2Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.614,
+      544.168,
+      381.614,
+      556.927
+    ],
+    "tooltip": "TaxRefund2Debt_dc"
+  },
+  {
+    "page": 1,
+    "name": "TaxRefund2NetFMV_dc[0]",
+    "fullName": "TaxRefund2NetFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.414,
+      544.168,
+      446.414,
+      556.927
+    ],
+    "tooltip": "TaxRefund2NetFMV_dc"
+  },
+  {
+    "page": 1,
+    "name": "TaxRefund2DivPet_ft[0]",
+    "fullName": "TaxRefund2DivPet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.831,
+      545.585,
+      509.797,
+      555.51
+    ],
+    "tooltip": "TaxRefund2DivPet_ft"
+  },
+  {
+    "page": 1,
+    "name": "TaxRefund2DivRes_ft[0]",
+    "fullName": "TaxRefund2DivRes_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      512.631,
+      545.585,
+      574.583,
+      555.51
+    ],
+    "tooltip": "TaxRefund2DivRes_ft"
+  },
+  {
+    "page": 1,
+    "name": "Insurance1Desc_ft[0]",
+    "fullName": "Insurance1Desc_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.431,
+      507.308,
+      192.997,
+      517.233
+    ],
+    "tooltip": "Insurance1Desc_ft"
+  },
+  {
+    "page": 1,
+    "name": "Insurance1DateAcq_dt[0]",
+    "fullName": "Insurance1DateAcq_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.831,
+      507.308,
+      250.597,
+      517.233
+    ],
+    "tooltip": "Insurance1DateAcq_dt"
+  },
+  {
+    "page": 1,
+    "name": "Insurance1GrossFM_dc[0]",
+    "fullName": "Insurance1GrossFM_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.814,
+      505.891,
+      316.814,
+      518.65
+    ],
+    "tooltip": "Insurance1GrossFM_dc"
+  },
+  {
+    "page": 1,
+    "name": "Insurance1Debt_dc[0]",
+    "fullName": "Insurance1Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.614,
+      505.891,
+      381.614,
+      518.65
+    ],
+    "tooltip": "Insurance1Debt_dc"
+  },
+  {
+    "page": 1,
+    "name": "Insurance1NetFMV_dc[0]",
+    "fullName": "Insurance1NetFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.414,
+      505.891,
+      446.414,
+      518.65
+    ],
+    "tooltip": "Insurance1NetFMV_dc"
+  },
+  {
+    "page": 1,
+    "name": "Insurance1DivPet_ft[0]",
+    "fullName": "Insurance1DivPet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.831,
+      507.308,
+      509.797,
+      517.233
+    ],
+    "tooltip": "Insurance1DivPet_ft"
+  },
+  {
+    "page": 1,
+    "name": "Insurance1DivRes_ft[0]",
+    "fullName": "Insurance1DivRes_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      512.631,
+      507.308,
+      574.583,
+      517.233
+    ],
+    "tooltip": "Insurance1DivRes_ft"
+  },
+  {
+    "page": 1,
+    "name": "Insurance2Desc_ft[0]",
+    "fullName": "Insurance2Desc_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.431,
+      494.549,
+      192.997,
+      504.474
+    ],
+    "tooltip": "Insurance2Desc_ft"
+  },
+  {
+    "page": 1,
+    "name": "Insurance2DateAcq_dt[0]",
+    "fullName": "Insurance2DateAcq_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.831,
+      494.549,
+      250.597,
+      504.474
+    ],
+    "tooltip": "Insurance2DateAcq_dt"
+  },
+  {
+    "page": 1,
+    "name": "Insurance2GrossFMV_dc[0]",
+    "fullName": "Insurance2GrossFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.814,
+      493.132,
+      316.814,
+      505.891
+    ],
+    "tooltip": "Insurance2GrossFMV_dc"
+  },
+  {
+    "page": 1,
+    "name": "Insurance2Debt_dc[0]",
+    "fullName": "Insurance2Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.614,
+      493.132,
+      381.614,
+      505.891
+    ],
+    "tooltip": "Insurance2Debt_dc"
+  },
+  {
+    "page": 1,
+    "name": "Insurance2NetFMV_dc[0]",
+    "fullName": "Insurance2NetFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.414,
+      493.132,
+      446.414,
+      505.891
+    ],
+    "tooltip": "Insurance2NetFMV_dc"
+  },
+  {
+    "page": 1,
+    "name": "Insurance2DivPet_ft[0]",
+    "fullName": "Insurance2DivPet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.831,
+      494.549,
+      509.797,
+      504.474
+    ],
+    "tooltip": "Insurance2DivPet_ft"
+  },
+  {
+    "page": 1,
+    "name": "Insurance2DivRes_ft[0]",
+    "fullName": "Insurance2DivRes_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      512.631,
+      494.549,
+      574.583,
+      504.474
+    ],
+    "tooltip": "Insurance2DivRes_ft"
+  },
+  {
+    "page": 1,
+    "name": "StocksBonds1Desc_ft[0]",
+    "fullName": "StocksBonds1Desc_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.431,
+      456.275,
+      192.997,
+      466.2
+    ],
+    "tooltip": "StocksBonds1Desc_ft"
+  },
+  {
+    "page": 1,
+    "name": "StocksBonds1DateAcq_dt[0]",
+    "fullName": "StocksBonds1DateAcq_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.831,
+      456.275,
+      250.597,
+      466.2
+    ],
+    "tooltip": "StocksBonds1DateAcq_dt"
+  },
+  {
+    "page": 1,
+    "name": "StocksBonds1GrossFMV_dc[0]",
+    "fullName": "StocksBonds1GrossFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.814,
+      454.858,
+      316.814,
+      467.617
+    ],
+    "tooltip": "StocksBonds1GrossFMV_dc"
+  },
+  {
+    "page": 1,
+    "name": "StocksBonds1Debt_dc[0]",
+    "fullName": "StocksBonds1Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.614,
+      454.858,
+      381.614,
+      467.617
+    ],
+    "tooltip": "StocksBonds1Debt_dc"
+  },
+  {
+    "page": 1,
+    "name": "StocksBonds1NetFMV_dc[0]",
+    "fullName": "StocksBonds1NetFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.414,
+      454.858,
+      446.414,
+      467.617
+    ],
+    "tooltip": "StocksBonds1NetFMV_dc"
+  },
+  {
+    "page": 1,
+    "name": "StocksBonds1DivPet_ft[0]",
+    "fullName": "StocksBonds1DivPet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.831,
+      456.275,
+      509.797,
+      466.2
+    ],
+    "tooltip": "StocksBonds1DivPet_ft"
+  },
+  {
+    "page": 1,
+    "name": "StocksBonds1DivRes_ft[0]",
+    "fullName": "StocksBonds1DivRes_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      512.631,
+      456.275,
+      574.583,
+      466.2
+    ],
+    "tooltip": "StocksBonds1DivRes_ft"
+  },
+  {
+    "page": 1,
+    "name": "StocksBonds2Desc_ft[0]",
+    "fullName": "StocksBonds2Desc_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.431,
+      443.516,
+      192.997,
+      453.441
+    ],
+    "tooltip": "StocksBonds2Desc_ft"
+  },
+  {
+    "page": 1,
+    "name": "StocksBonds2DateAcq_dt[0]",
+    "fullName": "StocksBonds2DateAcq_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.831,
+      443.516,
+      250.597,
+      453.441
+    ],
+    "tooltip": "StocksBonds2DateAcq_dt"
+  },
+  {
+    "page": 1,
+    "name": "StocksBonds2GrossFMV_dc[0]",
+    "fullName": "StocksBonds2GrossFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.814,
+      442.099,
+      316.814,
+      454.858
+    ],
+    "tooltip": "StocksBonds2GrossFMV_dc"
+  },
+  {
+    "page": 1,
+    "name": "StocksBonds2Debt_dc[0]",
+    "fullName": "StocksBonds2Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.614,
+      442.099,
+      381.614,
+      454.858
+    ],
+    "tooltip": "StocksBonds2Debt_dc"
+  },
+  {
+    "page": 1,
+    "name": "StocksBonds2NetFMV_dc[0]",
+    "fullName": "StocksBonds2NetFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.414,
+      442.099,
+      446.414,
+      454.858
+    ],
+    "tooltip": "StocksBonds2NetFMV_dc"
+  },
+  {
+    "page": 1,
+    "name": "ft[0]",
+    "fullName": "ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.831,
+      443.516,
+      509.797,
+      453.441
+    ],
+    "tooltip": "StocksBonds2DivPet_.ft"
+  },
+  {
+    "page": 1,
+    "name": "StocksBonds2DivRes_ft[0]",
+    "fullName": "StocksBonds2DivRes_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      512.631,
+      443.516,
+      574.583,
+      453.441
+    ],
+    "tooltip": "StocksBonds2DivRes_ft"
+  },
+  {
+    "page": 1,
+    "name": "StocksBonds3Desc_ft[0]",
+    "fullName": "StocksBonds3Desc_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.431,
+      430.757,
+      192.997,
+      440.682
+    ],
+    "tooltip": "StocksBonds3Desc_ft"
+  },
+  {
+    "page": 1,
+    "name": "StocksBonds3DateAcq_dt[0]",
+    "fullName": "StocksBonds3DateAcq_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.831,
+      430.757,
+      250.597,
+      440.682
+    ],
+    "tooltip": "StocksBonds3DateAcq_dt"
+  },
+  {
+    "page": 1,
+    "name": "StocksBonds3GrossFMV_dc[0]",
+    "fullName": "StocksBonds3GrossFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.814,
+      429.34,
+      316.814,
+      442.099
+    ],
+    "tooltip": "StocksBonds3GrossFMV_dc"
+  },
+  {
+    "page": 1,
+    "name": "StocksBonds3Debt_dc[0]",
+    "fullName": "StocksBonds3Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.614,
+      429.34,
+      381.614,
+      442.099
+    ],
+    "tooltip": "StocksBonds3Debt_dc"
+  },
+  {
+    "page": 1,
+    "name": "StocksBonds3NetFMV_dc[0]",
+    "fullName": "StocksBonds3NetFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.414,
+      429.34,
+      446.414,
+      442.099
+    ],
+    "tooltip": "StocksBonds3NetFMV_dc"
+  },
+  {
+    "page": 1,
+    "name": "StocksBonds3DivPet_ft[0]",
+    "fullName": "StocksBonds3DivPet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.831,
+      430.757,
+      509.797,
+      440.682
+    ],
+    "tooltip": "StocksBonds3DivPet_ft"
+  },
+  {
+    "page": 1,
+    "name": "StocksBonds3DivRe_ft[0]",
+    "fullName": "StocksBonds3DivRe_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      512.631,
+      430.757,
+      574.583,
+      440.682
+    ],
+    "tooltip": "StocksBonds3DivRe_ft"
+  },
+  {
+    "page": 1,
+    "name": "Retirement1Desc_ft[0]",
+    "fullName": "Retirement1Desc_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.431,
+      405.239,
+      192.997,
+      415.164
+    ],
+    "tooltip": "Retirement1Desc_ft"
+  },
+  {
+    "page": 1,
+    "name": "Retirement1DateAcq_dt[0]",
+    "fullName": "Retirement1DateAcq_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.831,
+      405.239,
+      250.597,
+      415.164
+    ],
+    "tooltip": "Retirement1DateAcq_dt"
+  },
+  {
+    "page": 1,
+    "name": "Retirement1GrossFMV_dc[0]",
+    "fullName": "Retirement1GrossFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.814,
+      403.822,
+      316.814,
+      416.581
+    ],
+    "tooltip": "Retirement1GrossFMV_dc"
+  },
+  {
+    "page": 1,
+    "name": "Retirement1Debt_dc[0]",
+    "fullName": "Retirement1Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.614,
+      403.822,
+      381.614,
+      416.581
+    ],
+    "tooltip": "Retirement1Debt_dc"
+  },
+  {
+    "page": 1,
+    "name": "Retirement1NetFMV_dc[0]",
+    "fullName": "Retirement1NetFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.414,
+      403.822,
+      446.414,
+      416.581
+    ],
+    "tooltip": "Retirement1NetFMV_dc"
+  },
+  {
+    "page": 1,
+    "name": "Retirement1DivPet_ft[0]",
+    "fullName": "Retirement1DivPet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.831,
+      405.239,
+      509.797,
+      415.164
+    ],
+    "tooltip": "Retirement1DivPet_ft"
+  },
+  {
+    "page": 1,
+    "name": "Retirement1DivRe_ft[0]",
+    "fullName": "Retirement1DivRe_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      512.631,
+      405.239,
+      574.583,
+      415.164
+    ],
+    "tooltip": "Retirement1DivRe_ft"
+  },
+  {
+    "page": 1,
+    "name": "Retirement2Desc_ft[0]",
+    "fullName": "Retirement2Desc_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.431,
+      392.48,
+      192.997,
+      402.405
+    ],
+    "tooltip": "Retirement2Desc_ft"
+  },
+  {
+    "page": 1,
+    "name": "Retirement2DateAcq_dt[0]",
+    "fullName": "Retirement2DateAcq_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.831,
+      392.48,
+      250.597,
+      402.405
+    ],
+    "tooltip": "Retirement2DateAcq_dt"
+  },
+  {
+    "page": 1,
+    "name": "Retirement2GrossFMV_dc[0]",
+    "fullName": "Retirement2GrossFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.814,
+      391.063,
+      316.814,
+      403.822
+    ],
+    "tooltip": "Retirement2GrossFMV_dc"
+  },
+  {
+    "page": 1,
+    "name": "Retirement2Debt_dc[0]",
+    "fullName": "Retirement2Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.614,
+      391.063,
+      381.614,
+      403.822
+    ],
+    "tooltip": "Retirement2Debt_dc"
+  },
+  {
+    "page": 1,
+    "name": "Retirement2NetFMV_dc[0]",
+    "fullName": "Retirement2NetFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.414,
+      391.063,
+      446.414,
+      403.822
+    ],
+    "tooltip": "Retirement2NetFMV_dc"
+  },
+  {
+    "page": 1,
+    "name": "Retirement2DivPet_ft[0]",
+    "fullName": "Retirement2DivPet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.831,
+      392.48,
+      509.797,
+      402.405
+    ],
+    "tooltip": "Retirement2DivPet_ft"
+  },
+  {
+    "page": 1,
+    "name": "Retirement2DivRes_ft[0]",
+    "fullName": "Retirement2DivRes_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      512.631,
+      392.48,
+      574.583,
+      402.405
+    ],
+    "tooltip": "Retirement2DivRes_ft"
+  },
+  {
+    "page": 1,
+    "name": "Retirement3Desc_ft[0]",
+    "fullName": "Retirement3Desc_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.431,
+      379.721,
+      192.997,
+      389.646
+    ],
+    "tooltip": "Retirement3Desc_ft"
+  },
+  {
+    "page": 1,
+    "name": "Retirement3DateAcq_dt[0]",
+    "fullName": "Retirement3DateAcq_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.831,
+      379.721,
+      250.597,
+      389.646
+    ],
+    "tooltip": "Retirement3DateAcq_dt"
+  },
+  {
+    "page": 1,
+    "name": "Retirement3GrossFMV_dc[0]",
+    "fullName": "Retirement3GrossFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.814,
+      378.304,
+      316.814,
+      391.063
+    ],
+    "tooltip": "Retirement3GrossFMV_dc"
+  },
+  {
+    "page": 1,
+    "name": "Retirement3Debt_dc[0]",
+    "fullName": "Retirement3Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.614,
+      378.304,
+      381.614,
+      391.063
+    ],
+    "tooltip": "Retirement3Debt_dc"
+  },
+  {
+    "page": 1,
+    "name": "Retirement3NetFMV_dc[0]",
+    "fullName": "Retirement3NetFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.414,
+      378.304,
+      446.414,
+      391.063
+    ],
+    "tooltip": "Retirement3NetFMV_dc"
+  },
+  {
+    "page": 1,
+    "name": "Retirement3DivPet_ft[0]",
+    "fullName": "Retirement3DivPet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.831,
+      379.721,
+      509.797,
+      389.646
+    ],
+    "tooltip": "Retirement3DivPet_ft"
+  },
+  {
+    "page": 1,
+    "name": "Retirement3DivRes_ft[0]",
+    "fullName": "Retirement3DivRes_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      512.631,
+      379.721,
+      574.583,
+      389.646
+    ],
+    "tooltip": "Retirement3DivRes_ft"
+  },
+  {
+    "page": 1,
+    "name": "IRAsAnnuities1Desc_ft[0]",
+    "fullName": "IRAsAnnuities1Desc_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.431,
+      328.688,
+      192.997,
+      338.613
+    ],
+    "tooltip": "IRAsAnnuities1Desc_ft"
+  },
+  {
+    "page": 1,
+    "name": "IRAsAnnuities1DateAcq_dt[0]",
+    "fullName": "IRAsAnnuities1DateAcq_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.831,
+      328.688,
+      250.597,
+      338.613
+    ],
+    "tooltip": "IRAsAnnuities1DateAcq_dt"
+  },
+  {
+    "page": 1,
+    "name": "IRAsAnnuities1GrossFMV_dc[0]",
+    "fullName": "IRAsAnnuities1GrossFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.814,
+      327.271,
+      316.814,
+      340.03
+    ],
+    "tooltip": "IRAsAnnuities1GrossFMV_dc"
+  },
+  {
+    "page": 1,
+    "name": "IRAsAnnuities1Debt_dc[0]",
+    "fullName": "IRAsAnnuities1Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.614,
+      327.271,
+      381.614,
+      340.03
+    ],
+    "tooltip": "IRAsAnnuities1Debt_dc"
+  },
+  {
+    "page": 1,
+    "name": "IRAsAnnuities1NetFMV_dc[0]",
+    "fullName": "IRAsAnnuities1NetFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.414,
+      327.271,
+      446.414,
+      340.03
+    ],
+    "tooltip": "IRAsAnnuities1NetFMV_dc"
+  },
+  {
+    "page": 1,
+    "name": "IRAsAnnuities1DivPet_ft[0]",
+    "fullName": "IRAsAnnuities1DivPet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.831,
+      328.688,
+      509.797,
+      338.613
+    ],
+    "tooltip": "IRAsAnnuities1DivPet_ft"
+  },
+  {
+    "page": 1,
+    "name": "IRAsAnnuities1DivRes_ft[0]",
+    "fullName": "IRAsAnnuities1DivRes_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      512.631,
+      328.688,
+      574.583,
+      338.613
+    ],
+    "tooltip": "IRAsAnnuities1DivRes_ft"
+  },
+  {
+    "page": 1,
+    "name": "IRAsAnnuities2Desc_ft[0]",
+    "fullName": "IRAsAnnuities2Desc_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.431,
+      315.929,
+      192.997,
+      325.854
+    ],
+    "tooltip": "IRAsAnnuities2Desc_ft"
+  },
+  {
+    "page": 1,
+    "name": "IRAsAnnuities2DateAcq_dt[0]",
+    "fullName": "IRAsAnnuities2DateAcq_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.831,
+      315.929,
+      250.597,
+      325.854
+    ],
+    "tooltip": "IRAsAnnuities2DateAcq_dt"
+  },
+  {
+    "page": 1,
+    "name": "IRAsAnnuities2GrossFMV_dc[0]",
+    "fullName": "IRAsAnnuities2GrossFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.814,
+      314.512,
+      316.814,
+      327.271
+    ],
+    "tooltip": "IRAsAnnuities2GrossFMV_dc"
+  },
+  {
+    "page": 1,
+    "name": "IRAsAnnuities2Debt_dc[0]",
+    "fullName": "IRAsAnnuities2Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.614,
+      314.512,
+      381.614,
+      327.271
+    ],
+    "tooltip": "IRAsAnnuities2Debt_dc"
+  },
+  {
+    "page": 1,
+    "name": "IRAsAnnuities2NetFMV_dc[0]",
+    "fullName": "IRAsAnnuities2NetFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.414,
+      314.512,
+      446.414,
+      327.271
+    ],
+    "tooltip": "IRAsAnnuities2NetFMV_dc"
+  },
+  {
+    "page": 1,
+    "name": "IRAsAnnuities2DivPet_ft[0]",
+    "fullName": "IRAsAnnuities2DivPet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.831,
+      315.929,
+      509.797,
+      325.854
+    ],
+    "tooltip": "IRAsAnnuities2DivPet_ft"
+  },
+  {
+    "page": 1,
+    "name": "IRAsAnnuities2DivRes_ft[0]",
+    "fullName": "IRAsAnnuities2DivRes_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      512.631,
+      315.929,
+      574.583,
+      325.854
+    ],
+    "tooltip": "IRAsAnnuities2DivRes_ft"
+  },
+  {
+    "page": 1,
+    "name": "IRAsAnnuities3Desc_ft[0]",
+    "fullName": "IRAsAnnuities3Desc_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.431,
+      303.17,
+      192.997,
+      313.095
+    ],
+    "tooltip": "IRAsAnnuities3Desc_ft"
+  },
+  {
+    "page": 1,
+    "name": "IRAsAnnuities3DateAcq_dt[0]",
+    "fullName": "IRAsAnnuities3DateAcq_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.831,
+      303.17,
+      250.597,
+      313.095
+    ],
+    "tooltip": "IRAsAnnuities3DateAcq_dt"
+  },
+  {
+    "page": 1,
+    "name": "IRAsAnnuities3GrossFMV_dc[0]",
+    "fullName": "IRAsAnnuities3GrossFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.814,
+      301.753,
+      316.814,
+      314.512
+    ],
+    "tooltip": "IRAsAnnuities3GrossFMV_dc"
+  },
+  {
+    "page": 1,
+    "name": "IRAsAnnuities3Debt_dc[0]",
+    "fullName": "IRAsAnnuities3Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.614,
+      301.753,
+      381.614,
+      314.512
+    ],
+    "tooltip": "IRAsAnnuities3Debt_dc"
+  },
+  {
+    "page": 1,
+    "name": "IRAsAnnuities3NetFMV_dc[0]",
+    "fullName": "IRAsAnnuities3NetFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.414,
+      301.753,
+      446.414,
+      314.512
+    ],
+    "tooltip": "IRAsAnnuities3NetFMV_dc"
+  },
+  {
+    "page": 1,
+    "name": "IRAsAnnuities3DivPet_ft[0]",
+    "fullName": "IRAsAnnuities3DivPet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.831,
+      303.17,
+      509.797,
+      313.095
+    ],
+    "tooltip": "IRAsAnnuities3DivPet_ft"
+  },
+  {
+    "page": 1,
+    "name": "IRAsAnnuities3DivRes_ft[0]",
+    "fullName": "IRAsAnnuities3DivRes_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      512.631,
+      303.17,
+      574.583,
+      313.095
+    ],
+    "tooltip": "IRAsAnnuities3DivRes_ft"
+  },
+  {
+    "page": 1,
+    "name": "AcctsRec1Desc_ft[0]",
+    "fullName": "AcctsRec1Desc_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.431,
+      264.896,
+      192.997,
+      274.821
+    ],
+    "tooltip": "AcctsRec1Desc_ft"
+  },
+  {
+    "page": 1,
+    "name": "AcctsRec1DateAcq_dt[0]",
+    "fullName": "AcctsRec1DateAcq_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.831,
+      264.896,
+      250.597,
+      274.821
+    ],
+    "tooltip": "AcctsRec1DateAcq_dt"
+  },
+  {
+    "page": 1,
+    "name": "AcctsRec1GrossFMV_dc[0]",
+    "fullName": "AcctsRec1GrossFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.814,
+      263.479,
+      316.814,
+      276.238
+    ],
+    "tooltip": "AcctsRec1GrossFMV_dc"
+  },
+  {
+    "page": 1,
+    "name": "AcctsRec1Debt_dc[0]",
+    "fullName": "AcctsRec1Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.614,
+      263.479,
+      381.614,
+      276.238
+    ],
+    "tooltip": "AcctsRec1Debt_dc"
+  },
+  {
+    "page": 1,
+    "name": "AcctsRec1NetFMV_dc[0]",
+    "fullName": "AcctsRec1NetFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.414,
+      263.479,
+      446.414,
+      276.238
+    ],
+    "tooltip": "AcctsRec1NetFMV_dc"
+  },
+  {
+    "page": 1,
+    "name": "AcctsRec1DivPet_ft[0]",
+    "fullName": "AcctsRec1DivPet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.831,
+      264.896,
+      509.797,
+      274.821
+    ],
+    "tooltip": "AcctsRec1DivPet_ft"
+  },
+  {
+    "page": 1,
+    "name": "AcctsRec1DivRes_ft[0]",
+    "fullName": "AcctsRec1DivRes_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      512.631,
+      264.896,
+      574.583,
+      274.821
+    ],
+    "tooltip": "AcctsRec1DivRes_ft"
+  },
+  {
+    "page": 1,
+    "name": "AcctsRec2Desc_ft[0]",
+    "fullName": "AcctsRec2Desc_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.431,
+      252.137,
+      192.997,
+      262.062
+    ],
+    "tooltip": "AcctsRec2Desc_ft"
+  },
+  {
+    "page": 1,
+    "name": "AcctsRec2DateAcq_dt[0]",
+    "fullName": "AcctsRec2DateAcq_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.831,
+      252.137,
+      250.597,
+      262.062
+    ],
+    "tooltip": "AcctsRec2DateAcq_dt"
+  },
+  {
+    "page": 1,
+    "name": "AcctsRec2GrossFMV_dc[0]",
+    "fullName": "AcctsRec2GrossFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.814,
+      250.72,
+      316.814,
+      263.479
+    ],
+    "tooltip": "AcctsRec2GrossFMV_dc"
+  },
+  {
+    "page": 1,
+    "name": "AcctsRec2Debt_dc[0]",
+    "fullName": "AcctsRec2Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.614,
+      250.72,
+      381.614,
+      263.479
+    ],
+    "tooltip": "AcctsRec2Debt_dc"
+  },
+  {
+    "page": 1,
+    "name": "AcctsRec2NetFMV_dc[0]",
+    "fullName": "AcctsRec2NetFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.414,
+      250.72,
+      446.414,
+      263.479
+    ],
+    "tooltip": "AcctsRec2NetFMV_dc"
+  },
+  {
+    "page": 1,
+    "name": "AcctsRec2DivPet_ft[0]",
+    "fullName": "AcctsRec2DivPet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.831,
+      252.137,
+      509.797,
+      262.062
+    ],
+    "tooltip": "AcctsRec2DivPet_ft"
+  },
+  {
+    "page": 1,
+    "name": "AcctsRec2DivRes_ft[0]",
+    "fullName": "AcctsRec2DivRes_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      512.631,
+      252.137,
+      574.583,
+      262.062
+    ],
+    "tooltip": "AcctsRec2DivRes_ft"
+  },
+  {
+    "page": 1,
+    "name": "AcctsRec3Desc_ft[0]",
+    "fullName": "AcctsRec3Desc_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.431,
+      239.378,
+      192.997,
+      249.303
+    ],
+    "tooltip": "AcctsRec3Desc_ft"
+  },
+  {
+    "page": 1,
+    "name": "AcctsRec3DateAcq_dt[0]",
+    "fullName": "AcctsRec3DateAcq_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.831,
+      239.378,
+      250.597,
+      249.303
+    ],
+    "tooltip": "AcctsRec3DateAcq_dt"
+  },
+  {
+    "page": 1,
+    "name": "AcctsRec3GrossFMV_dc[0]",
+    "fullName": "AcctsRec3GrossFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.814,
+      237.961,
+      316.814,
+      250.72
+    ],
+    "tooltip": "AcctsRec3GrossFMV_dc"
+  },
+  {
+    "page": 1,
+    "name": "AcctsRec3Debt_dc[0]",
+    "fullName": "AcctsRec3Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.614,
+      237.961,
+      381.614,
+      250.72
+    ],
+    "tooltip": "AcctsRec3Debt_dc"
+  },
+  {
+    "page": 1,
+    "name": "AcctsRec3NetFMV_dc[0]",
+    "fullName": "AcctsRec3NetFMV_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.414,
+      237.961,
+      446.414,
+      250.72
+    ],
+    "tooltip": "AcctsRec3NetFMV_dc"
+  },
+  {
+    "page": 1,
+    "name": "AcctsRec3DivPet_ft[0]",
+    "fullName": "AcctsRec3DivPet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.831,
+      239.378,
+      509.797,
+      249.303
+    ],
+    "tooltip": "AcctsRec3DivPet_ft"
+  },
+  {
+    "page": 1,
+    "name": "AcctsRec3DivRes_ft[0]",
+    "fullName": "AcctsRec3DivRes_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      512.631,
+      239.378,
+      574.583,
+      249.303
+    ],
+    "tooltip": "AcctsRec3DivRes_ft"
+  },
+  {
+    "page": 1,
+    "name": "ft[0]",
+    "fullName": "ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.431,
+      201.104,
+      192.997,
+      211.029
+    ],
+    "tooltip": "Partrshp_BusInt1.Desc.ft"
+  },
+  {
+    "page": 1,
+    "name": "dt[0]",
+    "fullName": "dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.831,
+      201.104,
+      250.597,
+      211.029
+    ],
+    "tooltip": "Partrshp_BusInt1.DateAcq.dt"
+  },
+  {
+    "page": 1,
+    "name": "dc[0]",
+    "fullName": "dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.814,
+      199.687,
+      316.814,
+      212.446
+    ],
+    "tooltip": "Partrshp_BusInt1.GrossFMV.dc"
+  },
+  {
+    "page": 1,
+    "name": "dc[0]",
+    "fullName": "dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.614,
+      199.687,
+      381.614,
+      212.446
+    ],
+    "tooltip": "Partrshp_BusInt1.Debt.dc"
+  },
+  {
+    "page": 1,
+    "name": "dc[0]",
+    "fullName": "dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.414,
+      199.687,
+      446.414,
+      212.446
+    ],
+    "tooltip": "Partrshp_BusInt1.NetFMV.dc"
+  },
+  {
+    "page": 1,
+    "name": "ft[0]",
+    "fullName": "ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.831,
+      201.104,
+      509.797,
+      211.029
+    ],
+    "tooltip": "Partrshp_BusInt1.Div.Pet.ft"
+  },
+  {
+    "page": 1,
+    "name": "ft[0]",
+    "fullName": "ft[0]",
+    "type": "/Tx",
+    "rect": [
+      512.631,
+      201.104,
+      574.583,
+      211.029
+    ],
+    "tooltip": "Partrshp_BusInt1.Div.Res.ft"
+  },
+  {
+    "page": 1,
+    "name": "ft[0]",
+    "fullName": "ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.431,
+      188.345,
+      192.997,
+      198.27
+    ],
+    "tooltip": "Partrshp_BusInt2.Desc.ft"
+  },
+  {
+    "page": 1,
+    "name": "dt[0]",
+    "fullName": "dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.831,
+      188.345,
+      250.597,
+      198.27
+    ],
+    "tooltip": "Partrshp_BusInt2.DateAcq.dt"
+  },
+  {
+    "page": 1,
+    "name": "dc[0]",
+    "fullName": "dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.814,
+      186.928,
+      316.814,
+      199.687
+    ],
+    "tooltip": "Partrshp_BusInt2.GrossFMV.dc"
+  },
+  {
+    "page": 1,
+    "name": "dc[0]",
+    "fullName": "dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.614,
+      186.928,
+      381.614,
+      199.687
+    ],
+    "tooltip": "Partrshp_BusInt2.Debt.dc"
+  },
+  {
+    "page": 1,
+    "name": "dc[0]",
+    "fullName": "dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.414,
+      186.928,
+      446.414,
+      199.687
+    ],
+    "tooltip": "Partrshp_BusInt2.NetFMV.dc"
+  },
+  {
+    "page": 1,
+    "name": "ft[0]",
+    "fullName": "ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.831,
+      188.345,
+      509.797,
+      198.27
+    ],
+    "tooltip": "Partrshp_BusInt2.Div.Pet.ft"
+  },
+  {
+    "page": 1,
+    "name": "ft[0]",
+    "fullName": "ft[0]",
+    "type": "/Tx",
+    "rect": [
+      512.631,
+      188.345,
+      574.583,
+      198.27
+    ],
+    "tooltip": "Partrshp_BusInt2.Div.Res.ft"
+  },
+  {
+    "page": 1,
+    "name": "ft[0]",
+    "fullName": "ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.431,
+      175.586,
+      192.997,
+      185.511
+    ],
+    "tooltip": "Partrshp_BusInt3.Desc.ft"
+  },
+  {
+    "page": 1,
+    "name": "dt[0]",
+    "fullName": "dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.831,
+      175.586,
+      250.597,
+      185.511
+    ],
+    "tooltip": "Partrshp_BusInt3.DateAcq.dt"
+  },
+  {
+    "page": 1,
+    "name": "dc[0]",
+    "fullName": "dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.814,
+      174.169,
+      316.814,
+      186.928
+    ],
+    "tooltip": "Partrshp_BusInt3.GrossFMV.dc"
+  },
+  {
+    "page": 1,
+    "name": "dc[0]",
+    "fullName": "dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.614,
+      174.169,
+      381.614,
+      186.928
+    ],
+    "tooltip": "Partrshp_BusInt3.Debt.dc"
+  },
+  {
+    "page": 1,
+    "name": "dc[0]",
+    "fullName": "dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.414,
+      174.169,
+      446.414,
+      186.928
+    ],
+    "tooltip": "Partrshp_BusInt3.NetFMV.dc"
+  },
+  {
+    "page": 1,
+    "name": "ft[0]",
+    "fullName": "ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.831,
+      175.586,
+      509.797,
+      185.511
+    ],
+    "tooltip": "Partrshp_BusInt3.Div.Pet.ft"
+  },
+  {
+    "page": 1,
+    "name": "ft[0]",
+    "fullName": "ft[0]",
+    "type": "/Tx",
+    "rect": [
+      512.631,
+      175.586,
+      574.583,
+      185.511
+    ],
+    "tooltip": "Partrshp_BusInt3.Div.Res.ft"
+  },
+  {
+    "page": 1,
+    "name": "ft[0]",
+    "fullName": "ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.431,
+      150.068,
+      192.997,
+      159.993
+    ],
+    "tooltip": "OtherAssets1.Desc.ft"
+  },
+  {
+    "page": 1,
+    "name": "dt[0]",
+    "fullName": "dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.831,
+      150.068,
+      250.597,
+      159.993
+    ],
+    "tooltip": "OtherAssets1.DateAcq.dt"
+  },
+  {
+    "page": 1,
+    "name": "dc[0]",
+    "fullName": "dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.814,
+      148.651,
+      316.814,
+      161.41
+    ],
+    "tooltip": "OtherAssets1.GrossFMV.dc"
+  },
+  {
+    "page": 1,
+    "name": "dc[0]",
+    "fullName": "dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.614,
+      148.651,
+      381.614,
+      161.41
+    ],
+    "tooltip": "OtherAssets1.Debt.dc"
+  },
+  {
+    "page": 1,
+    "name": "dc[0]",
+    "fullName": "dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.414,
+      148.651,
+      446.414,
+      161.41
+    ],
+    "tooltip": "OtherAssets1.NetFMV.dc"
+  },
+  {
+    "page": 1,
+    "name": "ft[0]",
+    "fullName": "ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.831,
+      150.068,
+      509.797,
+      159.993
+    ],
+    "tooltip": "OtherAssets1.Div.Pet.ft"
+  },
+  {
+    "page": 1,
+    "name": "ft[0]",
+    "fullName": "ft[0]",
+    "type": "/Tx",
+    "rect": [
+      512.631,
+      150.068,
+      574.583,
+      159.993
+    ],
+    "tooltip": "OtherAssets1.Div.Res.ft"
+  },
+  {
+    "page": 1,
+    "name": "ft[0]",
+    "fullName": "ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.431,
+      137.309,
+      192.997,
+      147.234
+    ],
+    "tooltip": "OtherAssets2.Desc.ft"
+  },
+  {
+    "page": 1,
+    "name": "dt[0]",
+    "fullName": "dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.831,
+      137.309,
+      250.597,
+      147.234
+    ],
+    "tooltip": "OtherAssets2.DateAcq.dt"
+  },
+  {
+    "page": 1,
+    "name": "dc[0]",
+    "fullName": "dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.814,
+      135.892,
+      316.814,
+      148.651
+    ],
+    "tooltip": "OtherAssets2.GrossFMV.dc"
+  },
+  {
+    "page": 1,
+    "name": "dc[0]",
+    "fullName": "dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.614,
+      135.892,
+      381.614,
+      148.651
+    ],
+    "tooltip": "OtherAssets2.Debt.dc"
+  },
+  {
+    "page": 1,
+    "name": "dc[0]",
+    "fullName": "dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.414,
+      135.892,
+      446.414,
+      148.651
+    ],
+    "tooltip": "OtherAssets2.NetFMV.dc"
+  },
+  {
+    "page": 1,
+    "name": "ft[0]",
+    "fullName": "ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.831,
+      137.309,
+      509.797,
+      147.234
+    ],
+    "tooltip": "OtherAssets2.Div.Pet.ft"
+  },
+  {
+    "page": 1,
+    "name": "ft[0]",
+    "fullName": "ft[0]",
+    "type": "/Tx",
+    "rect": [
+      512.631,
+      137.309,
+      574.583,
+      147.234
+    ],
+    "tooltip": "OtherAssets2Div.Res.ft"
+  },
+  {
+    "page": 1,
+    "name": "ft[0]",
+    "fullName": "ft[0]",
+    "type": "/Tx",
+    "rect": [
+      37.431,
+      124.55,
+      192.997,
+      134.475
+    ],
+    "tooltip": "OtherAssets3.Desc.ft"
+  },
+  {
+    "page": 1,
+    "name": "dt[0]",
+    "fullName": "dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.831,
+      124.55,
+      250.597,
+      134.475
+    ],
+    "tooltip": "OtherAssets3.DateAcq.dt"
+  },
+  {
+    "page": 1,
+    "name": "dc[0]",
+    "fullName": "dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.814,
+      123.133,
+      316.814,
+      135.892
+    ],
+    "tooltip": "OtherAssets3.GrossFMV.dc"
+  },
+  {
+    "page": 1,
+    "name": "dc[0]",
+    "fullName": "dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.614,
+      123.133,
+      381.614,
+      135.892
+    ],
+    "tooltip": "OtherAssets3.Debt.dc"
+  },
+  {
+    "page": 1,
+    "name": "dc[0]",
+    "fullName": "dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.414,
+      123.133,
+      446.414,
+      135.892
+    ],
+    "tooltip": "OtherAssets3.NetFMV.dc"
+  },
+  {
+    "page": 1,
+    "name": "ft[0]",
+    "fullName": "ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.831,
+      124.55,
+      509.797,
+      134.475
+    ],
+    "tooltip": "OtherAssets3.Div.Pet.ft"
+  },
+  {
+    "page": 1,
+    "name": "ft[0]",
+    "fullName": "ft[0]",
+    "type": "/Tx",
+    "rect": [
+      512.631,
+      124.55,
+      574.583,
+      134.475
+    ],
+    "tooltip": "OtherAssets3Div.Res.ft"
+  },
+  {
+    "page": 1,
+    "name": "dt[0]",
+    "fullName": "dt[0]",
+    "type": "/Tx",
+    "rect": [
+      195.831,
+      94.783,
+      250.597,
+      104.708
+    ],
+    "tooltip": "AssetsContd.DateAcq.dt"
+  },
+  {
+    "page": 1,
+    "name": "dc[0]",
+    "fullName": "dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.814,
+      93.366,
+      316.814,
+      106.125
+    ],
+    "tooltip": "AssetsContd.GrossFMV.dc"
+  },
+  {
+    "page": 1,
+    "name": "dc[0]",
+    "fullName": "dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.614,
+      93.366,
+      381.614,
+      106.125
+    ],
+    "tooltip": "AssetsContd.Debt.dc"
+  },
+  {
+    "page": 1,
+    "name": "dc[0]",
+    "fullName": "dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.414,
+      93.366,
+      446.414,
+      106.125
+    ],
+    "tooltip": "Assets.Contd.NetFMV.dc"
+  },
+  {
+    "page": 1,
+    "name": "ft[0]",
+    "fullName": "ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.831,
+      94.783,
+      509.797,
+      104.708
+    ],
+    "tooltip": "AssetsContd.Div.Pet.ft"
+  },
+  {
+    "page": 1,
+    "name": "ft[0]",
+    "fullName": "ft[0]",
+    "type": "/Tx",
+    "rect": [
+      512.631,
+      94.783,
+      574.583,
+      104.708
+    ],
+    "tooltip": "AssetsContd.Div.Res.ft"
+  },
+  {
+    "page": 1,
+    "name": "tx[0]",
+    "fullName": "tx[0]",
+    "type": "/Tx",
+    "rect": [
+      195.831,
+      77.775,
+      250.597,
+      91.949
+    ],
+    "tooltip": "TotalAsset1.tx"
+  },
+  {
+    "page": 1,
+    "name": "dc[0]",
+    "fullName": "dc[0]",
+    "type": "/Tx",
+    "rect": [
+      262.814,
+      76.358,
+      316.814,
+      93.366
+    ],
+    "tooltip": "TotalAssets.GrossFMV.dc"
+  },
+  {
+    "page": 1,
+    "name": "dc[0]",
+    "fullName": "dc[0]",
+    "type": "/Tx",
+    "rect": [
+      327.614,
+      76.358,
+      381.614,
+      93.366
+    ],
+    "tooltip": "TotalAssets.Debt.dc"
+  },
+  {
+    "page": 1,
+    "name": "dc[0]",
+    "fullName": "dc[0]",
+    "type": "/Tx",
+    "rect": [
+      392.414,
+      76.358,
+      446.414,
+      93.366
+    ],
+    "tooltip": "TotalAssets.NetFMV.dc"
+  },
+  {
+    "page": 1,
+    "name": "ft[0]",
+    "fullName": "ft[0]",
+    "type": "/Tx",
+    "rect": [
+      447.831,
+      77.775,
+      509.797,
+      91.949
+    ],
+    "tooltip": "TotalAssets.Div.Pet.ft"
+  },
+  {
+    "page": 1,
+    "name": "ft[0]",
+    "fullName": "ft[0]",
+    "type": "/Tx",
+    "rect": [
+      512.631,
+      77.775,
+      574.583,
+      91.949
+    ],
+    "tooltip": "TotalAssets.Div.Res.ft"
+  },
+  {
+    "page": 2,
+    "name": "StLoans1_tx[0]",
+    "fullName": "StLoans1_tx[0]",
+    "type": "/Tx",
+    "rect": [
+      39.883,
+      661.632,
+      211.138,
+      674.391
+    ],
+    "tooltip": "StLoans1_tx"
+  },
+  {
+    "page": 2,
+    "name": "StLoans1Date_dt[0]",
+    "fullName": "StLoans1Date_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      214.738,
+      661.632,
+      292.727,
+      674.391
+    ],
+    "tooltip": "StLoans1Date_dt"
+  },
+  {
+    "page": 2,
+    "name": "StLoans1Debt_dc[0]",
+    "fullName": "StLoans1Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      307.127,
+      661.632,
+      390.324,
+      674.391
+    ],
+    "tooltip": "StLoans1Debt_dc"
+  },
+  {
+    "page": 2,
+    "name": "StLoans1Pet_ft[0]",
+    "fullName": "StLoans1Pet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      391.742,
+      661.632,
+      477.914,
+      674.391
+    ],
+    "tooltip": "StLoans1Pet_ft"
+  },
+  {
+    "page": 2,
+    "name": "StLoans1Resp_ft[0]",
+    "fullName": "StLoans1Resp_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      480.75,
+      661.632,
+      573.915,
+      674.391
+    ],
+    "tooltip": "StLoans1Resp_ft"
+  },
+  {
+    "page": 2,
+    "name": "StLoans2_tx[0]",
+    "fullName": "StLoans2_tx[0]",
+    "type": "/Tx",
+    "rect": [
+      39.883,
+      648.873,
+      211.138,
+      661.632
+    ],
+    "tooltip": "StLoans2_tx"
+  },
+  {
+    "page": 2,
+    "name": "StLoans2Date_dt[0]",
+    "fullName": "StLoans2Date_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      214.738,
+      648.873,
+      292.727,
+      661.632
+    ],
+    "tooltip": "StLoans2Date_dt"
+  },
+  {
+    "page": 2,
+    "name": "StLoans2Debt_dc[0]",
+    "fullName": "StLoans2Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      307.127,
+      648.873,
+      390.324,
+      661.632
+    ],
+    "tooltip": "StLoans2Debt_dc"
+  },
+  {
+    "page": 2,
+    "name": "StLoans2Pet_ft[0]",
+    "fullName": "StLoans2Pet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      391.742,
+      648.873,
+      477.914,
+      661.632
+    ],
+    "tooltip": "StLoans2Pet_ft"
+  },
+  {
+    "page": 2,
+    "name": "StLoans2Resp_ft[0]",
+    "fullName": "StLoans2Resp_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      480.75,
+      648.873,
+      573.915,
+      661.632
+    ],
+    "tooltip": "StLoans2Resp_ft"
+  },
+  {
+    "page": 2,
+    "name": "StLoans3_tx[0]",
+    "fullName": "StLoans3_tx[0]",
+    "type": "/Tx",
+    "rect": [
+      39.883,
+      636.114,
+      211.138,
+      648.873
+    ],
+    "tooltip": "StLoans3_tx"
+  },
+  {
+    "page": 2,
+    "name": "StLoans3Date_dt[0]",
+    "fullName": "StLoans3Date_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      214.738,
+      636.114,
+      292.727,
+      648.873
+    ],
+    "tooltip": "StLoans3Date_dt"
+  },
+  {
+    "page": 2,
+    "name": "StLoans3Debt_dc[0]",
+    "fullName": "StLoans3Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      307.127,
+      636.114,
+      390.324,
+      648.873
+    ],
+    "tooltip": "StLoans3Debt_dc"
+  },
+  {
+    "page": 2,
+    "name": "StLoans3Pet_ft[0]",
+    "fullName": "StLoans3Pet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      391.742,
+      636.114,
+      477.914,
+      648.873
+    ],
+    "tooltip": "StLoans3Pet_ft"
+  },
+  {
+    "page": 2,
+    "name": "StLoans3Resp_ft[0]",
+    "fullName": "StLoans3Resp_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      480.75,
+      636.114,
+      573.915,
+      648.873
+    ],
+    "tooltip": "StLoans3Resp_ft"
+  },
+  {
+    "page": 2,
+    "name": "StLoans4_tx[0]",
+    "fullName": "StLoans4_tx[0]",
+    "type": "/Tx",
+    "rect": [
+      39.883,
+      623.358,
+      211.138,
+      636.114
+    ],
+    "tooltip": "StLoans4_tx"
+  },
+  {
+    "page": 2,
+    "name": "StLoans4Date_dt[0]",
+    "fullName": "StLoans4Date_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      214.738,
+      623.358,
+      292.727,
+      636.114
+    ],
+    "tooltip": "StLoans4Date_dt"
+  },
+  {
+    "page": 2,
+    "name": "StLoans4Debt_dc[0]",
+    "fullName": "StLoans4Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      307.127,
+      623.358,
+      390.324,
+      636.114
+    ],
+    "tooltip": "StLoans4Debt_dc"
+  },
+  {
+    "page": 2,
+    "name": "StLoans4Pet_ft[0]",
+    "fullName": "StLoans4Pet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      391.742,
+      623.358,
+      477.914,
+      636.114
+    ],
+    "tooltip": "StLoans4Pet_ft"
+  },
+  {
+    "page": 2,
+    "name": "StLoans4Resp_ft[0]",
+    "fullName": "StLoans4Resp_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      480.75,
+      623.358,
+      573.915,
+      636.114
+    ],
+    "tooltip": "StLoans4Resp_ft"
+  },
+  {
+    "page": 2,
+    "name": "StLoans5_tx[0]",
+    "fullName": "StLoans5_tx[0]",
+    "type": "/Tx",
+    "rect": [
+      39.883,
+      610.599,
+      211.138,
+      623.358
+    ],
+    "tooltip": "StLoans5_tx"
+  },
+  {
+    "page": 2,
+    "name": "StLoans5Date_dt[0]",
+    "fullName": "StLoans5Date_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      214.738,
+      610.599,
+      292.727,
+      623.358
+    ],
+    "tooltip": "StLoans5Date_dt"
+  },
+  {
+    "page": 2,
+    "name": "StLoans5Debt_dc[0]",
+    "fullName": "StLoans5Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      307.127,
+      610.599,
+      390.324,
+      623.358
+    ],
+    "tooltip": "StLoans5Debt_dc"
+  },
+  {
+    "page": 2,
+    "name": "StLoans5Pet_ft[0]",
+    "fullName": "StLoans5Pet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      391.742,
+      610.599,
+      477.914,
+      623.358
+    ],
+    "tooltip": "StLoans5Pet_ft"
+  },
+  {
+    "page": 2,
+    "name": "StLoans5Resp_ft[0]",
+    "fullName": "StLoans5Resp_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      480.75,
+      610.599,
+      573.915,
+      623.358
+    ],
+    "tooltip": "StLoans5Resp_ft"
+  },
+  {
+    "page": 2,
+    "name": "Taxes1_tx[0]",
+    "fullName": "Taxes1_tx[0]",
+    "type": "/Tx",
+    "rect": [
+      39.883,
+      585.084,
+      211.138,
+      597.84
+    ],
+    "tooltip": "Taxes1_tx"
+  },
+  {
+    "page": 2,
+    "name": "Taxes1Date_dt[0]",
+    "fullName": "Taxes1Date_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      214.738,
+      585.084,
+      292.727,
+      597.84
+    ],
+    "tooltip": "Taxes1Date_dt"
+  },
+  {
+    "page": 2,
+    "name": "Taxes1Debt_dc[0]",
+    "fullName": "Taxes1Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      307.127,
+      585.084,
+      390.324,
+      597.84
+    ],
+    "tooltip": "Taxes1Debt_dc"
+  },
+  {
+    "page": 2,
+    "name": "Taxes1Pet_ft[0]",
+    "fullName": "Taxes1Pet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      391.742,
+      585.084,
+      477.914,
+      597.84
+    ],
+    "tooltip": "Taxes1Pet_ft"
+  },
+  {
+    "page": 2,
+    "name": "Taxes1Resp_ft[0]",
+    "fullName": "Taxes1Resp_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      480.75,
+      585.084,
+      573.915,
+      597.84
+    ],
+    "tooltip": "Taxes1Resp_ft"
+  },
+  {
+    "page": 2,
+    "name": "Taxes2_tx[0]",
+    "fullName": "Taxes2_tx[0]",
+    "type": "/Tx",
+    "rect": [
+      39.883,
+      572.325,
+      211.138,
+      585.084
+    ],
+    "tooltip": "Taxes2_tx"
+  },
+  {
+    "page": 2,
+    "name": "Taxes2Date_dt[0]",
+    "fullName": "Taxes2Date_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      214.738,
+      572.325,
+      292.727,
+      585.084
+    ],
+    "tooltip": "Taxes2Date_dt"
+  },
+  {
+    "page": 2,
+    "name": "Taxes2Debt_dc[0]",
+    "fullName": "Taxes2Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      307.127,
+      572.325,
+      390.324,
+      585.084
+    ],
+    "tooltip": "Taxes2Debt_dc"
+  },
+  {
+    "page": 2,
+    "name": "Taxes2Pet_ft[0]",
+    "fullName": "Taxes2Pet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      391.742,
+      572.325,
+      477.914,
+      585.084
+    ],
+    "tooltip": "Taxes2Pet_ft"
+  },
+  {
+    "page": 2,
+    "name": "Taxes2Resp_ft[0]",
+    "fullName": "Taxes2Resp_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      480.75,
+      572.325,
+      573.915,
+      585.084
+    ],
+    "tooltip": "Taxes2Resp_ft"
+  },
+  {
+    "page": 2,
+    "name": "Taxes3_tx[0]",
+    "fullName": "Taxes3_tx[0]",
+    "type": "/Tx",
+    "rect": [
+      39.883,
+      559.569,
+      211.138,
+      572.325
+    ],
+    "tooltip": "Taxes3_tx"
+  },
+  {
+    "page": 2,
+    "name": "Taxes3Date_dt[0]",
+    "fullName": "Taxes3Date_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      214.738,
+      559.569,
+      292.727,
+      572.325
+    ],
+    "tooltip": "Taxes3Date_dt"
+  },
+  {
+    "page": 2,
+    "name": "Taxes3Debt_dc[0]",
+    "fullName": "Taxes3Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      307.127,
+      559.569,
+      390.324,
+      572.325
+    ],
+    "tooltip": "Taxes3Debt_dc"
+  },
+  {
+    "page": 2,
+    "name": "Taxes3Pet_ft[0]",
+    "fullName": "Taxes3Pet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      391.742,
+      559.569,
+      477.914,
+      572.325
+    ],
+    "tooltip": "Taxes3Pet_ft"
+  },
+  {
+    "page": 2,
+    "name": "Taxes3Resp_ft[0]",
+    "fullName": "Taxes3Resp_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      480.75,
+      559.569,
+      573.915,
+      572.325
+    ],
+    "tooltip": "Taxes3Resp_ft"
+  },
+  {
+    "page": 2,
+    "name": "Taxes4_tx[0]",
+    "fullName": "Taxes4_tx[0]",
+    "type": "/Tx",
+    "rect": [
+      39.883,
+      546.81,
+      211.138,
+      559.569
+    ],
+    "tooltip": "Taxes4_tx"
+  },
+  {
+    "page": 2,
+    "name": "Taxes4Date_dt[0]",
+    "fullName": "Taxes4Date_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      214.738,
+      546.81,
+      292.727,
+      559.569
+    ],
+    "tooltip": "Taxes4Date_dt"
+  },
+  {
+    "page": 2,
+    "name": "Taxes4Debt_dc[0]",
+    "fullName": "Taxes4Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      307.127,
+      546.81,
+      390.324,
+      559.569
+    ],
+    "tooltip": "Taxes4Debt_dc"
+  },
+  {
+    "page": 2,
+    "name": "Taxes4Pet_ft[0]",
+    "fullName": "Taxes4Pet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      391.742,
+      546.81,
+      477.914,
+      559.569
+    ],
+    "tooltip": "Taxes4Pet_ft"
+  },
+  {
+    "page": 2,
+    "name": "Taxes4Resp_ft[0]",
+    "fullName": "Taxes4Resp_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      480.75,
+      546.81,
+      573.915,
+      559.569
+    ],
+    "tooltip": "Taxes4Resp_ft"
+  },
+  {
+    "page": 2,
+    "name": "SptArrs1_tx[0]",
+    "fullName": "SptArrs1_tx[0]",
+    "type": "/Tx",
+    "rect": [
+      39.883,
+      521.292,
+      211.138,
+      534.051
+    ],
+    "tooltip": "SptArrs1_tx"
+  },
+  {
+    "page": 2,
+    "name": "SptArrs1Date_dt[0]",
+    "fullName": "SptArrs1Date_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      214.738,
+      521.292,
+      292.727,
+      534.051
+    ],
+    "tooltip": "SptArrs1Date_dt"
+  },
+  {
+    "page": 2,
+    "name": "SptArrs1Debt_dc[0]",
+    "fullName": "SptArrs1Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      307.127,
+      521.292,
+      390.324,
+      534.051
+    ],
+    "tooltip": "SptArrs1Debt_dc"
+  },
+  {
+    "page": 2,
+    "name": "SptArrs1Pet_ft[0]",
+    "fullName": "SptArrs1Pet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      391.742,
+      521.292,
+      477.914,
+      534.051
+    ],
+    "tooltip": "SptArrs1Pet_ft"
+  },
+  {
+    "page": 2,
+    "name": "SptArrs1Resp_ft[0]",
+    "fullName": "SptArrs1Resp_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      480.75,
+      521.292,
+      573.915,
+      534.051
+    ],
+    "tooltip": "SptArrs1Resp_ft"
+  },
+  {
+    "page": 2,
+    "name": "SptArrs2_tx[0]",
+    "fullName": "SptArrs2_tx[0]",
+    "type": "/Tx",
+    "rect": [
+      39.883,
+      508.533,
+      211.138,
+      521.292
+    ],
+    "tooltip": "SptArrs2_tx"
+  },
+  {
+    "page": 2,
+    "name": "SptArrs2Date_dt[0]",
+    "fullName": "SptArrs2Date_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      214.738,
+      508.533,
+      292.727,
+      521.292
+    ],
+    "tooltip": "SptArrs2Date_dt"
+  },
+  {
+    "page": 2,
+    "name": "SptArrs2Debt_dc[0]",
+    "fullName": "SptArrs2Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      307.127,
+      508.533,
+      390.324,
+      521.292
+    ],
+    "tooltip": "SptArrs2Debt_dc"
+  },
+  {
+    "page": 2,
+    "name": "SptArrs2Pet_ft[0]",
+    "fullName": "SptArrs2Pet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      391.742,
+      508.533,
+      477.914,
+      521.292
+    ],
+    "tooltip": "SptArrs2Pet_ft"
+  },
+  {
+    "page": 2,
+    "name": "SptArrs2Resp_ft[0]",
+    "fullName": "SptArrs2Resp_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      480.75,
+      508.533,
+      573.915,
+      521.292
+    ],
+    "tooltip": "SptArrs2Resp_ft"
+  },
+  {
+    "page": 2,
+    "name": "SptArrs3_tx[0]",
+    "fullName": "SptArrs3_tx[0]",
+    "type": "/Tx",
+    "rect": [
+      39.883,
+      495.774,
+      211.138,
+      508.533
+    ],
+    "tooltip": "SptArrs3_tx"
+  },
+  {
+    "page": 2,
+    "name": "SptArrs3Date_dt[0]",
+    "fullName": "SptArrs3Date_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      214.738,
+      495.774,
+      292.727,
+      508.533
+    ],
+    "tooltip": "SptArrs3Date_dt"
+  },
+  {
+    "page": 2,
+    "name": "SptArrs3Debt_dc[0]",
+    "fullName": "SptArrs3Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      307.127,
+      495.774,
+      390.324,
+      508.533
+    ],
+    "tooltip": "SptArrs3Debt_dc"
+  },
+  {
+    "page": 2,
+    "name": "SptArrs3Pet_ft[0]",
+    "fullName": "SptArrs3Pet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      391.742,
+      495.774,
+      477.914,
+      508.533
+    ],
+    "tooltip": "SptArrs3Pet_ft"
+  },
+  {
+    "page": 2,
+    "name": "SptArrs3Resp_ft[0]",
+    "fullName": "SptArrs3Resp_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      480.75,
+      495.774,
+      573.915,
+      508.533
+    ],
+    "tooltip": "SptArrs3Resp_ft"
+  },
+  {
+    "page": 2,
+    "name": "SptArrs4_tx[0]",
+    "fullName": "SptArrs4_tx[0]",
+    "type": "/Tx",
+    "rect": [
+      39.883,
+      483.015,
+      211.138,
+      495.774
+    ],
+    "tooltip": "SptArrs4_tx"
+  },
+  {
+    "page": 2,
+    "name": "SptArrs4Date_dt[0]",
+    "fullName": "SptArrs4Date_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      214.738,
+      483.015,
+      292.727,
+      495.774
+    ],
+    "tooltip": "SptArrs4Date_dt"
+  },
+  {
+    "page": 2,
+    "name": "SptArrs4Debt_dc[0]",
+    "fullName": "SptArrs4Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      307.127,
+      483.015,
+      390.324,
+      495.774
+    ],
+    "tooltip": "SptArrs4Debt_dc"
+  },
+  {
+    "page": 2,
+    "name": "SptArrs4Pet_ft[0]",
+    "fullName": "SptArrs4Pet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      391.742,
+      483.015,
+      477.914,
+      495.774
+    ],
+    "tooltip": "SptArrs4Pet_ft"
+  },
+  {
+    "page": 2,
+    "name": "SptArrs4Resp_ft[0]",
+    "fullName": "SptArrs4Resp_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      480.75,
+      483.015,
+      573.915,
+      495.774
+    ],
+    "tooltip": "SptArrs4Resp_ft"
+  },
+  {
+    "page": 2,
+    "name": "UnsecLoans1_tx[0]",
+    "fullName": "UnsecLoans1_tx[0]",
+    "type": "/Tx",
+    "rect": [
+      39.883,
+      457.497,
+      211.138,
+      470.256
+    ],
+    "tooltip": "UnsecLoans1_tx"
+  },
+  {
+    "page": 2,
+    "name": "UnsecLoans1Date_dt[0]",
+    "fullName": "UnsecLoans1Date_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      214.738,
+      457.497,
+      292.727,
+      470.256
+    ],
+    "tooltip": "UnsecLoans1Date_dt"
+  },
+  {
+    "page": 2,
+    "name": "UnsecLoans1Debt_dc[0]",
+    "fullName": "UnsecLoans1Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      307.127,
+      457.497,
+      390.324,
+      470.256
+    ],
+    "tooltip": "UnsecLoans1Debt_dc"
+  },
+  {
+    "page": 2,
+    "name": "UnsecLoand1Pet_ft[0]",
+    "fullName": "UnsecLoand1Pet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      391.742,
+      457.497,
+      477.914,
+      470.256
+    ],
+    "tooltip": "UnsecLoand1Pet_ft"
+  },
+  {
+    "page": 2,
+    "name": "UnsecLoans1Resp_ft[0]",
+    "fullName": "UnsecLoans1Resp_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      480.75,
+      457.497,
+      573.915,
+      470.256
+    ],
+    "tooltip": "UnsecLoans1Resp_ft"
+  },
+  {
+    "page": 2,
+    "name": "UnsecLoans2_tx[0]",
+    "fullName": "UnsecLoans2_tx[0]",
+    "type": "/Tx",
+    "rect": [
+      39.883,
+      444.738,
+      211.138,
+      457.497
+    ],
+    "tooltip": "UnsecLoans2_tx"
+  },
+  {
+    "page": 2,
+    "name": "UnsecLoans2Date_dt[0]",
+    "fullName": "UnsecLoans2Date_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      214.738,
+      444.738,
+      292.727,
+      457.497
+    ],
+    "tooltip": "UnsecLoans2Date_dt"
+  },
+  {
+    "page": 2,
+    "name": "UnsecLoans2Debt_dc[0]",
+    "fullName": "UnsecLoans2Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      307.127,
+      444.738,
+      390.324,
+      457.497
+    ],
+    "tooltip": "UnsecLoans2Debt_dc"
+  },
+  {
+    "page": 2,
+    "name": "UnsecLoans2Pet_ft[0]",
+    "fullName": "UnsecLoans2Pet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      391.742,
+      444.738,
+      477.914,
+      457.497
+    ],
+    "tooltip": "UnsecLoans2Pet_ft"
+  },
+  {
+    "page": 2,
+    "name": "UnsecLoans2Resp_ft[0]",
+    "fullName": "UnsecLoans2Resp_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      480.75,
+      444.738,
+      573.915,
+      457.497
+    ],
+    "tooltip": "UnsecLoans2Resp_ft"
+  },
+  {
+    "page": 2,
+    "name": "UnsecLoans3_tx[0]",
+    "fullName": "UnsecLoans3_tx[0]",
+    "type": "/Tx",
+    "rect": [
+      39.883,
+      431.979,
+      211.138,
+      444.738
+    ],
+    "tooltip": "UnsecLoans3_tx"
+  },
+  {
+    "page": 2,
+    "name": "UnsecLoans3Date_dc[0]",
+    "fullName": "UnsecLoans3Date_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      214.738,
+      431.979,
+      292.727,
+      444.738
+    ],
+    "tooltip": "UnsecLoans3Date_dc"
+  },
+  {
+    "page": 2,
+    "name": "UnsecLoans3Debt_dc[0]",
+    "fullName": "UnsecLoans3Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      307.127,
+      431.979,
+      390.324,
+      444.738
+    ],
+    "tooltip": "UnsecLoans3Debt_dc"
+  },
+  {
+    "page": 2,
+    "name": "UnsecLoans3Pet_ft[0]",
+    "fullName": "UnsecLoans3Pet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      391.742,
+      431.979,
+      477.914,
+      444.738
+    ],
+    "tooltip": "UnsecLoans3Pet_ft"
+  },
+  {
+    "page": 2,
+    "name": "UnsecLoans3Resp_ft[0]",
+    "fullName": "UnsecLoans3Resp_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      480.75,
+      431.979,
+      573.915,
+      444.738
+    ],
+    "tooltip": "UnsecLoans3Resp_ft"
+  },
+  {
+    "page": 2,
+    "name": "UnsecLoans4_tx[0]",
+    "fullName": "UnsecLoans4_tx[0]",
+    "type": "/Tx",
+    "rect": [
+      39.883,
+      419.22,
+      211.138,
+      431.979
+    ],
+    "tooltip": "UnsecLoans4_tx"
+  },
+  {
+    "page": 2,
+    "name": "UnsecLoans4Date_dt[0]",
+    "fullName": "UnsecLoans4Date_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      214.738,
+      419.22,
+      292.727,
+      431.979
+    ],
+    "tooltip": "UnsecLoans4Date_dt"
+  },
+  {
+    "page": 2,
+    "name": "UnsecLoans4Debt_dc[0]",
+    "fullName": "UnsecLoans4Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      307.127,
+      419.22,
+      390.324,
+      431.979
+    ],
+    "tooltip": "UnsecLoans4Debt_dc"
+  },
+  {
+    "page": 2,
+    "name": "UnsecLoand4Pet_ft[0]",
+    "fullName": "UnsecLoand4Pet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      391.742,
+      419.22,
+      477.914,
+      431.979
+    ],
+    "tooltip": "UnsecLoand4Pet_ft"
+  },
+  {
+    "page": 2,
+    "name": "UnsecLoans4Resp_ft[0]",
+    "fullName": "UnsecLoans4Resp_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      480.75,
+      419.22,
+      573.915,
+      431.979
+    ],
+    "tooltip": "UnsecLoans4Resp_ft"
+  },
+  {
+    "page": 2,
+    "name": "CCards1_tx[0]",
+    "fullName": "CCards1_tx[0]",
+    "type": "/Tx",
+    "rect": [
+      39.883,
+      393.702,
+      211.138,
+      406.461
+    ],
+    "tooltip": "CCards1_tx"
+  },
+  {
+    "page": 2,
+    "name": "CCards1Date_dt[0]",
+    "fullName": "CCards1Date_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      214.738,
+      393.702,
+      292.727,
+      406.461
+    ],
+    "tooltip": "CCards1Date_dt"
+  },
+  {
+    "page": 2,
+    "name": "CCards1Debt_dc[0]",
+    "fullName": "CCards1Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      307.127,
+      393.702,
+      390.324,
+      406.461
+    ],
+    "tooltip": "CCards1Debt_dc"
+  },
+  {
+    "page": 2,
+    "name": "CCards1Pet_ft[0]",
+    "fullName": "CCards1Pet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      391.742,
+      393.702,
+      477.914,
+      406.461
+    ],
+    "tooltip": "CCards1Pet_ft"
+  },
+  {
+    "page": 2,
+    "name": "CCards1Resp_ft[0]",
+    "fullName": "CCards1Resp_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      480.75,
+      393.702,
+      573.915,
+      406.461
+    ],
+    "tooltip": "CCards1Resp_ft"
+  },
+  {
+    "page": 2,
+    "name": "CCards2_tx[0]",
+    "fullName": "CCards2_tx[0]",
+    "type": "/Tx",
+    "rect": [
+      39.883,
+      380.943,
+      211.138,
+      393.702
+    ],
+    "tooltip": "CCards2_tx"
+  },
+  {
+    "page": 2,
+    "name": "CCards2Date_dt[0]",
+    "fullName": "CCards2Date_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      214.738,
+      380.943,
+      292.727,
+      393.702
+    ],
+    "tooltip": "CCards2Date_dt"
+  },
+  {
+    "page": 2,
+    "name": "CCards2Debt_dc[0]",
+    "fullName": "CCards2Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      307.127,
+      380.943,
+      390.324,
+      393.702
+    ],
+    "tooltip": "CCards2Debt_dc"
+  },
+  {
+    "page": 2,
+    "name": "CCards2Pet_ft[0]",
+    "fullName": "CCards2Pet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      391.742,
+      380.943,
+      477.914,
+      393.702
+    ],
+    "tooltip": "CCards2Pet_ft"
+  },
+  {
+    "page": 2,
+    "name": "CCards2Resp_ft[0]",
+    "fullName": "CCards2Resp_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      480.75,
+      380.943,
+      573.915,
+      393.702
+    ],
+    "tooltip": "CCards2Resp_ft"
+  },
+  {
+    "page": 2,
+    "name": "CCards3_tx[0]",
+    "fullName": "CCards3_tx[0]",
+    "type": "/Tx",
+    "rect": [
+      39.883,
+      368.184,
+      211.138,
+      380.943
+    ],
+    "tooltip": "CCards3_tx"
+  },
+  {
+    "page": 2,
+    "name": "CCards3Date_dt[0]",
+    "fullName": "CCards3Date_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      214.738,
+      368.184,
+      292.727,
+      380.943
+    ],
+    "tooltip": "CCards3Date_dt"
+  },
+  {
+    "page": 2,
+    "name": "CCards1Debt_dc[0]",
+    "fullName": "CCards1Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      307.127,
+      368.184,
+      390.324,
+      380.943
+    ],
+    "tooltip": "CCards1Debt_dc"
+  },
+  {
+    "page": 2,
+    "name": "CCards3Pet_ft[0]",
+    "fullName": "CCards3Pet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      391.742,
+      368.184,
+      477.914,
+      380.943
+    ],
+    "tooltip": "CCards3Pet_ft"
+  },
+  {
+    "page": 2,
+    "name": "CCards3Resp_ft[0]",
+    "fullName": "CCards3Resp_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      480.75,
+      368.184,
+      573.915,
+      380.943
+    ],
+    "tooltip": "CCards3Resp_ft"
+  },
+  {
+    "page": 2,
+    "name": "CCards4_tx[0]",
+    "fullName": "CCards4_tx[0]",
+    "type": "/Tx",
+    "rect": [
+      39.883,
+      355.425,
+      211.138,
+      368.184
+    ],
+    "tooltip": "CCards4_tx"
+  },
+  {
+    "page": 2,
+    "name": "CCards4Date_dt[0]",
+    "fullName": "CCards4Date_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      214.738,
+      355.425,
+      292.727,
+      368.184
+    ],
+    "tooltip": "CCards4Date_dt"
+  },
+  {
+    "page": 2,
+    "name": "CCards4Debt_dc[0]",
+    "fullName": "CCards4Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      307.127,
+      355.425,
+      390.324,
+      368.184
+    ],
+    "tooltip": "CCards4Debt_dc"
+  },
+  {
+    "page": 2,
+    "name": "CCards4Pet_ft[0]",
+    "fullName": "CCards4Pet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      391.742,
+      355.425,
+      477.914,
+      368.184
+    ],
+    "tooltip": "CCards4Pet_ft"
+  },
+  {
+    "page": 2,
+    "name": "CCards4Resp_ft[0]",
+    "fullName": "CCards4Resp_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      480.75,
+      355.425,
+      573.915,
+      368.184
+    ],
+    "tooltip": "CCards4Resp_ft"
+  },
+  {
+    "page": 2,
+    "name": "CCards5_tx[0]",
+    "fullName": "CCards5_tx[0]",
+    "type": "/Tx",
+    "rect": [
+      39.883,
+      342.666,
+      211.138,
+      355.425
+    ],
+    "tooltip": "CCards5_tx"
+  },
+  {
+    "page": 2,
+    "name": "CCards5Date_dt[0]",
+    "fullName": "CCards5Date_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      214.738,
+      342.666,
+      292.727,
+      355.425
+    ],
+    "tooltip": "CCards5Date_dt"
+  },
+  {
+    "page": 2,
+    "name": "CCards5Debt_dc[0]",
+    "fullName": "CCards5Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      307.127,
+      342.666,
+      390.324,
+      355.425
+    ],
+    "tooltip": "CCards5Debt_dc"
+  },
+  {
+    "page": 2,
+    "name": "CCards5Pet_ft[0]",
+    "fullName": "CCards5Pet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      391.742,
+      342.666,
+      477.914,
+      355.425
+    ],
+    "tooltip": "CCards5Pet_ft"
+  },
+  {
+    "page": 2,
+    "name": "CCards5Resp_ft[0]",
+    "fullName": "CCards5Resp_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      480.75,
+      342.666,
+      573.915,
+      355.425
+    ],
+    "tooltip": "CCards5Resp_ft"
+  },
+  {
+    "page": 2,
+    "name": "CCards6_tx[0]",
+    "fullName": "CCards6_tx[0]",
+    "type": "/Tx",
+    "rect": [
+      39.883,
+      329.907,
+      211.138,
+      342.666
+    ],
+    "tooltip": "CCards6_tx"
+  },
+  {
+    "page": 2,
+    "name": "CCards6Dtae_dt[0]",
+    "fullName": "CCards6Dtae_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      214.738,
+      329.907,
+      292.727,
+      342.666
+    ],
+    "tooltip": "CCards6Dtae_dt"
+  },
+  {
+    "page": 2,
+    "name": "CCards6Debt_dc[0]",
+    "fullName": "CCards6Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      307.127,
+      329.907,
+      390.324,
+      342.666
+    ],
+    "tooltip": "CCards6Debt_dc"
+  },
+  {
+    "page": 2,
+    "name": "CCards6Pet_ft[0]",
+    "fullName": "CCards6Pet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      391.742,
+      329.907,
+      477.914,
+      342.666
+    ],
+    "tooltip": "CCards6Pet_ft"
+  },
+  {
+    "page": 2,
+    "name": "CCards6Resp_ft[0]",
+    "fullName": "CCards6Resp_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      480.75,
+      329.907,
+      573.915,
+      342.666
+    ],
+    "tooltip": "CCards6Resp_ft"
+  },
+  {
+    "page": 2,
+    "name": "OtherDebts1_tx[0]",
+    "fullName": "OtherDebts1_tx[0]",
+    "type": "/Tx",
+    "rect": [
+      39.883,
+      304.389,
+      211.138,
+      317.148
+    ],
+    "tooltip": "OtherDebts1_tx"
+  },
+  {
+    "page": 2,
+    "name": "OtherDebts1Date_dt[0]",
+    "fullName": "OtherDebts1Date_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      214.738,
+      304.389,
+      292.727,
+      317.148
+    ],
+    "tooltip": "OtherDebts1Date_dt"
+  },
+  {
+    "page": 2,
+    "name": "OtherDebts1Debt_dc[0]",
+    "fullName": "OtherDebts1Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      307.127,
+      304.389,
+      390.324,
+      317.148
+    ],
+    "tooltip": "OtherDebts1Debt_dc"
+  },
+  {
+    "page": 2,
+    "name": "OtherDebts1Pet_ft[0]",
+    "fullName": "OtherDebts1Pet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      391.742,
+      304.389,
+      477.914,
+      317.148
+    ],
+    "tooltip": "OtherDebts1Pet_ft"
+  },
+  {
+    "page": 2,
+    "name": "OtherDebts1Resp_ft[0]",
+    "fullName": "OtherDebts1Resp_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      480.75,
+      304.389,
+      573.915,
+      317.148
+    ],
+    "tooltip": "OtherDebts1Resp_ft"
+  },
+  {
+    "page": 2,
+    "name": "OtherDebts2_tx[0]",
+    "fullName": "OtherDebts2_tx[0]",
+    "type": "/Tx",
+    "rect": [
+      39.883,
+      291.63,
+      211.138,
+      304.389
+    ],
+    "tooltip": "OtherDebts2_tx"
+  },
+  {
+    "page": 2,
+    "name": "OtherDebts2Date_dt[0]",
+    "fullName": "OtherDebts2Date_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      214.738,
+      291.63,
+      292.727,
+      304.389
+    ],
+    "tooltip": "OtherDebts2Date_dt"
+  },
+  {
+    "page": 2,
+    "name": "OtherDebts2Debt_dc[0]",
+    "fullName": "OtherDebts2Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      307.127,
+      291.63,
+      390.324,
+      304.389
+    ],
+    "tooltip": "OtherDebts2Debt_dc"
+  },
+  {
+    "page": 2,
+    "name": "OtherDebts2Pet_ft[0]",
+    "fullName": "OtherDebts2Pet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      391.742,
+      291.63,
+      477.914,
+      304.389
+    ],
+    "tooltip": "OtherDebts2Pet_ft"
+  },
+  {
+    "page": 2,
+    "name": "OtherDebts2Resp_ft[0]",
+    "fullName": "OtherDebts2Resp_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      480.75,
+      291.63,
+      573.915,
+      304.389
+    ],
+    "tooltip": "OtherDebts2Resp_ft"
+  },
+  {
+    "page": 2,
+    "name": "OtherDebts3_tx[0]",
+    "fullName": "OtherDebts3_tx[0]",
+    "type": "/Tx",
+    "rect": [
+      39.883,
+      278.871,
+      211.138,
+      291.63
+    ],
+    "tooltip": "OtherDebts3_tx"
+  },
+  {
+    "page": 2,
+    "name": "OtherDebts3Date_dt[0]",
+    "fullName": "OtherDebts3Date_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      214.738,
+      278.871,
+      292.727,
+      291.63
+    ],
+    "tooltip": "OtherDebts3Date_dt"
+  },
+  {
+    "page": 2,
+    "name": "OtherDebts3Debt_dc[0]",
+    "fullName": "OtherDebts3Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      307.127,
+      278.871,
+      390.324,
+      291.63
+    ],
+    "tooltip": "OtherDebts3Debt_dc"
+  },
+  {
+    "page": 2,
+    "name": "OtherDebts3Pet_ft[0]",
+    "fullName": "OtherDebts3Pet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      391.742,
+      278.871,
+      477.914,
+      291.63
+    ],
+    "tooltip": "OtherDebts3Pet_ft"
+  },
+  {
+    "page": 2,
+    "name": "OtherDebts3Resp_ft[0]",
+    "fullName": "OtherDebts3Resp_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      480.75,
+      278.871,
+      573.915,
+      291.63
+    ],
+    "tooltip": "OtherDebts3Resp_ft"
+  },
+  {
+    "page": 2,
+    "name": "OtherDebts4_tx[0]",
+    "fullName": "OtherDebts4_tx[0]",
+    "type": "/Tx",
+    "rect": [
+      39.883,
+      266.112,
+      211.138,
+      278.871
+    ],
+    "tooltip": "OtherDebts4_tx"
+  },
+  {
+    "page": 2,
+    "name": "OtherDebts4Date_dt[0]",
+    "fullName": "OtherDebts4Date_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      214.738,
+      266.112,
+      292.727,
+      278.871
+    ],
+    "tooltip": "OtherDebts4Date_dt"
+  },
+  {
+    "page": 2,
+    "name": "OtherDebts4Debt_dc[0]",
+    "fullName": "OtherDebts4Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      307.127,
+      266.112,
+      390.324,
+      278.871
+    ],
+    "tooltip": "OtherDebts4Debt_dc"
+  },
+  {
+    "page": 2,
+    "name": "OtherDebts4Pet_ft[0]",
+    "fullName": "OtherDebts4Pet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      391.742,
+      266.112,
+      477.914,
+      278.871
+    ],
+    "tooltip": "OtherDebts4Pet_ft"
+  },
+  {
+    "page": 2,
+    "name": "OtherDebts4Resp_ft[0]",
+    "fullName": "OtherDebts4Resp_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      480.75,
+      266.112,
+      573.915,
+      278.871
+    ],
+    "tooltip": "OtherDebts4Resp_ft"
+  },
+  {
+    "page": 2,
+    "name": "OtherDebts5_tx[0]",
+    "fullName": "OtherDebts5_tx[0]",
+    "type": "/Tx",
+    "rect": [
+      39.883,
+      253.353,
+      211.138,
+      266.112
+    ],
+    "tooltip": "OtherDebts5_tx"
+  },
+  {
+    "page": 2,
+    "name": "OtherDebt5Date_dt[0]",
+    "fullName": "OtherDebt5Date_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      214.738,
+      253.353,
+      292.727,
+      266.112
+    ],
+    "tooltip": "OtherDebt5Date_dt"
+  },
+  {
+    "page": 2,
+    "name": "OtherDebts5Debt_dc[0]",
+    "fullName": "OtherDebts5Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      307.127,
+      253.353,
+      390.324,
+      266.112
+    ],
+    "tooltip": "OtherDebts5Debt_dc"
+  },
+  {
+    "page": 2,
+    "name": "OtherDebts5Pet_ft[0]",
+    "fullName": "OtherDebts5Pet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      391.742,
+      253.353,
+      477.914,
+      266.112
+    ],
+    "tooltip": "OtherDebts5Pet_ft"
+  },
+  {
+    "page": 2,
+    "name": "OtherDebts5Resp_ft[0]",
+    "fullName": "OtherDebts5Resp_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      480.75,
+      253.353,
+      573.915,
+      266.112
+    ],
+    "tooltip": "OtherDebts5Resp_ft"
+  },
+  {
+    "page": 2,
+    "name": "OtherDebts6_tx[0]",
+    "fullName": "OtherDebts6_tx[0]",
+    "type": "/Tx",
+    "rect": [
+      39.883,
+      240.594,
+      211.138,
+      253.353
+    ],
+    "tooltip": "OtherDebts6_tx"
+  },
+  {
+    "page": 2,
+    "name": "OtherDebts6Date_dt[0]",
+    "fullName": "OtherDebts6Date_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      214.738,
+      240.594,
+      292.727,
+      253.353
+    ],
+    "tooltip": "OtherDebts6Date_dt"
+  },
+  {
+    "page": 2,
+    "name": "OtherDebts6Debt_dc[0]",
+    "fullName": "OtherDebts6Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      307.127,
+      240.594,
+      390.324,
+      253.353
+    ],
+    "tooltip": "OtherDebts6Debt_dc"
+  },
+  {
+    "page": 2,
+    "name": "OtherDebts6Pet_ft[0]",
+    "fullName": "OtherDebts6Pet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      391.742,
+      240.594,
+      477.914,
+      253.353
+    ],
+    "tooltip": "OtherDebts6Pet_ft"
+  },
+  {
+    "page": 2,
+    "name": "OtherDebts6Resp_ft[0]",
+    "fullName": "OtherDebts6Resp_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      480.75,
+      240.594,
+      573.915,
+      253.353
+    ],
+    "tooltip": "OtherDebts6Resp_ft"
+  },
+  {
+    "page": 2,
+    "name": "OtherDebts7_tx[0]",
+    "fullName": "OtherDebts7_tx[0]",
+    "type": "/Tx",
+    "rect": [
+      39.883,
+      227.835,
+      211.138,
+      240.594
+    ],
+    "tooltip": "OtherDebts7_tx"
+  },
+  {
+    "page": 2,
+    "name": "OtherDebts7Date_dt[0]",
+    "fullName": "OtherDebts7Date_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      214.738,
+      227.835,
+      292.727,
+      240.594
+    ],
+    "tooltip": "OtherDebts7Date_dt"
+  },
+  {
+    "page": 2,
+    "name": "OtherDebts7Debt_dc[0]",
+    "fullName": "OtherDebts7Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      307.127,
+      227.835,
+      390.324,
+      240.594
+    ],
+    "tooltip": "OtherDebts7Debt_dc"
+  },
+  {
+    "page": 2,
+    "name": "OtherDebts7Pet_ft[0]",
+    "fullName": "OtherDebts7Pet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      391.742,
+      227.835,
+      477.914,
+      240.594
+    ],
+    "tooltip": "OtherDebts7Pet_ft"
+  },
+  {
+    "page": 2,
+    "name": "OtherDebts7Resp_ft[0]",
+    "fullName": "OtherDebts7Resp_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      480.75,
+      227.835,
+      573.915,
+      240.594
+    ],
+    "tooltip": "OtherDebts7Resp_ft"
+  },
+  {
+    "page": 2,
+    "name": "OtherDebts8_tx[0]",
+    "fullName": "OtherDebts8_tx[0]",
+    "type": "/Tx",
+    "rect": [
+      39.883,
+      215.079,
+      211.138,
+      227.835
+    ],
+    "tooltip": "OtherDebts8_tx"
+  },
+  {
+    "page": 2,
+    "name": "OtherDebts8Date_dt[0]",
+    "fullName": "OtherDebts8Date_dt[0]",
+    "type": "/Tx",
+    "rect": [
+      214.738,
+      215.079,
+      292.727,
+      227.835
+    ],
+    "tooltip": "OtherDebts8Date_dt"
+  },
+  {
+    "page": 2,
+    "name": "OtherDebts8Debt_dc[0]",
+    "fullName": "OtherDebts8Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      307.127,
+      215.079,
+      390.324,
+      227.835
+    ],
+    "tooltip": "OtherDebts8Debt_dc"
+  },
+  {
+    "page": 2,
+    "name": "OtherDebts8Pet_ft[0]",
+    "fullName": "OtherDebts8Pet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      391.742,
+      215.079,
+      477.914,
+      227.835
+    ],
+    "tooltip": "OtherDebts8Pet_ft"
+  },
+  {
+    "page": 2,
+    "name": "OtherDebts8Resp_ft[0]",
+    "fullName": "OtherDebts8Resp_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      480.75,
+      215.079,
+      573.915,
+      227.835
+    ],
+    "tooltip": "OtherDebts8Resp_ft"
+  },
+  {
+    "page": 2,
+    "name": "ContDebts_tx[0]",
+    "fullName": "ContDebts_tx[0]",
+    "type": "/Tx",
+    "rect": [
+      214.738,
+      190.191,
+      292.727,
+      207.879
+    ],
+    "tooltip": "ContDebts_tx"
+  },
+  {
+    "page": 2,
+    "name": "ContDebts_Debt_dc[0]",
+    "fullName": "ContDebts_Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      307.127,
+      186.591,
+      386.724,
+      207.879
+    ],
+    "tooltip": "ContDebts_Debt_dc"
+  },
+  {
+    "page": 2,
+    "name": "ContDebtsPet_ft[0]",
+    "fullName": "ContDebtsPet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      391.742,
+      188.009,
+      477.914,
+      213.661
+    ],
+    "tooltip": "ContDebtsPet_ft"
+  },
+  {
+    "page": 2,
+    "name": "ContDebtsResp_ft[0]",
+    "fullName": "ContDebtsResp_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      480.75,
+      188.009,
+      573.915,
+      213.661
+    ],
+    "tooltip": "ContDebtsResp_ft"
+  },
+  {
+    "page": 2,
+    "name": "TotalDebt_tx[0]",
+    "fullName": "TotalDebt_tx[0]",
+    "type": "/Tx",
+    "rect": [
+      214.738,
+      168.591,
+      296.327,
+      186.591
+    ],
+    "tooltip": "TotalDebt_tx"
+  },
+  {
+    "page": 2,
+    "name": "TotalDebt_Debt_dc[0]",
+    "fullName": "TotalDebt_Debt_dc[0]",
+    "type": "/Tx",
+    "rect": [
+      303.527,
+      168.591,
+      390.324,
+      182.991
+    ],
+    "tooltip": "TotalDebt_Debt_dc"
+  },
+  {
+    "page": 2,
+    "name": "TotalDebtPet_ft[0]",
+    "fullName": "TotalDebtPet_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      391.742,
+      170.009,
+      477.914,
+      185.173
+    ],
+    "tooltip": "TotalDebtPet_ft"
+  },
+  {
+    "page": 2,
+    "name": "TotalDebtResp_ft[0]",
+    "fullName": "TotalDebtResp_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      480.75,
+      170.009,
+      573.915,
+      185.173
+    ],
+    "tooltip": "TotalDebtResp_ft"
+  },
+  {
+    "page": 2,
+    "name": "YourName_ft[0]",
+    "fullName": "YourName_ft[0]",
+    "type": "/Tx",
+    "rect": [
+      36.0,
+      88.453,
+      266.783,
+      102.033
+    ],
+    "tooltip": "(TYPE OR PRINT NAME)"
+  },
+  {
+    "page": 2,
+    "name": "DateTimeField1[0]",
+    "fullName": "DateTimeField1[0]",
+    "type": "/Tx",
+    "rect": [
+      61.2,
+      107.317,
+      169.2,
+      116.317
+    ],
+    "tooltip": "Date:"
+  },
+  {
+    "page": 2,
+    "name": "continue_cb[0]",
+    "fullName": "continue_cb[0]",
+    "type": "/Btn",
+    "rect": [
+      56.52,
+      153.892,
+      66.52,
+      163.892
+    ],
+    "tooltip": "A Continuation of Property Declaration (form FL-161) is attached and incorporated by reference."
+  },
+  {
+    "page": 3,
+    "name": "Print_bt[0]",
+    "fullName": "Print_bt[0]",
+    "type": "/Btn",
+    "rect": [
+      258.69,
+      6.069,
+      339.69,
+      23.077
+    ],
+    "tooltip": "Print this form"
+  },
+  {
+    "page": 3,
+    "name": "Save_bt[0]",
+    "fullName": "Save_bt[0]",
+    "type": "/Btn",
+    "rect": [
+      345.229,
+      6.069,
+      426.334,
+      23.077
+    ],
+    "tooltip": "Save this form"
+  },
+  {
+    "page": 3,
+    "name": "Reset_bt[0]",
+    "fullName": "Reset_bt[0]",
+    "type": "/Btn",
+    "rect": [
+      494.918,
+      6.069,
+      575.915,
+      23.077
+    ],
+    "tooltip": "Clear this form"
+  },
+  {
+    "page": 3,
+    "name": "T23[0]",
+    "fullName": "T23[0]",
+    "type": "/Btn",
+    "rect": [
+      36.0,
+      6.069,
+      247.294,
+      29.248
+    ],
+    "tooltip": "For your protection and privacy, please press the Clear This Form button after you have printed the form."
+  }
+]

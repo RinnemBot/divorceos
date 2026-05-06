@@ -270,10 +270,10 @@ export const FORM_GUIDANCE: Record<string, FormGuidanceEntry> = {
 - Use bullet points and attach exhibits (pay stubs, budgets) referenced by letter.
 - Judges appreciate concise explanations tied to evidence (“See Exhibit B – 2023 W-2”).`,
   },
-  'fl-431': {
-    basic: `• Spousal/Partner Support Order Attachment.
-• Summarizes the court’s spousal support order (amount, duration, conditions).`,
-    detailed: `**FL-431**
+  'fl-343': {
+    basic: `• Spousal, Domestic Partner, or Family Support Order Attachment.
+• Summarizes support orders, including spousal, domestic partner, or family support terms.`,
+    detailed: `**FL-343**
 - Fill in the monthly amount, start date, and termination triggers (death/remarriage).
 - Section 5 allows you to specify wage assignments or lump-sum buyouts.
 - Attach to judgments or minute orders so the support terms are enforceable.`,

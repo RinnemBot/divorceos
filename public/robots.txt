@@ -1,4 +1,10 @@
 User-agent: *
 Allow: /
+Disallow: /dashboard
+Disallow: /profile
+Disallow: /draft-forms
+Disallow: /bookkeeping
+Disallow: /analytics
+Disallow: /confirm-email
 
 Sitemap: https://www.divorce-os.com/sitemap.xml
