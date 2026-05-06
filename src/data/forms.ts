@@ -498,13 +498,86 @@ export function getFormsByCategory(categoryId: string): CourtForm[] {
   return COURT_FORMS.filter(form => form.category === categoryId);
 }
 
+const SEARCH_INTENTS: Record<string, string[]> = {
+  'start a divorce': ['fl-100', 'fl-110', 'fl-105', 'fl-115', 'fl-117', 'fl-150'],
+  'starting a divorce': ['fl-100', 'fl-110', 'fl-105', 'fl-115', 'fl-117', 'fl-150'],
+  'file for divorce': ['fl-100', 'fl-110', 'fl-105', 'fl-115', 'fl-117', 'fl-150'],
+  'petition': ['fl-100', 'fl-110', 'fl-105', 'fl-115', 'fl-117', 'fl-150'],
+  'i was served': ['fl-120', 'fl-311', 'fl-150'],
+  'served': ['fl-120', 'fl-311', 'fl-150'],
+  'respond': ['fl-120', 'fl-311', 'fl-150'],
+  'response': ['fl-120', 'fl-311', 'fl-150'],
+  'children / custody': ['fl-105', 'fl-311', 'fl-300', 'fl-150', 'fl-342', 'fl-341'],
+  'children': ['fl-105', 'fl-311', 'fl-300', 'fl-150', 'fl-342', 'fl-341'],
+  'custody': ['fl-105', 'fl-311', 'fl-300', 'fl-150', 'fl-342', 'fl-341'],
+  'child support': ['fl-150', 'fl-342', 'fl-343', 'fl-195'],
+  'fee waiver': ['fw-001', 'fw-003', 'fw-010'],
+  'fees': ['fw-001', 'fw-003', 'fw-010'],
+  'final judgment': ['fl-180', 'fl-190', 'fl-170', 'fl-165', 'fl-182', 'fl-347'],
+  'judgment': ['fl-180', 'fl-190', 'fl-170', 'fl-165', 'fl-182', 'fl-347'],
+  'finalize': ['fl-180', 'fl-190', 'fl-170', 'fl-165', 'fl-182', 'fl-347'],
+  'default': ['fl-165', 'fl-170', 'fl-180', 'fl-190'],
+};
+
+function normalizeSearchValue(value: string): string {
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+}
+
+function getIntentForms(normalizedQuery: string): CourtForm[] {
+  const matchedIds = new Set<string>();
+
+  Object.entries(SEARCH_INTENTS).forEach(([intent, ids]) => {
+    const normalizedIntent = normalizeSearchValue(intent);
+    if (normalizedQuery.includes(normalizedIntent) || normalizedIntent.includes(normalizedQuery)) {
+      ids.forEach(id => matchedIds.add(id));
+    }
+  });
+
+  return COURT_FORMS.filter(form => matchedIds.has(form.id));
+}
+
 export function searchForms(query: string): CourtForm[] {
-  const lowerQuery = query.toLowerCase();
-  return COURT_FORMS.filter(form => 
-    form.title.toLowerCase().includes(lowerQuery) ||
-    form.description.toLowerCase().includes(lowerQuery) ||
-    form.formNumber.toLowerCase().includes(lowerQuery)
-  );
+  const normalizedQuery = normalizeSearchValue(query);
+  if (!normalizedQuery) return [];
+
+  const intentMatches = getIntentForms(normalizedQuery);
+  if (intentMatches.length > 0) {
+    return intentMatches;
+  }
+
+  const stopWords = new Set(['a', 'an', 'and', 'for', 'i', 'of', 'or', 'the', 'to', 'was', 'with']);
+  const tokens = normalizedQuery.split(' ').filter(token => token && !stopWords.has(token));
+  const hasFormNumberToken = tokens.some(token => /^(fl|fw|dv)\d+[a-z]?$/.test(token));
+
+  const scoredMatches = COURT_FORMS
+    .map(form => {
+      const searchable = normalizeSearchValue([
+        form.formNumber,
+        form.title,
+        form.description,
+        form.category,
+      ].join(' '));
+
+      const exactPhraseMatch = searchable.includes(normalizedQuery) ? 20 : 0;
+      const matchedTokens = tokens.filter(token => {
+        const compactToken = token.replace(/^(fl|fw|dv)(\d)/, '$1 $2');
+        return searchable.includes(token) || searchable.includes(compactToken);
+      });
+      const tokenScore = matchedTokens.length;
+      const isMatch = exactPhraseMatch > 0 || (hasFormNumberToken ? tokenScore > 0 : tokenScore === tokens.length);
+
+      return { form, score: isMatch ? exactPhraseMatch + tokenScore : 0 };
+    })
+    .filter(({ score }) => score > 0)
+    .sort((a, b) => b.score - a.score)
+    .map(({ form }) => form);
+
+  const seen = new Set<string>();
+  return [...intentMatches, ...scoredMatches].filter(form => {
+    if (seen.has(form.id)) return false;
+    seen.add(form.id);
+    return true;
+  });
 }
 
 export function getFormById(id: string): CourtForm | undefined {

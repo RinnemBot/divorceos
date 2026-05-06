@@ -191,11 +191,11 @@ export function FormsPage() {
 
         <div className="mb-8 grid gap-3 md:grid-cols-5">
           {[
-            { label: 'Start a divorce', query: 'FL-100 FL-110 FL-105' },
-            { label: 'I was served', query: 'FL-120 response' },
-            { label: 'Children / custody', query: 'custody child support FL-105 FL-300' },
-            { label: 'Fee waiver', query: 'FW-001 fee waiver' },
-            { label: 'Final judgment', query: 'judgment default FL-180' },
+            { label: 'Start a divorce', query: 'start a divorce' },
+            { label: 'I was served', query: 'i was served' },
+            { label: 'Children / custody', query: 'children custody' },
+            { label: 'Fee waiver', query: 'fee waiver' },
+            { label: 'Final judgment', query: 'final judgment' },
           ].map((path) => (
             <button
               key={path.label}
