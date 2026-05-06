@@ -19,6 +19,7 @@ export interface UserProfile {
   representationStatus?: string;
   primaryGoals?: string[];
   favoriteCountyIds?: string[];
+  avatarUrl?: string;
 }
 
 export interface AuthUser {
@@ -320,6 +321,9 @@ function sanitizeProfile(profile: unknown): UserProfile | undefined {
   }
   if (Array.isArray(source.favoriteCountyIds)) {
     next.favoriteCountyIds = source.favoriteCountyIds.filter((value): value is string => typeof value === 'string');
+  }
+  if (typeof source.avatarUrl === 'string' && (source.avatarUrl.startsWith('/') || source.avatarUrl.startsWith('data:image/'))) {
+    next.avatarUrl = source.avatarUrl.slice(0, 750_000);
   }
 
   return Object.keys(next).length ? next : undefined;

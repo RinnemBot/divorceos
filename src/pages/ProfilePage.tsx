@@ -18,7 +18,10 @@ import {
   Loader2, 
   CheckCircle,
   ArrowLeft,
-  Sparkles
+  Sparkles,
+  Upload,
+  Image as ImageIcon,
+  XCircle
 } from 'lucide-react';
 import { authService, SUBSCRIPTION_LIMITS, type UserProfile, type User } from '@/services/auth';
 
@@ -60,6 +63,14 @@ const PRIMARY_GOALS = [
   'Finalize judgment',
 ];
 
+const STOCK_AVATARS = [
+  { label: 'Emerald', url: '/avatar-emerald.svg' },
+  { label: 'Slate', url: '/avatar-slate.svg' },
+  { label: 'Gold', url: '/avatar-gold.svg' },
+  { label: 'Rose', url: '/avatar-rose.svg' },
+  { label: 'Maria', url: '/maria-chat-avatar.png' },
+];
+
 export function ProfilePage() {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -82,6 +93,8 @@ export function ProfilePage() {
   const [nextHearingDate, setNextHearingDate] = useState('');
   const [representationStatus, setRepresentationStatus] = useState('');
   const [primaryGoals, setPrimaryGoals] = useState<string[]>([]);
+  const [avatarUrl, setAvatarUrl] = useState('');
+  const [avatarError, setAvatarError] = useState('');
 
   useEffect(() => {
     const user = authService.getCurrentUser();
@@ -108,8 +121,29 @@ export function ProfilePage() {
       setNextHearingDate(user.profile.nextHearingDate || '');
       setRepresentationStatus(user.profile.representationStatus || '');
       setPrimaryGoals(user.profile.primaryGoals || []);
+      setAvatarUrl(user.profile.avatarUrl || '');
     }
   }, [navigate]);
+
+  const handleAvatarUpload = (file: File | undefined) => {
+    setAvatarError('');
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      setAvatarError('Please choose an image file.');
+      return;
+    }
+    if (file.size > 700_000) {
+      setAvatarError('Please choose an image under 700 KB for now.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result === 'string') setAvatarUrl(reader.result);
+    };
+    reader.onerror = () => setAvatarError('Could not read that image. Try another file.');
+    reader.readAsDataURL(file);
+  };
 
   const handleSaveProfile = async () => {
     if (!currentUser) return;
@@ -135,6 +169,7 @@ export function ProfilePage() {
       nextHearingDate: nextHearingDate || undefined,
       representationStatus: representationStatus || undefined,
       primaryGoals: primaryGoals.length ? primaryGoals : undefined,
+      avatarUrl: avatarUrl || undefined,
     };
     
     await authService.updateProfile(currentUser.id, profile);
@@ -199,6 +234,52 @@ export function ProfilePage() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
+                <div className="flex flex-col gap-4 rounded-2xl border border-emerald-100 bg-emerald-50/60 p-4 sm:flex-row sm:items-center dark:border-emerald-400/15 dark:bg-emerald-400/10">
+                  <div className="h-20 w-20 flex-none overflow-hidden rounded-3xl bg-white shadow-sm ring-4 ring-white dark:ring-white/15">
+                    {avatarUrl ? (
+                      <img src={avatarUrl} alt="Your avatar preview" className="h-full w-full object-cover" />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center bg-emerald-600 text-white">
+                        <UserIcon className="h-8 w-8" />
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex-1 space-y-3">
+                    <div>
+                      <Label className="flex items-center gap-2 text-slate-700 dark:text-slate-200">
+                        <ImageIcon className="h-4 w-4 text-emerald-600" />
+                        Avatar
+                      </Label>
+                      <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Choose a stock avatar or upload your own image. Save profile to keep it.</p>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {STOCK_AVATARS.map((avatar) => (
+                        <button
+                          key={avatar.url}
+                          type="button"
+                          onClick={() => setAvatarUrl(avatar.url)}
+                          className={`h-11 w-11 overflow-hidden rounded-2xl border-2 transition ${avatarUrl === avatar.url ? 'border-emerald-600 ring-2 ring-emerald-200' : 'border-white hover:border-emerald-300'}`}
+                          title={avatar.label}
+                        >
+                          <img src={avatar.url} alt={avatar.label} className="h-full w-full object-cover" />
+                        </button>
+                      ))}
+                      <Label className="inline-flex h-11 cursor-pointer items-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 text-sm font-medium text-slate-700 hover:border-emerald-300 hover:bg-emerald-50 dark:border-white/10 dark:bg-white/5 dark:text-slate-200">
+                        <Upload className="h-4 w-4" />
+                        Upload
+                        <input type="file" accept="image/*" className="hidden" onChange={(event) => handleAvatarUpload(event.target.files?.[0])} />
+                      </Label>
+                      {avatarUrl && (
+                        <button type="button" onClick={() => setAvatarUrl('')} className="inline-flex h-11 items-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 text-sm font-medium text-slate-600 hover:bg-slate-50 dark:border-white/10 dark:bg-white/5 dark:text-slate-300">
+                          <XCircle className="h-4 w-4" />
+                          Clear
+                        </button>
+                      )}
+                    </div>
+                    {avatarError && <p className="text-xs font-medium text-red-600">{avatarError}</p>}
+                  </div>
+                </div>
+
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
                     <Label className="text-slate-500">Email</Label>
