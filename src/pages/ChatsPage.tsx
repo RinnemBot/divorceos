@@ -256,23 +256,55 @@ export function ChatsPage({ currentUser, onAuthSuccess }: ChatsPageProps) {
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_12%_0%,rgba(16,185,129,0.16),transparent_25%),radial-gradient(circle_at_88%_8%,rgba(34,211,238,0.13),transparent_22%),linear-gradient(180deg,#f7fffb_0%,#effcf8_44%,#f8fafc_100%)] py-8 dark:bg-[radial-gradient(circle_at_15%_0%,rgba(16,185,129,0.2),transparent_26%),radial-gradient(circle_at_85%_8%,rgba(34,211,238,0.14),transparent_22%),linear-gradient(180deg,#020617_0%,#03111f_48%,#020617_100%)]">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-          <div>
-            <Badge className="rounded-full border-0 bg-emerald-100 text-emerald-900 dark:bg-emerald-400/15 dark:text-emerald-200">Maria chat workspace</Badge>
-            <h1 className="mt-4 text-4xl font-semibold tracking-tight text-slate-950 dark:text-white md:text-5xl">Chats</h1>
-            <p className="mt-3 max-w-3xl text-base leading-7 text-slate-600 dark:text-slate-300">
-              A full-page workspace for deeper California divorce conversations, document review, forms planning, and saved case context.
-            </p>
+        <section className="mb-8 overflow-hidden rounded-[2.5rem] border border-white/80 bg-white/80 shadow-[0_30px_110px_-60px_rgba(15,23,42,0.65)] backdrop-blur-2xl dark:border-white/10 dark:bg-white/5">
+          <div className="grid items-stretch gap-0 lg:grid-cols-[minmax(0,1fr)_380px]">
+            <div className="flex flex-col justify-center p-6 sm:p-8 lg:p-10">
+              <Badge className="w-fit rounded-full border-0 bg-emerald-100 text-emerald-900 dark:bg-emerald-400/15 dark:text-emerald-200">Maria chat workspace</Badge>
+              <h1 className="mt-5 max-w-3xl text-4xl font-semibold tracking-tight text-slate-950 dark:text-white md:text-5xl lg:text-6xl">
+                Talk with Maria about your next move.
+              </h1>
+              <p className="mt-4 max-w-3xl text-base leading-7 text-slate-600 dark:text-slate-300 md:text-lg">
+                Bring Maria your questions, court forms, facts, and fears. She helps turn California divorce chaos into a clear plan: what to file, what to gather, what deadlines matter, and what to ask your attorney next.
+              </p>
+              <div className="mt-6 grid gap-3 text-sm text-slate-600 dark:text-slate-300 sm:grid-cols-3">
+                <div className="rounded-2xl bg-emerald-50/90 p-4 dark:bg-emerald-400/10">
+                  <p className="font-semibold text-slate-950 dark:text-white">Document-aware</p>
+                  <p className="mt-1 text-xs leading-5">Upload PDFs and let Maria reason from your case file.</p>
+                </div>
+                <div className="rounded-2xl bg-cyan-50/90 p-4 dark:bg-cyan-400/10">
+                  <p className="font-semibold text-slate-950 dark:text-white">California-focused</p>
+                  <p className="mt-1 text-xs leading-5">Forms, disclosures, custody, support, and court prep.</p>
+                </div>
+                <div className="rounded-2xl bg-slate-50/90 p-4 dark:bg-white/10">
+                  <p className="font-semibold text-slate-950 dark:text-white">Always organized</p>
+                  <p className="mt-1 text-xs leading-5">Save chats and keep case context inside folders.</p>
+                </div>
+              </div>
+              <div className="mt-7 flex flex-wrap gap-2">
+                <Button variant="outline" className="rounded-full bg-white/80" asChild>
+                  <Link to="/dashboard"><Archive className="mr-2 h-4 w-4" />Saved files</Link>
+                </Button>
+                <Button variant="outline" className="rounded-full bg-white/80" asChild>
+                  <Link to="/draft-forms"><FileText className="mr-2 h-4 w-4" />Draft forms</Link>
+                </Button>
+              </div>
+            </div>
+            <div className="relative min-h-[340px] overflow-hidden bg-gradient-to-br from-emerald-100 via-cyan-50 to-white dark:from-emerald-950/70 dark:via-cyan-950/40 dark:to-slate-950 lg:min-h-[460px]">
+              <div className="absolute inset-x-8 top-8 rounded-full bg-emerald-300/35 blur-3xl dark:bg-emerald-400/20" />
+              <img
+                src="/maria-chat-avatar.png"
+                alt="Maria, the DivorceOS California divorce chat agent"
+                className="absolute bottom-0 left-1/2 h-[112%] max-w-none -translate-x-1/2 object-contain drop-shadow-[0_35px_55px_rgba(15,23,42,0.35)]"
+              />
+              <div className="absolute bottom-5 left-5 right-5 rounded-3xl border border-white/70 bg-white/85 p-4 shadow-2xl backdrop-blur-xl dark:border-white/10 dark:bg-slate-950/70">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700 dark:text-emerald-300">Maria says</p>
+                <p className="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-200">
+                  “Tell me where things stand. I’ll help you sort the paperwork, deadlines, and next conversation with your legal team.”
+                </p>
+              </div>
+            </div>
           </div>
-          <div className="flex flex-wrap gap-2">
-            <Button variant="outline" className="rounded-full" asChild>
-              <Link to="/dashboard"><Archive className="mr-2 h-4 w-4" />Saved files</Link>
-            </Button>
-            <Button variant="outline" className="rounded-full" asChild>
-              <Link to="/draft-forms"><FileText className="mr-2 h-4 w-4" />Draft forms</Link>
-            </Button>
-          </div>
-        </div>
+        </section>
 
         <div className="grid gap-6 xl:grid-cols-[320px_minmax(0,1fr)]">
           <aside className="space-y-4">
