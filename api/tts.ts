@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { enforceBrowserOrigin, enforceRateLimit } from './_security.js';
-import { getAuthenticatedUser } from './_auth.js';
+import { requireAuthenticatedUser } from './_auth.js';
 
 function cleanEnvValue(value?: string) {
   return value?.replace(/\\n/g, '').replace(/^['"]|['"]$/g, '').trim() ?? '';
@@ -85,7 +85,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (!enforceBrowserOrigin(req, res)) return;
   if (!enforceRateLimit(req, res, 'tts', 8, 60_000)) return;
 
-  await getAuthenticatedUser(req);
+  const user = await requireAuthenticatedUser(req, res);
+  if (!user) return;
 
   const provider = TTS_PROVIDER;
 
